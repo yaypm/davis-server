@@ -1,0 +1,16 @@
+{
+  "name": "davis-server",
+  "version": "0.0.0",
+  "description": "Davis server",
+  "main": "./bin/run",
+  "repository": "",
+  "author": "",
+  "dependencies": {
+    "body-parser": "^1.15.1",
+    "express": "^4.13.4",
+    "mongoose": "^4.4.19"
+  },
+  "devDependencies": {
+    "chai": "^3.5.0"
+  }
+}
