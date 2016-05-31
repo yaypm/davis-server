@@ -21,6 +21,6 @@ module.exports.initiateConversation = function initiateConversation(userId, cb) 
     });
 };
 
-module.exports.addExchange = function addExchange(conversationId) {
+module.exports.createExchange = function addExchange(conversationId) {
     
 }
