@@ -16,7 +16,13 @@ describe('The Exchange model', function() {
             done();
         });
     });
-    
+    it('should successfully save an exchange', function(done) {
+        var exchange = new ExchangeModel({source: 'alexa'});
+        exchange.save(function(err, res) {
+            expect(res).to.be.not.null;
+            done();
+        });
+    });
     
     
 });
