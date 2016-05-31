@@ -4,7 +4,6 @@ var mongoose = require('mongoose'),
 
 
 var exchange = new Schema({
-    _account: { type: ObjectId, required: false, unique: false, index: false, ref: 'Account' },
     _conversation: { type: ObjectId, required: false, unique: false, index: false, ref: 'Conversation' },
     source: { type: String, required: true, unique: false, index: true},
     authenticated: { type: Boolean, required: true, unique: false, index: false, default: false },
