@@ -44,6 +44,7 @@ describe('The Conversation model', function() {
                 exchange.save(function(err, res) {
                     expect(err).to.be.null;
                     expect(res).to.be.not.null;
+                    //We might want to include the conversation ID here
                     ExchangeModel
                         .findOne({
                             source: 'alexa'

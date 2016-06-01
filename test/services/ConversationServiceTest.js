@@ -50,5 +50,19 @@ describe('The ConversationService', function(done) {
 
     });
 
+    it('should create a new conversation and exchange', function(done) {
+        ConversationService.initiateConversation('test3', function(err, conversation) {
 
+            if (err) throw err;
+
+            expect(conversation).to.be.not.null;
+            expect(conversation.userId).to.equal('test3');
+            ConversationService.createExchange(conversation._id, 'alexa', function(err, exchange) {
+                if (err) throw err;
+                expect(exchange).to.be.not.null;
+                expect(exchange._conversation).to.equal(conversation._id);
+                done();
+            });
+        });
+    });
 });

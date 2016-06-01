@@ -1,4 +1,5 @@
-var ConversationModel = require("../models/Conversation");
+var ConversationModel = require("../models/Conversation"),
+    ExchangeModel = require("../models/Exchange");
 
 module.exports.initiateConversation = function initiateConversation(userId, cb) {
     ConversationModel.findOne({
@@ -13,14 +14,16 @@ module.exports.initiateConversation = function initiateConversation(userId, cb) 
             userId: userId
         });
         
-        conversation.save(function(err, res) {
-            if (err) return cb(err);
-            return cb(null, res);
-        });
+        conversation.save(cb);
 
     });
 };
 
-module.exports.createExchange = function addExchange(conversationId) {
+module.exports.createExchange = function addExchange(conversationId, source, cb) {
+    var exchange = new ExchangeModel({
+        _conversation: conversationId,
+        source: source
+    });
     
-}
+    exchange.save(cb);
+};
