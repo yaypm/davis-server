@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 
 
-router.post('/alexa', function(req, res, next) {
+router.post('/', function(req, res, next) {
    
     console.log('Starting to process an Alexa request');
     

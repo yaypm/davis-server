@@ -1,4 +1,4 @@
-module.exports.launchRequest = {
+module.exports.requests = {
     // LaunchRequest template
     "launch": {
         "version": "1.0",
