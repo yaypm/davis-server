@@ -5,6 +5,9 @@
   "main": "./bin/run",
   "repository": "https://github.com/ruxit/davis-server",
   "author": "",
+  "scripts": {
+    "test": "mocha --recursive ./test/"
+  },
   "dependencies": {
     "body-parser": "^1.15.1",
     "express": "^4.13.4",
