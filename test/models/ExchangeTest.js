@@ -4,7 +4,7 @@ require('../setup.js');
 var chai = require('chai');
 var should = chai.should;
 var expect = chai.expect;
-var ExchangeModel = require('../../app/models/Exchange');
+var ExchangeModel = require('../../app/core/models/Exchange');
 
 describe('The Exchange model', function() {
     

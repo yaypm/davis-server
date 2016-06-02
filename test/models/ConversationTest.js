@@ -4,8 +4,8 @@ require('../setup.js');
 var chai = require('chai');
 var should = chai.should;
 var expect = chai.expect;
-var ConversationModel = require('../../app/models/Conversation');
-var ExchangeModel = require('../../app/models/Exchange');
+var ConversationModel = require('../../app/core/models/Conversation');
+var ExchangeModel = require('../../app/core/models/Exchange');
 
 //Configured devices for conversation
 var devices = [];

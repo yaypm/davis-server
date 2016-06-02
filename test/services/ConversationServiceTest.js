@@ -6,7 +6,6 @@ var expect = chai.expect;
 var ConversationService = require('../../app/services/ConversationService');
 
 
-
 describe('The ConversationService', function(done) {
 
     it('should create a new conversation if none exists for this user', function(done) {

@@ -1,5 +1,5 @@
-var ConversationModel = require("../models/Conversation"),
-    ExchangeModel = require("../models/Exchange");
+var ConversationModel = require("../core/models/Conversation"),
+    ExchangeModel = require("../core/models/Exchange");
 
 module.exports.initiateConversation = function initiateConversation(userId, cb) {
     ConversationModel.findOne({
