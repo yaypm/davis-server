@@ -10,7 +10,7 @@ module.exports.requests = {
             },
             "attributes": {},
             "user": {
-                "userId": "amzn1.account.AM3B227HF3FAM1B261HK7FFM3A2"
+                "userId": "amzn1.echo-sdk-account.AHIGWMSYVEQY5XIZIQNCTH5HZ5RW3JK43LUVBQEG6IM6B73UA5CLA"
             }
         },
         "request": {
@@ -31,7 +31,7 @@ module.exports.requests = {
             },
             "attributes": {},
             "user": {
-                "userId": "amzn1.account.AM3B227HF3FAM1B261HK7FFM3A2"
+                "userId": "amzn1.echo-sdk-account.AHIGWMSYVEQY5XIZIQNCTH5HZ5RW3JK43LUVBQEG6IM6B73UA5CLA"
             }
         },
         "request": {
@@ -56,7 +56,7 @@ module.exports.requests = {
             },
             "attributes": {},
             "user": {
-                "userId": "amzn1.account.AM3B227HF3FAM1B261HK7FFM3A2"
+                "userId": "amzn1.echo-sdk-account.AHIGWMSYVEQY5XIZIQNCTH5HZ5RW3JK43LUVBQEG6IM6B73UA5CLA"
             }
         },
         "request": {

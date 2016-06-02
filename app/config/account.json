@@ -1,0 +1,15 @@
+{
+	"users": [{
+		"name": "test1",
+		"alexa": ["amzn1.echo-sdk-account.AHIGWMSYVEQY5XIZIQNCTH5HZ5RW3JK43LUVBQEG6IM6B73UA5CLA"]
+	}, {
+		"name": "test2",
+		"alexa": ["amzn1.echo-sdk-account.test"],
+		"timezone": "Europe/Vienna"
+	}],
+	"timezone": "America/Detroit",
+	"ruxit": {
+		"token": "supersecrettoken",
+		"url": "https://lakjsdf.live.ruxit.com"
+	}
+}
