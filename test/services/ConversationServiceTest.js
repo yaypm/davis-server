@@ -1,67 +1,36 @@
+'use strict';
+
 require('../setup.js');
-var chai = require('chai');
-var should = chai.should;
-var expect = chai.expect;
+const chai = require('chai'),
+    should = chai.should,
+    expect = chai.expect,
+    ConversationService = require('../../app/services/ConversationService');
 
-var ConversationService = require('../../app/services/ConversationService');
+describe('The ConversationService', function() {
 
-
-describe('The ConversationService', function(done) {
-
-    it('should create a new conversation if none exists for this user', function(done) {
-
-        ConversationService.initiateConversation('test1', function(err, conversation) {
-
-            if (err) throw err;
-
-            expect(conversation).to.be.not.null;
-            expect(conversation.userId).to.equal('test1');
-
-            var conversationId = conversation.id;
-
-            ConversationService.initiateConversation('test1', function(err, conversation) {
-                if (err) throw err;
-
-                expect(conversation).to.be.not.null;
-                expect(conversation.userId).to.equal('test1');
-
-                expect(conversation.id).to.equal(conversationId);
-
-
-                ConversationService.initiateConversation('test2', function(err, conversation) {
-
-                    expect(conversation).to.be.not.null;
-                    expect(conversation.userId).to.equal('test2');
-
-                    expect(conversation.id).to.not.equal(conversationId);
-
-                    return done();
-
-                });
-
-
-
-            });
-
-
-
+    it('should create a new conversation', function(done) {
+        ConversationService.getConversation({id: 'beeme1mr'})
+        .then(conversation => {
+            expect(conversation.userId).to.equal('beeme1mr');
+            done();
+        })
+        .catch(err => {
+            done(err);
         });
-
     });
 
-    it('should create a new conversation and exchange', function(done) {
-        ConversationService.initiateConversation('test3', function(err, conversation) {
-
-            if (err) throw err;
-
-            expect(conversation).to.be.not.null;
-            expect(conversation.userId).to.equal('test3');
-            ConversationService.createExchange(conversation._id, 'alexa', function(err, exchange) {
-                if (err) throw err;
-                expect(exchange).to.be.not.null;
-                expect(exchange._conversation).to.equal(conversation._id);
-                done();
-            });
+    it('should find the existing conversation and start an exchange', function(done) {
+        ConversationService.getConversation({id: 'beeme1mr'})
+        .then(conversation => {
+            expect(conversation.userId).to.equal('beeme1mr');
+            return [ConversationService.startExchange(conversation, 'alexa'), conversation];
+        })
+        .spread((exchange, conversation) => {
+            expect(exchange._conversation).to.equal(conversation._id);
+            done();
+        })
+        .catch(err => {
+            done(err);
         });
     });
 });

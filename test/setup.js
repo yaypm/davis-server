@@ -1,7 +1,7 @@
 'use strict';
 
-var config = require('../app/config')['test'];
-var mongoose = require('mongoose');
+const config = require('../app/config')['test'],
+    mongoose = require('mongoose');
 
 // ensure the NODE_ENV is set to 'test'
 // this is helpful when you would like to change behavior when testing

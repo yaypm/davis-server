@@ -1,6 +1,6 @@
 'use strict';
 
-module.exports = {
+var users = {
     users: [{
         id: 'beeme1mr',
         name: {
@@ -18,3 +18,5 @@ module.exports = {
         wit: 'QSB5XEEJJVIBDV3AJPLSZ7RFQGARQWQ5'
     }
 };
+
+module.exports = users;

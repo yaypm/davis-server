@@ -11,7 +11,7 @@ describe('account validation', function() {
     describe('device validation', function() {
         it('should find an authorized device', function() {
             var user = AccountService.getUser('amzn1.echo-sdk-account.AHIGWMSYVEQY5XIZIQNCTH5HZ5RW3JK43LUVBQEG6IM6B73UA5CLA', 'alexa');
-            expect(user.name).to.equal('test1');
+            expect(user.id).to.equal('beeme1mr');
         });
         
         it('should shouldnt find a user because the source is missing', function() {

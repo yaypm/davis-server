@@ -1,5 +1,6 @@
-var express = require('express');
-var router = express.Router();
+'use strict';
+const express = require('express'),
+    router = express.Router();
 
 
 router.post('/', function(req, res, next) {

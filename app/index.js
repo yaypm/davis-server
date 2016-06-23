@@ -1,8 +1,8 @@
-var express = require('express');
-var path = require('path');
-var bodyParser = require('body-parser');
-var routes = require('./routes/index');
-var mongoose = require('mongoose');
+const express = require('express'),
+	path = require('path'),
+	bodyParser = require('body-parser'),
+	routes = require('./routes/index'),
+	mongoose = require('mongoose');
 
 var app = express();
 var config = require("./config")[app.get('env')];

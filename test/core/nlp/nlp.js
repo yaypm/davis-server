@@ -1,21 +1,30 @@
 'use strict';
 
+require('../../setup.js');
 const Nlp = require('../../../app/core/nlp'),
     chai = require('chai'),
     expect = chai.expect,
-    user = require('../../../app/config/user'),
-    conversation = require('../../../app/config/conversation'),
-    exchange = require('../../../app/config/exchange');
+    AccountService = require('../../../app/services/AccountService'),
+    ConversationService = require('../../../app/services/ConversationService');
 
 describe('Tests interacting with the davis NLP wrapper', function() {
-    const nlp = new Nlp({user, conversation, exchange});
-
-    it('should be a problem intent', function(done) {
-        nlp.process()
+    it('should successfully create a new NLP object', function(done) {
+        let user = AccountService.getUser('amzn1.echo-sdk-account.AHIGWMSYVEQY5XIZIQNCTH5HZ5RW3JK43LUVBQEG6IM6B73UA5CLA', 'alexa');
+        
+        ConversationService.getConversation(user)
+        .then(conversation => {
+            expect(conversation.userId).to.equal(user.id);
+            return [ConversationService.startExchange(conversation, 'alexa'), conversation];
+        })
+        .spread((exchange, conversation) => {
+            expect(exchange._conversation).to.equal(conversation._id);
+            exchange.request = {
+                text: 'What happened yesterday around 10pm?'
+            };
+            let nlp = new Nlp({user, exchange, conversation});
+            return nlp.process();
+        })
         .then(response => {
-            // ToDo validate the times are accurate with the supplied timezone
-            //console.log(`This is the start time ${response.request.processed.timeRange.startTime}`);
-            //console.log(`This is the end time ${response.request.processed.timeRange.stopTime}`);
             expect(response.request.analysed.intent).to.equal('problem');
             done();
         })

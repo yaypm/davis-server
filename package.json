@@ -1,7 +1,7 @@
 {
   "name": "davis-server",
   "version": "0.0.1",
-  "description": "Davis server",
+  "description": "Davis Server",
   "main": "./bin/run",
   "repository": "https://github.com/ruxit/davis-server",
   "author": "",
@@ -12,12 +12,28 @@
     "test": "mocha --recursive ./test/"
   },
   "dependencies": {
+    "bluebird": "^3.4.0",
     "body-parser": "^1.15.1",
     "express": "^4.13.4",
     "lodash": "^4.13.1",
-    "mongoose": "^4.4.19"
+    "moment-timezone": "^0.5.4",
+    "mongoose": "^4.4.19",
+    "natural": "^0.4.0",
+    "node-rules": "^3.0.3",
+    "nunjucks": "^2.4.2",
+    "request-promise": "^3.0.0",
+    "require-all": "^2.0.0",
+    "string": "^3.3.1",
+    "string-humanize": "^1.0.0",
+    "url": "^0.11.0",
+    "winston": "^2.2.0"
   },
   "devDependencies": {
-    "chai": "^3.5.0"
+    "atom-ui-reporter": "0.0.1",
+    "chai": "^3.5.0",
+    "eslint": "^2.12.0",
+    "mocha": "^2.5.3",
+    "nock": "^8.0.0",
+    "rewire": "^2.5.1"
   }
 }

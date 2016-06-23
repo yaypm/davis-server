@@ -1,11 +1,11 @@
 'use strict';
 
 require('../../../setup.js');
-var chai = require('chai');
-var should = chai.should;
-var expect = chai.expect;
-var AlexaService = require('../../../../app/frontends/alexa/services/AlexaService');
-var alexaRequests = require('../../../fixtures/alexa');
+const chai = require('chai'),
+    should = chai.should,
+    expect = chai.expect,
+    AlexaService = require('../../../../app/frontends/alexa/services/AlexaService'),
+    alexaRequests = require('../../../fixtures/alexa');
 
 
 describe('The Alexa frontend service', function() {

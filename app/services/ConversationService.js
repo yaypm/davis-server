@@ -1,28 +1,60 @@
+'use strict';
+
 const ConversationModel = require('../core/models/Conversation'),
-    ExchangeModel = require('../core/models/Exchange');
+    ExchangeModel = require('../core/models/Exchange'),
+    _ = require('lodash'),
+    logger = require('../utils/logger'),
+    BbPromise = require('bluebird');
 
-module.exports.initiateConversation = function initiateConversation(userId, cb) {
-    ConversationModel.findOne({
-        userId: userId
-    }, function(err, res) {
+const ConversationService = {
+    /**
+     * Gets or starts a conversation
+     * @param {object} user - The user making the request
+     * @returns {promise} resolves to a conversation object
+     */
+    getConversation: (user) => {
+        logger.info('Loading a conversation');
+        return new BbPromise((resolve, reject) => {
+            
+            ConversationModel.findOne({userId: user.id})
+            .then( res => {
+                // We found an existing conversation;
+                if (!_.isNull(res)) resolve(res);
 
-        if (err) return cb(err);
+                let conversation = new ConversationModel({userId: user.id});
 
-        if (res !== null) return cb(null, res);
-
-        var conversation = new ConversationModel({
-            userId: userId
+                resolve(conversation.save());
+            })
+            .catch((err) => {
+                logger.error(`Unable to load or create a conversation for ${user.id}.`);
+                reject(err);
+            });
         });
-        
-        conversation.save(cb);
-    });
+    },
+
+    /**
+     * Starts a new exchange
+     * @param {object} conversation - The conversation object associated with the user
+     * @param {string} source - The source of the request
+     * @returns {promise} resolves to an exchange object
+     */
+    startExchange: (conversation, source) => {
+        logger.info('Starting a new exchange');
+        return new BbPromise((resolve, reject) => {
+            let exchange = new ExchangeModel({
+                _conversation: conversation._id,
+                source: source
+            });
+            
+            exchange.save()
+            .then(() => {
+                resolve(exchange);
+            })
+            .catch( err => {
+                reject(err);
+            });
+        });
+    }
 };
 
-module.exports.createExchange = function addExchange(conversationId, source, cb) {
-    var exchange = new ExchangeModel({
-        _conversation: conversationId,
-        source: source
-    });
-    
-    exchange.save(cb);
-};
+module.exports = ConversationService;
