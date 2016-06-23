@@ -1,4 +1,22 @@
+# Logs
+logs
+*.log
+npm-debug.log
+
+# Runtime data
+pids
+*.pid
+*.seed
+dist
+
+# Dependency directory
 /node_modules
+
+# IDE Properties
 /.c9
+/.vscode
+**/.idea
+
+# MongoDB
 /data
 /mongod

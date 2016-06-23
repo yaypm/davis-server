@@ -1,10 +1,10 @@
 'use strict';
 
 require('../setup.js');
-var chai = require('chai');
-var should = chai.should;
-var expect = chai.expect;
-var ExchangeModel = require('../../app/core/models/Exchange');
+const chai = require('chai'),
+    should = chai.should,
+    expect = chai.expect,
+    ExchangeModel = require('../../app/core/models/Exchange');
 
 describe('The Exchange model', function() {
     

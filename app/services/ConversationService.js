@@ -1,5 +1,5 @@
-var ConversationModel = require("../core/models/Conversation"),
-    ExchangeModel = require("../core/models/Exchange");
+const ConversationModel = require('../core/models/Conversation'),
+    ExchangeModel = require('../core/models/Exchange');
 
 module.exports.initiateConversation = function initiateConversation(userId, cb) {
     ConversationModel.findOne({
@@ -15,7 +15,6 @@ module.exports.initiateConversation = function initiateConversation(userId, cb) 
         });
         
         conversation.save(cb);
-
     });
 };
 

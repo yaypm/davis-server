@@ -1,0 +1,30 @@
+{%- set timeOfDay = exchange.startTime | timeOfDayGreeting -%}
+{%- if exchange.template.meta.greet == 'short' -%}
+    {%- if timeOfDay == 'night' -%}
+        Hope you're having a good night.
+    {%- elif timeOfDay == 'morning' -%}
+        Good morning.
+    {%- elif timeOfDay == 'afternoon' -%}
+        Good afternoon!
+    {%- elif timeOfDay == 'evening' -%}
+        Good evening.
+    {%- else -%}
+        Hi, it's good to hear from you.
+    {%- endif -%}
+{#- Adding in space after the greeting sentance -#}
+{{ '  ' }}
+{%- elif exchange.template.meta.greet == 'long' -%}
+    {%- if timeOfDay == 'night' -%}
+        Welcome back, it has been a while.  Hope you're having a good night.
+    {%- elif timeOfDay == 'morning' -%}
+        It's good to hear from you again.  Hope your morning is going well so far.
+    {%- elif timeOfDay == 'afternoon' -%}
+        It's good to hear from you again.  Hope you're having a great afternoon so far!
+    {%- elif timeOfDay == 'evening' -%}
+        You're up late... hope things are well.
+    {%- else -%}
+        Hi, it's good to hear from you.
+    {%- endif -%}
+{#- Adding in space after the greeting sentance -#}
+{{ '  ' }}
+{%- endif -%}

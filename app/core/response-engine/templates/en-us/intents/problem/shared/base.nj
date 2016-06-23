@@ -1,0 +1,7 @@
+{% block greeting %}
+{% include "en-us/shared/greeting.nj" %}
+{% endblock %}
+{% block content %}{% endblock %}
+{% block nextStep %}
+{# Placeholder for a follow up sentence #}
+{% endblock %}

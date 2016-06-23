@@ -1,5 +1,6 @@
 'use strict';
-var ConversationService = require('../../../services/ConversationService'),
+
+const ConversationService = require('../../../services/ConversationService'),
     AccountService = require('../../../services/AccountService'),
     _ = require('lodash');
 
