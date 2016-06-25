@@ -5,3 +5,6 @@
         |  _ <| |_| |/  \ | |  | |   | |_| / ___ \ V /  | | ___) |
         |_| \_\\___//_/\_\___| |_|   |____/_/   \_\_/  |___|____/ 
     ----------------------------------------------------------------- 
+
+
+This project provides an extensible implementation for natural language access to the Dynatrace platform artificial intelligence layer.
