@@ -1,5 +1,6 @@
 'use strict';
 
+require('../../setup.js');
 const ResponseEngine = require('../../../app/core/response-engine'),
     chai = require('chai'),
     expect = chai.expect,
@@ -11,7 +12,7 @@ describe('Tests the response engine', function() {
     exchange.startTime = new Date();
     const responseEngine = new ResponseEngine({user, conversation, exchange});
 
-    it('should not fail', function(done) {
+    it('should generate a', function(done) {
         responseEngine.generate()
         .then(response => {
             // ToDo validate the times are accurate with the supplied timezone

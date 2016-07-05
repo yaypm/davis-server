@@ -11,9 +11,21 @@ const exchange = new Schema({
     authenticated: { type: Boolean, required: true, unique: false, index: false, default: false },
     startTime: { type: Date, default: Date.now, required: true, unique: false, index: true },
     endTime: { type: Date, required: false, unique: false, index: true },
-    request: {},
+    request: {
+        text: { type: String, required: true, unique: false, index: false}
+    },
     template: {},
-    response: {}
+    response: {
+        say: {
+            ssml: {type: String, required: false, unique: false, index: false}
+        },
+        reprompt: { type: String, required: false, unique: false, index: false},
+        show: {
+            html: {type: String, required: false, unique: false, index: false},
+            text: {type: String, required: false, unique: false, index: false}
+        },
+        finished: { type: Boolean, required: false, unique: false, index: false, default: true}
+    }
 }, {
     timestamps: true
 });

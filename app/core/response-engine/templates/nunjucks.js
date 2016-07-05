@@ -1,7 +1,7 @@
 'use strict';
 
-const nunjucks = require('nunjucks'),
-    BbPromise = require('bluebird'),
+const BbPromise = require('bluebird'),
+    nunjucks = BbPromise.promisifyAll(require('nunjucks')),
     moment = require('moment'),
     env = new nunjucks.Environment(
             new nunjucks.FileSystemLoader(__dirname),{

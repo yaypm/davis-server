@@ -18,9 +18,14 @@ module.exports = {
         }
     },
     response: {
-        say: null,
+        say: {
+            ssml: null
+        },
         reprompt: null,
-        card: null,
+        show: {
+            html: null,
+            text: null
+        },
         finished: false
     }
 };

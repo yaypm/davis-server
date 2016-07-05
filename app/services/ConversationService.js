@@ -19,13 +19,19 @@ const ConversationService = {
             ConversationModel.findOne({userId: user.id})
             .then( res => {
                 // We found an existing conversation;
-                if (!_.isNull(res)) resolve(res);
+                if (!_.isNull(res)) return resolve(res);
 
                 let conversation = new ConversationModel({userId: user.id});
 
-                resolve(conversation.save());
+                conversation.save()
+                .then(() => {
+                    return resolve(conversation);
+                })
+                .catch(err => {
+                    return reject(err);
+                });
             })
-            .catch((err) => {
+            .catch( err => {
                 logger.error(`Unable to load or create a conversation for ${user.id}.`);
                 reject(err);
             });
@@ -38,20 +44,23 @@ const ConversationService = {
      * @param {string} source - The source of the request
      * @returns {promise} resolves to an exchange object
      */
-    startExchange: (conversation, source) => {
+    startExchange: (conversation, request, source) => {
         logger.info('Starting a new exchange');
         return new BbPromise((resolve, reject) => {
             let exchange = new ExchangeModel({
                 _conversation: conversation._id,
-                source: source
+                source: source,
+                request: {
+                    text: request
+                }
             });
             
             exchange.save()
             .then(() => {
-                resolve(exchange);
+                return resolve(exchange);
             })
             .catch( err => {
-                reject(err);
+                return reject(err);
             });
         });
     }

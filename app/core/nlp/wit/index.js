@@ -1,7 +1,8 @@
 'use strict';
 
 const rp = require('request-promise'),
-    _ = require('lodash');
+    _ = require('lodash'),
+    logger = require('../../../utils/logger');
 
 class Wit {
     /**
@@ -11,7 +12,7 @@ class Wit {
      * @param {string} [version=20160616] - The version of the API you would like to use.
      */
     constructor(token, version) {
-        console.log('creating a wit object');
+        logger.info('creating a wit object');
         if (typeof token === 'undefined'){
             throw new Error('You must provide an API token for Wit!');
         }

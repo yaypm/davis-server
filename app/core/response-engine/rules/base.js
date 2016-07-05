@@ -14,7 +14,9 @@ let base = [{
     },
     'consequence': function(R) {
         logger.warn('rejecting unauthorized user');
-        this.exchange.template.name = 'unauthorized';
+        this.exchange.template = {
+            name: 'unauthorized'
+        };
         R.stop();
     }
 }, {
@@ -26,7 +28,9 @@ let base = [{
     },
     'consequence': function(R) {
         logger.warn('unable to determine what the users intent was.');
-        this.exchange.template.name = 'unknown_intent';
+        this.exchange.template = {
+            name: 'unknown_intent'
+        };
         R.stop();
     }
 }, {
@@ -38,7 +42,11 @@ let base = [{
     },
     'consequence': function(R) {
         logger.info('Adding a short greeting');
-        this.exchange.template.meta.greet = 'short';
+        this.exchange.template = {
+            meta: {
+                greet: 'short'
+            }
+        };
         R.next();
     }
 }, {
@@ -50,7 +58,11 @@ let base = [{
     },
     'consequence': function(R) {
         logger.info('adding a long greeting');
-        this.exchange.template.meta.greet = 'long';
+        this.exchange.template = {
+            meta: {
+                greet: 'long'
+            }
+        };
         R.next();
     }
 }, {

@@ -10,6 +10,7 @@ class ResponseEngine {
      * Response Engine
      * @constructs ResponseEngine
      * @param {Object} davis - The davis object containing user, exchange, and conversertion details
+     * @returns {Object} davis - Returns an updated davis object containing a response property
      */
     constructor(davis) {
         Object.assign(this, davis);
@@ -28,10 +29,10 @@ class ResponseEngine {
                 intentHandler.getResponse(this)
                 .then( result => {
                     //console.log(result);
-                    resolve();
+                    return resolve();
                 })
                 .catch( err => {
-                    reject(err);
+                    return reject(err);
                 });
                 
             });

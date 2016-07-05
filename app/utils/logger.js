@@ -9,7 +9,8 @@ const logger = new winston.Logger({
             level: 'debug',
             handleExceptions: true,
             json: false,
-            colorize: true
+            colorize: true,
+            timestamp: true
         })
     ],
     exitOnError: false
@@ -21,6 +22,6 @@ const logger = new winston.Logger({
 module.exports = logger;
 module.exports.stream = {
     write: message => {
-        logger.info(message);
+        logger.info(message.slice(0, -1));
     }
 };

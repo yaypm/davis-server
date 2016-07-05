@@ -104,23 +104,23 @@ class Ruxit {
      ***********************************************************/
 
     /**
-     * Returns a high level summary of problems
+     * @returns {Object} - a high level summary of problems
      */
     problemStatus() {
         return rp(this.options('problem/status'));
     }
 
     /**
-     * Returns the problem feed
      * @param {Object} [parameters] - Key/Value pair that becomes part of the query string
+     * @returns {Object} - Problem feed
      */
     problemFeed(parameters) {
         return rp(this.options('problem/feed', parameters || {}));
     }
 
     /** 
-     * Returns detailed information about a specific problem
      * @param {string} problemId - The specific ID of a problem.  This can typically be found in the problem feed.
+     * @returns {Object} - Problem details
      */
     problemDetails(problemId) {
         if (typeof problemId === 'undefined') {
@@ -130,7 +130,7 @@ class Ruxit {
     }
 
     /** 
-     * Returns a list of currently active problems
+     * @returns {Object} - Active problems only
      */
     activeProblems() {
         return rp(this.options('problem/feed', { status: 'open' }));

@@ -1,15 +1,21 @@
-const express = require('express'),
-	path = require('path'),
-	bodyParser = require('body-parser'),
-	routes = require('./routes/index'),
-	mongoose = require('mongoose');
+'use strict';
 
-var app = express();
-var config = require("./config")[app.get('env')];
+const express = require('express'),
+    path = require('path'),
+    bodyParser = require('body-parser'),
+    routes = require('./routes/index'),
+    logger = require('./utils/logger'),
+    mongoose = require('mongoose');
+
+let app = express(),
+    config = require('./config')[app.get('env')];
+
+logger.debug('Overriding Express logger');
+app.use(require('morgan')('combined', { 'stream': logger.stream }));
 
 mongoose.connect(config.database.dsn, function(err) {
     if(err) throw err;
-    console.log("Successfully connected to mongodb");
+    logger.info('Successfully connected to mongodb');
 });
 
 app.use(bodyParser.json());
@@ -28,7 +34,7 @@ app.use(function (req, res, next) {
 // development error handler
 // will print stacktrace
 if (app.get('env') === 'development') {
-    app.use(function (err, req, res, next) {
+    app.use(function (err, req, res) {
 
         res.status(err.status || 500);
         res.json({
@@ -40,7 +46,7 @@ if (app.get('env') === 'development') {
 
 // production error handler
 // no stacktraces leaked to user
-app.use(function (err, req, res, next) {
+app.use(function (err, req, res) {
     res.status(err.status || 500);
     res.json({
         message: err.message,

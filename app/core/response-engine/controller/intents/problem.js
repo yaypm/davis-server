@@ -31,12 +31,10 @@ intentManager.registerIntent({
                     let template = new Template(davis);
                     template.buildResponse()
                     .then(() => {
-                        console.log('done');
+                        resolve(davis);
                     });
                     
                 });
-                
-                resolve(davis);
             })
             .catch( err => {
                 reject(err);
