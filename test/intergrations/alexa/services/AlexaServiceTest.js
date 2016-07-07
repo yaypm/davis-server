@@ -4,7 +4,7 @@ require('../../../setup.js');
 const chai = require('chai'),
     should = chai.should,
     expect = chai.expect,
-    AlexaService = require('../../../../app/frontends/alexa/services/AlexaService'),
+    AlexaService = require('../../../../app/intergrations/alexa/services/AlexaService'),
     alexaRequests = require('../../../fixtures/alexa');
 
 

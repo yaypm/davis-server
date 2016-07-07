@@ -6,10 +6,10 @@
   "repository": "https://github.com/ruxit/davis-server",
   "author": "",
   "engines": {
-    "node": "4.4.5"
+    "node": "6.2.2"
   },
   "scripts": {
-    "start": "./bin/run",
+    "start": "node ./bin/run",
     "test": "mocha --recursive ./test/"
   },
   "dependencies": {

@@ -27,35 +27,36 @@ class Templates {
      * @returns {Object} Promise - Returns a promise that resolves to an updated exchange
      */
     buildResponse() {
-        //return pathToTemplates(this.exchange.template.path);
         return new BbPromise((resolve, reject) => {
-
-            let basePath = this.exchange.template.path,
-                templatePath = path.join(__dirname, basePath);
-
             pathToTemplates(this.exchange.template.path)
-            .then(templates => {
-                console.log(templates);
-                
-                // ToDo build props automatically
-                return BbPromise.props({
-                    base: nunjucks.renderAsync(templates.base, this),
-                    say: nunjucks.renderAsync(templates.say, this)//,
-                    //show: nunjucks.renderAsync(templates.show, this)
+                .then(templates => {
+
+                    let templateProps = {};
+                    _.forEach(templates, (value, key) => {
+                        templateProps[key] = (!_.isNil(value)) ? nunjucks.renderAsync(value, this) : null;
+                    });
+                    return BbPromise.props(templateProps);
+                })
+                .then(rendered => {
+                    logger.debug('Setting rendered text to Davis response.');
+                    this.exchange.response.say.ssml = rendered.say;
+                    this.exchange.response.show.text = rendered.base;
+                    this.exchange.response.show.html = rendered.show;
+                    return resolve(this);
+                })
+                .catch(err => {
+                    logger.error('An error occurred generating a response from a template.');
+                    return reject(err);
                 });
-            })
-            .then(rendered => {
-                console.log(rendered);
-                return resolve();
-            })
-            .catch(err => {
-                logger.error('An error occurred generating a response from a template.');
-                return reject(err);
-            });
         });
     }
 }
 
+/**
+ * Creates an object containing paths to approprate templates
+ * @param {string} basePath - The base path starting at the root of the templates folder
+ * @returns {Object} templates
+ */
 function pathToTemplates(basePath) {
     logger.info('Creating file paths to approprate templates');
     let templates = {},
@@ -64,7 +65,7 @@ function pathToTemplates(basePath) {
     return new BbPromise((resolve, reject) => {
         fs.readdirAsync(templatePath)
         .then(files => {
-            templates.base = joinPaths(basePath, null, files);
+            templates.base = joinPaths(basePath, files);
 
             let additionalTemplates = [];
             // Handles automatically including speech related responses if available
@@ -85,8 +86,8 @@ function pathToTemplates(basePath) {
             return additionalTemplates;
         })
         .spread((speechFiles, showFiles) => {
-            templates[SPEECH_FOLDER_NAME] = joinPaths(basePath, SPEECH_FOLDER_NAME, speechFiles);
-            templates[SHOW_FOLDER_NAME] = joinPaths(basePath, SHOW_FOLDER_NAME, showFiles);
+            templates[SPEECH_FOLDER_NAME] = joinPaths(basePath, speechFiles, SPEECH_FOLDER_NAME);
+            templates[SHOW_FOLDER_NAME] = joinPaths(basePath, showFiles, SHOW_FOLDER_NAME);
             return resolve(templates);
         })
         .catch(err => {
@@ -96,7 +97,14 @@ function pathToTemplates(basePath) {
     });
 }
 
-function joinPaths(basePath, folder, files) {
+/**
+ * Helps build file paths to templates
+ * @param {string} basePath - The base path starting at the root of the templates folder
+ * @param {Object} files - The list of files return by fs.readdir.
+ * @param {string} [folder=''] - An optional folder used for specific response types (I.E. say or show).
+ * @returns {string} jointedPath
+ */
+function joinPaths(basePath, files, folder) {
     folder = folder || '';
 
     let joinedPath = null,

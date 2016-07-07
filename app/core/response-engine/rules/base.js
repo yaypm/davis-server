@@ -17,7 +17,8 @@ let base = [{
         this.exchange.template = {
             name: 'unauthorized'
         };
-        R.stop();
+        // ToDo review logic
+        R.next();
     }
 }, {
     'name': 'Check if the intent is unknown',
@@ -31,14 +32,15 @@ let base = [{
         this.exchange.template = {
             name: 'unknown_intent'
         };
-        R.stop();
+        //ToDo review logic
+        R.next();
     }
 }, {
     'name': 'Check if the user should be greeted after a short pause',
     'priority': 5,
     'on' : true,
     'condition': function(R) {
-        R.when(shouldGreet(this.exchange.startTime, this.conversation.lastInteraction, 2)) ;
+        R.when(shouldGreet(this.exchange.startTime, this.conversation.lastInteraction, 0)) ;
     },
     'consequence': function(R) {
         logger.info('Adding a short greeting');
@@ -87,7 +89,9 @@ let base = [{
  * @param {number} numberOfHours - The number of hours between the current and last interaction
  * @returns {boolean}
  */
-function shouldGreet(startTime, endTime, numberOfHours) {    
+function shouldGreet(startTime, endTime, numberOfHours) {
+    logger.info(startTime);
+    logger.info(endTime);
     return moment.duration(moment().diff(startTime, endTime), 'hours') > numberOfHours;
 }
 

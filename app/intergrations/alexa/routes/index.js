@@ -11,10 +11,10 @@ router.post('/', function(req, res) {
 
     //ToDo: Check that the request is from Amazon
     AlexaService.askDavis(req)
-    .then(() => {
-        res.json({msg: 'we got dater!'});
+    .then(response => {
+        logger.info('Sending a response back to the Alexa service');
+        res.json(response);
     });
-    //res.json({type: AlexaService.getRequestType(req.body)}) ;
 });
 
 module.exports  = router;

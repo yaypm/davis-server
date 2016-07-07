@@ -5,7 +5,8 @@
  * Module dependencies.
  */
 const app = require('../app'),
-    cluster = require('cluster');
+    cluster = require('cluster'),
+    logger = require('../app/utils/logger');
 
 // Setup a database connection
 // var url = 'mongodb://localhost:27017/showcase';
@@ -17,18 +18,21 @@ if (cluster.isMaster && app.get('env') == 'production') {
     }
 
     cluster.on('exit', (worker, code, signal) => {
-        console.log('worker %d died (%s). restarting...',
+        logger.warn('worker %d died (%s). restarting...',
             worker.process.pid, signal || code);
         cluster.fork();
     });
 
     cluster.on('listening', (worker, address) => {
         let host = address.address || 'localhost';
-        console.log('Worker [%s] now listening on %s:%s', worker.process.pid, host, address.port);
+        logger.info('Worker [%s] now listening on %s:%s', worker.process.pid, host, address.port);
     });
 
 } else {
-    app.listen(process.env.PORT || 3000, process.env.IP || '0.0.0.0', () => {
-        console.log('Davis Server running on %s:%s', process.env.IP, process.env.PORT);
+    let port = process.env.PORT || 3000,
+        ip =  process.env.IP || '0.0.0.0';
+
+    app.listen(port, ip, () => {
+        logger.info('Davis Server running on %s:%s', ip, port);
     });
 }  

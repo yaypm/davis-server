@@ -9,7 +9,8 @@ const ConversationService = require('../../../services/ConversationService'),
 
 const RESPONSE_VERSION = '1.0',
     REQUEST_SOURCE = 'alexa',
-    LAUNCH_PHRASE = 'Start davis';
+    LAUNCH_PHRASE = 'Start davis',
+    ERROR_RESPONSE = 'Wow, this is embarresing!  I understood what you were asking for but I simply can\'t but it into words.  Perhaps, you could help me out by checking the logs and adding the missing template?';
 
 
 const AlexaService = {
@@ -100,6 +101,16 @@ function formatResponse(davis) {
     //ToDo Add support for cards.
     logger.info('Generating the reponse for Alexa');
 
+    let response;
+    if (_.isString(davis.exchange.response.say.ssml)) {
+        response = davis.exchange.response.say.ssml;
+    } else if (_.isString(davis.exchange.response.show.text)) {
+        logger.debug('Defaulting back to base text because a response specifically intended for speech was not found');
+        response = davis.exchange.response.show.text;
+    } else {
+        response = ERROR_RESPONSE;
+    }
+    
     return {
         version: RESPONSE_VERSION,
         sessionAttributes: {},
@@ -107,7 +118,7 @@ function formatResponse(davis) {
             shouldEndSession: _.get(davis, 'exchange.response.finished', true),
             outputSpeech: {
                 type: 'SSML',
-                ssml: '<speak>This is a test response!</speak>'
+                ssml: `<speak>${response}</speak>`
             }
         }
     };
