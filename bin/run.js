@@ -8,9 +8,7 @@ const app = require('../app'),
     cluster = require('cluster'),
     logger = require('../app/utils/logger');
 
-// Setup a database connection
-// var url = 'mongodb://localhost:27017/showcase';
-
+logger.info('Starting Davis');
 if (cluster.isMaster && app.get('env') == 'production') {
 
     for (let i = 0; i < require('os').cpus().length; i++) {
