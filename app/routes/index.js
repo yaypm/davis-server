@@ -1,11 +1,11 @@
-const express = require('express'),
-    router = express.Router(),
-    alexa = require('../intergrations/alexa/routes');
+'use strict';
 
-router.get('/', function(req, res, next) {
-    res.json({message: 'Hello I\'m Davis'}) ;
-});
+const router = require('express').Router();
 
-router.use('/alexa', alexa);
+/**
+ * Loading in the routes
+ */
+router.use('/api/v1', require('./api'));
+router.use('/alexa', require('../intergrations/alexa/routes'));
 
 module.exports = router;

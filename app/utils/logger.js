@@ -17,7 +17,7 @@ const logger = new winston.Logger({
 });
 
 // Suppresses loggin during Mocha tests.
-//if (process.env.NODE_ENV === 'test') logger.remove(winston.transports.Console);
+if (process.env.NODE_ENV === 'test') logger.remove(winston.transports.Console);
 
 module.exports = logger;
 module.exports.stream = {

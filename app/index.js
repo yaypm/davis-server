@@ -1,22 +1,25 @@
 'use strict';
 
 const express = require('express'),
-    path = require('path'),
+    app = express(),
     bodyParser = require('body-parser'),
+    favicon = require('serve-favicon'),
     routes = require('./routes/index'),
     logger = require('./utils/logger'),
-    mongoose = require('mongoose');
-
-let app = express(),
-    config = require('./config')[app.get('env')];
+    mongoose = require('mongoose'),
+    config = require('config');
 
 logger.debug('Overriding Express logger');
 app.use(require('morgan')('combined', { 'stream': logger.stream }));
 
-mongoose.connect(config.database.dsn, function(err) {
+mongoose.connect(config.get('database.dsn'), function(err) {
     if(err) throw err;
     logger.info('Successfully connected to mongodb');
 });
+
+app.use(favicon(`${__dirname}/../web/favicon.ico`));
+app.use(express.static(`${__dirname}/../web`));
+app.use('/bower_components', express.static(`${__dirname}/../bower_components`));
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));

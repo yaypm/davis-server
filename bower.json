@@ -1,0 +1,24 @@
+{
+  "name": "davis-server",
+  "description": "Davis Server",
+  "main": "./bin/run",
+  "authors": [
+    "Michael Beemer <beeme1mr@gmail.com>"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/ruxit/davis-server",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "annyang": "^2.4.0",
+    "fetch": "^1.0.0",
+    "bootstrap": "^3.3.6",
+    "typed.js": "^1.1.4"
+  }
+}

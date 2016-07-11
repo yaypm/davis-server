@@ -1,11 +1,7 @@
 'use strict';
 
-const config = require('../app/config')['test'],
+const config = require('config'),
     mongoose = require('mongoose');
-
-// ensure the NODE_ENV is set to 'test'
-// this is helpful when you would like to change behavior when testing
-process.env.NODE_ENV = 'test';
 
 beforeEach(function (done) {
 
@@ -21,7 +17,7 @@ beforeEach(function (done) {
     }
 
     if (mongoose.connection.readyState === 0) {
-        mongoose.connect(config.database.dsn, function (err) {
+        mongoose.connect(config.get('database.dsn', function (err) {
             if (err) {
                 throw err;
             }

@@ -1,0 +1,32 @@
+<html>
+	<head>
+		<title>Dynatrace Davis</title>
+		<link rel="stylesheet" href="../bower_components/bootstrap/dist/css/bootstrap.min.css" >
+		<link rel="stylesheet" href="../bower_components/bootstrap/dist/css/bootstrap-theme.min.css">
+		<link rel="stylesheet" href="./css/cover.css">
+		<link rel="stylesheet" href="./css/davis.css">
+		<script src="../bower_components/jquery/dist/jquery.min.js"></script>
+		<script src="../bower_components/annyang/annyang.min.js"></script>
+		<script src="../bower_components/typed.js/js/typed.js"></script>
+		<script src="../bower_components/fetch/fetch.js"></script>
+		<script src="./js/watson-speech.js"></script>
+		<script src="./js/davis.js"></script>
+	</head>
+	<body id="body" onload="init()">
+	    <div class="site-wrapper">
+	    	<div class="site-wrapper-inner">
+	        	<div class="inner" id="interactionLog"></div>
+					<div class="inputWrapper">
+						<input id="textInput" type="text" 
+							onkeypress="submitTextInput(event.keyCode)"
+							onfocus="enableSilentMode()" 
+							onblur="resetPlaceholder();enableListenForKeyword(true)" />
+						<div id="muteWrapper" onclick="toggleMute()">
+							<img src="images/muted.svg" id="muteSVG" />
+						</div>
+			  		</div>
+	     		</div>
+	    	</div>
+		</div>
+	</body>
+</html>

@@ -5,8 +5,8 @@ const ResponseEngine = require('../../../app/core/response-engine'),
     chai = require('chai'),
     expect = chai.expect,
     user = require('../../../app/config/user'),
-    conversation = require('../../../app/config/conversation'),
-    exchange = require('../../../app/config/exchange');
+    conversation = require('../../mock_data/davis/conversation'),
+    exchange = require('../../mock_data/davis/exchange');
 
 describe('Tests the response engine', function() {
     exchange.startTime = new Date();

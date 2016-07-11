@@ -23,6 +23,7 @@ describe('Test the Davis core', function() {
         .then(() => {
             //expect results
             console.log('We finished!');
+            done();
         })
         .catch(err => {
             done(err);
