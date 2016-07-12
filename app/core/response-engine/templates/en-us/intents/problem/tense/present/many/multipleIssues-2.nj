@@ -1,0 +1,6 @@
+{% extends "en-us/intents/problem/shared/base.nj" %}
+
+{#- replace anything in the block content -#}
+{#- Are there currently any open problems -#}
+
+{% block content %}I hate to be the bearer of bad news but there are currently {{ intentData.problem.result.problems.length }} active problems.{% endblock %}

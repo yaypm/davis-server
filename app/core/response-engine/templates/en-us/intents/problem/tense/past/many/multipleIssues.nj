@@ -1,5 +1,10 @@
 {% extends "en-us/intents/problem/shared/base.nj" %}
 
+{#- What happened yesterday afternoon? -#}
+
+
 {% block content -%}
 I hate to be the bearer of bad news but there were {{ intentData.problem.result.problems.length }} problems detected.
 {%- endblock %}
+
+{# - Stay away from these type of questions. They are evil async calls. There were 20 problems detected yesterday, and this is 10 more than the day before. -#}
