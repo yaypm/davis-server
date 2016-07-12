@@ -8,3 +8,6 @@ watson:
     tts:
         user: '14fcca52-7f8b-449a-a60c-535f20cdbf09'
         password: 'uDg43gTfgZii'
+slack:
+    enabled: true
+    key: 'xoxb-58758108581-uefRQxW6xyTeejPZa4Sbj54N'

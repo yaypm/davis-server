@@ -21,7 +21,7 @@
     {%- elif timeOfDay == 'afternoon' -%}
         It's good to hear from you again.  Hope you're having a great afternoon so far!
     {%- elif timeOfDay == 'evening' -%}
-        You're up late... hope things are well.
+        Hi, good evening.  It's good to hear from you.
     {%- else -%}
         Hi, it's good to hear from you.
     {%- endif -%}
