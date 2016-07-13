@@ -17,7 +17,7 @@ beforeEach(function (done) {
     }
 
     if (mongoose.connection.readyState === 0) {
-        mongoose.connect(config.get('database.dsn', function (err) {
+        mongoose.connect(config.get('database.dsn'), function (err) {
             if (err) {
                 throw err;
             }
