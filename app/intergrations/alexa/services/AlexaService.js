@@ -10,7 +10,7 @@ const ConversationService = require('../../../services/ConversationService'),
 const RESPONSE_VERSION = '1.0',
     REQUEST_SOURCE = 'alexa',
     LAUNCH_PHRASE = 'Start davis',
-    ERROR_RESPONSE = 'Wow, this is embarresing!  I understood what you were asking for but I simply can\'t but it into words.  Perhaps, you could help me out by checking the logs and adding the missing template?';
+    ERROR_RESPONSE = 'Wow, this is embarrassing!  I understood what you were asking for but I simply can\'t but it into words.  Perhaps you could help me out by checking the logs and adding the missing template?';
 
 
 const AlexaService = {
