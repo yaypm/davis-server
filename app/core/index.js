@@ -32,34 +32,34 @@ class Davis {
         }
         return new BbPromise((resolve, reject) => {
             conversationService.startExchange(this.conversation, request, source)
-            .then(exchange => {
-                logger.info('The exchange object was successfully created');
-                this.exchange = exchange;
+                .then(exchange => {
+                    logger.debug('The exchange object was successfully created');
+                    this.exchange = exchange;
 
-                let nlp = new Nlp(this);
-                return nlp.process();
-            })
-            .then(() => {
-                logger.info('The request has been analysed');
+                    let nlp = new Nlp(this);
+                    return nlp.process();
+                })
+                .then(() => {
+                    logger.debug('The request has been analysed');
 
-                let responseEngine = new ResponseEngine(this);
-                return responseEngine.generate();
-            })
-            .then(() => {
-                logger.info('The response has been successfully generated');
-                return [this.exchange.save(),
-                    this.conversation.save()];
-            })
-            .spread(() => {
-                logger.info('Davis has finished processing the request');
-                resolve(this);
-                return;
-            })
-            .catch(err => {
-                logger.error(err.message);
-                reject(err);
-                return;
-            });
+                    let responseEngine = new ResponseEngine(this);
+                    return responseEngine.generate();
+                })
+                .then(() => {
+                    logger.debug('The response has been successfully generated');
+                    return [this.exchange.save(),
+                        this.conversation.save()];
+                })
+                .spread(() => {
+                    logger.debug('Davis has finished processing the request');
+                    resolve(this);
+                    return;
+                })
+                .catch(err => {
+                    logger.error(err.message);
+                    reject(err);
+                    return;
+                });
         });
     }
 }
