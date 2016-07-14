@@ -65,20 +65,20 @@ class Ruxit {
                     break;
                 case 'day':
                     timeRange = {
-                        startTime: moment(datetime.value).startOf('day'),
-                        stopTime: moment(datetime.value).endOf('day')
+                        startTime: moment(datetime.value).startOf('day').format(),
+                        stopTime: moment(datetime.value).endOf('day').format()
                     };
                     break;
                 case 'week':
                     timeRange = {
-                        startTime: moment(datetime.value).startOf('week'),
-                        stopTime: moment(datetime.value).endOf('week')
+                        startTime: moment(datetime.value).startOf('week').format(),
+                        stopTime: moment(datetime.value).endOf('week').format()
                     };
                     break;
                 case 'month':
                     timeRange = {
-                        startTime: moment(datetime.value).startOf('month'),
-                        stopTime: moment(datetime.value).endOf('month')
+                        startTime: moment(datetime.value).startOf('month').format(),
+                        stopTime: moment(datetime.value).endOf('month').format()
                     };
                     break;
                 default:
