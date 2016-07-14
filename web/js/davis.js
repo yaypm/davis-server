@@ -13,7 +13,6 @@ var slackEndPoints = {
     'aws': 'https://umqjven962.execute-api.us-east-1.amazonaws.com/dev/slack',
     'dev': 'https://davis-backend-corywoolf.c9users.io/slack'
 };
-var isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
 
 // Speech-To-Text (STT) & Text-To-Speech (TTS) token objects
 var savedSttTokenObj = {
@@ -77,9 +76,15 @@ function interactWithRuxit(request) {
         }
 
         popTopInteraction();
-      // check if response is long
+        
+        // check if interaction log is getting long
         if (data.response.length > 70 || $('#interactionLog').children().length > 2) {
-            popTopInteraction();
+            if($('#interactionLog').children().length > 3) {
+                popTopInteraction();
+                popTopInteraction();
+            } else {
+                popTopInteraction();
+            }
         }
 
         if (data.response != null) {
@@ -93,7 +98,7 @@ function interactWithRuxit(request) {
 
 
 /**
- *   add text to output and speak out
+ *   Add text to output and speak text with TTS
 **/
 function talk(text) {
 
@@ -305,7 +310,7 @@ function listen() {
  * Not compatible with Safari, requires SpeechRecognition standard support
  */
 function annyangInit() {
-    if (!isSafari && annyang) {
+    if (annyang) {
 
         annyang.addCallback('result', function (phrases) {
             if (phrases[0].toLowerCase().includes('hey davis') || phrases[0].toLowerCase().includes('ok davis')) {
@@ -323,9 +328,7 @@ function annyangInit() {
  * Used when toggling between the annyang STT library and IBM Watson STT API
  */
 function enableListenForKeyword(listen) {
-    if (!isSafari) {
-        listen ? annyang.start({ 'autoRestart': true, 'continuous': true }) : annyang.abort();
-    }
+    listen ? annyang.start({ 'autoRestart': true, 'continuous': true }) : annyang.abort();
 }
 
 /**
@@ -397,22 +400,32 @@ function enableSilentMode() {
  * No mic error handeling
  */
 function noMic() {
-    talk('Unfortunately, there appears to be no microphone enabled on your device. '
-    + 'That\'s okay, as an alternative, feel free to use the textbox below to chat with me.');
     isSilentMode = true;
+    speak("Unfortunately, there appears to be no microphone enabled on your device. "
+    + "That's okay, as an alternative, feel free to use the textbox below to chat with me.");
     $('#muteWrapper').hide();
     $('#body').addClass('micOff');
     $('#body').removeClass('micOn');
 }
 
 /**
- * Global initializer that gets called onLoad 
+ * Global initializer that gets called via onload 
  */
 function init() {
     resetPlaceholder();
-    annyangInit();
-    setTimeout(function () {
-        talk('Hi, my name\'s Davis, your virtual Dev-Ops assistant.');
-        talk('What can I help you with today?');
-    }, 2 * 1000);
+    if(typeof window.chrome != 'object') {
+        isSilentMode = true;
+        $('#muteWrapper').hide();
+        $('#body').addClass('micOff');
+        $('#body').removeClass('micOn');
+        speak("It appears that you're using a browser that's not supported by Davis yet.");
+        speak("If you'd like to fully experience Davis, please use the latest version of Chrome.");
+        speak("<a href='https://www.google.com/chrome/browser/desktop/' target='_blank'>Download Chrome</a>");
+    } else {
+        annyangInit();
+        setTimeout(function () {
+            talk('Hi, my name\'s Davis, your virtual Dev-Ops assistant.');
+            talk('What can I help you with today?');
+        }, 2 * 1000);
+    }
 }
