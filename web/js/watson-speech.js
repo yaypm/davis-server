@@ -7014,7 +7014,7 @@ RecognizeStream.prototype.initialize = function() {
     action: 'start',
     'content-type': 'audio/wav',
     continuous: true,
-    inactivity_timeout: inactivityTimeout,
+    inactivity_timeout: davis.getInactivityTimeout(),
     interim_results: true,
     word_confidence: false,
     timestamps: false,
@@ -7026,7 +7026,7 @@ RecognizeStream.prototype.initialize = function() {
     action: 'start',
     'content-type': 'audio/wav',
     continuous: true,
-    inactivity_timeout: inactivityTimeout,
+    inactivity_timeout: davis.getInactivityTimeout(),
     interim_results: true,
     word_confidence: false,
     timestamps: false,
@@ -7086,7 +7086,7 @@ RecognizeStream.prototype.initialize = function() {
    */
   function emitError(msg, frame, err) {
     if(msg.includes('No speech detected for')) {
-      interactWithRuxit($("#textInput").val());
+      davis.interactWithRuxit($("#textInput").val());
     } else {
       if (err) {
         err.message = msg + ' ' + err.message;
