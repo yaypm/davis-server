@@ -14,13 +14,14 @@ describe('Tests interacting with the davis NLP wrapper', function() {
         ConversationService.getConversation(user)
         .then(conversation => {
             expect(conversation.userId).to.equal(user.id);
-            return [ConversationService.startExchange(conversation, 'alexa'), conversation];
+            return [ConversationService.startExchange(conversation, 'hello', 'alexa'), conversation];
         })
         .spread((exchange, conversation) => {
             expect(exchange._conversation).to.equal(conversation._id);
             exchange.request = {
                 text: 'What happened yesterday around 10pm?'
             };
+
             let nlp = new Nlp({user, exchange, conversation});
             return nlp.process();
         })
@@ -29,6 +30,9 @@ describe('Tests interacting with the davis NLP wrapper', function() {
             done();
         })
         .catch(err => {
+
+            console.log(err);
+
             done(err);
         });
     });
