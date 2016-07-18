@@ -10,10 +10,10 @@ const express = require('express'),
     config = require('config');
 
 logger.debug('Overriding Express logger');
-app.use(require('morgan')('combined', { 'stream': logger.stream }));
+app.use(require('morgan')('combined', {'stream': logger.stream}));
 
-mongoose.connect(config.get('database.dsn'), function(err) {
-    if(err) throw err;
+mongoose.connect(config.get('database.dsn'), function (err) {
+    if (err) throw err;
     logger.info('Successfully connected to mongodb');
 });
 
