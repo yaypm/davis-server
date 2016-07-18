@@ -11,7 +11,7 @@ const DEVICE_ID = 'amzn1.echo-sdk-account.AHIGWMSYVEQY5XIZIQNCTH5HZ5RW3JK43LUVBQ
     SOURCE = 'alexa';
 
 describe('Test the Davis core', function() {
-    it('should generate a response for a quesion about problems', function(done) {
+    it('should generate a response for a question about problems', function(done) {
         let user = AccountService.getUser(DEVICE_ID, SOURCE);
 
         ConversationService.getConversation(user)
