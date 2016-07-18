@@ -16,6 +16,8 @@ describe('The Alexa frontend service', function() {
             done();
         });
     });*/
+
+    /*
     it('should not find a user and return null', function() {
         let user = AlexaService.getUser({session: {user: { userId: 'this-user-shouldnt-exist' }}});
         expect(user).to.be.null;
@@ -25,4 +27,5 @@ describe('The Alexa frontend service', function() {
         let user = AlexaService.getUser({session: {user: { userId: 'amzn1.echo-sdk-account.AHIGWMSYVEQY5XIZIQNCTH5HZ5RW3JK43LUVBQEG6IM6B73UA5CLA' }}});
         expect(user.id).to.equal('beeme1mr');
     });
+    */
 });
