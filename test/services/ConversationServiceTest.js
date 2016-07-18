@@ -23,7 +23,7 @@ describe('The ConversationService', function() {
         ConversationService.getConversation({id: 'beeme1mr'})
         .then(conversation => {
             expect(conversation.userId).to.equal('beeme1mr');
-            return [ConversationService.startExchange(conversation, 'alexa'), conversation];
+            return [ConversationService.startExchange(conversation, 'test', 'alexa'), conversation];
         })
         .spread((exchange, conversation) => {
             expect(exchange._conversation).to.equal(conversation._id);
