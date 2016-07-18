@@ -6,6 +6,8 @@ const vcapServices = require('vcap_services'),
     BbPromise = require('bluebird'),
     config = require('config');
 
+console.log(config);
+
 const WATSON_API_VERSION = 'v1',
     WATSON_STREAM_API_URL = 'https://stream.watsonplatform.net';
 
