@@ -1,0 +1,3 @@
+{% extends "en-us/intents/problem/shared/base.nj" %}
+
+{% block content %}I've got great news for you!  Everything is working as expected.{% endblock %}

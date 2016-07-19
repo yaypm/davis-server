@@ -1,0 +1,5 @@
+{% extends "en-us/intents/problem/shared/base.nj" %}
+
+{#- What happened at a time in the future -#}
+
+{% block content %}Unfortunately, I'm not able to see the future... yet!{% endblock %}

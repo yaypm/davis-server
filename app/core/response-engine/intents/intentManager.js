@@ -1,10 +1,18 @@
 'use strict';
 
-const logger = require('../../../utils/logger');
+const logger = require('../../../utils/logger'),
+    _ = require('lodash');
 
-let intents = {};
+const intentName = ['problem'],
+    intents = {};
 
 const intentManager  = {
+    init: () => {
+        _(intentName).forEach((name) => {
+            logger.debug(`Attempting to register ${name}.`);
+            require(`./${name}`);
+        });
+    },
 
     registerIntent: (intent) => {
         if (intents[intent.name]) {
@@ -30,6 +38,3 @@ const intentManager  = {
 };
 
 module.exports = intentManager;
-
-// Dynamically load in all intents
-require('require-all')({dirname: __dirname, filter: /.+\.js$/, recursive: true});

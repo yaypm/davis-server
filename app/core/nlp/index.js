@@ -6,7 +6,8 @@ const Wit = require('./wit'),
     Ruxit = require('../dynatrace/ruxit'),
     logger = require('../../utils/logger');
 
-const INTENT_CONFIDENCE_THRESHOLD = .60;
+const INTENT_CONFIDENCE_THRESHOLD = .60,
+    DEFAULT_INTENT_NAME = 'unknown';
 
 class Nlp {
      /**
@@ -79,13 +80,12 @@ function getIntent(davis, entities) {
         if (intent.confidence > INTENT_CONFIDENCE_THRESHOLD) {
             return intent.value;
         } else {
-            logger.warn('I\'m not feeling that confident that this is actually what you want...');
-            //ToDo Add additional inference logic
+            logger.warn(`I'm only ${intent.confidence * 100}% sure you're asking about ${intent.value}.`);
             return intent.value;
         }
     } else {
-        //ToDo Add additional inference logic
-        return null;
+        logger.debug('Setting the default intent name that can be used to infer the actual intent.');
+        return DEFAULT_INTENT_NAME;
     }
 }
 

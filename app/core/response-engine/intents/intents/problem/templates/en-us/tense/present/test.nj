@@ -1,0 +1,3 @@
+{% extends "en-us/intents/problem/shared/base.nj" %}
+
+{% block content %}This is a default response{% endblock %}

@@ -12,6 +12,16 @@ intentManager.registerIntent({
     name: 'problem',
     required: '',
     supported: 'timeRange,appName',
+    examples: [
+        'What happened this morning?',
+        'Did anything yesterday?'
+    ],
+    getData: davis => {
+        logger.debug('Getting problem data');
+        let ruxit = new Ruxit(davis.user.ruxit.url, davis.user.ruxit.token);
+
+        return ruxit.getFilteredProblems(davis.exchange.request.analysed.timeRange, davis.exchange.request.analysed.appName);
+    },
     getResponse: davis => {
         logger.info('Responding to a problem intent');
 

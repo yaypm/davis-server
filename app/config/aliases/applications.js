@@ -11,13 +11,17 @@
 
 let applications = [{
     name: 'login',
-    starred: false,
-    type: 'web',
+    display: {
+        say: 'Engine-X',
+        show: 'Nginx'
+    },
     aliases: ['single sign on', 'sso', 'log on']
 }, {
     name: 'costco.com',
-    starred: false,
-    type: 'web',
+    display: {
+        say: 'costco',
+        show: 'Nginx'
+    },
     aliases: ['costco']
 }];
 

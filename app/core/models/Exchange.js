@@ -14,7 +14,9 @@ const exchange = new Schema({
     request: {
         text: { type: String, required: true, unique: false, index: false}
     },
-    template: {},
+    template: {
+        path: []
+    },
     response: {
         say: {
             ssml: {type: String, required: false, unique: false, index: false}

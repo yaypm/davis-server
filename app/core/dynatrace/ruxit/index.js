@@ -53,32 +53,32 @@ class Ruxit {
                 case 'second':
                 case 'minute':
                     timeRange = {
-                        startTime: moment(datetime.value).subtract(5, 'minutes'),
-                        stopTime: moment(datetime.value).add(5, 'minutes')
+                        startTime: moment.parseZone(datetime.value).subtract(5, 'minutes'),
+                        stopTime: moment.parseZone(datetime.value).add(5, 'minutes')
                     };
                     break;
                 case 'hour':
                     timeRange = {
-                        startTime: moment(datetime.value).subtract(15, 'minutes'),
-                        stopTime: moment(datetime.value).add(15, 'minutes')
+                        startTime: moment.parseZone(datetime.value).subtract(15, 'minutes'),
+                        stopTime: moment.parseZone(datetime.value).add(15, 'minutes')
                     };
                     break;
                 case 'day':
                     timeRange = {
-                        startTime: moment(datetime.value).startOf('day').format(),
-                        stopTime: moment(datetime.value).endOf('day').format()
+                        startTime: moment.parseZone(datetime.value).startOf('day'),
+                        stopTime: moment.parseZone(datetime.value).endOf('day')
                     };
                     break;
                 case 'week':
                     timeRange = {
-                        startTime: moment(datetime.value).startOf('week').format(),
-                        stopTime: moment(datetime.value).endOf('week').format()
+                        startTime: moment.parseZone(datetime.value).startOf('week'),
+                        stopTime: moment.parseZone(datetime.value).endOf('week')
                     };
                     break;
                 case 'month':
                     timeRange = {
-                        startTime: moment(datetime.value).startOf('month').format(),
-                        stopTime: moment(datetime.value).endOf('month').format()
+                        startTime: moment.parseZone(datetime.value).startOf('month'),
+                        stopTime: moment.parseZone(datetime.value).endOf('month')
                     };
                     break;
                 default:

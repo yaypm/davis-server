@@ -64,36 +64,36 @@ function pathToTemplates(basePath) {
 
     return new BbPromise((resolve, reject) => {
         fs.readdirAsync(templatePath)
-        .then(files => {
-            templates.base = joinPaths(basePath, files);
+            .then(files => {
+                templates.base = joinPaths(basePath, files);
 
-            let additionalTemplates = [];
-            // Handles automatically including speech related responses if available
-            if (_.includes(files, SPEECH_FOLDER_NAME)) {
-                logger.debug('Found speech specific templates to use');
-                additionalTemplates.push(fs.readdirAsync(path.join(templatePath, SPEECH_FOLDER_NAME)));
-            } else {
-                additionalTemplates.push(null);
-            }
+                let additionalTemplates = [];
+                // Handles automatically including speech related responses if available
+                if (_.includes(files, SPEECH_FOLDER_NAME)) {
+                    logger.debug('Found speech specific templates to use');
+                    additionalTemplates.push(fs.readdirAsync(path.join(templatePath, SPEECH_FOLDER_NAME)));
+                } else {
+                    additionalTemplates.push(null);
+                }
 
-            // Handles automatically including content that would be displayed to the user
-            if (_.includes(files, SHOW_FOLDER_NAME)) {
-                logger.debug('Found show specific templates to use');
-                additionalTemplates.push(fs.readdirAsync(path.join(templatePath, SHOW_FOLDER_NAME)));
-            } else {
-                additionalTemplates.push(null);
-            }
-            return additionalTemplates;
-        })
-        .spread((speechFiles, showFiles) => {
-            templates[SPEECH_FOLDER_NAME] = joinPaths(basePath, speechFiles, SPEECH_FOLDER_NAME);
-            templates[SHOW_FOLDER_NAME] = joinPaths(basePath, showFiles, SHOW_FOLDER_NAME);
-            return resolve(templates);
-        })
-        .catch(err => {
-            logger.error('Something went wrong attempting to resolve the template paths!');
-            return reject(err);
-        });
+                // Handles automatically including content that would be displayed to the user
+                if (_.includes(files, SHOW_FOLDER_NAME)) {
+                    logger.debug('Found show specific templates to use');
+                    additionalTemplates.push(fs.readdirAsync(path.join(templatePath, SHOW_FOLDER_NAME)));
+                } else {
+                    additionalTemplates.push(null);
+                }
+                return additionalTemplates;
+            })
+            .spread((speechFiles, showFiles) => {
+                templates[SPEECH_FOLDER_NAME] = joinPaths(basePath, speechFiles, SPEECH_FOLDER_NAME);
+                templates[SHOW_FOLDER_NAME] = joinPaths(basePath, showFiles, SHOW_FOLDER_NAME);
+                return resolve(templates);
+            })
+            .catch(err => {
+                logger.error('Something went wrong attempting to resolve the template paths!');
+                return reject(err);
+            });
     });
 }
 

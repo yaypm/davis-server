@@ -23,15 +23,15 @@ let events = [
     },
     {
         name: 'HOST_LOG_ERROR',
-        friendly: ['error in the host log']
+        friendly: ['errors found in the host log']
     },
     {
         name: 'PROCESS_LOG_ERROR',
-        friendly: ['error in the process log']
+        friendly: ['errors found in the process log']
     },
     {
         name: 'PGI_OF_SERVICE_UNAVAILABLE',
-        friendly: ['a unavailable process group instance']
+        friendly: ['a process group instance is currently unavailable']
     },
     {
         name: 'UNEXPECTED_LOW_LOAD',
@@ -47,7 +47,7 @@ let events = [
     },
     {
         name: 'MEMORY_SATURATED',
-        friendly: ['saturated memory']
+        friendly: ['saturated memory', 'high memory usage']
     },
     {
         name: 'SLOW_DISK',
@@ -55,7 +55,7 @@ let events = [
     },
     {
         name: 'DOCKER_MEMORY_SATURATION',
-        friendly: ['docker memory saturation']
+        friendly: ['Docker memory saturation', 'Docker is using too much memory']
     },
     {
         name: 'CPU_SATURATED',
