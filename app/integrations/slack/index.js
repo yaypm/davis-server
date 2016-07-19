@@ -16,7 +16,7 @@ let initConvo = function (response, convo) {
     let initialResponse = "";
     
     if (!initialResponse) {
-        initialResponse = "Hi, my name's Davis, your virtual Dev-Ops assitant. What can I help you with today?";
+        initialResponse = "Hi, my name's Davis, your virtual Dev-Ops assassin. What can I help you with today?";
     }
     
     convo.ask(initialResponse, function (response, convo) {
