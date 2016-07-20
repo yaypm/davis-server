@@ -576,6 +576,7 @@ function init() {
         isSilentMode = true;
         $('#muteWrapper').hide();
         dimBackground();
+        $.getJSON('./js/local-responses.json', function (data){localResponses = data;});
         speak(localResponses.errors.noBrowserSupport);
         speak(localResponses.errors.chrome);
         speak(localResponses.errors.getChrome);
