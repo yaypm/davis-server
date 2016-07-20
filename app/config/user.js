@@ -7,8 +7,7 @@ var users = {
             first: 'Michael',
             last: 'Beemer'
         },
-        alexa: ['amzn1.echo-sdk-account.AHIGWMSYVEQY5XIZIQNCTH5HZ5RW3JK43LUVBQEG6IM6B73UA5CLA'],
-        slack: 'U19920D2M'
+        alexa: ['amzn1.echo-sdk-account.AHIGWMSYVEQY5XIZIQNCTH5HZ5RW3JK43LUVBQEG6IM6B73UA5CLA']
     }],
     timezone: 'America/Detroit',
     ruxit: {

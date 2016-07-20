@@ -4,6 +4,7 @@ const ConversationService = require('../../../services/ConversationService'),
     AccountService = require('../../../services/AccountService'),
     logger = require('../../../utils/logger'),
     Davis = require('../../../core'),
+    userConfig = require("../../../config/user"),
     BbPromise = require('bluebird'),
     _ = require('lodash');
 
@@ -19,29 +20,39 @@ const SlackService = {
      * @returns {promise} res - The response formatted for Slack.
      */
     askDavis: (req) => {
+        
         logger.info('Starting our interaction with Davis');
-        // Grabs the request body if it exists otherwise we'll assume it's the body already.
         
         return new BbPromise((resolve, reject) => {
-            let user = getUser(req.user);
+            
+            // Use Slack user property as id for Davis user 
+            // Avoids having to enter Slack user property for each Davis user for assosciation
+            let user = {
+                'id': req.user, 
+                'nlp': userConfig.nlp, 
+                'ruxit': userConfig.ruxit, 
+                'timezone': userConfig.timezone
+            };
             let request = req.text;
 
             // Starts or continues our conversation
             ConversationService.getConversation(user)
-                .then(conversation => {
-                    let davis = new Davis(user, conversation);
-                    return davis.interact(request, REQUEST_SOURCE);
-                })
-                .then(davis => {
-                    logger.info('Finished processing request');
-                    return resolve(formatResponse(davis));
-                })
-                .catch(err => {
-                    logger.error(`Unfortunately, something went wrong.  ${err.msg}`);
-                    //ToDo Add failure response
-                    return resolve();
-                });
+            .then(conversation => {
+                let davis = new Davis(user, conversation);
+                return davis.interact(request, REQUEST_SOURCE);
+            })
+            .then(davis => {
+                logger.info('Finished processing request');
+                return resolve(formatResponse(davis));
+            })
+            .catch(err => {
+                logger.error(`Unfortunately, something went wrong.  ${err.msg}`);
+                //ToDo Add failure response
+                return resolve();
+            });
+            
         });
+        
     }
 };
 
