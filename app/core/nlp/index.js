@@ -3,7 +3,7 @@
 const Wit = require('./wit'),
     BbPromise = require('bluebird'),
     _ = require('lodash'),
-    Ruxit = require('../dynatrace/ruxit'),
+    Dynatrace = require('../dynatrace'),
     logger = require('../../utils/logger');
 
 const INTENT_CONFIDENCE_THRESHOLD = .60,
@@ -62,7 +62,7 @@ function analyseEntities(davis, entities) {
 function getDateTime(entities) {
     let timeRange = null;
     if (_.has(entities, 'datetime')) {
-        timeRange = Ruxit.generateTimeRange(entities.datetime[0]);
+        timeRange = Dynatrace.generateTimeRange(entities.datetime[0]);
     }
     return timeRange;
 }

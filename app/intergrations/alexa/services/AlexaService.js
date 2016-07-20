@@ -10,7 +10,8 @@ const ConversationService = require('../../../services/ConversationService'),
 const RESPONSE_VERSION = '1.0',
     REQUEST_SOURCE = 'alexa',
     LAUNCH_PHRASE = 'Start davis',
-    ERROR_RESPONSE = 'Wow, this is embarrassing!  I understood what you were asking for but I simply can\'t but it into words.  Perhaps you could help me out by checking the logs and adding the missing template?';
+    ERROR_RESPONSE = 'Wow, this is embarrassing!  I understood what you were asking for but I simply can\'t but it into words.  Perhaps you could help me out by checking the logs and adding the missing template?',
+    UNAUTHORIZED_RESPONSE = 'Unfortunately, you`re not authorized to use Davis yet.  No worries though, adding your user is simple.  For more information, check out the docs on git hub!';
 
 
 const AlexaService = {
@@ -27,6 +28,8 @@ const AlexaService = {
             let user = getUser(req),
                 request = null,
                 requestType = getRequestType(req);
+
+            if (_.isNil(user)) return resolve(alexaResponse(UNAUTHORIZED_RESPONSE, true));
 
             // Setting the request based on the request type
             if (requestType === 'LaunchRequest') {
@@ -54,7 +57,7 @@ const AlexaService = {
                     return resolve(formatResponse(davis));
                 })
                 .catch(err => {
-                    logger.error(`Unfortunately, something went wrong.  ${err.msg}`);
+                    logger.error(`Unfortunately, something went wrong.  ${err.message}`);
                     //ToDo Add failure response
                     return resolve();
                 });
@@ -111,11 +114,16 @@ function formatResponse(davis) {
         response = ERROR_RESPONSE;
     }
     
+    return alexaResponse(response, _.get(davis, 'exchange.response.finished'));
+}
+
+function alexaResponse(response, shouldEndSession) {
+    shouldEndSession = shouldEndSession || true;
     return {
         version: RESPONSE_VERSION,
         sessionAttributes: {},
         response: {
-            shouldEndSession: _.get(davis, 'exchange.response.finished', true),
+            shouldEndSession: shouldEndSession,
             outputSpeech: {
                 type: 'SSML',
                 ssml: `<speak>${response}</speak>`

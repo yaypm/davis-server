@@ -4,7 +4,7 @@ const BbPromise = require('bluebird'),
     Nlp = require('./nlp'),
     _ = require('lodash'),
     conversationService = require('../services/ConversationService'),
-    ResponseEngine = require('./response-engine'),
+    responseEngine = require('./response-engine'),
     logger = require('../utils/logger');
 
 class Davis {
@@ -26,6 +26,7 @@ class Davis {
      * @returns {promise}
      */
     interact(request, source) {
+        //ToDo validate user
         if(_.isNil(source)) {
             logger.warn('Please consider adding a source.  This will help generate more relevent responses.');
             source = 'unknown';
@@ -41,9 +42,7 @@ class Davis {
                 })
                 .then(() => {
                     logger.debug('The request has been analysed');
-
-                    let responseEngine = new ResponseEngine(this);
-                    return responseEngine.generate();
+                    return responseEngine.generate(this);
                 })
                 .then(() => {
                     logger.debug('The response has been successfully generated');
