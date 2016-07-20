@@ -28,7 +28,7 @@ const SlackService = {
             // Use Slack user property as id for Davis user 
             // Avoids having to enter Slack user property for each Davis user for assosciation
             let user = {
-                'id': req.user, 
+                'id': 'slack-user-' + req.user, 
                 'nlp': userConfig.nlp, 
                 'ruxit': userConfig.ruxit, 
                 'timezone': userConfig.timezone
