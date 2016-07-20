@@ -1,26 +1,37 @@
 'use strict';
 
 const Botkit = require('botkit'),
-    logger = require('../../utils/logger');
+    logger = require('../../utils/logger'),
+    token = require('./token'),
+    SlackService = require('./services/SlackService');
 
 const controller = Botkit.slackbot({
     debug: false
 });
 
 controller.spawn({
-    token: 'xoxb-58758108581-uefRQxW6xyTeejPZa4Sbj54N'
+    token: token
 }).startRTM();
 
+/**
+ * initConvo() is a recursive function that acts as a loop for continuing the conversation flow
+ * 
+ * @param response {Object}
+ * @param convo {Object}
+ */
 let initConvo = function (response, convo) {
     
-    let initialResponse = "";
+    let initialResponse; 
+    if (response) {
+      //  initialResponse = askDavis(response);
+    }
     
     if (!initialResponse) {
-        initialResponse = "Hi, my name's Davis, your virtual Dev-Ops assassin. What can I help you with today?";
+        initialResponse = "Hi, my name's Davis, your virtual Dev-Ops assistant. What can I help you with today?";
     }
     
     convo.ask(initialResponse, function (response, convo) {
-        
+        console.log('response: '+JSON.stringify(response));
         var lastInteractionTime = new Date();
         
         var addToConvo = function (response, convo) {
@@ -43,20 +54,30 @@ let initConvo = function (response, convo) {
                 
             } else {
                 
-                // get reply string from existing backend here based on response string
-                let reply = "Hello world!";
-                
-                // Send reply and listen for next interaction
-                convo.ask(reply, function (response, convo) {
-                    
-                    // Reset last interaction timestamp
-                    lastInteractionTime = new Date();
-                
-                    // Recursive function that acts as a loop for continuing the conversation flow
-                    addToConvo(response, convo);
-                    
-                });
-                convo.next();
+                SlackService.askDavis(response)
+                    .then(resp => {
+                        logger.info('Sending a response back to the Slack service');
+                        
+                        console.log('resp: '+JSON.stringify(resp));
+                        
+                        // send reply and listen for next interaction
+                        convo.ask(resp.response.outputSpeech.text, function (response, convo) {
+                            
+                            // reset last interaction timestamp
+                            lastInteractionTime = new Date();
+                        
+                            addToConvo(response, convo);
+                            
+                        });
+                        convo.next();
+                                
+                    })
+                    .catch(err => {
+                        //ToDo add an error response.
+                        logger.error('Unable to respond to the request received from Slack');
+                        logger.error(err);
+                        return;
+                    });
                 
             }
             

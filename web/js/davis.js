@@ -191,7 +191,7 @@ function getTtsToken() {
  * IBM Watson tokens have a time to live (TTL) of one hour, 
  * so we will refresh the token every 59 minutes to be safe
  * 
- * @resolve {String} savedSttTokenObj.token 
+ * @return {promise} savedSttTokenObj.token 
  */
 function getSttToken() {
     
