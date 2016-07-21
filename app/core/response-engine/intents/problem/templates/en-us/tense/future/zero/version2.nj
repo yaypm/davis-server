@@ -1,4 +1,4 @@
-{% extends "en-us/intents/problem/shared/base.nj" %}
+{% extends "problem/templates/en-us/shared//base.nj" %}
 
 {#- What happened at a time in the future -#}
 

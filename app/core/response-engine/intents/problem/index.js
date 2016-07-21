@@ -27,13 +27,16 @@ const process = function process(davis) {
                 tags.tense = getTense(davis.exchange);
                 tags.problems = getCount(davis.intentData);
 
-                let template = selectTemplate(training_model, tags);
+                let template = decide('template', training_model, tags);
                 logger.debug(`The template path ${template}`);
+
+                let stateSetter = decide('stateSetter', training_model, tags);
+                stateSetter(davis);
 
                 let templatePath = path.join(__dirname, 'templates', template);
                 return [template, getTemplate(templatePath)];
             })
-            .spread((template,templateName) => {
+            .spread((template, templateName) => {
                 logger.debug(`Found a template to use ${templateName}.`);
                 return nunjucks.renderAsync(path.join('problem', 'templates', template, templateName), davis);
             })
@@ -43,7 +46,8 @@ const process = function process(davis) {
                 return resolve(response);
             })
             .catch(err => {
-                logger.err(err.message);
+                logger.error(err.message);
+                
                 return reject(err);
             });
     });
@@ -112,6 +116,9 @@ const getCount = function(intentData) {
         } else if (numOfProblems === 1) {
             logger.debug('One problem detected');
             return 'one';
+        } else if (numOfProblems === 2) {
+            logger.debug('Tow problems detected');
+            return 'two';
         } else {
             logger.debug('Multiple problems detected');
             return 'many';
@@ -134,28 +141,40 @@ const isFutureTense = function(startTime, endTime) {
     return !time.isBefore(startTime, endTime);
 };
 
-
+const stateOneProblem = function(davis) {
+    logger.info('Processing state one');
+    const state = {
+        type: 'oneProblem',
+        problemId:  _.get(davis, 'intentData.problem.result.problems[0].id'),
+        next: {
+            yes: 'problemDetails',
+            no: null
+        }
+    };
+    davis.exchange.state = state;
+};
 
 /**
  * decision tree model
  */
-
 const training_model = [
-	{'lang': 'en-us', 'error': false, 'tense': 'past',    'problems': 'zero', 'template': 'en-us/tense/past/zero'},
-	{'lang': 'en-us', 'error': false, 'tense': 'past',    'problems': 'one',  'template': 'en-us/tense/past/one'},
-	{'lang': 'en-us', 'error': false, 'tense': 'past',    'problems': 'many', 'template': 'en-us/tense/past/many'},
-	{'lang': 'en-us', 'error': false, 'tense': 'present', 'problems': 'zero', 'template': 'en-us/tense/present/zero'},
-	{'lang': 'en-us', 'error': false, 'tense': 'present', 'problems': 'one',  'template': 'en-us/tense/present/one'},
-    {'lang': 'en-us', 'error': false, 'tense': 'present', 'problems': 'many', 'template': 'en-us/tense/present/many'},
-	{'lang': 'en-us', 'error': false, 'tense': 'future',  'problems': 'zero', 'template': 'en-us/tense/future/zero'},
-	{'lang': 'en-us', 'error': true,  'tense': null,      'problems': null,   'template': 'en-us/error'}
+	{'lang': 'en-us', 'error': false, 'tense': 'past',    'problems': 'zero', 'template': 'en-us/tense/past/zero',    'stateSetter': stateOneProblem},
+	{'lang': 'en-us', 'error': false, 'tense': 'past',    'problems': 'one',  'template': 'en-us/tense/past/one',     'stateSetter': stateOneProblem},
+	{'lang': 'en-us', 'error': false, 'tense': 'past',    'problems': 'two',  'template': 'en-us/tense/past/two',     'stateSetter': stateOneProblem},
+	{'lang': 'en-us', 'error': false, 'tense': 'past',    'problems': 'many', 'template': 'en-us/tense/past/many',    'stateSetter': stateOneProblem},
+	{'lang': 'en-us', 'error': false, 'tense': 'present', 'problems': 'zero', 'template': 'en-us/tense/present/zero', 'stateSetter': stateOneProblem},
+	{'lang': 'en-us', 'error': false, 'tense': 'present', 'problems': 'one',  'template': 'en-us/tense/present/one',  'stateSetter': stateOneProblem},
+	{'lang': 'en-us', 'error': false, 'tense': 'present', 'problems': 'two',  'template': 'en-us/tense/present/two',  'stateSetter': stateOneProblem},
+    {'lang': 'en-us', 'error': false, 'tense': 'present', 'problems': 'many', 'template': 'en-us/tense/present/many', 'stateSetter': stateOneProblem},
+	{'lang': 'en-us', 'error': false, 'tense': 'future',  'problems': 'zero', 'template': 'en-us/tense/future/zero',  'stateSetter': stateOneProblem},
+	{'lang': 'en-us', 'error': true,  'tense': null,      'problems': null,   'template': 'en-us/error',              'stateSetter': stateOneProblem}
 ];
 
-const selectTemplate = function(model, tags) {
-    const CLASS_NAME = 'template';
 
-    const dt = new DecisionTree(training_model, CLASS_NAME, ['lang', 'error', 'tense', 'problems']);
-    console.log(tags);
+
+const decide = function(className, model, tags) {
+
+    const dt = new DecisionTree(training_model, className, ['lang', 'error', 'tense', 'problems']);
     return dt.predict(tags);
 };
 

@@ -1,7 +1,7 @@
 {% block greeting %}
-{% include "en-us/shared/greeting.nj" %}
+    {% include "problem/templates/en-us/shared/greeting.nj" %}
 {% endblock %}
 {% block content %}{% endblock %}
 {% block nextStep %}
-{# Placeholder for a follow up sentence #}
+    {% include "problem/templates/en-us/shared/nextStep.nj" %}
 {% endblock %}

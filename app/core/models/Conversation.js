@@ -1,7 +1,8 @@
 'use strict';
 
 const mongoose = require('mongoose'),
-    Schema = mongoose.Schema;
+    Schema = mongoose.Schema,
+    ExchangeModel = require('./Exchange');
 
 // Configuring Mongoose to use Promises
 mongoose.Promise = require('bluebird');
@@ -13,6 +14,10 @@ const conversation = new Schema({
     createdAt: 'startTime',
     updatedAt: 'lastInteraction'
 });
+
+conversation.methods.getHistory = function getHistory(length, cb) {
+    return ExchangeModel.find({_conversation: this.id}).limit(length).sort({'updatedAt': -1}).exec(cb);
+};
 
 conversation.set('autoIndex', false);
 module.exports = mongoose.model('Conversation', conversation);

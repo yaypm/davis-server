@@ -19,7 +19,7 @@ const AccountService = {
             user = _.merge(user, _.omit(account, 'users'));
             logger.debug(`The merged user object is ${JSON.stringify(user)}`);
         } else {
-            logger.warn('Unable to find a valid user');
+            logger.warn(`Unable to find a valid user: ${user}`);
         }
 
         return user;

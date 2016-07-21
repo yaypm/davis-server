@@ -158,6 +158,9 @@ class Dynatrace {
                     logger.debug(`The post filtered list is ${response.result.problems.length}`);
 
                     resolve(response);
+                })
+                .catch( err => {
+                    reject(err);
                 });
             } else {
                 logger.info('The user has requested problems from a specific timeframe');
