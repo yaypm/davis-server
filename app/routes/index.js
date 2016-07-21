@@ -12,6 +12,7 @@ router.use('/alexa', require('../intergrations/alexa/routes'));
 /**
  * Loading additional intergrations
  */
+
 require('../intergrations/slack');
 
 module.exports = router;

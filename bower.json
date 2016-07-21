@@ -18,7 +18,7 @@
   "dependencies": {
     "annyang": "^2.4.0",
     "fetch": "^1.0.0",
-    "bootstrap": "^3.3.6",
-    "typed.js": "^1.1.4"
+    "typed.js": "^1.1.4",
+    "jquery": "latest"
   }
 }

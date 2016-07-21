@@ -1,0 +1,16 @@
+{   
+    "errors": {
+        "noBrowserSupport": "It appears that you're using a browser that's not yet supported by Davis.",
+        "chrome": "If you'd like to fully experience Davis, please use the latest version of Chrome.",
+        "getChrome": "<a href='https://www.google.com/chrome/browser/desktop/' target='_blank'>Download Chrome</a>",
+        "noMic": "Unfortunately, there appears to be no microphone enabled on your device. That's okay, as an alternative, feel free to use the text-box below to chat with me.",
+        "server": "There's an issue with the Davis server right now, please try again later."
+    },
+    "greetings": {
+        "hello": "Hi, my name's Davis, your virtual Dev-Ops assistant.",
+        "help": "What can I help you with today?"
+    },
+    "placeholders": {
+        "easyTravel": "How's easyTravel doing?"
+    }
+}

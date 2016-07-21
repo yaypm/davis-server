@@ -1,6 +1,6 @@
 	#interactionlog {
 		position: absolute;
-		top: 100px;
+		top: 50px;
 		text-align: center;
 		width: 100%;
 	}
@@ -9,14 +9,14 @@
 		color: #BDBDEA;
 		margin-top:10px;
 		font-size: 38px;
+		padding-left: 50px;
+		padding-right: 50px;
 	}
 	#interactionlog p:last-of-type {
 		color: #fcf8e3;
 		font-size: 52px;
 	}
-	.site-wrapper {
-		position: relative;
-	}
+	
 	.inputWrapper {
 		position: absolute;
 		z-index: 1001;
@@ -61,7 +61,12 @@
 		color: white;
 	}
 	
-	#body.micOff {
+	body {
+		background-color: #007ee6;
+		font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;	
+	}
+	
+	body.micOff {
 	    -webkit-animation-name: micOff; /* Chrome, Safari, Opera */
 	    -webkit-animation-duration: 4s; /* Chrome, Safari, Opera */
 	    animation-name: micOff;
@@ -69,7 +74,7 @@
 	    background-color: #007ee6;
 	}
 	
-	#body.micOn {
+	body.micOn {
 	    -webkit-animation-name: micOn; /* Chrome, Safari, Opera */
 	    -webkit-animation-duration: 4s; /* Chrome, Safari, Opera */
 	    animation-name: micOn;

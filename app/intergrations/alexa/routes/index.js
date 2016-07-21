@@ -6,8 +6,7 @@ const express = require('express'),
     logger = require('../../../utils/logger');
 
 router.post('/', function(req, res) {
-    logger.info('Recieved a request from Alexa!');
-    //ToDo: Check that the request is from Amazon
+    logger.info('Received a request from Alexa!');
 
     AlexaService.askDavis(req)
         .then(response => {
