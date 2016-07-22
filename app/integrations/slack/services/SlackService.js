@@ -33,13 +33,12 @@ const SlackService = {
                 'ruxit': userConfig.ruxit, 
                 'timezone': userConfig.timezone
             };
-            let request = req.text;
 
             // Starts or continues our conversation
             ConversationService.getConversation(user)
             .then(conversation => {
                 let davis = new Davis(user, conversation);
-                return davis.interact(request, REQUEST_SOURCE);
+                return davis.interact(req.text, REQUEST_SOURCE);
             })
             .then(davis => {
                 logger.info('Finished processing request');
