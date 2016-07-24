@@ -1,4 +1,3 @@
-'use strict';
 
 const Botkit = require('botkit'),
     config = require('config'),
