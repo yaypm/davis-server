@@ -25,7 +25,6 @@ module.exports = function(config) {
         convo.ask(initialResponse, function (response, convo) {
 
             var lastInteractionTime = new Date();
-
             var addToConvo = function (response, convo) {
 
                 let isTimedOut = lastInteractionTime < new Date((new Date) * 1 - 1000 * 600);
