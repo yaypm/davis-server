@@ -33,15 +33,15 @@ let config = {
         alexa: ['<alexa_token>'],
         timezone: 'America/Detroit',
         lang: 'en-us',
-        ruxit: {
-            token: '<ruxit_token>',
-            url: '<tenant_url>'
+        dynatrace: {
+            token: '<dynatrace_token>',
+            url: '<tenant_url>',
+            strictSSL: true
         },
         nlp: {
             wit: '<wit_token>'
         }
-    }],
-
+    }]
 };
 
 config.aliases = require('./aliases');

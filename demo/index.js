@@ -1,6 +1,7 @@
 'use strict';
 
-const DavisServer = require('../DavisServer');
-const config = require('./config');
-const davisServer = new DavisServer(config);
+const DavisServer = require('../DavisServer'),
+    config = require('./config'),
+    davisServer = new DavisServer(config);
+
 davisServer.run();

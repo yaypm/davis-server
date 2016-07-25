@@ -1,6 +1,6 @@
 'use strict';
 
-module.exports = function (aliases) {
+module.exports = function Nunjucks(aliases) {
 
     const BbPromise = require('bluebird'),
         path = require('path'),
@@ -15,5 +15,4 @@ module.exports = function (aliases) {
 
     require('./filters')(env, aliases);
     return env;
-
 };

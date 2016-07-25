@@ -30,23 +30,22 @@ module.exports = function setupApp(config) {
     /**
      * Starting slackbot
      */
-
-    if (config.slack && config.slack.key) {
+    if (config.slack && config.slack.enabled) {
         require('./integrations/slack')(config);
     }
 
 
-// catch 404 and forward to error handler
+    // catch 404 and forward to error handler
     app.use(function (req, res, next) {
         var err = new Error('Not Found');
         err.status = 404;
         next(err);
     });
 
-// error handlers
+    // error handlers
 
-// development error handler
-// will print stacktrace
+    // development error handler
+    // will print stacktrace
     if (app.get('env') === 'development') {
         app.use(function (err, req, res) {
             res.status(err.status || 500);
@@ -57,8 +56,8 @@ module.exports = function setupApp(config) {
         });
     }
 
-// production error handler
-// no stacktraces leaked to user
+    // production error handler
+	// no stacktraces leaked to user
     app.use(function (err, req, res) {
         res.status(err.status || 500);
         res.json({

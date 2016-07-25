@@ -12,7 +12,8 @@ const exchange = new Schema({
     startTime: { type: Date, default: Date.now, required: true, unique: false, index: true },
     endTime: { type: Date, required: false, unique: false, index: true },
     request: {
-        text: { type: String, required: true, unique: false, index: false}
+        text: { type: String, required: true, unique: false, index: false},
+        analysed: {}
     },
     template: {
         path: []

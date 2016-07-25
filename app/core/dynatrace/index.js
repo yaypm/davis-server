@@ -4,7 +4,6 @@ const rp = require('request-promise'),
     moment = require('moment-timezone'),
     _ = require('lodash'),
     BbPromise = require('bluebird'),
-    url = require('url'),
     S = require('string'),
     natural = require('natural'),
     logger = require('../../utils/logger');
@@ -17,16 +16,19 @@ class Dynatrace {
      * @constructs Dynatrace
      * @param {string} tenantUrl - The URL for your tenant (https://example.live.dynatrace.com)
      * @param {string} apiKey - The API key authorized to make requests to the tenant
+     * @param {Object} config - Davis config object
+     * @param {boolean} validateCerts [true] - Allows a connection to self signed certs.  This is useful when connecting to a Dynatrace managed instance.
      */
-    constructor(tenantUrl, apiKey, config) {
-        let dynatraceUrl = url.parse(tenantUrl);
-        this.url = 'https://' + dynatraceUrl.hostname + '/api/v1/';
+    constructor(tenantUrl, apiKey, config, validateCerts) {
+        this.validateCerts = (_.isNil(validateCerts)) ? true : validateCerts;
+        this.url = tenantUrl + '/api/v1/';
         this.key = apiKey;
         this.config = config;
 
         this.options = (url, parameters) => {
             return {
                 uri: this.url + url,
+                strictSSL: this.validateCerts,
                 qs: parameters || {},
                 headers: {
                     Authorization: 'Api-Token ' + this.key
@@ -86,7 +88,7 @@ class Dynatrace {
                 }
             } else if (datetime.type === 'interval') {
                 timeRange = {
-                    starTime: datetime.from.value,
+                    startTime: datetime.from.value,
                     stopTime: datetime.to.value
                 };
             }
@@ -150,35 +152,35 @@ class Dynatrace {
                 logger.info('The user is interested in currently open problems');
 
                 rp(this.options('problem/feed', { relativeTime: 'hour', status: 'open' }))
-                .then( response => {
-                    logger.debug(`The prefiltered list is ${response.result.problems.length}`);
-                    response.result.problems = _.filter(response.result.problems, problem => {
-                        return filterApplicationProblems(applications, problem, this.config.aliases);
-                    });
-                    logger.debug(`The post filtered list is ${response.result.problems.length}`);
+                    .then( response => {
+                        logger.debug(`The prefiltered list is ${response.result.problems.length}`);
+                        response.result.problems = _.filter(response.result.problems, problem => {
+                            return filterApplicationProblems(applications, problem, this.config.aliases);
+                        });
+                        logger.debug(`The post filtered list is ${response.result.problems.length}`);
 
-                    resolve(response);
-                })
-                .catch( err => {
-                    reject(err);
-                });
+                        resolve(response);
+                    })
+                    .catch( err => {
+                        reject(err);
+                    });
             } else {
                 logger.info('The user has requested problems from a specific timeframe');
 
                 rp(this.options('problem/feed', getTimeFilter(timeRange.startTime)))
-                .then( response => {
-                    logger.debug(`The prefiltered list is ${response.result.problems.length}`);
-                    response.result.problems = _.filter(response.result.problems, problem => {
-                        return isProblemInRange(timeRange.startTime, timeRange.stopTime, problem.startTime, problem.endTime) &&
-                            filterApplicationProblems(applications, problem, this.config.aliases);
-                    });
-                    logger.debug(`The post filtered list is ${response.result.problems.length}`);
+                    .then( response => {
+                        logger.debug(`The prefiltered list is ${response.result.problems.length}`);
+                        response.result.problems = _.filter(response.result.problems, problem => {
+                            return isProblemInRange(timeRange.startTime, timeRange.stopTime, problem.startTime, problem.endTime) &&
+                                filterApplicationProblems(applications, problem, this.config.aliases);
+                        });
+                        logger.debug(`The post filtered list is ${response.result.problems.length}`);
 
-                    resolve(response);
-                })
-                .catch( err => {
-                    reject(err);
-                });
+                        resolve(response);
+                    })
+                    .catch( err => {
+                        reject(err);
+                    });
             }
         });
     }  
@@ -249,8 +251,7 @@ function isProblemInRange(requestStart, requestStop, problemStart, problemStop) 
     requestStop = moment(requestStop);
     problemStart = moment(problemStart);
 
-    // intentionally using a loose equality check
-    if (problemStop == null || problemStop === -1) {
+    if (_.isNil(problemStop) || problemStop === -1) {
         if (problemStart.isSameOrBefore(requestStop)) {
             return true;
         } else {

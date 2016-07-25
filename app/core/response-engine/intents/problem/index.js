@@ -15,7 +15,8 @@ const tags = {};
 
 const process = function process(davis) {
     return new BbPromise((resolve, reject) => {
-        const dynatrace = new Dynatrace(davis.user.ruxit.url, davis.user.ruxit.token, davis.config);
+        const dynatrace = new Dynatrace(davis.user.dynatrace.url, davis.user.dynatrace.token, davis.config, davis.user.dynatrace.strictSSL);
+        //ToDo check for future requests
         dynatrace.getFilteredProblems(davis.exchange.request.analysed.timeRange, davis.exchange.request.analysed.appName)
             .then(response => {
                 davis.intentData = {
@@ -97,8 +98,8 @@ const getTense = function(exchange) {
         return 'past';
     } else if (isFutureTense(timeRange.startTime, exchange.startTime)) {
         logger.warn('The user is asking about a future problem.  Either they think we\'re psychic or we misunderstood the question.');
-        logger.warn(`They said '${exchange.request.text}' and we thought the requested start time was ${timeRange.start}`);
-        logger.warn(`which is after the current time ${this.exchange.startTime}`);
+        logger.warn(`They said '${exchange.request.text}' and we thought the requested start time was ${timeRange.startTime}`);
+        logger.warn(`which is after the current time ${exchange.startTime}`);
         return 'future';
     } else {
         logger.debug('Unable to figure out a tense');
@@ -117,7 +118,7 @@ const getCount = function(intentData) {
             logger.debug('One problem detected');
             return 'one';
         } else if (numOfProblems === 2) {
-            logger.debug('Tow problems detected');
+            logger.debug('Two problems detected');
             return 'two';
         } else {
             logger.debug('Multiple problems detected');
@@ -154,18 +155,32 @@ const stateOneProblem = function(davis) {
     davis.exchange.state = state;
 };
 
+const stateTwoProblems = function(davis) {
+    logger.info('Processing state two');
+    const state = {
+        type: 'twoProblems',
+        problemIds:  [_.get(davis, 'intentData.problem.result.problems[0].id'), _.get(davis, 'intentData.problem.result.problems[1].id')],
+        next: {
+            mutlipleChoice: 'problemDetails',
+            yes: 'problemDetails',
+            no: null
+        }
+    };
+    davis.exchange.state = state;
+};
+
 /**
  * decision tree model
  */
 const training_model = [
 	{'lang': 'en-us', 'error': false, 'tense': 'past',    'problems': 'zero', 'template': 'en-us/tense/past/zero',    'stateSetter': stateOneProblem},
 	{'lang': 'en-us', 'error': false, 'tense': 'past',    'problems': 'one',  'template': 'en-us/tense/past/one',     'stateSetter': stateOneProblem},
-	{'lang': 'en-us', 'error': false, 'tense': 'past',    'problems': 'two',  'template': 'en-us/tense/past/two',     'stateSetter': stateOneProblem},
-	{'lang': 'en-us', 'error': false, 'tense': 'past',    'problems': 'many', 'template': 'en-us/tense/past/many',    'stateSetter': stateOneProblem},
+	{'lang': 'en-us', 'error': false, 'tense': 'past',    'problems': 'two',  'template': 'en-us/tense/past/two',     'stateSetter': stateTwoProblems},
+	{'lang': 'en-us', 'error': false, 'tense': 'past',    'problems': 'many', 'template': 'en-us/tense/past/many',    'stateSetter': stateTwoProblems},
 	{'lang': 'en-us', 'error': false, 'tense': 'present', 'problems': 'zero', 'template': 'en-us/tense/present/zero', 'stateSetter': stateOneProblem},
 	{'lang': 'en-us', 'error': false, 'tense': 'present', 'problems': 'one',  'template': 'en-us/tense/present/one',  'stateSetter': stateOneProblem},
-	{'lang': 'en-us', 'error': false, 'tense': 'present', 'problems': 'two',  'template': 'en-us/tense/present/two',  'stateSetter': stateOneProblem},
-    {'lang': 'en-us', 'error': false, 'tense': 'present', 'problems': 'many', 'template': 'en-us/tense/present/many', 'stateSetter': stateOneProblem},
+	{'lang': 'en-us', 'error': false, 'tense': 'present', 'problems': 'two',  'template': 'en-us/tense/present/two',  'stateSetter': stateTwoProblems},
+    {'lang': 'en-us', 'error': false, 'tense': 'present', 'problems': 'many', 'template': 'en-us/tense/present/many', 'stateSetter': stateTwoProblems},
 	{'lang': 'en-us', 'error': false, 'tense': 'future',  'problems': 'zero', 'template': 'en-us/tense/future/zero',  'stateSetter': stateOneProblem},
 	{'lang': 'en-us', 'error': true,  'tense': null,      'problems': null,   'template': 'en-us/error',              'stateSetter': stateOneProblem}
 ];
