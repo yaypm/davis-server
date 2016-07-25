@@ -27,6 +27,15 @@ module.exports = function setupApp(config) {
     app.use(bodyParser.urlencoded({extended: false}));
     app.use('/', routes);
 
+    /**
+     * Starting slackbot
+     */
+
+    if (config.slack && config.slack.key) {
+        require('./integrations/slack')(config);
+    }
+
+
 // catch 404 and forward to error handler
     app.use(function (req, res, next) {
         var err = new Error('Not Found');
