@@ -7,7 +7,7 @@ const BbPromise = require('bluebird'),
 const process = function process(davis, data) {
     return new BbPromise((resolve, reject) => {
         //ToDo validate we have a problemId
-        const dynatrace = new Dynatrace(davis.user.ruxit.url, davis.user.ruxit.token);
+        const dynatrace = new Dynatrace(davis.user.dynatrace.url, davis.user.dynatrace.token, davis.config, davis.user.dynatrace.strictSSL);
         dynatrace.problemDetails(data.problemId)
             .then(response => {
                 davis.intentData = {
@@ -16,6 +16,9 @@ const process = function process(davis, data) {
 
                 common.addTextResponse(davis.exchange, 'Grabbed detailed data from Dynatrace');
                 return resolve();
+            })
+            .catch(err => {
+                return reject(err);
             });
     });
 };
