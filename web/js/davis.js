@@ -2,16 +2,17 @@ var davis = (function() {
 
 // Globals
 var sentences = [];                       // Array of response sentences to be typed into interaction log
-var isMuted = false;                      // no STT
-var isSilentMode = false;                 // no STT and TTS
+var isMuted = false;                      // No STT
+var muteButtonPressed = false;            // Prevent automatically unmutting if mute button is pressed
+var isSilentMode = false;                 // No STT and TTS
 var isListening = false;                  // Is Watson STT API listening?
 var inactivityTimeout = 1;                // Seconds of silence before Watson STT API stops listening
 var momentsOfSilence = 0;                 // Used for polling number of moments of silence 60 ms apart (avoid cutting off TTS playback) 
 var player = new Audio();                 // Audio element used to play TTS audio
 var micOn = new Audio('./audio/pop.wav'); // Mic on sound effect
 var stream;                               // IBM STT stream
-var talkWaitCount = 0;                    // counter for keeping track of queued talk() calls
-var slackEndPoints = {
+var outputQueueSize = 0;                  // Counter for keeping track of queued outputTextAndSpeech() calls
+var endPoints = {
     'aws': 'https://umqjven962.execute-api.us-east-1.amazonaws.com/dev/slack',
     'dev': 'https://davis-backend-corywoolf.c9users.io/slack'
 };
@@ -72,7 +73,7 @@ function interactWithRuxit(request) {
         })
     };
 
-    fetch(slackEndPoints.aws, options)
+    fetch(endPoints.aws, options)
     .then(function (response) {
         
         return response.json();
@@ -81,7 +82,7 @@ function interactWithRuxit(request) {
         
         if (!data.response && request.length > 0) {
             
-            outputTextAndSpeech('Sorry about that, I\'m not sure what you meant, please try again.');
+            outputTextAndSpeech(localResponses.errors.nullResponse);
             return;
             
         } else if (!data.response) {
@@ -141,7 +142,7 @@ function outputTextAndSpeech(text) {
         
         if (!isMuted) {
             
-            talkWaitCount++;
+            outputQueueSize++;
             unmuteWhenDonePlaying();
             
         }
@@ -191,7 +192,7 @@ function getTtsToken() {
  * IBM Watson tokens have a time to live (TTL) of one hour, 
  * so we will refresh the token every 59 minutes to be safe
  * 
- * @resolve {String} savedSttTokenObj.token 
+ * @return {promise} savedSttTokenObj.token 
  */
 function getSttToken() {
     
@@ -227,9 +228,11 @@ function getSttToken() {
 
         }
 
-        brightenBackground();
-        $('#muteSVG').addClass('muteOff');
-        micOn.play();
+        if(!muteButtonPressed) {
+            brightenBackground();
+            $('#muteSVG').addClass('muteOff');
+            micOn.play();
+        }
         
     });
     
@@ -342,12 +345,14 @@ function unmuteWhenDonePlaying() {
         if (momentsOfSilence >= 1) {
             
             momentsOfSilence = 0;
-            talkWaitCount--;
+            outputQueueSize--;
             
-            if (talkWaitCount < 1 && !isSilentMode) {
+            if (outputQueueSize < 1 && !isSilentMode && !muteButtonPressed) {
                 
               listen();
               
+            } else {
+                muteButtonPressed = false;
             }
             
         } else {
@@ -497,7 +502,13 @@ function dimBackground() {
  */
 function toggleMute(mute) {
     
-    if (!isMuted && mute != false) {
+    if (!isMuted && mute == null && !muteButtonPressed) {
+        muteButtonPressed = true;
+    } else {
+        muteButtonPressed = false;
+    }
+    
+    if ((!isMuted && mute != false) || muteButtonPressed) {
         
         isMuted = true;
         isListening = false;
@@ -565,6 +576,7 @@ function init() {
         isSilentMode = true;
         $('#muteWrapper').hide();
         dimBackground();
+        $.getJSON('./js/local-responses.json', function (data){localResponses = data;});
         speak(localResponses.errors.noBrowserSupport);
         speak(localResponses.errors.chrome);
         speak(localResponses.errors.getChrome);
