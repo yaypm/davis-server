@@ -65,6 +65,8 @@ let initConvo = function (err, convo) {
 };
 
 let addToConvo = function (response, convo) {
+            var lastInteractionTime = new Date();
+            var addToConvo = function (response, convo) {
 
     let isTimedOut = lastInteractionTime < new Date((new Date) * 1 - 1000 * 600);
 
