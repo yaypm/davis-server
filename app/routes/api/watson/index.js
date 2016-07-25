@@ -4,9 +4,11 @@ const router = require('express').Router(),
     WatsonService = require('../../../services/WatsonService'),
     logger = require('../../../utils/logger');
 
+
+
 router.get('/tts/token', (req, res) => {
     logger.debug('Received a TTS token request');
-    WatsonService.getTtsToken()
+    WatsonService(req.app.get('davisConfig')).getTtsToken()
         .then(token => {
             res.send(token);
         })
@@ -18,7 +20,7 @@ router.get('/tts/token', (req, res) => {
 
 router.get('/stt/token', (req, res) => {
     logger.debug('Received a STT token request');
-    WatsonService.getSttToken()
+    WatsonService(req.app.get('davisConfig')).getSttToken()
         .then(token => {
             res.send(token);
         })

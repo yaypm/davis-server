@@ -12,13 +12,13 @@ const   moment = require('moment'),
  *   https://mozilla.github.io/nunjucks/api.html#custom-filters
  * 
  ***********************************************************/
-const filters = function(env) {
+const filters = function(env, aliases) {
     env.addFilter('sayFriendlyServiceName', function(serviceName) {
-        return getFriendlyEntityName('services', serviceName, 'say');
+        return getFriendlyEntityName(aliases, 'services', serviceName, 'say');
     });
 
     env.addFilter('showFriendlyServiceName', function(serviceName) {
-        return getFriendlyEntityName('services', serviceName, 'show');
+        return getFriendlyEntityName(aliases, 'services', serviceName, 'show');
     });
 
     env.addFilter('timeOfDayGreeting', function(datetime) {
@@ -37,7 +37,7 @@ const filters = function(env) {
     });
 };
 
-function getFriendlyEntityName(type, name, displayType) {
+function getFriendlyEntityName(aliases, type, name, displayType) {
     // Strips off any port numbers if they exist
     let modifiedName = name.toLowerCase().split(':')[0];
 

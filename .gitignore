@@ -21,3 +21,7 @@ dist
 # MongoDB
 /data
 /mongod
+
+# demo
+demo/config.js
+test/config.js

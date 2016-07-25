@@ -13,10 +13,12 @@ class Davis {
      * @constructs Davis
      * @param {object} user - The user making the request
      * @param {object} conversation - The conversation object that helps give context
+     * @param {object} config - The config object
      */
-    constructor(user, conversation) {
+    constructor(user, conversation, config) {
         this.user = user;
         this.conversation = conversation;
+        this.config = config;
     }
 
     /**

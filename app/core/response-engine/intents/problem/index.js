@@ -7,7 +7,7 @@ const _ = require('lodash'),
     path = require('path'),
     Dynatrace = require('../../../dynatrace'),
     time = require('../../utils/time'),
-    nunjucks = require('../../nunjucks'),
+    Nunjucks = require('../../nunjucks'),
     logger = require('../../../../utils/logger');
 
 const NUNJUCK_EXTENTION = '.nj';
@@ -15,7 +15,7 @@ const tags = {};
 
 const process = function process(davis) {
     return new BbPromise((resolve, reject) => {
-        const dynatrace = new Dynatrace(davis.user.ruxit.url, davis.user.ruxit.token);
+        const dynatrace = new Dynatrace(davis.user.ruxit.url, davis.user.ruxit.token, davis.config);
         dynatrace.getFilteredProblems(davis.exchange.request.analysed.timeRange, davis.exchange.request.analysed.appName)
             .then(response => {
                 davis.intentData = {
@@ -38,7 +38,7 @@ const process = function process(davis) {
             })
             .spread((template, templateName) => {
                 logger.debug(`Found a template to use ${templateName}.`);
-                return nunjucks.renderAsync(path.join('problem', 'templates', template, templateName), davis);
+                return Nunjucks(davis.config.aliases).renderAsync(path.join('problem', 'templates', template, templateName), davis);
             })
             .then(response => {
                 logger.debug(`The template responsed with '${response}'`);

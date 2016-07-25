@@ -1,7 +1,6 @@
 'use strict';
 
-const router = require('express').Router(),
-    config = require('config');
+const router = require('express').Router();
 
 /**
  * Loading in the routes
@@ -13,6 +12,6 @@ router.use('/alexa', require('../integrations/alexa/routes'));
  * Loading additional intergrations
  */
 
-require('../integrations/slack');
+// require('../intergrations/slack');
 
 module.exports = router;

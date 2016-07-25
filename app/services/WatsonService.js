@@ -3,50 +3,53 @@
 const vcapServices = require('vcap_services'),
     _ = require('lodash'),
     watson = require('watson-developer-cloud'),
-    BbPromise = require('bluebird'),
-    config = require('config');
+    BbPromise = require('bluebird');
 
 const WATSON_API_VERSION = 'v1',
     WATSON_STREAM_API_URL = 'https://stream.watsonplatform.net';
 
-let ttsConfig = _.assign({
-    version: WATSON_API_VERSION,
-    url: `${WATSON_STREAM_API_URL}/text-to-speech/api`,
-    username: config.get('watson.tts.user'),
-    password: config.get('watson.tts.password')
-}, vcapServices.getCredentials('text_to_speech'));
 
-let sttConfig = _.assign({
-    version: WATSON_API_VERSION,
-    url: `${WATSON_STREAM_API_URL}/speech-to-text/api`,
-    username: config.get('watson.stt.user'),
-    password: config.get('watson.stt.password')
-}, vcapServices.getCredentials('speech_to_text'));
+module.exports = function WatsonService(config) {
 
-let ttsAuthService = watson.authorization(ttsConfig),
-    sttAuthService = watson.authorization(sttConfig);
-    
+    let ttsConfig = _.assign({
+        version: WATSON_API_VERSION,
+        url: `${WATSON_STREAM_API_URL}/text-to-speech/api`,
+        username: config.watson.tts.user,
+        password: config.watson.tts.password
+    }, vcapServices.getCredentials('text_to_speech'));
 
-const WatsonService = {
-    getTtsToken() {
-        return new BbPromise((resolve, reject) => {
-            ttsAuthService.getToken({url: ttsConfig.url}, (err, token) => {
-                if(err) return reject(err);
+    let sttConfig = _.assign({
+        version: WATSON_API_VERSION,
+        url: `${WATSON_STREAM_API_URL}/speech-to-text/api`,
+        username: config.watson.stt.user,
+        password: config.watson.stt.password
+    }, vcapServices.getCredentials('speech_to_text'));
 
-                return resolve(token);
+    let ttsAuthService = watson.authorization(ttsConfig),
+        sttAuthService = watson.authorization(sttConfig);
+
+
+    return {
+        getTtsToken() {
+            return new BbPromise((resolve, reject) => {
+                ttsAuthService.getToken({url: ttsConfig.url}, (err, token) => {
+                    if(err) return reject(err);
+
+                    return resolve(token);
+                });
             });
-        });
-    },
+        },
 
-    getSttToken() {
-        return new BbPromise((resolve, reject) => {
-            sttAuthService.getToken({url: sttConfig.url}, (err, token) => {
-                if(err) return reject(err);
+        getSttToken() {
+            return new BbPromise((resolve, reject) => {
+                sttAuthService.getToken({url: sttConfig.url}, (err, token) => {
+                    if(err) return reject(err);
 
-                return resolve(token);
+                    return resolve(token);
+                });
             });
-        });
-    }
+        }
+    };
 };
 
-module.exports = WatsonService;
+

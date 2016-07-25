@@ -1,10 +1,9 @@
 'use strict';
 
-const config = require('config'),
+const config = require('./config'),
     mongoose = require('mongoose');
 
 beforeEach(function (done) {
-
     function clearDB() {
 
 
@@ -17,7 +16,7 @@ beforeEach(function (done) {
     }
 
     if (mongoose.connection.readyState === 0) {
-        mongoose.connect(config.get('database.dsn'), function (err) {
+        mongoose.connect(config.database.dsn, function (err) {
             if (err) {
                 throw err;
             }

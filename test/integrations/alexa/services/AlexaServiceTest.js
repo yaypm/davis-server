@@ -5,27 +5,24 @@ const chai = require('chai'),
     should = chai.should,
     expect = chai.expect,
     AlexaService = require('../../../../app/integrations/alexa/services/AlexaService'),
+    config = require('../../../config'),
     alexaRequests = require('../../../fixtures/alexa');
 
 
-describe('The Alexa frontend service', function() {
+describe('The Alexa frontend service', function () {
 
-    /*it('should start a new conversation and exchange', function(done) {
-        AlexaService.processRequest(alexaRequests.requests.launch, function(err, res){
-            console.log(JSON.stringify(res));
-            done();
-        });
-    });*/
 
-    /*
-    it('should not find a user and return null', function() {
-        let user = AlexaService.getUser({session: {user: { userId: 'this-user-shouldnt-exist' }}});
-        expect(user).to.be.null;
-    });
+    it('Should have an askDavis Method', function (done) {
+        AlexaService(config).askDavis(alexaRequests.requests.launch)
+            .then(response => {
+                console.log(response);
+                expect(response).to.be.not.null;
+                expect(response.version).to.be.not.null;
+                return done()
+            })
+            .catch(err => {
+                return done(err);
+            });
+    }).timeout(55000);;
 
-    it('should find a user', function() {
-        let user = AlexaService.getUser({session: {user: { userId: 'amzn1.echo-sdk-account.AHIGWMSYVEQY5XIZIQNCTH5HZ5RW3JK43LUVBQEG6IM6B73UA5CLA' }}});
-        expect(user.id).to.equal('beeme1mr');
-    });
-    */
 });

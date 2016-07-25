@@ -7,7 +7,6 @@ const rp = require('request-promise'),
     url = require('url'),
     S = require('string'),
     natural = require('natural'),
-    aliases = require('../../config/aliases'),
     logger = require('../../utils/logger');
 
 const STRING_DISTANT_THRESHOLD = .75;
@@ -19,10 +18,11 @@ class Dynatrace {
      * @param {string} tenantUrl - The URL for your tenant (https://example.live.dynatrace.com)
      * @param {string} apiKey - The API key authorized to make requests to the tenant
      */
-    constructor(tenantUrl, apiKey) {
+    constructor(tenantUrl, apiKey, config) {
         let dynatraceUrl = url.parse(tenantUrl);
         this.url = 'https://' + dynatraceUrl.hostname + '/api/v1/';
         this.key = apiKey;
+        this.config = config;
 
         this.options = (url, parameters) => {
             return {
@@ -153,7 +153,7 @@ class Dynatrace {
                 .then( response => {
                     logger.debug(`The prefiltered list is ${response.result.problems.length}`);
                     response.result.problems = _.filter(response.result.problems, problem => {
-                        return filterApplicationProblems(applications, problem);
+                        return filterApplicationProblems(applications, problem, this.config.aliases);
                     });
                     logger.debug(`The post filtered list is ${response.result.problems.length}`);
 
@@ -170,7 +170,7 @@ class Dynatrace {
                     logger.debug(`The prefiltered list is ${response.result.problems.length}`);
                     response.result.problems = _.filter(response.result.problems, problem => {
                         return isProblemInRange(timeRange.startTime, timeRange.stopTime, problem.startTime, problem.endTime) &&
-                            filterApplicationProblems(applications, problem);
+                            filterApplicationProblems(applications, problem, this.config.aliases);
                     });
                     logger.debug(`The post filtered list is ${response.result.problems.length}`);
 
@@ -190,14 +190,14 @@ class Dynatrace {
  * @param {Problem} [currentTime]
  * @returns {boolean}
  */
-function filterApplicationProblems(applications, problem) {
+function filterApplicationProblems(applications, problem, aliases) {
     if (!_.isNil(applications)) {
         if (_.isArray(applications)) {
             return _.some(applications, application => {
-                return isApplicationAffected(application, problem);
+                return isApplicationAffected(application, problem, aliases);
             });
         } else {
-            return isApplicationAffected(applications, problem);
+            return isApplicationAffected(applications, problem, aliases);
         }
     } else {
         return true;
@@ -271,7 +271,7 @@ function isProblemInRange(requestStart, requestStop, problemStart, problemStop) 
  * @param {Object} problem - The problem to analysis
  * @returns {Boolean} Returns true if the application was affected by the problem.
  */
-function isApplicationAffected(appName, problem) {
+function isApplicationAffected(appName, problem, aliases) {
     let appAffected = false;
 
     if (problem.impactLevel === 'APPLICATION') {
