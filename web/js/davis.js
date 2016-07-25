@@ -542,7 +542,7 @@ function toggleMute(mute) {
 function enableSilentMode() {
     
     isSilentMode = true;
-    isListening = true;
+    isListening = false;
     
     if (!isMuted) {
         toggleMute(true);
@@ -584,10 +584,12 @@ function init() {
     } else {
         
         annyangInit();
+        
+        // Delay initial greeting for a smoother experience
         setTimeout(function () {
             outputTextAndSpeech(localResponses.greetings.hello);
             outputTextAndSpeech(localResponses.greetings.help);
-        }, 2 * 1000);
+        }, 1000);
         
     }
     
