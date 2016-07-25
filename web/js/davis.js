@@ -16,6 +16,7 @@ var endPoints = {
     'aws': 'https://umqjven962.execute-api.us-east-1.amazonaws.com/dev/slack',
     'dev': 'https://davis-backend-corywoolf.c9users.io/slack'
 };
+var userToken;
 
 // Speech-To-Text (STT) & Text-To-Speech (TTS) token objects
 var savedSttTokenObj = {
@@ -564,6 +565,33 @@ function noMic() {
     
 }
 
+// /**
+//  * getDavisUserToken() provides a token
+//  */ 
+// function getDavisUserToken() {
+    
+//     let token = localStorage.getItem("davis-user-token");
+//     if (!token) {
+        
+//         var options = {
+//             method: 'get'
+//         };
+        
+//         token = fetch('/api/v1/davis/token', options)
+//         .then(function (response) {
+        
+//             // Save new token
+//             token = response.text();
+//             localStorage.setItem("davis-user-token");
+         
+//         });
+        
+//     }
+    
+//     return token;
+    
+// }
+
 /**
  * init() is a global initializer (called via onload) 
  */
@@ -580,6 +608,7 @@ function init() {
         speak(localResponses.errors.noBrowserSupport);
         speak(localResponses.errors.chrome);
         speak(localResponses.errors.getChrome);
+        // userToken = getDavisUserToken();
         
     } else {
         

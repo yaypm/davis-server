@@ -31,7 +31,7 @@ module.exports = function setupApp(config) {
      * Starting slackbot
      */
 
-    if (config.slack && config.slack.key) {
+    if (config.slack.enabled && config.slack.key) {
         require('./integrations/slack')(config);
     }
 
