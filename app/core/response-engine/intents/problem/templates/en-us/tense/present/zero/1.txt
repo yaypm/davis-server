@@ -1,0 +1,179 @@
+#many samples that need to be divided into their individual files.
+
+There is only one $impactLevel problem to report. Problem $displayName is $status and is affecting $entityName.
+
+#There is only one application problem to report. Problem 575 is open and affecting costco.com.
+
+I found one $impactLevel problem to report. Problem $displayName is open and affecting $entityName.
+
+#I found one application problem to report. Problem 575 is open and affecting costco.com.
+
+if (entity name contains SYNTHETIC_TEST)
+
+then
+
+Synthetic Monitoring detected a $eventType for $entityName. This problem is currently $status. I would suggest viewing the web check dashlet in Dynatrace for further information. Would you like me to take you there?
+
+#Synthetic Monitoring detected a global outage for costco.com. This problem is currently open. I would suggest viewing the web check dashlet in Dynatrace for further information. Would you like me to take you there?
+
+#https://{$host}.ruxit.com/#webchecks
+
+if (eventType = FAILURE_RATE_INCREASE)
+
+then
+
+Due to an $eventType, there is an open $impactLevel problem for your $entityName.
+
+The $entityName is currently experiencing a $eventType. #Would you like to know more? #Want me to show you this?
+
+The failure rate increased for the $entityName. This problem is currently $status. #Would you like to know more? #Ping me if you want to know more.
+
+if (eventType = SYNTHETIC_SLOWDOWN) then 
+
+Dynatrace detected there is a decrease in your synthectic monitoring tests for $entityName application. I would suggest viewng this in your web-check dashlet. #Do you want me to take you there?
+
+#what is PGI?
+
+The $entityName is experiencing a $eventType event. This problem is currently $status. #Would you like to know more? 
+
+if (time_diff of $endTime-$startTime > 1 min)
+
+then 
+
+This $impactLevel problem was open for more than a minute and it was effecting the $entityName. #Would you like to know more. #Say show me and I'll take you there.
+
+If ($eventType = USER_ACTION_DURATION_DEGRADATION) then
+
+User actions are currently degraded for $entityName. This problem has been open for $now - $startTime. #Would you like to see this in Dynatrace? #Would you like to know more?
+
+if (eventType = PROCESS_LOG_ERROR)
+
+then
+
+The $entityName has a $eventType.
+
+
+if ($eventType = UNEXPECTED_LOW_LOAD)
+
+then
+
+At that time there did not seem like there was enough load on $entityName. This problem is still open. #Would you like to know more? #Want me to show you?
+
+At that time there was unusual low load on $entityName and this issue is currently still open. #Would you like to know more? #Want me to show you?
+
+Conversion rates might have dipped in that time frame as there was unexpected low load on $entityName.
+
+During that timeframe, there was a decrease in load for $entityName. Did you accidentally trip on the firewall? This problem is still open. Would you like to know more?
+
+#friendly names extended
+
+
+let events = [
+{
+name: 'SERVICE_RESPONSE_TIME_DEGRADED',
+friendly: ['decrease in service response time','slower service response time','degraded service response time','degraded response time','abnormal response time','lower than normal response time']
+},
+
+
+if ($eventType = SERVICE_RESPONSE_TIME_DEGRADED) then
+
+Dynatrace detected a $eventType for the $entityName $impactLevel.
+
+#tested with application, service, and infrstructure.
+
+
+{
+name: 'WEB_CHECK_GLOBAL_OUTAGE',
+friendly: ['global outage for synthetic based web checks']
+},
+{
+name: 'FAILURE_RATE_INCREASED',
+friendly: ['failure rate increased']
+},
+{
+name: 'SYNTHETIC_SLOWDOWN',
+friendly: ['decrease in synthetic response time']
+},
+{
+name: 'HIGH_CONNECTIVITY_FAILURES',
+friendly: ['high connectivity failures']
+},
+{
+name: 'HOST_LOG_ERROR',
+friendly: ['errors found in the host log']
+},
+{
+name: 'PROCESS_LOG_ERROR',
+friendly: ['errors found in the process log']
+},
+{
+name: 'PGI_OF_SERVICE_UNAVAILABLE',
+friendly: ['a process group instance is currently unavailable']
+},
+{
+name: 'UNEXPECTED_LOW_LOAD',
+friendly: ['lower than expected load on the application']
+},
+{
+name: 'USER_ACTION_DURATION_DEGRADATION',
+friendly: ['degradation in user action response time']
+},
+{
+name: 'CONNECTION_LOST',
+friendly: ['a connection lost with the infrastructure']
+},
+{
+name: 'MEMORY_SATURATED',
+friendly: ['saturated memory', 'high memory usage']
+},
+{
+name: 'SLOW_DISK',
+friendly: ['slow disk read and write throughput']
+},
+{
+name: 'DOCKER_MEMORY_SATURATION',
+friendly: ['Docker memory saturation', 'Docker is using too much memory']
+},
+{
+name: 'CPU_SATURATED',
+friendly: ['saturated CPU', 'CPU is overwhelmed']
+}
+];
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Random tech facts.
+
+A red panda is an animal native to the Himalayas and southwestern China. The English word for red panda is ‘Firefox’ which is where the browser gets its name from – so the Firefox logo is actually a red panda, not a fox!
+
+TO DO: Add More
+
+
+
+
+
+
+
+
+
