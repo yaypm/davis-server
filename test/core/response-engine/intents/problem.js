@@ -1,7 +1,7 @@
 'use strict';
 
 require('../../../setup');
-const problem = require('../../../../app/core/response-engine/intents/intents/problem/problem'),
+const problem = require('../../../../app/core/response-engine/intents/problem'),
     chai = require('chai'),
     expect = chai.expect;
 
@@ -15,9 +15,9 @@ describe('Test the problem intent', function() {
             },
             alexa: ['amzn1.echo-sdk-account.AHIGWMSYVEQY5XIZIQNCTH5HZ5RW3JK43LUVBQEG6IM6B73UA5CLA'],
             timezone: 'America/Detroit',
-            ruxit: {
+            dynatrace: {
                 token: 'yIEa7xY_QJCFHKzYzIiHb',
-                url: 'https://ruxitdev.dev.ruxitlabs.com'
+                url: 'https://ruxitdev.dev.dynatracelabs.com'
             },
             nlp: {
                 wit: 'QSB5XEEJJVIBDV3AJPLSZ7RFQGARQWQ5'
@@ -27,7 +27,9 @@ describe('Test the problem intent', function() {
             id: 1234,
             userId: 'test',
             startTime: new Date('2016-06-11T20:04:50.012Z'),
-            lastInteraction: new Date('2016-06-11T20:04:55.012Z')
+            lastInteraction: () => {
+                return [{updatedAt: new Date()}, {updatedAt: new Date()}]
+            }
         },
         exchange: {
             _conversation: 1234,
@@ -56,6 +58,9 @@ describe('Test the problem intent', function() {
                 },
                 finished: false
             }
+        },
+        config: {
+            aliases: {}
         },
         intentData: {
             problem: {
@@ -105,7 +110,14 @@ describe('Test the problem intent', function() {
 
     };
 
-    it('should find single problem template', function() {
-        problem(davis);
+    it('should find single problem template', function(done) {
+        problem.process(davis)
+            .then(response => {
+                console.log(response);
+                done()
+            })
+            .catch(err => {
+                done(err);
+            })
     });
 });
