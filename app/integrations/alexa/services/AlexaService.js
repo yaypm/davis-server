@@ -118,7 +118,7 @@ module.exports = function AlexaService(config) {
                 // Starts or continues our conversation
                 ConversationService.getConversation(user)
                     .then(conversation => {
-                        let davis = new Davis(user, conversation, config);
+                        const davis = new Davis(user, conversation, config);
                         return davis.interact(request, REQUEST_SOURCE);
                     })
                     .then(davis => {
@@ -127,11 +127,10 @@ module.exports = function AlexaService(config) {
                     })
                     .catch(err => {
                         logger.error(`Unfortunately, something went wrong.  ${err.message}`);
-                        //ToDo Add failure response
-                        return resolve();
+                        return reject(alexaResponse(`Unfortunately, something went wrong.  ${err.message}`, true));
                     });
             });
         }
-    }
+    };
 };
 

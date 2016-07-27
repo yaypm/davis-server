@@ -23,7 +23,7 @@ const time = {
      */
     differenceInHours: (startTime, endTime) => {
         return moment.duration(moment().diff(startTime, endTime), 'hours');
-    } 
+    }
 
 };
 

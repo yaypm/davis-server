@@ -16,7 +16,7 @@ const logger = new winston.Logger({
     exitOnError: false
 });
 
-// Suppresses loggin during Mocha tests.
+// Suppresses logging during Mocha tests.
 if (process.env.NODE_ENV === 'test') logger.remove(winston.transports.Console);
 
 module.exports = logger;
@@ -25,5 +25,3 @@ module.exports.stream = {
         logger.info(message.slice(0, -1));
     }
 };
-
-

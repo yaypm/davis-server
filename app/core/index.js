@@ -53,13 +53,11 @@ class Davis {
                 })
                 .spread(() => {
                     logger.debug('Davis has finished processing the request');
-                    resolve(this);
-                    return;
+                    return resolve(this);
                 })
                 .catch(err => {
                     logger.error(err.message);
-                    reject(err);
-                    return;
+                    return reject(err);
                 });
         });
     }

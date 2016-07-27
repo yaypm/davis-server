@@ -16,8 +16,7 @@ router.post('/', function(req, res) {
         .catch(err => {
             //ToDo add an error response.
             logger.error('Unable to respond to the request received from Alexa');
-            logger.error(err);
-            res.end();
+            res.json(err);
         });
 });
 
