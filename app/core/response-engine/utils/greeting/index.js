@@ -26,9 +26,10 @@ module.exports = {
                 
                 tags.lang = common.getLanguage(davis.user);
                 tags.newUser = isNewUser(davis.user);
-                tags.lastInteraction = lastInteration(currentInteractionTime, lastInteractionTime, davis.user.timezone);
+                tags.lastInteraction = lastInteraction(currentInteractionTime, lastInteractionTime, davis.user.timezone);
                 tags.timeOfDay = timeOfDay(currentInteractionTime, davis.user.timezone);
 
+                logger.debug(`Dumping the greetings tag: ${tags}`);
                 let template = decide('template', training_model, tags);
                 //ToDo review this logic
                 if(_.isNil(template)) return resolve('');
@@ -56,7 +57,7 @@ function isNewUser(lastInteractionTime) {
     return _.isNil(lastInteractionTime);
 }
 
-function lastInteration(currentInteractionTime, lastInteractionTime, timezone) {
+function lastInteraction(currentInteractionTime, lastInteractionTime, timezone) {
     if(_.isNil(lastInteractionTime)) {
         return null;
     } else {
