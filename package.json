@@ -9,7 +9,7 @@
     "node": "6.2.2"
   },
   "scripts": {
-    "start": "node ./bin/run",
+    "start": "node ./demo/index.js",
     "test": "mocha --recursive ./test/"
   },
   "dependencies": {
@@ -28,7 +28,8 @@
     "node-rules": "^3.0.3",
     "nunjucks": "^2.4.2",
     "rand-token": "^0.2.1",
-    "request-promise": "^3.0.0",
+    "request": "^2.74.0",
+    "request-promise": "^4.0.2",
     "require-all": "^2.0.0",
     "serve-favicon": "^2.3.0",
     "string": "^3.3.1",
