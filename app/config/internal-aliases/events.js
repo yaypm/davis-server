@@ -3,31 +3,31 @@
 let events = [
     {
         name: 'SERVICE_RESPONSE_TIME_DEGRADED',
-        friendly: ['decrease in service response time']
+        friendly: ['a decrease in service response time','a slower service response time','a degraded service response time','an abnormal response time','a higher than expected response time']
     },
     {
         name: 'WEB_CHECK_GLOBAL_OUTAGE',
-        friendly: ['global outage for synthetic based web checks']
+        friendly: ['a global outage for synthetic based web checks']
     },
     {
         name: 'FAILURE_RATE_INCREASED',
-        friendly: ['failure rate increased']
+        friendly: ['an increase in failure rate']
     },
     {
         name: 'SYNTHETIC_SLOWDOWN',
-        friendly: ['decrease in synthetic response time']
+        friendly: ['a decrease in synthetic response time']
     },
     {
         name: 'HIGH_CONNECTIVITY_FAILURES',
-        friendly: ['high connectivity failures']
+        friendly: ['a high number of connectivity failures']
     },
     {
         name: 'HOST_LOG_ERROR',
-        friendly: ['errors found in the host log']
+        friendly: ['an error found in the host log']
     },
     {
         name: 'PROCESS_LOG_ERROR',
-        friendly: ['errors found in the process log']
+        friendly: ['an error found in the process log']
     },
     {
         name: 'PGI_OF_SERVICE_UNAVAILABLE',
@@ -43,7 +43,7 @@ let events = [
     },
     {
         name: 'CONNECTION_LOST',
-        friendly: ['a connection lost with the infrastructure']
+        friendly: ['a connection was lost']
     },
     {
         name: 'MEMORY_SATURATED',
@@ -55,11 +55,11 @@ let events = [
     },
     {
         name: 'DOCKER_MEMORY_SATURATION',
-        friendly: ['Docker memory saturation', 'Docker is using too much memory']
+        friendly: ['Docker is using all of it\'s allocated memory']
     },
     {
         name: 'CPU_SATURATED',
-        friendly: ['saturated CPU', 'CPU is overwhelmed']
+        friendly: ['a saturated CPU', 'an overwhelmed CPU']
     }
 ];
 

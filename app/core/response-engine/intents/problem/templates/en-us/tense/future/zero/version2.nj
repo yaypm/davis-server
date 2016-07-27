@@ -1,5 +1,1 @@
-{% extends "problem/templates/en-us/shared//base.nj" %}
-
-{#- What happened at a time in the future -#}
-
-{% block content %}Unfortunately, I'm not able to see the future... yet!{% endblock %}
+Unfortunately, I'm not able to see the future... yet!
