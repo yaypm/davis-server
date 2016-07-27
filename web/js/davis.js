@@ -12,10 +12,7 @@ var player = new Audio();                 // Audio element used to play TTS audi
 var micOn = new Audio('./audio/pop.wav'); // Mic on sound effect
 var stream;                               // IBM STT stream
 var outputQueueSize = 0;                  // Counter for keeping track of queued outputTextAndSpeech() calls
-var endPoints = {
-    'aws': 'https://umqjven962.execute-api.us-east-1.amazonaws.com/dev/slack',
-    'dev': 'https://davis-backend-corywoolf.c9users.io/slack'
-};
+var timezone;
 var userToken;
 
 // Speech-To-Text (STT) & Text-To-Speech (TTS) token objects
@@ -62,7 +59,9 @@ function interactWithRuxit(request) {
 
     var input = {
         sessionId: 'websession-' + date.getDate() + date.getMonth() + date.getFullYear(),
-        request: request
+        request: request,
+        user: userToken,
+        timezone: timezone
     };
 
     var options = {
@@ -74,7 +73,7 @@ function interactWithRuxit(request) {
         })
     };
 
-    fetch(endPoints.aws, options)
+    fetch('/web', options)
     .then(function (response) {
         
         return response.json();
@@ -111,7 +110,7 @@ function interactWithRuxit(request) {
         }
 
         if (data.response != null) {
-            outputTextAndSpeech(data.response);
+            outputTextAndSpeech(data.response.outputSpeech.text);
         }
         
     }).catch(function (err) {
@@ -149,6 +148,42 @@ function outputTextAndSpeech(text) {
         }
         
     });
+}
+
+/**
+ * getDavisUserToken() returns a token with no expiration
+ * for storing and retrieving conversation history
+ * The token is stored client-side in localStorage
+ * 
+ * @return {String} token 
+ */ 
+function getDavisUserToken() {
+    
+    // Attempt to retrieve token from localStorage
+    userToken = localStorage.getItem("davis-user-token");
+    
+    if (!userToken) {
+        
+        var options = {
+            method: 'get',
+            headers: {
+              accept: 'text/plain'
+            }
+        };
+        
+        fetch('/web/token', options)
+        .then(function (response) {
+            return response.text();
+        }).then(function (resp) {
+            localStorage.setItem("davis-user-token", resp);
+            userToken = resp;
+        })
+        .catch(function (err) {
+            console.log(err);
+        });
+        
+    }
+    
 }
 
 /**
@@ -224,7 +259,6 @@ function getSttToken() {
             })
             .catch(function (err) {
                 reject(err);
-    
             });
 
         }
@@ -565,33 +599,6 @@ function noMic() {
     
 }
 
-// /**
-//  * getDavisUserToken() provides a token
-//  */ 
-// function getDavisUserToken() {
-    
-//     let token = localStorage.getItem("davis-user-token");
-//     if (!token) {
-        
-//         var options = {
-//             method: 'get'
-//         };
-        
-//         token = fetch('/api/v1/davis/token', options)
-//         .then(function (response) {
-        
-//             // Save new token
-//             token = response.text();
-//             localStorage.setItem("davis-user-token");
-         
-//         });
-        
-//     }
-    
-//     return token;
-    
-// }
-
 /**
  * init() is a global initializer (called via onload) 
  */
@@ -608,10 +615,11 @@ function init() {
         speak(localResponses.errors.noBrowserSupport);
         speak(localResponses.errors.chrome);
         speak(localResponses.errors.getChrome);
-        // userToken = getDavisUserToken();
         
     } else {
         
+        getDavisUserToken();
+        timezone = jstz.determine().name();
         annyangInit();
         
         // Delay initial greeting for a smoother experience

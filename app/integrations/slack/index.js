@@ -34,12 +34,9 @@ module.exports = function (config) {
                 .then(resp => {
                     
                     logger.info('Sending a response back to the Slack service');
-                    
-                    console.log('resp: '+JSON.stringify(resp));
-                   initialResponse = resp.response.outputSpeech.text;
+                    initialResponse = resp.response.outputSpeech.text;
 
                     convo.ask(initialResponse, function (response, convo) {
-                        console.log('response: '+JSON.stringify(response));
                         addToConvo(response, convo);
                     });
                     convo.next();
@@ -55,7 +52,6 @@ module.exports = function (config) {
             
             initialResponse = "Hi, my name's Davis, your virtual Dev-Ops assistant. What can I help you with today?";
             convo.ask(initialResponse, function (response, convo) {
-                console.log('response: '+JSON.stringify(response));
                 addToConvo(response, convo);
             });
             convo.next();
@@ -87,8 +83,6 @@ module.exports = function (config) {
             SlackService(config).askDavis(response)
             .then(resp => {
                 logger.info('Sending a response back to the Slack service');
-                
-                console.log('resp: '+JSON.stringify(resp));
                 
                 // send reply and listen for next interaction
                 convo.ask(resp.response.outputSpeech.text, function (response, convo) {

@@ -55,7 +55,7 @@ module.exports = function SlackService(config) {
                 let user = {
                     'id': 'slack-user-' + req.user, 
                     'nlp': config.users[0].nlp, 
-                    'ruxit': config.users[0].ruxit, 
+                    'dynatrace': config.users[0].dynatrace, 
                     'timezone': config.users[0].timezone
                 };
     

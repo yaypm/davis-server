@@ -19,6 +19,7 @@
     "annyang": "^2.4.0",
     "fetch": "^1.0.0",
     "typed.js": "^1.1.4",
-    "jquery": "latest"
+    "jquery": "latest",
+    "timezone-detect": "latest"
   }
 }
