@@ -34,7 +34,7 @@ const filters = function(env, aliases) {
 
     env.addFilter('friendlyTimeRange', function(timeRange, user) {
         let sentence = moment.tz(timeRange.startTime, user.timezone).calendar(null , {
-            sameDay: '[between today] h:mm a',
+            sameDay: '[between] h:mm a',
             lastDay: '[between yesterday] h:mm a',
             lastWeek: '[between] dddd h:mm a'
         });
