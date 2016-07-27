@@ -62,7 +62,7 @@ module.exports = function SlackService(config) {
                 // Starts or continues our conversation
                 ConversationService.getConversation(user)
                 .then(conversation => {
-                    let davis = new Davis(user, conversation);
+                    let davis = new Davis(user, conversation, config);
                     return davis.interact(req.text, REQUEST_SOURCE);
                 })
                 .then(davis => {
