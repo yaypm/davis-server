@@ -1,5 +1,1 @@
-{% extends "problem/templates/en-us/shared//base.nj" %}
-
-{% block content -%}
-I hate to be the bearer of bad news but there were {{ intentData.problem.result.problems.length }} problems detected.
-{%- endblock %}
+I hate to be the bearer of bad news but there were {{ intentData.problem.result.problems.length }} problems detected between {{ exchange.request.analysed.timeRange.startTime | friendlyTime(user) }} and {{ exchange.request.analysed.timeRange.stopTime | friendlyTime(user) }}

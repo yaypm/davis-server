@@ -8,6 +8,8 @@ const _ = require('lodash'),
     Dynatrace = require('../../../dynatrace'),
     time = require('../../utils/time'),
     Nunjucks = require('../../nunjucks'),
+    greeting = require('../../utils/greeting'),
+    common = require('../../utils/common'),
     logger = require('../../../../utils/logger');
 
 const NUNJUCK_EXTENTION = '.nj';
@@ -17,12 +19,14 @@ const process = function process(davis) {
     return new BbPromise((resolve, reject) => {
         const dynatrace = new Dynatrace(davis.user.dynatrace.url, davis.user.dynatrace.token, davis.config, davis.user.dynatrace.strictSSL);
         //ToDo check for future requests
+        greeting.greet(davis);
+
         dynatrace.getFilteredProblems(davis.exchange.request.analysed.timeRange, davis.exchange.request.analysed.appName)
             .then(response => {
                 davis.intentData = {
                     problem: response
                 };
-                tags.lang = getLanguage(davis.user);
+                tags.lang = common.getLanguage(davis.user);
                 //ToDo stop processing on error
                 tags.error = hasError(davis.intentData);
                 tags.tense = getTense(davis.exchange);
@@ -39,10 +43,10 @@ const process = function process(davis) {
             })
             .spread((template, templateName) => {
                 logger.debug(`Found a template to use ${templateName}.`);
-                return Nunjucks(davis.config.aliases).renderAsync(path.join('problem', 'templates', template, templateName), davis);
+                return Nunjucks(davis.config.aliases).renderAsync(path.join('intents', 'problem', 'templates', template, templateName), davis);
             })
             .then(response => {
-                logger.debug(`The template responsed with '${response}'`);
+                logger.debug(`The template responded with '${response}'`);
                 addTextResponse(davis.exchange, response);
                 return resolve(response);
             })
@@ -79,10 +83,6 @@ const getTemplate = function(templatePath) {
 function randomNunjuckTemplate(files) {
     return _.sample(_.filter(files, file => { return _.endsWith(file, NUNJUCK_EXTENTION);}));
 }
-
-const getLanguage = function(user) {
-    return user.lang || 'en-us';
-};
 
 const hasError = function(intentData) {
     return _.isNil(_.get(intentData, 'problem.result.problems'));
