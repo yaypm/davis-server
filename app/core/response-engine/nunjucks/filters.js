@@ -3,6 +3,7 @@
 const moment = require('moment-timezone'),
     _ = require('lodash'),
     S = require('string'),
+    nlp = require('nlp_compromise'),
     logger = require('../../../utils/logger'),
     events = require('../../../config/internal-aliases');
 
@@ -22,6 +23,10 @@ const filters = function(env, aliases) {
     env.addFilter('friendlyEntityName', function(entity, displayType) {
         return getFriendlyEntityName(aliases, getEntityType(entity), entity.entityName, displayType);
     });
+    
+    env.addFilter('friendlyStatus', function(status) {
+        return (status == 'OPEN') ? 'ongoing' : 'closed';
+    });
 
     env.addFilter('friendlyTime', function(time, user) {
         //return moment.tz(time, timezone).floor(5, 'minutes').format('h:mm A');
@@ -30,6 +35,21 @@ const filters = function(env, aliases) {
             lastDay: '[yesterday around] h:mm a',
             lastWeek: 'dddd [around] h:mm a'
         });
+    });
+    
+    env.addFilter('friendlyTimeRange', function(timeRange, user) {
+        let sentence = moment.tz(timeRange.startTime, user.timezone).calendar(null , {
+            sameDay: '[today between] h:mm A',
+            lastDay: '[yesterday between] h:mm A',
+            lastWeek: 'dddd [between] h:mm A'
+        });
+        sentence += ' and ';
+        sentence += moment.tz(timeRange.stopTime, user.timezone).calendar(null , {
+            sameDay: 'h:mm A',
+            lastDay: 'h:mm A',
+            lastWeek: 'dddd [at] h:mm A'
+        });
+        return sentence;
     });
 
     env.addFilter('friendlyTimeRange', function(timeRange, user) {
@@ -56,6 +76,10 @@ const filters = function(env, aliases) {
         } else  {
             return _.sample(event.friendly);
         }
+    });
+    
+    env.addFilter('pluralizeNoun', function(str, count) {
+        return count === 1 ? str : nlp.noun(str).pluralize();
     });
 };
 

@@ -1,0 +1,5 @@
+{% extends "en-us/intents/problem/shared/base.nj" %}
+
+{% block content -%}
+I hate to be the bearer of bad news but there were {{ intentData.problem.result.problems.length }} problems detected.  I hope you enjoy your custom response specifically created for speech!
+{%- endblock -%}

@@ -1,0 +1,4 @@
+{%- set problems = intentData.problem.result.problems -%}
+There were two problems detected {{ exchange.request.analysed.timeRange | friendlyTimeRange(user) }}. 
+The first problem is {{ problems[0].status | friendlyStatus }} and occured {{ problems[0].startTime | friendlyTime(user) }}, {{ problems[0].rankedImpacts[0] | friendlyEntityName }} was impacted.
+This was followed by the second problem which is {{ problems[1].status | friendlyStatus }} and occured {{ problems[1].startTime | friendlyTime(user) }}, when {{ problems[0].rankedImpacts[0] | friendlyEntityName }} was impacted.
