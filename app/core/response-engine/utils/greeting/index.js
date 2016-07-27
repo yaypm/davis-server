@@ -29,7 +29,7 @@ module.exports = {
                 tags.lastInteraction = lastInteraction(currentInteractionTime, lastInteractionTime, davis.user.timezone);
                 tags.timeOfDay = timeOfDay(currentInteractionTime, davis.user.timezone);
 
-                logger.debug(`Dumping the greetings tag: ${tags}`);
+                logger.debug(`Dumping the greetings tag: ${JSON.stringify(tags)}`);
                 let template = decide('template', training_model, tags);
                 //ToDo review this logic
                 if(_.isNil(template)) return resolve('');
@@ -64,7 +64,8 @@ function lastInteraction(currentInteractionTime, lastInteractionTime, timezone) 
         const current = moment.tz(currentInteractionTime, timezone),
             last = moment.tz(lastInteractionTime, timezone),
             difference = moment.duration(current.diff(last));
-        
+
+        //ToDo Fix this logic
         if(difference.asHours() < GREETING_HOUR_THRESHOLD) {
             logger.debug('We just talked... no reason to greet.');
             return 'recent';

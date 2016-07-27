@@ -31,9 +31,9 @@ const filters = function(env, aliases) {
     env.addFilter('friendlyTime', function(time, user) {
         //return moment.tz(time, timezone).floor(5, 'minutes').format('h:mm A');
         return moment.tz(time, user.timezone).floor(5, 'minutes').calendar(null , {
-            sameDay: '[today around] h:mm A',
-            lastDay: '[yesterday around] h:mm A',
-            lastWeek: 'dddd [around] h:mm A'
+            sameDay: '[today around] h:mm a',
+            lastDay: '[yesterday around] h:mm a',
+            lastWeek: 'dddd [around] h:mm a'
         });
     });
     
@@ -48,6 +48,21 @@ const filters = function(env, aliases) {
             sameDay: 'h:mm A',
             lastDay: 'h:mm A',
             lastWeek: 'dddd [at] h:mm A'
+        });
+        return sentence;
+    });
+
+    env.addFilter('friendlyTimeRange', function(timeRange, user) {
+        let sentence = moment.tz(timeRange.startTime, user.timezone).calendar(null , {
+            sameDay: '[between today] h:mm a',
+            lastDay: '[between yesterday] h:mm a',
+            lastWeek: '[between] dddd h:mm a'
+        });
+        sentence += ', and ';
+        sentence += moment.tz(timeRange.stopTime, user.timezone).calendar(null , {
+            sameDay: 'h:mm a',
+            lastDay: 'h:mm a',
+            lastWeek: 'dddd [at] h:mm a'
         });
         return sentence;
     });
