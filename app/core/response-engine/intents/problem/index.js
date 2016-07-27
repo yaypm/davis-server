@@ -10,6 +10,10 @@ const _ = require('lodash'),
     Nunjucks = require('../../nunjucks'),
     greeting = require('../../utils/greeting'),
     common = require('../../utils/common'),
+    
+    // for testing templates
+    //testProblems = require('../../../../../test/mock_data/dynatrace/ruxit/twoProblems.json'),
+    
     logger = require('../../../../utils/logger');
 
 const NUNJUCK_EXTENTION = '.nj';
@@ -23,9 +27,16 @@ const process = function process(davis) {
 
         dynatrace.getFilteredProblems(davis.exchange.request.analysed.timeRange, davis.exchange.request.analysed.appName)
             .then(response => {
+                
+                // for testing testing templates
+                //response = testProblems;
+
                 davis.intentData = {
                     problem: response
                 };
+                
+                console.log('intentData: '+JSON.stringify(davis.intentData));
+                
                 tags.lang = common.getLanguage(davis.user);
                 //ToDo stop processing on error
                 tags.error = hasError(davis.intentData);

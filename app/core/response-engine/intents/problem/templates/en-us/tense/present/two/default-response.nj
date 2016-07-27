@@ -1,0 +1,3 @@
+There were two problems detected {{ exchange.request.analysed.timeRange | friendlyTimeRange(user) }}. 
+The first problem occured at , when  had an issue with .
+This was followed by the second problem at , when  had an issue with .

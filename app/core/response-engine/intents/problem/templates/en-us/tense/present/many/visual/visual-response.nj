@@ -1,0 +1,5 @@
+{% extends "en-us/intents/problem/shared/base.nj" %}
+
+{% block content -%}
+<span style="color: red; font-weight: bold;">{{ intentData.problem.result.problems.length }} problems</span>
+{%- endblock -%}
