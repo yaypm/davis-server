@@ -1,1 +1,1 @@
-I hate to be the bearer of bad news but there were {{ intentData.problem.result.problems.length }} problems detected {{ exchange.request.analysed.timeRange | friendlyTimeRange(user) }}.
+I hate to be the bearer of bad news, but there were {{ intentData.problem.result.problems.length }} problems detected {{ exchange.request.analysed.timeRange | friendlyTimeRange(user) }}.
