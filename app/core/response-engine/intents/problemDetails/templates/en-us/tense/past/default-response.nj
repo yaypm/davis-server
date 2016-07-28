@@ -1,0 +1,2 @@
+{%- set problem = intentData.problemDetails.result -%}
+This problem was causing {{ problem.rankedEvents[0].eventType | friendlyEvent }}.

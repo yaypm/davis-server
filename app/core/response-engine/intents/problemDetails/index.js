@@ -2,6 +2,7 @@
 const BbPromise = require('bluebird'),
     _ = require('lodash'),
     Dynatrace = require('../../../dynatrace'),
+    Nunjucks = require('../../nunjucks'),
     common = require('../../utils/common');
 
 const process = function process(davis, data) {
@@ -13,8 +14,19 @@ const process = function process(davis, data) {
                 davis.intentData = {
                     problemDetails: response
                 };
-
-                common.addTextResponse(davis.exchange, 'Grabbed detailed data from Dynatrace');
+            
+                // Temporary solution, for testing
+                renderTemplate('./intents/problemDetails/templates/en-us/tense/past/default-response.nj', davis)
+                    .then(renderedTemplate => {
+                        
+                        common.addTextResponse(davis.exchange, renderedTemplate);
+                        return resolve();
+                        
+                    })
+                    .catch(err => {
+                        return reject(err); 
+                    });
+        
                 return resolve();
             })
             .catch(err => {
@@ -22,6 +34,15 @@ const process = function process(davis, data) {
             });
     });
 };
+
+const renderTemplate = function renderTemplate(templatePath, davis) {
+    return new BbPromise((resolve, reject) => {
+        
+        let template = Nunjucks(davis.config.aliases).renderAsync(templatePath, davis);
+        return resolve(template);
+        
+    });
+}
 
 const hasError = function(intentData) {
     return _.isNil(_.get(intentData, 'problem.result.problems'));

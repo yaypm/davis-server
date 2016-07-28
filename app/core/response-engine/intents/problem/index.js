@@ -35,8 +35,6 @@ const process = function process(davis) {
                     problem: response
                 };
                 
-                console.log('intentData: '+JSON.stringify(davis.intentData));
-                
                 tags.lang = common.getLanguage(davis.user);
                 //ToDo stop processing on error
                 tags.error = hasError(davis.intentData);
