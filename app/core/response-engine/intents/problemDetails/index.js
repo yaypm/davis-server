@@ -16,7 +16,7 @@ const process = function process(davis, data) {
                 };
             
                 // Temporary solution, for testing
-                renderTemplate('./intents/problemDetails/templates/en-us/tense/past/default-response.nj', davis)
+                renderTemplate('./intents/problemDetails/templates/en-us/tense/past/visual/slack-response.nj', davis)
                     .then(renderedTemplate => {
                         
                         common.addTextResponse(davis.exchange, renderedTemplate);

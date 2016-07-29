@@ -51,72 +51,75 @@ function interactWithRuxit(request) {
 
     $('#textInput').val('');
 
-    var el = $('<p>' + request + '</p>').css('display', 'none').addClass('userStyle');
-    $('#interactionLog').append(el);
-    el.fadeIn(400);
+    if (request.length) {
 
-    var date = new Date();
+        var el = $('<p>' + request + '</p>').css('display', 'none').addClass('userStyle');
+        $('#interactionLog').append(el);
+        el.fadeIn(400);
+    
+        var date = new Date();
+    
+        var input = {
+            sessionId: 'websession-' + date.getDate() + date.getMonth() + date.getFullYear(),
+            request: request,
+            user: userToken,
+            timezone: timezone
+        };
+    
+        var options = {
+            method: 'post',
+            mode: 'cors',
+            body: JSON.stringify(input),
+            headers: new Headers({
+                'Content-Type': 'application/json; charset=utf-8'
+            })
+        };
 
-    var input = {
-        sessionId: 'websession-' + date.getDate() + date.getMonth() + date.getFullYear(),
-        request: request,
-        user: userToken,
-        timezone: timezone
-    };
-
-    var options = {
-        method: 'post',
-        mode: 'cors',
-        body: JSON.stringify(input),
-        headers: new Headers({
-            'Content-Type': 'application/json; charset=utf-8'
-        })
-    };
-
-    fetch('/web', options)
-    .then(function (response) {
-        
-        return response.json();
-        
-    }).then(function (data) {
-        
-        if (!data.response && request.length > 0) {
+        fetch('/web', options)
+        .then(function (response) {
             
-            outputTextAndSpeech(localResponses.errors.nullResponse);
-            return;
+            return response.json();
             
-        } else if (!data.response) {
+        }).then(function (data) {
             
-            return;
-            
-        }
-
-        popTopInteraction();
-        
-        // check if interaction log is getting long
-        if (data.response.length > 70 || $('#interactionLog').children().length > 2) {
-            
-            if ($('#interactionLog').children().length > 3) {
+            if (!data.response && request.length > 0) {
                 
-                popTopInteraction();
-                popTopInteraction();
+                outputTextAndSpeech(localResponses.errors.nullResponse);
+                return;
                 
-            } else {
+            } else if (!data.response) {
                 
-                popTopInteraction();
+                return;
                 
             }
+    
+            popTopInteraction();
             
-        }
-
-        if (data.response != null) {
-            outputTextAndSpeech(data.response.outputSpeech.text);
-        }
-        
-    }).catch(function (err) {
-        outputTextAndSpeech(localResponses.errors.server);
-        console.log('interactWithRuxit - Error: ' + err);
-    });
+            // check if interaction log is getting long
+            if (data.response.length > 70 || $('#interactionLog').children().length > 2) {
+                
+                if ($('#interactionLog').children().length > 3) {
+                    
+                    popTopInteraction();
+                    popTopInteraction();
+                    
+                } else {
+                    
+                    popTopInteraction();
+                    
+                }
+                
+            }
+    
+            if (data.response != null) {
+                outputTextAndSpeech(data.response.outputSpeech.text);
+            }
+            
+        }).catch(function (err) {
+            outputTextAndSpeech(localResponses.errors.server);
+            console.log('interactWithRuxit - Error: ' + err);
+        });
+    }
 }
 
 /**

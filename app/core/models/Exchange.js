@@ -20,11 +20,11 @@ const exchange = new Schema({
     },
     state: {},
     response: {
-        say: {
+        audible: {
             ssml: {type: String, required: false, unique: false, index: false}
         },
         reprompt: { type: String, required: false, unique: false, index: false},
-        show: {
+        visual: {
             html: {type: String, required: false, unique: false, index: false},
             text: {type: String, required: false, unique: false, index: false}
         },

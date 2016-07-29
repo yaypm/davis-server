@@ -68,7 +68,7 @@ const process = function process(davis) {
 };
 
 const addTextResponse = function(exchange, response) {
-    exchange.response.show.text = response;
+    exchange.response.visual.text = response;
 };
 
 const getTemplate = function(templatePath) {
