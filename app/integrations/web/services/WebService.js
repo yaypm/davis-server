@@ -24,7 +24,7 @@ module.exports = function WebService(config) {
         //ToDo Add support for cards.
         logger.info('Generating the response for web');
     
-        let response = davis.exchange.response.show.text;
+        let response = davis.exchange.response.visual.text;
         
         return {
             version: RESPONSE_VERSION,
