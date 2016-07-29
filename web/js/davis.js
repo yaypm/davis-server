@@ -82,7 +82,7 @@ function interactWithRuxit(request) {
             
         }).then(function (data) {
             
-            if (!data.response && request.length > 0) {
+            if (!data.response.outputSpeech.text) {
                 
                 outputTextAndSpeech(localResponses.errors.nullResponse);
                 return;
