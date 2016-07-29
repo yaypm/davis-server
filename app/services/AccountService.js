@@ -22,7 +22,7 @@ module.exports = function AccountService(users) {
                 logger.info('Found a valid user');
                 logger.debug(`The merged user object is ${JSON.stringify(user)}`);
             } else {
-                logger.warn(`Unable to find a valid user: ${user}`);
+                logger.warn(`Unable to find a valid user: ${deviceId}`);
             }
 
             return user;

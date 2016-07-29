@@ -22,6 +22,6 @@ if (process.env.NODE_ENV === 'test') logger.remove(winston.transports.Console);
 module.exports = logger;
 module.exports.stream = {
     write: message => {
-        logger.info(message.slice(0, -1));
+        logger.info(`MORGAN: ${message.slice(0, -1)}`);
     }
 };

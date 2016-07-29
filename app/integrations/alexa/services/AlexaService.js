@@ -53,7 +53,7 @@ module.exports = function AlexaService(config) {
      */
     function formatResponse(davis) {
         //ToDo Add support for cards.
-        logger.info('Generating the reponse for Alexa');
+        logger.info('Generating the response for Alexa');
 
         let response;
         if (_.isString(davis.exchange.response.say.ssml)) {

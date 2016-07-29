@@ -7,13 +7,21 @@ const _ = require('lodash'),
     nunjucks = require('../nunjucks'),
     logger = require('../../../utils/logger');
 
-const NUNJUCK_EXTENTION = '.nj';
+const NUNJUCK_EXTENTION = '.nj',
+    RESERVED_FOLDER_NAMES = {
+        say: ['audible', 'auditory', 'say'],
+        show: ['visual', 'show']
+    };
+
+
 
 module.exports = {
     getTemplate: (templatePath) => {
         return new BbPromise((resolve, reject) => {
             fs.readdirAsync(templatePath)
                 .then(files => {
+
+
                     return resolve(randomNunjuckTemplate(files));
                 })
                 .catch(err => {
@@ -27,6 +35,28 @@ module.exports = {
         return nunjucks(davis.config.aliases).renderAsync(relativeTemplatePath, davis);
     }
 };
+
+function getTemplates(templatePath) {
+    return new BbPromise((resolve, reject) => {
+        fs.readdirAsync(templatePath)
+            .then(files => {
+                const say = (_.contains)
+                return resolve(randomNunjuckTemplate(files));
+            })
+            .spread((say, text, show) => {
+                const responses = {
+                    say: null,
+                    default: null,
+                    show: null
+                };
+                return resolve(responses)
+            })
+            .catch(err => {
+                logger.error(`Unable to get a templates: ${err.message}`);
+                return reject(err);
+            });
+    });
+}
 
 /**
  * Filters a list of of files by looking for a specific Nunjuck extention

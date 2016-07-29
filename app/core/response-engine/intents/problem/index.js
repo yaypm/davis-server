@@ -11,10 +11,7 @@ const Decide = require('../../utils/decide');
 const decision_model = require('./model');
 const greeting = require('../../utils/greeting');
 const common = require('../../utils/common');
-    
-    // for testing templates
-    //testProblems = require('../../../../../test/mock_data/dynatrace/ruxit/twoProblems.json'),
-    
+
 const logger = require('../../../../utils/logger');
 
 const NUNJUCK_EXTENTION = '.nj';
@@ -28,9 +25,6 @@ const process = function process(davis) {
 
         dynatrace.getFilteredProblems(davis.exchange.request.analysed.timeRange, davis.exchange.request.analysed.appName)
             .then(response => {
-                
-                // for testing testing templates
-                //response = testProblems;
 
                 davis.intentData = {
                     problem: response
@@ -58,7 +52,7 @@ const process = function process(davis) {
             })
             .then(response => {
                 logger.debug(`The template responded with '${response}'`);
-                addTextResponse(davis.exchange, response);
+                common.addTextResponse(davis.exchange, response);
                 return resolve(response);
             })
             .catch(err => {
@@ -67,10 +61,6 @@ const process = function process(davis) {
                 return reject(err);
             });
     });
-};
-
-const addTextResponse = function(exchange, response) {
-    exchange.response.show.text = response;
 };
 
 const getTemplate = function(templatePath) {
