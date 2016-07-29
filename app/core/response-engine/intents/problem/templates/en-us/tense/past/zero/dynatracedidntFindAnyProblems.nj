@@ -1,1 +1,1 @@
-DynaTrace didn't detect any issues {{ random(['during', 'in']) }} that time frame.
+DynaTrace didn't detect any issues {{ ['during', 'in']|random }} that time frame.
