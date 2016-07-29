@@ -9,7 +9,9 @@
     },
     "greetings": {
         "hello": "Hi, my name's Davis, your virtual Dev-Ops assistant.",
-        "help": "What can I help you with today?"
+        "micPermission": "Please select \"Allow\" if asked for permission to use your microphone.",
+        "thenHelp": "Then say \"Hey Davis\" or click the microphone when you're ready for help.",
+        "help": "Just say \"Hey Davis\" or click the microphone when you're ready to ask me something!"
     },
     "placeholders": {
         "easyTravel": "How's easyTravel doing?"
