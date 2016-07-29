@@ -7,15 +7,15 @@
 let applications = [{
     name: 'login',
     display: {
-        say: 'Engine-X',
-        show: 'Nginx'
+        audible: 'Engine-X',
+        visual: 'Nginx'
     },
     aliases: ['single sign on', 'sso', 'log on']
 },{
     name: 'costco.com',
     display: {
-        say: 'costco',
-        show: 'Nginx'
+        audible: 'costco',
+        visual: 'Nginx'
     },
     aliases: ['costco']
 },{

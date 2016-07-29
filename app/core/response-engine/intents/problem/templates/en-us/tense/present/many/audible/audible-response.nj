@@ -1,0 +1,7 @@
+{% extends "en-us/intents/problem/shared/base.nj" %}
+
+{% block content -%}
+<speak>
+I hate to be the bearer of bad news <break time="1s"/> but there were two problems detected.
+</speak>
+{%- endblock -%}

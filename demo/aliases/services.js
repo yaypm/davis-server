@@ -3,8 +3,8 @@
 let services = [{
     name: 'nginx',
     display: {
-        say: 'Engine-X',
-        show: 'Nginx'
+        audible: 'Engine-X',
+        visual: 'Nginx'
     },
     aliases: ['engine x', 'engine ex']
 }];

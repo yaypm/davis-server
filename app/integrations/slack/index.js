@@ -7,7 +7,8 @@ const Botkit = require('botkit'),
 module.exports = function (config) {
     
     const controller = Botkit.slackbot({
-        debug: false
+        debug: false,
+        interactive_replies: true
     });
     
     controller.spawn({
@@ -54,6 +55,7 @@ module.exports = function (config) {
             convo.ask(initialResponse, function (response, convo) {
                 addToConvo(response, convo);
             });
+            
             convo.next();
             
         }

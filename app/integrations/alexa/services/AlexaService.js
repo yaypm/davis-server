@@ -56,11 +56,11 @@ module.exports = function AlexaService(config) {
         logger.info('Generating the reponse for Alexa');
 
         let response;
-        if (_.isString(davis.exchange.response.say.ssml)) {
-            response = davis.exchange.response.say.ssml;
-        } else if (_.isString(davis.exchange.response.show.text)) {
+        if (_.isString(davis.exchange.response.audible.ssml)) {
+            response = davis.exchange.response.audible.ssml;
+        } else if (_.isString(davis.exchange.response.visual.text)) {
             logger.debug('Defaulting back to base text because a response specifically intended for speech was not found');
-            response = davis.exchange.response.show.text;
+            response = davis.exchange.response.visual.text;
         } else {
             response = ERROR_RESPONSE;
         }

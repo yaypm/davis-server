@@ -6,7 +6,7 @@ module.exports = {
     },
 
     addTextResponse: function(exchange, response) {
-        exchange.response.show.text = response;
+        exchange.response.visual.text = response;
     }
 
 };
