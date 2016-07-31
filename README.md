@@ -6,6 +6,6 @@
         |_| \_\\___//_/\_\___| |_|   |____/_/   \_\_/  |___|____/ 
     ----------------------------------------------------------------- 
 
-![Alt text](/other/images/dynatrace-davis.png?raw=true "dynatrace davis")
+![Alt text](/other/images/dynatrace-davis-logo.png?raw=true "dynatrace davis")
 
 This project provides an extensible implementation for natural language access to the Dynatrace platform artificial intelligence layer.
