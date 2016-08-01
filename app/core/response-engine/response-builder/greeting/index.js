@@ -4,8 +4,8 @@ const BbPromise = require('bluebird'),
     _ = require('lodash'),
     DecisionTree = require('decision-tree'),
     moment = require('moment-timezone'),
-    common = require('../common'),
-    templateGenerator = require('../template'),
+    common = require('../../utils/common'),
+    responseBuilder = require('../../response-builder'),
     path = require('path'),
     logger = require('../../../../utils/logger');
 
@@ -32,20 +32,14 @@ module.exports = {
 
                     logger.debug(`Dumping the greetings tag: ${JSON.stringify(tags)}`);
                     let template = decide('template', training_model, tags);
-                    //ToDo review this logic
-                    if(_.isNil(template)) return resolve('');
+                    if (_.isNil(template)) return resolve('');
 
                     logger.debug(`Using the ${template} for greeting.`);
-
-                    let templatePath = path.join(__dirname, 'templates', template);
-                    return templateGenerator.getTemplate(templatePath)
-                        .then(templateName => {
-                            return templateGenerator.render(path.join('utils', 'greeting', 'templates', template, templateName), davis)
-                        })
-                        .then(response => {
-                            logger.debug(`The generated greeting is '${response}'`);
-                            return resolve(response);
-                        });
+                    return responseBuilder.individual(`utils/greeting/templates/${template}`, davis);
+                })
+                .then(response => {
+                    logger.debug(`The generated greeting is '${response}'`);
+                    return resolve(response);
                 })
                 .catch(err => {
                     logger.error('Ran into an issue creating the greeting.');
@@ -67,7 +61,6 @@ function lastInteraction(currentInteractionTime, lastInteractionTime, timezone) 
             last = moment.tz(lastInteractionTime, timezone),
             difference = moment.duration(current.diff(last));
 
-        //ToDo Fix this logic
         if(difference.asHours() < GREETING_HOUR_THRESHOLD) {
             logger.debug('We just talked... no reason to greet.');
             return 'recent';

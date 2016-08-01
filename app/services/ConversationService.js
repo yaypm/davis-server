@@ -49,7 +49,6 @@ const ConversationService = {
         logger.info('source: '+JSON.stringify(source));
         logger.info('request: '+JSON.stringify(request));
 
-
         logger.info('Starting a new exchange');
         return new BbPromise((resolve, reject) => {
             let exchange = new ExchangeModel({

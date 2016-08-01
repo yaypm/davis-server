@@ -6,6 +6,7 @@ const _ = require('lodash'),
 const state = {
     zeroProblems: (davis) => {
         logger.debug('Processing state zero');
+        davis.exchange.response.finished = true;
         return;
     },
 
@@ -20,6 +21,8 @@ const state = {
             }
         };
         davis.exchange.state = state;
+        davis.exchange.response.finished = false;
+        return 'Would you like me to analysis this further for you?';
     },
 
     twoProblems: (davis) => {
@@ -34,11 +37,14 @@ const state = {
             }
         };
         davis.exchange.state = state;
+        davis.exchange.response.finished = false;
+        return 'Would you like to know more about the first problem or the second one?';
     },
 
     manyProblems: (davis) => {
         logger.debug('Processing state many');
-        return;
+        davis.exchange.response.finished = true;
+        return 'I would recommend either asking a more specific question or checking out the problem dashboard.';
     }
 }
 

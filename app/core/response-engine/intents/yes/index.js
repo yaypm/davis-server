@@ -7,13 +7,19 @@ const _ = require('lodash'),
 
 const process = function process(davis) {
     return new BbPromise(resolve => {
-        davis.conversation.getHistory(2, function(err, result) {
-            if (err) logger.error('Error loading conversation history');
+        davis.conversation.getHistory(2)
+            .then(result => {
+                const nextIntent = _.get(result, '[1].state.next.yes', 'error');
 
-            const nextIntent = _.get(result, '[1].state.next.yes', 'error');
-
-            return resolve(intents.runIntent(nextIntent, davis, _.get(result, '[1].state')));
-        });
+                return intents.runIntent(nextIntent, davis, _.get(result, '[1].state'));
+            })
+            .then(davis => {
+                resolve(davis);
+            })
+            .catch(err => {
+                logger.error(`Error loading the conversation history: ${err.message}`);
+                return reject(err);
+            });
     });
 };
 

@@ -2,6 +2,7 @@
 
 const express = require('express'),
     router = express.Router(),
+    _ = require('lodash'),
     AlexaService = require('../services/AlexaService'),
     logger = require('../../../utils/logger');
 

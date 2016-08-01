@@ -9,8 +9,8 @@ const time = require('../../utils/time');
 const Nunjucks = require('../../nunjucks');
 const Decide = require('../../utils/decide');
 const decision_model = require('./model');
-const greeting = require('../../utils/greeting');
 const common = require('../../utils/common');
+const responseBuilder = require('../../response-builder');
 
 const logger = require('../../../../utils/logger');
 
@@ -21,7 +21,6 @@ const process = function process(davis) {
     return new BbPromise((resolve, reject) => {
         const dynatrace = new Dynatrace(davis.user.dynatrace.url, davis.user.dynatrace.token, davis.config, davis.user.dynatrace.strictSSL);
         //ToDo check for future requests
-        greeting.greet(davis);
 
         dynatrace.getFilteredProblems(davis.exchange.request.analysed.timeRange, davis.exchange.request.analysed.appName)
             .then(response => {
@@ -29,9 +28,6 @@ const process = function process(davis) {
                 davis.intentData = {
                     problem: response
                 };
-                
-                logger.debug('Dumping the intentData: '+JSON.stringify(davis.intentData));
-                
                 tags.lang = common.getLanguage(davis.user);
                 tags.tense = getTense(davis.exchange);
                 tags.problems = getCount(davis.intentData);
@@ -41,18 +37,13 @@ const process = function process(davis) {
                 logger.debug(`The template path ${template}`);
 
                 let stateSetter = decide.state(tags);
-                stateSetter(davis);
+                let followup = stateSetter(davis);
 
-                let templatePath = path.join(__dirname, 'templates', template);
-                return [template, getTemplate(templatePath)];
-            })
-            .spread((template, templateName) => {
-                logger.debug(`Found a template to use ${templateName}.`);
-                return Nunjucks(davis.config.aliases).renderAsync(path.join('intents', 'problem', 'templates', template, templateName), davis);
+                return responseBuilder.build(davis, null, path.join(`intents/problem/templates/${template}`), followup);
             })
             .then(response => {
-                logger.debug(`The template responded with '${response}'`);
-                common.addTextResponse(davis.exchange, response);
+                //logger.debug(`The template responded with '${response}'`);
+                //common.addTextResponse(davis.exchange, response);
                 return resolve(response);
             })
             .catch(err => {

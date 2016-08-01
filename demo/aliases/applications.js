@@ -7,7 +7,7 @@
 let applications = [{
     name: 'login',
     display: {
-        audible: 'Single Sign On,
+        audible: 'Single Sign On',
         visual: 'SSO'
     },
     aliases: ['single sign on', 'sso', 'log on']
