@@ -1,0 +1,27 @@
+These following blocks are used for configuring your Echo device to be used with dynatrace davis.
+
+Dynatrace LLC 2016 All Rights Reserved
+
+Support: davis@dynatrace.com
+
+
+#Intent Schema
+
+{
+"intents": [
+{
+"intent": "DoCommand",
+"slots": [
+{
+"name": "command",
+"type": "LITERAL"
+}
+]
+}
+]
+}
+
+
+#Sample Utterances
+
+DoCommand {script parameters|command}

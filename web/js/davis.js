@@ -621,14 +621,20 @@ function init() {
         
     } else {
         
-        getDavisUserToken();
         timezone = jstz.determine().name();
         annyangInit();
         
         // Delay initial greeting for a smoother experience
         setTimeout(function () {
             outputTextAndSpeech(localResponses.greetings.hello);
-            outputTextAndSpeech(localResponses.greetings.help);
+            if (!localStorage.getItem("davis-user-token")) {
+                outputTextAndSpeech(localResponses.greetings.micPermission);
+                outputTextAndSpeech(localResponses.greetings.thenHelp);
+            } else {
+                outputTextAndSpeech(localResponses.greetings.help);
+            }
+            getDavisUserToken();
+            toggleMute(true);
         }, 1000);
         
     }
