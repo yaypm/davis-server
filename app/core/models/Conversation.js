@@ -15,12 +15,12 @@ const conversation = new Schema({
     updatedAt: 'lastInteraction'
 });
 
-conversation.methods.getHistory = function getHistory(length, cb) {
-    return ExchangeModel.find({_conversation: this.id}).limit(length).sort({'updatedAt': -1}).exec(cb);
+conversation.methods.getHistory = function getHistory(length) {
+    return ExchangeModel.find({_conversation: this.id}).limit(length).sort({'updatedAt': -1}).exec();
 };
 
-conversation.methods.lastInteraction = function lastInteraction(cb) {
-    return ExchangeModel.find({_conversation: this.id}).limit(2).sort({'updatedAt': -1}).select('updatedAt').exec(cb);
+conversation.methods.lastInteraction = function lastInteraction() {
+    return ExchangeModel.find({_conversation: this.id}).limit(2).sort({'updatedAt': -1}).select('updatedAt').exec();
 };
 
 conversation.set('autoIndex', false);

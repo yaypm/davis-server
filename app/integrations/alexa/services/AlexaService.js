@@ -53,7 +53,7 @@ module.exports = function AlexaService(config) {
      */
     function formatResponse(davis) {
         //ToDo Add support for cards.
-        logger.info('Generating the reponse for Alexa');
+        logger.info('Generating the response for Alexa');
 
         let response;
         if (_.isString(davis.exchange.response.audible.ssml)) {
@@ -69,6 +69,7 @@ module.exports = function AlexaService(config) {
     }
 
     function alexaResponse(response, shouldEndSession) {
+        logger.info(`Responding to Alexa with '${response}'.`);
         shouldEndSession = shouldEndSession || true;
         return {
             version: RESPONSE_VERSION,

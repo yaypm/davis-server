@@ -6,7 +6,7 @@ module.exports = function Nunjucks(aliases) {
         path = require('path'),
         nunjucks = BbPromise.promisifyAll(require('nunjucks')),
         env = new nunjucks.Environment(
-            new nunjucks.FileSystemLoader(path.join(__dirname, '..')), {
+            new nunjucks.FileSystemLoader(path.join(__dirname, '../..')), {
                 autoescape: false,
                 trimBlocks: true,
                 lstripBlocks: true

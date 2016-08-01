@@ -21,12 +21,12 @@ const exchange = new Schema({
     state: {},
     response: {
         audible: {
-            ssml: {type: String, required: false, unique: false, index: false}
+            ssml: {type: String, required: false, unique: false, index: false, default: null}
         },
         reprompt: { type: String, required: false, unique: false, index: false},
         visual: {
-            html: {type: String, required: false, unique: false, index: false},
-            text: {type: String, required: false, unique: false, index: false}
+            html: {type: String, required: false, unique: false, index: false, default: null},
+            text: {type: String, required: false, unique: false, index: false, default: null}
         },
         finished: { type: Boolean, required: false, unique: false, index: false, default: true}
     }

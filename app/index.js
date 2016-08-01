@@ -12,7 +12,7 @@ module.exports = function setupApp(config) {
 
     app.set('davisConfig', config);
     logger.debug('Overriding Express logger');
-    app.use(require('morgan')('combined', {'stream': logger.stream}));
+    app.use(require('morgan')('tiny', {'stream': logger.stream}));
 
     mongoose.connect(config.database.dsn, function (err) {
         if (err) throw err;

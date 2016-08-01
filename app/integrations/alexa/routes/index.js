@@ -10,7 +10,6 @@ router.post('/', function(req, res) {
 
     AlexaService(req.app.get('davisConfig')).askDavis(req)
         .then(response => {
-            logger.info('Sending a response back to the Alexa service');
             res.json(response);
         })
         .catch(err => {

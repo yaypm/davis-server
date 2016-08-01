@@ -60,6 +60,10 @@ let events = [
     {
         name: 'CPU_SATURATED',
         friendly: ['a saturated CPU', 'an overwhelmed CPU']
+    },
+    {
+        name: 'PROCESS_CUSTOM_ERROR',
+        friendly: ['a user defined process error']
     }
 ];
 

@@ -14,19 +14,8 @@ const process = function process(davis, data) {
                 davis.intentData = {
                     problemDetails: response
                 };
-            
-                // Temporary solution, for testing
-                renderTemplate('./intents/problemDetails/templates/en-us/tense/past/default-response.nj', davis)
-                    .then(renderedTemplate => {
-                        
-                        common.addTextResponse(davis.exchange, renderedTemplate);
-                        return resolve();
-                        
-                    })
-                    .catch(err => {
-                        return reject(err); 
-                    });
-        
+
+                common.addTextResponse(davis.exchange, 'This is a placeholder for a much more interesting and useful problem details intent.');
                 return resolve();
             })
             .catch(err => {

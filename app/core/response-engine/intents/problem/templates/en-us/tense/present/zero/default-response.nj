@@ -1,3 +1,1 @@
-{% extends "problem/templates/en-us/shared/base.nj" %}
-
-{% block content %}I've got great news for you!  Everything is working as expected.{% endblock %}
+There were no problems at that time!
