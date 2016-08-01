@@ -1,11 +1,13 @@
 'use strict';
 
+const _ = require('lodash');
+
 module.exports = {
     getLanguage: function(user) {
         return user.lang || 'en-us';
     },
 
-    addTextResponse: function(exchange, response) {
-        exchange.response.visual.text = response;
+    saveIntentData: function(davis, property, data) {
+        _.set(davis, `intentData.${property}`, data);
     }
 };

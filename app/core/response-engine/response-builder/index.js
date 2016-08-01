@@ -3,18 +3,21 @@
 const _ = require('lodash'),
     BbPromise = require('bluebird'),
     fs = BbPromise.promisifyAll(require('fs')),
-    nunjucks = require('../nunjucks/index'),
+    nunjucks = require('./nunjucks'),
     path = require('path'),
+    greeter = require('./greeter'),
     logger = require('../../../utils/logger');
 
-const NUNJUCK_EXTENTION = '.nj',
+const NUNJUCK_EXTENSION = '.nj',
     RESERVED_FOLDER_NAMES = {
         say: ['audible', 'auditory', 'say'],
         show: ['visual', 'show']
     };
 
 module.exports = {
-    build: (davis, greeting, relativeTemplatePath, followUp) => {
+    build: (davis, relativeTemplatePath, shouldGreet, followUp) => {
+        relativeTemplatePath = path.join(relativeTemplatePath);
+        shouldGreet = shouldGreet || true;
         return new BbPromise((resolve, reject) => {
             getFiles(relativeTemplatePath)
                 .then(files => {
@@ -24,12 +27,13 @@ module.exports = {
                     return [sayTemplate, textTemplate, showTemplate];
                 })
                 .spread((say, text, show) => {
-                    const sayResponse = (!_.isNil(say)) ? nunjucks(davis.config.aliases).renderAsync(say, davis) : null,
+                    const greetingResponse = (shouldGreet) ? getGreeting(davis) : null,
+                        sayResponse = (!_.isNil(say)) ? nunjucks(davis.config.aliases).renderAsync(say, davis) : null,
                         textResponse = (!_.isNil(text)) ? nunjucks(davis.config.aliases).renderAsync(text, davis): null,
                         showResponse = (!_.isNil(show)) ? nunjucks(davis.config.aliases).renderAsync(show, davis) : null;
-                    return [sayResponse, textResponse, showResponse];
+                    return [greetingResponse, sayResponse, textResponse, showResponse];
                 })
-                .spread((say, text, show) => {
+                .spread((greeting, say, text, show) => {
                     davis.exchange.response.audible.ssml = combinedResponse(greeting, say, followUp);
                     davis.exchange.response.visual.text = combinedResponse(greeting, text, followUp);
                     davis.exchange.response.visual.html = combinedResponse(greeting, show, followUp);
@@ -40,50 +44,55 @@ module.exports = {
                     return reject(err);
                 });
         });
-    },
-
-    individual: (relativeTemplatePath, davis) => {
-        return new BbPromise((resolve, reject) => {
-            getFiles(relativeTemplatePath)
-                .then(files => {
-                    return randomNunjuckTemplate(relativeTemplatePath, files)
-                })
-                .then(templatePath => {
-                    return nunjucks(davis.config.aliases).renderAsync(templatePath, davis)
-                })
-                .then(response => {
-                    return resolve(response);
-                })
-                .catch(err => {
-                    logger.error(`Unable to build an individual response: ${err.message}`);
-                    reject(err);
-                })
-        })
     }
 };
+
+function getGreeting(davis) {
+    return new BbPromise((resolve, reject) => {
+        greeter.greet(davis).then(relativeTemplatePath => {
+            if (_.isEmpty(relativeTemplatePath)) {
+                return resolve(null);
+            } else {
+                return getFiles(relativeTemplatePath)
+                    .then(files => {
+                        return nunjucks(davis.config.aliases).renderAsync(randomNunjuckTemplate(relativeTemplatePath, files), davis);
+                    })
+                    .then(greeting => {
+                        return resolve(greeting);
+                    })
+                    .catch(err => {
+                        return reject(err);
+                    });
+            }
+        });
+    })
+
+}
 
 function combinedResponse(greet, body, followUp) {
     if (_.isNil(body)) {
         return body
     } else {
-        let response = (!!greet) ? `${greet}  ` : '';
+        let response = (greet) ? `${greet}  ` : '';
         response = `${response}${body}`;
-        return (!!followUp) ? `${response}  ${followUp}` : response;
+        return (followUp) ? `${response}  ${followUp}` : response;
     }
 }
 
+function getFullPath(relativeTemplatePath) {
+    return path.join(__dirname, '..', relativeTemplatePath);
+}
+
 function getFiles(relativeTemplatePath) {
-    const fullPath = path.join(__dirname, '..', relativeTemplatePath);
+    const fullPath = getFullPath(relativeTemplatePath);
     return fs.readdirAsync(fullPath);
 }
 
 function findAdditionalTemplates(relativeTemplatePath, files, reserved_folders) {
-    const fullPath = path.join(__dirname, '..', relativeTemplatePath),
+    const fullPath = getFullPath(relativeTemplatePath),
         matches = _.intersection(files, reserved_folders);
 
-    if (_.isEmpty(matches)) {
-        return;
-    } else {
+    if (!_.isEmpty(matches)) {
         return new BbPromise((resolve, reject) => {
             const folder = _.head(matches),
                 templatePath = path.join(fullPath, folder);
@@ -100,11 +109,12 @@ function findAdditionalTemplates(relativeTemplatePath, files, reserved_folders) 
 
 /**
  * Filters a list of of files by looking for a specific Nunjuck extention
+ * @param {string} templatePath - The relative path to the templates
  * @param {Object} files - The list of files and folders returned from fs.
  * @returns {Object} - The filtered list of Nunjuck templates.
  */
 function randomNunjuckTemplate(templatePath, files) {
-    const filteredTemplateList = _.filter(files, file => {return _.endsWith(file, NUNJUCK_EXTENTION);});
+    const filteredTemplateList = _.filter(files, file => {return _.endsWith(file, NUNJUCK_EXTENSION);});
 
     if (filteredTemplateList.length === 0) {
         logger.error('Unable to find a template!');

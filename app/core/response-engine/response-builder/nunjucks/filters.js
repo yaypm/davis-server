@@ -4,8 +4,8 @@ const moment = require('moment-timezone'),
     _ = require('lodash'),
     S = require('string'),
     nlp = require('nlp_compromise'),
-    logger = require('../../../utils/logger'),
-    events = require('../../../config/internal-aliases');
+    logger = require('../../../../utils/logger'),
+    events = require('../../../../config/internal-aliases');
 
 require('moment-round');
 
@@ -74,10 +74,9 @@ function getEntityType(entity) {
     } else if (entity.impactLevel === 'SERVICE') {
         return 'services';
     } else if (entity.impactLevel === 'INFRASTRUCTURE') {
-        return 'infrastrcture';
+        return 'infrastructure';
     } else {
         logger.warn(`Unknown inpact level: ${entity.impactLeve}`);
-        return;
     }
 }
 
