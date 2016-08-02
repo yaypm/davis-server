@@ -65,21 +65,11 @@ function getDateTime(entities) {
     if (_.has(entities, 'datetime')) {
         timeRange = Dynatrace.generateTimeRange(entities.datetime[0]);
         
-        let startDate = new Date(timeRange.startTime);
-        let stopDate = new Date(timeRange.stopTime);
-        let currentDate = new Date();
-        let dateFormat = 'YYYY-MM-DDTHH:mm:ss.SSS[Z]';
-
         // if start or stop date is in the future, shift the timeframe backwards by 7 days
-        if (startDate.getDate() > currentDate.getDate() || stopDate.getDate() > currentDate.getDate()) {
+        if (moment().isSameOrBefore(moment.parseZone(timeRange.startTime))) {
             
-            startDate.setDate(startDate.getDate() - 7);
-            stopDate.setDate(stopDate.getDate() - 7);
-            
-            timeRange = {
-                startTime: moment(startDate).format(dateFormat),
-                stopTime: moment(stopDate).format(dateFormat)
-            };
+            timeRange.startTime = moment.parseZone(timeRange.startTime).subtract(7, 'days');
+            timeRange.stopTime = moment.parseZone(timeRange.stopTime).subtract(7, 'days');
             logger.debug('getDateTime: Timeframe in the future, shifted backwards by 7 days');
             
         }
