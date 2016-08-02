@@ -2,7 +2,7 @@
   "name": "davis-server",
   "version": "0.1.0",
   "description": "Davis Server",
-  "main": "demo/index",
+  "main": "./DavisServer",
   "repository": "https://github.com/ruxit/davis-server",
   "author": "",
   "engines": {
