@@ -70,7 +70,7 @@ function getDateTime(entities) {
             
             timeRange.startTime = moment.parseZone(timeRange.startTime).subtract(7, 'days');
             timeRange.stopTime = moment.parseZone(timeRange.stopTime).subtract(7, 'days');
-            logger.debug('getDateTime: Timeframe in the future, shifted backwards by 7 days');
+            logger.warn('getDateTime: Timeframe in the future, shifted backwards by 7 days');
             
         }
     }
