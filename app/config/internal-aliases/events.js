@@ -35,11 +35,11 @@ let events = [
     },
     {
         name: 'UNEXPECTED_LOW_LOAD',
-        friendly: ['lower than expected load on the application']
+        friendly: ['a lower than expected load on the application']
     },
     {
         name: 'USER_ACTION_DURATION_DEGRADATION',
-        friendly: ['degradation in user action response time']
+        friendly: ['a degradation in user action response time']
     },
     {
         name: 'CONNECTION_LOST',
@@ -55,7 +55,7 @@ let events = [
     },
     {
         name: 'DOCKER_MEMORY_SATURATION',
-        friendly: ['Docker is using all of it\'s allocated memory']
+        friendly: ['an issue with Docker using all of it\'s allocated memory']
     },
     {
         name: 'CPU_SATURATED',

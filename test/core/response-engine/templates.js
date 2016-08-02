@@ -10,7 +10,8 @@ describe('Tests the template engine', function() {
         fs.readFileAsync('./logs/template_builder/test.txt')
             .then(data => {
                 data = JSON.parse(data);
-                const template =  data.template.text,
+                //const template =  data.template.text,
+                const template = 'intents\\launch\\templates\\en-us\\audible\\default-response.nj',
                     davis = data.davis;
 
                 return nunjucks(davis.config.aliases).renderAsync(template, davis)

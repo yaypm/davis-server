@@ -70,7 +70,6 @@ module.exports = function AlexaService(config) {
 
     function alexaResponse(response, shouldEndSession) {
         logger.info(`Responding to Alexa with '${response}'.`);
-        shouldEndSession = shouldEndSession || true;
         return {
             version: RESPONSE_VERSION,
             sessionAttributes: {},

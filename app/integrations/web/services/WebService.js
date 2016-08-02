@@ -5,12 +5,10 @@ const ConversationService = require('../../../services/ConversationService'),
     logger = require('../../../utils/logger'),
     Davis = require('../../../core'),
     BbPromise = require('bluebird'),
-    randToken = require('rand-token').uid,
     _ = require('lodash');
 
 const RESPONSE_VERSION = '1.0',
-    REQUEST_SOURCE = 'web',
-    ERROR_RESPONSE = 'Wow, this is embarrassing!  I understood what you were asking for but I simply can\'t but it into words.  Perhaps you could help me out by checking the logs and adding the missing template?';
+    REQUEST_SOURCE = 'web';
 
 
 module.exports = function WebService(config) {
@@ -77,25 +75,7 @@ module.exports = function WebService(config) {
                 
             });
             
-        },
-        
-        /**
-        * getDavisUserToken() generates a token
-        * @param {Object} req - The request received from web.
-        * @returns {promise} res - The response formatted for web.
-        */
-        getDavisUserToken: (req) => {
-            
-            logger.info('Starting our interaction with Davis');
-            
-            return new BbPromise((resolve, reject) => {
-                
-                resolve(randToken(16));
-                
-            });
-            
         }
-        
     }
     
 };
