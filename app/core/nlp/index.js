@@ -4,6 +4,7 @@ const Wit = require('./wit'),
     BbPromise = require('bluebird'),
     _ = require('lodash'),
     Dynatrace = require('../dynatrace'),
+    moment = require('moment'),
     logger = require('../../utils/logger');
 
 const INTENT_CONFIDENCE_THRESHOLD = .60,
@@ -63,6 +64,25 @@ function getDateTime(entities) {
     let timeRange = null;
     if (_.has(entities, 'datetime')) {
         timeRange = Dynatrace.generateTimeRange(entities.datetime[0]);
+        
+        let startDate = new Date(timeRange.startTime);
+        let stopDate = new Date(timeRange.stopTime);
+        let currentDate = new Date();
+        let dateFormat = 'YYYY-MM-DDTHH:mm:ss.SSS[Z]';
+
+        // if start or stop date is in the future, shift the timeframe backwards by 7 days
+        if (startDate.getDate() > currentDate.getDate() || stopDate.getDate() > currentDate.getDate()) {
+            
+            startDate.setDate(startDate.getDate() - 7);
+            stopDate.setDate(stopDate.getDate() - 7);
+            
+            timeRange = {
+                startTime: moment(startDate).format(dateFormat),
+                stopTime: moment(stopDate).format(dateFormat)
+            };
+            logger.debug('getDateTime: Timeframe in the future, shifted backwards by 7 days');
+            
+        }
     }
     return timeRange;
 }
