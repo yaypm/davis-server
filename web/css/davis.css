@@ -8,50 +8,50 @@
 		position: relative;
 		color: #BDBDEA;
 		margin-top:10px;
-		font-size: 38px;
+		font-size: 20px;
 		padding-left: 50px;
 		padding-right: 50px;
 	}
 	#interactionlog p:last-of-type {
 		color: #fcf8e3;
-		font-size: 52px;
+		font-size: 28px;
 	}
 	
 	.inputWrapper {
 		position: absolute;
 		z-index: 1001;
-		left: calc(50% - 250px);
+		left: calc(50% - 300px);
 		bottom: 30px;
 	}
 	#textInput {	
 		position: relative;
 		float: left;
-		width: 500px;
-		height: 69px;
+		width: 600px;
+		height: 51px;
 		padding: 6px 0px 6px 16px;
 		background-color: white;
 		border-radius: 9px;
 		border: 1px solid white;
 		font-family: BerninaSans, Arial;
-		font-size: 38px;
+		font-size: 20px;
 		color: black;
 	}
-	#textInput:focus{
+	#textInput:focus {
     	outline: none;
 	}
 	#muteWrapper {
 		position: relative;
 		float: left;
-		width: 100px;
-		height: 69px;
-		padding: 10px 20px 0px 20px;
+		width: 80px;
+		height: 51px;
+		padding: 5px 10px 0px 10px;
 		cursor: pointer;
 	}
 	#muteSVG {
 		position: relative;
 		float: left;
-		width: 50px;
-		height: 50px;
+		width: 40px;
+		height: 40px;
 		opacity: 1.0;
 	}
 	.userStyle {
