@@ -1,26 +1,26 @@
 'use strict';
 
 require('../../setup.js');
-const TemplateEngine = require('../../../app/core/response-engine/templates'),
-    chai = require('chai'),
-    expect = chai.expect,
-    user = require('../../../app/config/user'),
-    conversation = require('../../mock_data/davis/conversation'),
-    exchange = require('../../mock_data/davis/exchange');
+const   BbPromise = require('bluebird'),
+    fs = BbPromise.promisifyAll(require('fs')),
+    nunjucks = require('../../../app/core/response-engine/response-builder/nunjucks');
 
 describe('Tests the template engine', function() {
-    const templateEngine = new TemplateEngine({user, conversation, exchange});
+    it('should dynamically load in the appropriate templates', function(done) {
+        fs.readFileAsync('./logs/template_builder/test.txt')
+            .then(data => {
+                data = JSON.parse(data);
+                const template =  data.template.text,
+                    davis = data.davis;
 
-    it('should dynamically load in the approperate templates', function(done) {
-        //Setting a template path
-        templateEngine.exchange.template.path = 'en-us/intents/problem/tense/past/many';
-        templateEngine.buildResponse()
-        .then(response => {
-            expect(response.exchange.response.say.ssml).to.not.be.null;
-            done();
-        })
-        .catch(err => {
-            done(err);
-        });
+                return nunjucks(davis.config.aliases).renderAsync(template, davis)
+            })
+            .then(response => {
+                console.log(response);
+                done();
+            })
+            .catch(err => {
+                done(err);
+            })
     });
 });

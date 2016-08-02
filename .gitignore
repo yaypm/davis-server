@@ -11,6 +11,7 @@ dist
 
 # Dependency directory
 /node_modules
+/bower_components
 
 # IDE Properties
 /.c9

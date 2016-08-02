@@ -6,7 +6,7 @@ const _ = require('lodash'),
     logger = require('../../../../utils/logger');
 
 const process = function process(davis) {
-    return new BbPromise(resolve => {
+    return new BbPromise((resolve, reject) => {
         davis.conversation.getHistory(2)
             .then(result => {
                 const nextIntent = _.get(result, '[1].state.next.yes', 'error');

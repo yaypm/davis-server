@@ -1,8 +1,12 @@
 'use strict';
 const BbPromise = require('bluebird'),
-    _ = require('lodash'),
     Dynatrace = require('../../../dynatrace'),
-    common = require('../../utils/common');
+    Decide = require('../../utils/decide'),
+    decision_model = require('./model'),
+    common = require('../../utils/common'),
+    responseBuilder = require('../../response-builder'),
+    tagger = require('./tagger'),
+    logger = require('../../../../utils/logger');
 
 const process = function process(davis, data) {
     return new BbPromise((resolve, reject) => {
@@ -11,10 +15,18 @@ const process = function process(davis, data) {
         dynatrace.problemDetails(data.problemId)
             .then(response => {
                 common.saveIntentData(davis, 'problemDetails', response);
-                common.addTextResponse(davis.exchange, 'This is a placeholder for a much more interesting and useful problem details intent.');
-                return resolve();
+                let tags = tagger.tag(davis);
+                const decide = new Decide(decision_model);
+                let template = decide.template(tags);
+                logger.debug(`The template path ${template}`);
+                let stateSetter = decide.state(tags);
+                return responseBuilder.build(davis, `intents/problemDetails/templates/${template}`, true, stateSetter(davis));
+            })
+            .then(response => {
+                return resolve(response);
             })
             .catch(err => {
+                logger.error(err.message);
                 return reject(err);
             });
     });

@@ -21,7 +21,6 @@ module.exports = function setupApp(config) {
 
     app.use(favicon(`${__dirname}/../web/favicon.ico`));
     app.use(express.static(`${__dirname}/../web`));
-    app.use('/bower_components', express.static(`${__dirname}/../bower_components`));
 
     app.use(bodyParser.json());
     app.use(bodyParser.urlencoded({extended: false}));

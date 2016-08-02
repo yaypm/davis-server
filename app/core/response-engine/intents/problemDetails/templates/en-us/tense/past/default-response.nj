@@ -1,2 +1,2 @@
 {%- set problem = intentData.problemDetails.result -%}
-This problem was causing {{ problem.rankedEvents[0].eventType | friendlyEvent }}.
+This problem started {{ problem.startTime | friendlyTime(user) }} when {{ problem.rankedEvents | last | attr('eventType') | friendlyEvent() }} started impacting {{ problem.rankedEvents | last | attr('entityName') | friendlyEntityName() }}.

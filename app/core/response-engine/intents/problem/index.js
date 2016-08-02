@@ -1,9 +1,7 @@
 'use strict';
 
 const BbPromise = require('bluebird'),
-    path = require('path'),
     Dynatrace = require('../../../dynatrace'),
-    time = require('../../utils/time'),
     Decide = require('../../utils/decide'),
     decision_model = require('./model'),
     common = require('../../utils/common'),

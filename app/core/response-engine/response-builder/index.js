@@ -27,6 +27,7 @@ module.exports = {
                     return [sayTemplate, textTemplate, showTemplate];
                 })
                 .spread((say, text, show) => {
+                    fs.writeFileAsync(path.join(__dirname, '../../../../logs/template_builder', 'test.txt'), JSON.stringify({template: {say: say, text: text, show: show}, davis: davis}));
                     const greetingResponse = (shouldGreet) ? getGreeting(davis) : null,
                         sayResponse = (!_.isNil(say)) ? nunjucks(davis.config.aliases).renderAsync(say, davis) : null,
                         textResponse = (!_.isNil(text)) ? nunjucks(davis.config.aliases).renderAsync(text, davis): null,
