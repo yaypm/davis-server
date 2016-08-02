@@ -82,7 +82,7 @@ function interactWithRuxit(request) {
             
         }).then(function (data) {
             
-            if (!data.response.outputSpeech.text) {
+            if (!data.response.text) {
                 
                 outputTextAndSpeech(localResponses.errors.nullResponse);
                 return;
@@ -112,7 +112,13 @@ function interactWithRuxit(request) {
             }
     
             if (data.response != null) {
-                outputTextAndSpeech(data.response.outputSpeech.text);
+                
+                outputTextAndSpeech(data.response.text);
+                
+                if (data.response.hyperlink) {
+                    window.open(data.response.hyperlink, '_blank').focus();
+                }
+                
             }
             
         }).catch(function (err) {

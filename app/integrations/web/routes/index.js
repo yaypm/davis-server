@@ -23,18 +23,7 @@ router.post('/', function(req, res) {
 
 router.get('/token', function(req, res) {
     logger.info('Received a request from web for token!');
-
-    WebService(req.app.get('davisConfig')).getDavisUserToken(req)
-        .then(response => {
-            logger.info('Sending a response back to the web service');
-            res.send(response);
-        })
-        .catch(err => {
-            //ToDo add an error response.
-            logger.error('Unable to respond to the request received from web');
-            logger.error(err);
-            res.end();
-        });
+    res.send(WebService(req.app.get('davisConfig')).getDavisUserToken());
 });
 
 module.exports  = router;

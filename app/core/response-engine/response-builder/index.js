@@ -37,7 +37,8 @@ module.exports = {
                 .spread((greeting, say, text, show) => {
                     davis.exchange.response.audible.ssml = combinedResponse(greeting, say, followUp);
                     davis.exchange.response.visual.text = combinedResponse(greeting, text, followUp);
-                    davis.exchange.response.visual.html = combinedResponse(greeting, show, followUp);
+                    davis.exchange.response.visual.card = combinedResponse(greeting, show, followUp);
+                    davis.exchange.response.visual.hyperlink = "";
                     return resolve(davis);
                 })
                 .catch(err => {

@@ -25,7 +25,8 @@ const exchange = new Schema({
         },
         reprompt: { type: String, required: false, unique: false, index: false},
         visual: {
-            html: {type: String, required: false, unique: false, index: false, default: null},
+            card: {type: Object, required: false, unique: false, index: false, default: null},
+            hyperlink: {type: String, required: false, unique: false, index: false, default: null},
             text: {type: String, required: false, unique: false, index: false, default: null}
         },
         finished: { type: Boolean, required: false, unique: false, index: false, default: true}

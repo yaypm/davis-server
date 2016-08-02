@@ -24,17 +24,13 @@ module.exports = function WebService(config) {
         //ToDo Add support for cards.
         logger.info('Generating the response for web');
     
-        let response = davis.exchange.response.visual.text;
-        
         return {
-            version: RESPONSE_VERSION,
-            sessionAttributes: {},
             response: {
                 shouldEndSession: _.get(davis, 'exchange.response.finished', true),
-                outputSpeech: {
-                    type: 'text',
-                    text: response
-                }
+                text: davis.exchange.response.visual.text,
+                card: davis.exchange.response.visual.card,
+                hyperlink: davis.exchange.response.visual.hyperlink,
+                ssml: davis.exchange.response.audible.ssml
             }
         };
     }
@@ -82,18 +78,10 @@ module.exports = function WebService(config) {
         /**
         * getDavisUserToken() generates a token
         * @param {Object} req - The request received from web.
-        * @returns {promise} res - The response formatted for web.
+        * @returns {String} randToken
         */
         getDavisUserToken: (req) => {
-            
-            logger.info('Starting our interaction with Davis');
-            
-            return new BbPromise((resolve, reject) => {
-                
-                resolve(randToken(16));
-                
-            });
-            
+            return randToken(16);
         }
         
     }
