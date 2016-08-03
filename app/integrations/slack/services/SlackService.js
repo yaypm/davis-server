@@ -51,12 +51,12 @@ module.exports = function SlackService(config) {
             return new BbPromise((resolve, reject) => {
                 
                 // Use Slack user property as id for Davis user 
-                // Avoids having to enter Slack user property for each Davis user for assosciation
+                // Avoids having to enter Slack user property for each Davis user for association
                 let user = {
                     'id': 'slack-user-' + req.user, 
-                    'nlp': config.users[0].nlp, 
-                    'dynatrace': config.users[0].dynatrace, 
-                    'timezone': config.users[0].timezone
+                    'nlp': config.nlp,
+                    'dynatrace': config.slack.dynatrace,
+                    'timezone': config.slack.timezone
                 };
     
                 // Starts or continues our conversation

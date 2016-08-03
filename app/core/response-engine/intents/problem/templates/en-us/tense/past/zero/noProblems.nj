@@ -1,1 +1,0 @@
-There were no problems {{ exchange.request.analysed.timeRange | friendlyTimeRange(user) }}!
