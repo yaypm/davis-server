@@ -30,7 +30,7 @@ class Davis {
     interact(request, source) {
         //ToDo validate user
         if(_.isNil(source)) {
-            logger.warn('Please consider adding a source.  This will help generate more relevent responses.');
+            logger.warn('Please consider adding a source.  This will help generate more relevant responses.');
             source = 'unknown';
         }
         return new BbPromise((resolve, reject) => {

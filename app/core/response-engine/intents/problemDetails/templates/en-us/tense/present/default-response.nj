@@ -1,3 +1,1 @@
-{%- set problem = intentData.problemDetails.result -%}
-{%- set startingEvent = problem.rankedEvents | last -%}
-This problem started {{ problem.startTime | friendlyTime(user) }} when {{ startingEvent | friendlyEntityName() }} started experiencing {{ startingEvent.eventType | friendlyEvent() }}.
+{% include "intents/problemDetails/templates/en-us/shared/problem-history.nj" %}

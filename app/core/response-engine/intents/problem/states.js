@@ -22,7 +22,7 @@ const state = {
         };
         davis.exchange.state = state;
         davis.exchange.response.finished = false;
-        return 'Would you like me to analysis this further for you?';
+        return 'Would you like me to analyze this further for you?';
     },
 
     twoProblems: (davis) => {

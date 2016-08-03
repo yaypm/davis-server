@@ -7,11 +7,11 @@ const   BbPromise = require('bluebird'),
 
 describe('Tests the template engine', function() {
     it('should dynamically load in the appropriate templates', function(done) {
-        fs.readFileAsync('./logs/template_builder/test.txt')
+        fs.readFileAsync('./logs/template_builder/intents-problemDetails-templates-en-us-tense-past-default-response.txt')
             .then(data => {
                 data = JSON.parse(data);
-                //const template =  data.template.text,
-                const template = 'intents\\launch\\templates\\en-us\\audible\\default-response.nj',
+                const template =  data.template.text,
+                //const template = 'intents\\launch\\templates\\en-us\\audible\\default-response.nj',
                     davis = data.davis;
 
                 return nunjucks(davis.config.aliases).renderAsync(template, davis)

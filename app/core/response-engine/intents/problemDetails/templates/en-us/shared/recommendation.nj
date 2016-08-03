@@ -1,0 +1,11 @@
+{%- if intentData.problemDetails.result.status == 'CLOSED' -%}
+This issue appears to be resolved now.  However, I would recommend investigating the root cause of this issue to see if there's a way to avoid this in the future.
+{%- else -%}
+{%- if intentData.problemDetails.result.impactLevel == 'INFRASTRUCTURE' -%}
+While no anomaly is ideal, it appears as though this issue currently only affects a single host.  I would recommend taking a look when you have a moment but it's impact appears to be limited.
+{%- elif intentData.problemDetails.result.impactLevel == 'SERVICE' -%}
+I would recommend further investigating the impact in order to better set priorities.
+{%- else -%}
+Since this is an active application issue, I would highly recommend making this a high priority.
+{%- endif -%}
+{%- endif -%}

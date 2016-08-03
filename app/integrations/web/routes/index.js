@@ -15,6 +15,7 @@ router.post('/', function(req, res) {
             res.json(response);
         })
         .catch(err => {
+            //ToDo
             logger.error('Unable to respond to the request received from web');
             logger.error(err.message);
             res.end();

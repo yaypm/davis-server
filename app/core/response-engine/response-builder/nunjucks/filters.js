@@ -31,7 +31,7 @@ const filters = function(env, aliases) {
     env.addFilter('friendlyTime', function(time, user) {
         //return moment.tz(time, timezone).floor(5, 'minutes').format('h:mm A');
         return moment.tz(time, user.timezone).floor(5, 'minutes').calendar(null , {
-            sameDay: '[today around] h:mm a',
+            sameDay: '[around] h:mm a',
             lastDay: '[yesterday around] h:mm a',
             lastWeek: 'dddd [around] h:mm a'
         });
