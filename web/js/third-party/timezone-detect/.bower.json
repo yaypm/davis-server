@@ -1,0 +1,13 @@
+{
+  "name": "timezone-detect",
+  "homepage": "https://github.com/renatus/jstz",
+  "_release": "0bdd216174",
+  "_resolution": {
+    "type": "branch",
+    "branch": "master",
+    "commit": "0bdd21617450b4204ac1a8ec1e96f2949a8fb115"
+  },
+  "_source": "https://github.com/renatus/jstz.git",
+  "_target": "*",
+  "_originalSource": "timezone-detect"
+}
