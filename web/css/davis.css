@@ -23,8 +23,17 @@
 		left: calc(50% - 300px);
 		bottom: 30px;
 	}
+	#listeningState {
+		position: relative;
+		float: right;
+		font-family: BerninaSans, Arial;
+		font-size: 12px;
+		color: white;
+		margin-right: 110px;
+	}
 	#textInput {	
 		position: relative;
+		clear: both;
 		float: left;
 		width: 600px;
 		height: 51px;

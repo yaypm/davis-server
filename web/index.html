@@ -16,10 +16,11 @@
 	        	<div class="inner" id="interactionLog">
 	        	</div>
 				<div class="inputWrapper">
+					<div id="listeningState"></div>
 					<input id="textInput" type="text" 
 						onkeypress="davis.submitTextInput(event.keyCode)"
 						onfocus="davis.enableSilentMode()" 
-						onblur="davis.resetPlaceholder(); davis.enableListenForKeyword(true)" />
+						onblur="davis.resetPlaceholder()" />
 					<div id="muteWrapper" onclick="davis.toggleMute()">
 						<img src="images/muted.svg" id="muteSVG" />
 					</div>
