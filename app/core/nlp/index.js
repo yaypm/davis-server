@@ -51,13 +51,14 @@ function analyseEntities(davis, entities) {
         timeRange: getDateTime(entities),
         appName: _.get(entities, 'app_name[0].value', null)
     };
+    davis.exchange.intent.push(processed.intent);
     return processed;
 }
 
 /**
  * Returns the requested time range the user is interested in
  * @param {Object} entities - The context in which WIT should process the request.
- * @returns {Object} timeRange - The time range generated using the graniularity of the request.
+ * @returns {Object} timeRange - The time range generated using the granularity of the request.
  * @private
  */
 function getDateTime(entities) {

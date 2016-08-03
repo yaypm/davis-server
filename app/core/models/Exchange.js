@@ -8,16 +8,14 @@ mongoose.Promise = require('bluebird');
 const exchange = new Schema({
     _conversation: { type: ObjectId, required: false, unique: false, index: false, ref: 'Conversation' },
     source: { type: String, required: true, unique: false, index: true},
-    authenticated: { type: Boolean, required: true, unique: false, index: false, default: false },
     startTime: { type: Date, default: Date.now, required: true, unique: false, index: true },
     endTime: { type: Date, required: false, unique: false, index: true },
     request: {
         text: { type: String, required: true, unique: false, index: false},
         analysed: {}
     },
-    template: {
-        path: []
-    },
+    template: {},
+    intent: [],
     state: {},
     response: {
         audible: {

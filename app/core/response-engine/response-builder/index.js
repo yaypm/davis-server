@@ -2,6 +2,7 @@
 
 const _ = require('lodash'),
     BbPromise = require('bluebird'),
+    S = require('string'),
     fs = BbPromise.promisifyAll(require('fs')),
     nunjucks = require('./nunjucks'),
     path = require('path'),
@@ -27,7 +28,7 @@ module.exports = {
                     return [sayTemplate, textTemplate, showTemplate];
                 })
                 .spread((say, text, show) => {
-                    fs.writeFileAsync(path.join(__dirname, '../../../../logs/template_builder', 'test.txt'), JSON.stringify({template: {say: say, text: text, show: show}, davis: davis}));
+                    templateBuilderHelper(say, text, show, davis);
                     const greetingResponse = (shouldGreet) ? getGreeting(davis) : null,
                         sayResponse = (!_.isNil(say)) ? nunjucks(davis.config.aliases).renderAsync(say, davis) : null,
                         textResponse = (!_.isNil(text)) ? nunjucks(davis.config.aliases).renderAsync(text, davis): null,
@@ -48,6 +49,12 @@ module.exports = {
         });
     }
 };
+
+function templateBuilderHelper(say, text, show, davis){
+    let name = S(text).replaceAll('/', '-').replaceAll('\\', '-').replaceAll(NUNJUCK_EXTENSION, '').s;
+    logger.debug(`Creating a template creation helper called '${name}'.`);
+    fs.writeFileAsync(path.join(__dirname, '../../../../logs/template_builder', `${name}.txt`), JSON.stringify({template: {say: say, text: text, show: show}, davis: davis}));
+}
 
 function getGreeting(davis) {
     return new BbPromise((resolve, reject) => {

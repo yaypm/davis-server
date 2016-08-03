@@ -1,3 +1,0 @@
-if (time = Morning)
-
-Buenos dias! Oops sorry, wrong language. What's up?

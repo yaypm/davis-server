@@ -1,1 +1,1 @@
-DynaTrace didn't detect any issues {{ ['during', 'in']|random }} {{ exchange.request.analysed.timeRange | friendlyTimeRange(user) }}.
+Dynatrace didn't detect any issues {{ ['during', 'in']|random }} {{ exchange.request.analysed.timeRange | friendlyTimeRange(user) }}.

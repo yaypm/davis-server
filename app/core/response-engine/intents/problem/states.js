@@ -6,8 +6,8 @@ const _ = require('lodash'),
 const state = {
     zeroProblems: (davis) => {
         logger.debug('Processing state zero');
-        davis.exchange.response.finished = true;
-        return;
+        davis.exchange.response.finished = false;
+        return 'What else can I do for you?';
     },
 
     oneProblem: (davis) => {
@@ -46,6 +46,6 @@ const state = {
         davis.exchange.response.finished = true;
         return 'I would recommend either asking a more specific question or checking out the problem dashboard.';
     }
-}
+};
 
 module.exports = state;

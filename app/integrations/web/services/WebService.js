@@ -5,12 +5,10 @@ const ConversationService = require('../../../services/ConversationService'),
     logger = require('../../../utils/logger'),
     Davis = require('../../../core'),
     BbPromise = require('bluebird'),
-    randToken = require('rand-token').uid,
     _ = require('lodash');
 
 const RESPONSE_VERSION = '1.0',
-    REQUEST_SOURCE = 'web',
-    ERROR_RESPONSE = 'Wow, this is embarrassing!  I understood what you were asking for but I simply can\'t but it into words.  Perhaps you could help me out by checking the logs and adding the missing template?';
+    REQUEST_SOURCE = 'web';
 
 
 module.exports = function WebService(config) {
@@ -23,7 +21,7 @@ module.exports = function WebService(config) {
     function formatResponse(davis) {
         //ToDo Add support for cards.
         logger.info('Generating the response for web');
-    
+
         return {
             response: {
                 shouldEndSession: _.get(davis, 'exchange.response.finished', true),
@@ -72,18 +70,6 @@ module.exports = function WebService(config) {
                 });
                 
             });
-            
-        },
-        
-        /**
-        * getDavisUserToken() generates a token
-        * @param {Object} req - The request received from web.
-        * @returns {String} randToken
-        */
-        getDavisUserToken: (req) => {
-            return randToken(16);
         }
-        
     }
-    
 };
