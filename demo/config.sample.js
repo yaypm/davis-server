@@ -7,6 +7,11 @@ let config = {
     database: {
         dsn: '<mongodb_database_dsn>'
     },
+
+    nlp: {
+        wit: '<wit_token>'
+    },
+
     watson: {
         enabled: true,
         stt: {
@@ -21,7 +26,24 @@ let config = {
 
     slack: {
         enabled: true,
-        key: '<slack_token>'
+        key: '<slack_token>',
+        timezone: 'America/Detroit',
+        lang: 'en-us',
+        dynatrace: {
+            token: '<dynatrace_token>',
+            url: '<tenant_url>',
+            strictSSL: true
+        }
+    },
+
+    web: {
+        enabled: true,
+        lang: 'en-us',
+        dynatrace: {
+            token: '<dynatrace_token>',
+            url: '<tenant_url>',
+            strictSSL: true
+        }
     },
 
     users: [{
@@ -37,9 +59,6 @@ let config = {
             token: '<dynatrace_token>',
             url: '<tenant_url>',
             strictSSL: true
-        },
-        nlp: {
-            wit: '<wit_token>'
         }
     }]
 };
