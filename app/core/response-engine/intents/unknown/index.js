@@ -6,7 +6,7 @@ const common = require('../../utils/common'),
 
 const process = function process(davis) {
     logger.warn(`The user ran into an unknown intent when asking '${davis.exchange.request.text}`);
-    const response = ['Unfortunately, I don\'t know how to response to that yet.  However, pull requests are always welcome!'];
+    const response = ['Unfortunately, I don\'t know how to respond to that yet.  However, pull requests are always welcome!'];
     common.addTextResponse(davis.exchange, _.sample(response));
     davis.exchange.request.finished = true;
 };

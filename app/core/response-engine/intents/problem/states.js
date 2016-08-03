@@ -7,7 +7,7 @@ const state = {
     zeroProblems: (davis) => {
         logger.debug('Processing state zero');
         davis.exchange.response.finished = false;
-        return 'What else can I do for you?';
+        return _.sample(['What else can I do for you?', 'Is there anything else I can help you with?',  'Is there anything else you need?', 'What else can I help you with?']);
     },
 
     oneProblem: (davis) => {

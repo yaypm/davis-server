@@ -6,7 +6,7 @@ const common = require('../../utils/common'),
 
 const process = function process(davis) {
     logger.info('Responding to a stop intent.');
-    const response = ['OK, have a good one.', 'Talk to you later.', 'Bye!', 'See you later.'];
+    const response = ['OK, have a good one.', 'Talk to you later.', 'Bye!', 'See you later.', 'Later'];
     common.addTextResponse(davis.exchange, _.sample(response));
     davis.exchange.request.finished = true;
 };
