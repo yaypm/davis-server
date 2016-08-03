@@ -48,8 +48,8 @@ module.exports = function WebService(config) {
                 //ToDo review this
                 let user = {
                     'id': 'web-user-' + req.body.user, 
-                    'nlp': config.users[0].nlp, 
-                    'dynatrace': config.users[0].dynatrace,
+                    'nlp': config.nlp,
+                    'dynatrace': config.web.dynatrace,
                     'timezone': req.body.timezone
                 };
                 
