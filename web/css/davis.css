@@ -4,6 +4,7 @@
 		text-align: center;
 		width: 100%;
 	}
+	
 	#interactionlog p {
 		position: relative;
 		color: #BDBDEA;
@@ -12,6 +13,7 @@
 		padding-left: 50px;
 		padding-right: 50px;
 	}
+	
 	#interactionlog p:last-of-type {
 		color: #fcf8e3;
 		font-size: 28px;
@@ -23,6 +25,7 @@
 		left: calc(50% - 300px);
 		bottom: 30px;
 	}
+	
 	#listeningState {
 		position: relative;
 		float: right;
@@ -32,6 +35,7 @@
 		margin-right: 110px;
 		margin-bottom: 3px;
 	}
+	
 	#textInput {	
 		position: relative;
 		clear: both;
@@ -46,9 +50,11 @@
 		font-size: 20px;
 		color: black;
 	}
+	
 	#textInput:focus {
     	outline: none;
 	}
+	
 	#muteWrapper {
 		position: relative;
 		float: left;
@@ -64,9 +70,11 @@
 		height: 40px;
 		opacity: 1.0;
 	}
+	
 	.userStyle {
 		color: rgba(0, 0, 0, 0.2) !important;
 	}
+	
 	.botStyle {
 		color: white;
 	}

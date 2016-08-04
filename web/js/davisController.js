@@ -1,11 +1,9 @@
-var davis = (function() {
+var davisController = (function() {
 
 // Globals
-var sentences = [];                       // Array of response sentences to be typed into interaction log
-var isMuted = true;                      // No STT
+var isMuted = true;                       // No STT
 var muteButtonPressed = false;            // Prevent automatically unmutting if mute button is pressed
-var isSilentMode = true;                 // No STT and TTS
-var isListening = false;                  // Is Watson STT API listening?
+var listeningState;                       // 
 var inactivityTimeout = 1;                // Seconds of silence before Watson STT API stops listening
 var momentsOfSilence = 0;                 // Used for polling number of moments of silence 60 ms apart (avoid cutting off TTS playback) 
 var player = new Audio();                 // Audio element used to play TTS audio
@@ -16,15 +14,53 @@ var timezone;                             // User's timezone
 var userToken;                            // Random token used in place of a user ID to store/retrieve conversations in web version
 var listenAfter = true;                   // Make Watson listen after outputting a response
 
-// Listening states that get displayed above text input
-var listeningStates = {
-    sleeping: 'Wake me by saying "Hey Davis"',
-    enablingMic: 'Enabling mic ...',
-    listening: 'Listening ...',
-    processing: 'Processing ...',
-    responding: 'Responding ...',
-    silentMode: 'Chat Mode'
+var listeningStateEvents = {
+    sleeping: new Event('sleeping'),
+    enablingMic: new Event('enablingMic'),
+    listening: new Event('listening'),
+    processing: new Event('processing'),
+    responding: new Event('responding'),
+    silentMode: new Event('silentMode')
 }
+
+// Listening state event handlers
+document.addEventListener('sleeping', function (event) {
+    listeningState = 'sleeping';
+    davisView.setListeningState(listeningState);
+}, false);
+
+document.addEventListener('enablingMic', function (event) {
+    listeningState = 'enablingMic';
+    davisView.setListeningState(listeningState);
+}, false);
+
+document.addEventListener('listening', function (event) {
+    listeningState = 'listening';
+    davisView.setListeningState(listeningState);
+}, false);
+
+document.addEventListener('processing', function (event) {
+    listeningState = 'processing';
+    davisView.setListeningState(listeningState);
+    davisView.resetTextInput();
+}, false);
+
+document.addEventListener('responding', function (event) {
+    listeningState = 'responding';
+    davisView.setListeningState(listeningState);
+}, false);
+
+document.addEventListener('silentMode', function (event) {
+    listeningState = 'silentMode';
+    davisView.setListeningState(listeningState);
+
+    if (!isMuted) {
+        toggleMute(true);
+    }
+    
+    enableListenForKeyword(false);
+}, false);
+
 
 // Speech-To-Text (STT) & Text-To-Speech (TTS) token objects
 var savedSttTokenObj = {
@@ -36,10 +72,6 @@ var savedTtsTokenObj = {
     'expiration': new Date()
 };
 
-// Get local responses object from JSON file
-var localResponses;
-$.getJSON('./js/local-responses.json', function (data){localResponses = data;});
-
 /**
  * interactWithRuxit() sends a request to be processed for its intent 
  * in order to interact with the Ruxit API (provides APM metrics)
@@ -49,7 +81,7 @@ $.getJSON('./js/local-responses.json', function (data){localResponses = data;});
 function interactWithRuxit(request) {
 
     if (request === '' && inactivityTimeout === 2) {
-        enableSilentMode();
+        document.dispatchEvent(listeningStateEvents.silentMode);
     } else if (request === '') {
         toggleMute(true);
         inactivityTimeout = 2;
@@ -57,17 +89,12 @@ function interactWithRuxit(request) {
         inactivityTimeout = 1;
     }
 
-    dimBackground();
-    isListening = false;
-    updateListeningState(listeningStates.processing);
-
-    $('#textInput').val('');
+    davisView.muted();
+    document.dispatchEvent(listeningStateEvents.processing);
 
     if (request) {
 
-        var el = $('<p>' + request + '</p>').css('display', 'none').addClass('userStyle');
-        $('#interactionLog').append(el);
-        el.fadeIn(400);
+        davisView.addToInteractionLog(request, false, false);
     
         var date = new Date();
     
@@ -101,26 +128,8 @@ function interactWithRuxit(request) {
                 
             } else if (!data.response) {
                 
-                updateListeningState(listeningStates.sleeping);
+                document.dispatchEvent(listeningStateEvents.sleeping);
                 return;
-                
-            }
-    
-            popTopInteraction();
-            
-            // check if interaction log is getting long
-            if (data.response.length > 70 || $('#interactionLog').children().length > 2) {
-                
-                if ($('#interactionLog').children().length > 3) {
-                    
-                    popTopInteraction();
-                    popTopInteraction();
-                    
-                } else {
-                    
-                    popTopInteraction();
-                    
-                }
                 
             }
     
@@ -128,12 +137,13 @@ function interactWithRuxit(request) {
                 
                 outputTextAndSpeech(data.response.text, localResponses.voices.michael, !data.response.shouldEndSession);
                 
+                // "Show me" hyperlink push functionality
                 if (data.response.hyperlink) {
                     window.open(data.response.hyperlink, '_blank').focus();
                 }
                 
             } else {
-                updateListeningState(listeningStates.sleeping);
+                document.dispatchEvent(listeningStateEvents.sleeping);
             }
             
         }).catch(function (err) {
@@ -141,7 +151,7 @@ function interactWithRuxit(request) {
             console.log('interactWithRuxit - Error: ' + err);
         });
     } else {
-         updateListeningState(listeningStates.sleeping);
+         document.dispatchEvent(listeningStateEvents.sleeping);
     }
 }
 
@@ -154,7 +164,7 @@ function interactWithRuxit(request) {
 **/
 function outputTextAndSpeech(text, voice, listen) {
     
-    updateListeningState(listeningStates.responding);
+    document.dispatchEvent(listeningStateEvents.responding);
     
     listenAfter = listen;
 
@@ -296,8 +306,7 @@ function getSttToken() {
         }
 
         if(!muteButtonPressed) {
-            brightenBackground();
-            $('#muteSVG').addClass('muteOff');
+            davisView.listening();
             micOn.play();
         }
         
@@ -325,9 +334,8 @@ function createSttStream(token) {
         stream.on('error', function (err) {
             console.log(err);
         });
-
-        isListening = true;
-        updateListeningState(listeningStates.listening);
+        
+        document.dispatchEvent(listeningStateEvents.listening);
 
     });
     
@@ -342,10 +350,10 @@ function createSttStream(token) {
  */
 function speak(text, token, voice) {
     
-    if (!isSilentMode) {
+    if (listeningState !== 'silentMode') {
         
         player.onplay = function () {
-            typeText(text);
+            davisView.addToInteractionLog(text, true, true);
         };
         
         WatsonSpeech.TextToSpeech.synthesize({
@@ -357,9 +365,7 @@ function speak(text, token, voice) {
         
     } else {
         
-        var el = $('<p>' + text + '</p>').css('display', 'none').addClass('botStyle');
-        $('#interactionLog').append(el);
-        el.fadeIn(400);
+        davisView.addToInteractionLog(text, true, false);
         
     }
     
@@ -372,30 +378,6 @@ function speak(text, token, voice) {
  */
 function isPlaying() {
     return !(player.ended || player.paused);
-}
-
-/**
- * typeText() forwards text to be added to interactionLog using a type-writer animation
- * 
- * @param {String} text
- */
-function typeText(text) {
-    
-    sentences.push(text);
-    var text = sentences[0];
-    sentences.splice(0, 1);
-
-    var node = $('<p></p>').addClass('botStyle');
-
-    $('#interactionLog').append(node);
-
-    node.typed({
-        strings: [text],
-        typeSpeed: 10,
-        startDelay: 600,
-        showCursor: false
-    });
-    
 }
 
 /**
@@ -417,7 +399,7 @@ function unmuteWhenDonePlaying() {
             momentsOfSilence = 0;
             outputQueueSize--;
             
-            if (outputQueueSize < 1 && !isSilentMode && !muteButtonPressed && listenAfter) {
+            if (outputQueueSize < 1 && listeningState !== 'silentMode' && !muteButtonPressed && listenAfter) {
                 
               listen();
               
@@ -469,7 +451,8 @@ function playWhenDonePlaying(text, token, voice) {
  */
 function listen() {
     
-    if (!isListening) {
+    if (listeningState !== localResponses.listeningStates.listening 
+        && listeningState !== localResponses.listeningStates.silentMode) {
 
         getSttToken()
         .then(function (token) {
@@ -494,7 +477,7 @@ function annyangInit() {
 
         annyang.addCallback('result', function (phrases) {
             if (phrases[0].toLowerCase().includes('hey davis') || phrases[0].toLowerCase().includes('ok davis')) {
-                updateListeningState(listeningStates.enablingMic);
+                document.dispatchEvent(listeningStateEvents.enablingMic);
                 listenAfter = true;
                 toggleMute(false);
             }
@@ -514,58 +497,6 @@ function annyangInit() {
  */
 function enableListenForKeyword(listen) {
     listen ? annyang.start({ 'autoRestart': true, 'continuous': true }) : annyang.abort();
-}
-
-/**
- * popTopInteraction() removes the top <p> element from interactionLog
- */
-function popTopInteraction() {
-    $('#interactionLog').find('p:first').remove();
-}
-
-/**
- * submitTextInput() submits text from textInput 
- * as a request in interactWithRuxit() when the Enter key is pressed
- * 
- * Used for chat mode
- * 
- * @param {Integer} keyCode
- */
-function submitTextInput(keyCode) {
-    
-    if (keyCode == 13) {
-        
-        interactWithRuxit($('#textInput').val());
-        $('#textInput').val('');
-        $('#textInput').attr('placeholder', '');
-        
-    }
-    
-}
-
-/**
- * resetPlaceholder() resets textInput's placeholder
- */
-function resetPlaceholder() {
-    if (localResponses) {
-        $('#textInput').attr('placeholder', localResponses.placeholders.easyTravel);
-    }
-}
-
-/**
- * brightenBackground() brightens the body's background-color
- */
-function brightenBackground() {
-    $('body').addClass('micOn');
-    $('body').removeClass('micOff');
-}
-
-/**
- * dimBackground() dims the body's background-color
- */
-function dimBackground() {
-    $('body').addClass('micOff');
-    $('body').removeClass('micOn');
 }
 
 /**
@@ -589,13 +520,8 @@ function toggleMute(mute) {
     if ((!isMuted && mute != false) || muteButtonPressed) {
         
         isMuted = true;
-        isListening = false;
-        updateListeningState(listeningStates.sleeping);
-        $('#muteSVG').removeClass('muteOff');
-        
-        if ($('body').css("background-color") === 'rgb(51, 163, 255)') {
-            dimBackground();
-        }
+        document.dispatchEvent(listeningStateEvents.sleeping);
+        davisView.muted();
         
         if (stream != null) {
             stream.stop();
@@ -606,8 +532,8 @@ function toggleMute(mute) {
     } else {
         
         isMuted = false;
-        isSilentMode = false;
-        $('#muteSVG').addClass('muteOff');
+        document.dispatchEvent(listeningStateEvents.sleeping);
+        davisView.listening();
         enableListenForKeyword(false);
         unmuteWhenDonePlaying();
         
@@ -616,48 +542,15 @@ function toggleMute(mute) {
 }
 
 /**
- * enableSilentMode() enables silent mode
- * 
- * No STT or TTS allowed
- * Enabled automatically when using chat mode
- */
-function enableSilentMode() {
-    
-    isSilentMode = true;
-    isListening = false;
-    updateListeningState(listeningStates.silentMode);
-    
-    if (!isMuted) {
-        toggleMute(true);
-    }
-    
-    enableListenForKeyword(false);
-    
-}
-
-/**
  * noMic() accounts for cases where no mic browser API is detected (error handeling)
  */
 function noMic() {
     
-    isSilentMode = true;
+    document.dispatchEvent(listeningStateEvents.silentMode);
     speak(localResponses.errors.noMic);
-    $('#muteWrapper').hide();
-    dimBackground();
+    davisView.noMic();
+    davisView.muted();
     
-}
-
-/**
- * updateListeningState() sets the current listening state
- * 
- * @param {String} state
- */ 
-function updateListeningState(state) {
-    if (state != listeningStates.enablingMic) {
-        $('#listeningState').hide().html(state).fadeIn(800);
-    } else {
-        $('#listeningState').html(state);
-    }
 }
 
 /**
@@ -665,36 +558,32 @@ function updateListeningState(state) {
  */
 function init() {
     
-    resetPlaceholder();
+    davisView.resetPlaceholder();
     
     if (typeof window.chrome != 'object') {
         
-        isSilentMode = true;
-        $('#muteWrapper').hide();
-        dimBackground();
-        $.getJSON('./js/local-responses.json', function (data){
-            localResponses = data;
-            speak(localResponses.errors.noBrowserSupport);
-            speak(localResponses.errors.chrome);
-            speak(localResponses.errors.getChrome); 
-        });
+        document.dispatchEvent(listeningStateEvents.silentMode);
+        davisView.noMic();
+        davisView.muted();
+        davisView.addToInteractionLog(localResponses.errors.noBrowserSupport, true, false);
+        davisView.addToInteractionLog(localResponses.errors.chrome, true, false);
+        davisView.addToInteractionLog(localResponses.errors.getChrome, true, false); 
         
     } else {
         
         timezone = jstz.determine().name();
         
         if (!localStorage.getItem("davis-user-token")) {
-            speak(localResponses.greetings.micPermission);
-            speak(localResponses.greetings.thenHelp);
+            davisView.addToInteractionLog(localResponses.greetings.micPermission, true, false);
+            davisView.addToInteractionLog(localResponses.greetings.thenHelp, true, false);
         } else {
-            speak(localResponses.greetings.help);
+            davisView.addToInteractionLog(localResponses.greetings.help, true, false);
         }
         
         getDavisUserToken();
-        isSilentMode = false;
         annyangInit();
         enableListenForKeyword(true);
-        updateListeningState(listeningStates.sleeping);
+        document.dispatchEvent(listeningStateEvents.sleeping);
     }
     
 }
@@ -709,16 +598,13 @@ return {
         enableListenForKeyword(listen);
     },
     enableSilentMode: function () {
-        enableSilentMode();
+        document.dispatchEvent(listeningStateEvents.silentMode);
     },
     init: function () {
         init();
     },  
     interactWithRuxit: function (input) {
        interactWithRuxit(input); 
-    },
-    resetPlaceholder: function () {
-        resetPlaceholder();
     },
     submitTextInput: function (keycode) {
         submitTextInput(keycode);

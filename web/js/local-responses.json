@@ -10,7 +10,7 @@
     "greetings": {
         "micPermission": "Please select \"Allow\" if asked for permission to use your microphone.",
         "thenHelp": "Then say \"Hey Davis\" or click the microphone when you're ready for help.",
-        "help": "Just say \"Hey Davis\" or click the microphone when you're ready to ask Davis something!"
+        "help": "Say \"Hey Davis\" or click the mic to wake me."
     },
     "placeholders": {
         "easyTravel": "How's easyTravel doing?"
@@ -19,5 +19,13 @@
         "allison": "en-US_AllisonVoice",
         "lisa": "en-US_LisaVoice",
         "michael": "en-US_MichaelVoice"
+    },
+    "listeningStates": {
+        "sleeping": "Wake me by saying \"Hey Davis\"",
+        "enablingMic": "Enabling mic ...",
+        "listening": "Listening ...",
+        "processing": "Processing ...",
+        "responding": "Responding ...",
+        "silentMode": "Chat Mode"
     }
 }
