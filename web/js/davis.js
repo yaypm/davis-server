@@ -2,7 +2,7 @@ var davis = (function() {
 
 // Globals
 var sentences = [];                       // Array of response sentences to be typed into interaction log
-var isMuted = false;                      // No STT
+var isMuted = true;                      // No STT
 var muteButtonPressed = false;            // Prevent automatically unmutting if mute button is pressed
 var isSilentMode = true;                 // No STT and TTS
 var isListening = false;                  // Is Watson STT API listening?
@@ -580,7 +580,7 @@ function toggleMute(mute) {
     
     listenAfter = true;
     
-    if (!isMuted && mute == null && !muteButtonPressed) {
+    if (!isMuted && mute == undefined && !muteButtonPressed) {
         muteButtonPressed = true;
     } else {
         muteButtonPressed = false;
