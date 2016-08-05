@@ -3,7 +3,6 @@ var davisController = (function() {
 // Globals
 var isMuted = true;                       // No STT
 var muteButtonPressed = false;            // Prevent automatically unmutting if mute button is pressed
-var listeningState;                       // 
 var inactivityTimeout = 1;                // Seconds of silence before Watson STT API stops listening
 var momentsOfSilence = 0;                 // Used for polling number of moments of silence 60 ms apart (avoid cutting off TTS playback) 
 var player = new Audio();                 // Audio element used to play TTS audio
@@ -14,16 +13,30 @@ var timezone;                             // User's timezone
 var userToken;                            // Random token used in place of a user ID to store/retrieve conversations in web version
 var listenAfter = true;                   // Make Watson listen after outputting a response
 
+
+// Speech-To-Text (STT) & Text-To-Speech (TTS) token objects
+var savedSttTokenObj = {
+    'token': '',
+    'expiration': new Date()
+};
+var savedTtsTokenObj = {
+    'token': '',
+    'expiration': new Date()
+};
+
+
+// Listening state events and handlers
+var listeningState;
+
 var listeningStateEvents = {
     sleeping: new Event('sleeping'),
     enablingMic: new Event('enablingMic'),
     listening: new Event('listening'),
     processing: new Event('processing'),
     responding: new Event('responding'),
-    silentMode: new Event('silentMode')
+    chatMode: new Event('chatMode')
 }
 
-// Listening state event handlers
 document.addEventListener('sleeping', function (event) {
     listeningState = 'sleeping';
     davisView.setListeningState(listeningState);
@@ -37,6 +50,10 @@ document.addEventListener('enablingMic', function (event) {
 document.addEventListener('listening', function (event) {
     listeningState = 'listening';
     davisView.setListeningState(listeningState);
+    if(!muteButtonPressed) {
+        davisView.listening();
+        micOn.play();
+    }
 }, false);
 
 document.addEventListener('processing', function (event) {
@@ -50,8 +67,8 @@ document.addEventListener('responding', function (event) {
     davisView.setListeningState(listeningState);
 }, false);
 
-document.addEventListener('silentMode', function (event) {
-    listeningState = 'silentMode';
+document.addEventListener('chatMode', function (event) {
+    listeningState = 'chatMode';
     davisView.setListeningState(listeningState);
 
     if (!isMuted) {
@@ -61,17 +78,6 @@ document.addEventListener('silentMode', function (event) {
     enableListenForKeyword(false);
 }, false);
 
-
-// Speech-To-Text (STT) & Text-To-Speech (TTS) token objects
-var savedSttTokenObj = {
-    'token': '',
-    'expiration': new Date()
-};
-var savedTtsTokenObj = {
-    'token': '',
-    'expiration': new Date()
-};
-
 /**
  * interactWithRuxit() sends a request to be processed for its intent 
  * in order to interact with the Ruxit API (provides APM metrics)
@@ -80,9 +86,7 @@ var savedTtsTokenObj = {
  */
 function interactWithRuxit(request) {
 
-    if (request === '' && inactivityTimeout === 2) {
-        document.dispatchEvent(listeningStateEvents.silentMode);
-    } else if (request === '') {
+    if (request === '') {
         toggleMute(true);
         inactivityTimeout = 2;
     } else {
@@ -90,7 +94,10 @@ function interactWithRuxit(request) {
     }
 
     davisView.muted();
-    document.dispatchEvent(listeningStateEvents.processing);
+    
+    if (listeningState !== 'chatMode') {
+        document.dispatchEvent(listeningStateEvents.processing);
+    }
 
     if (request) {
 
@@ -164,19 +171,25 @@ function interactWithRuxit(request) {
 **/
 function outputTextAndSpeech(text, voice, listen) {
     
-    document.dispatchEvent(listeningStateEvents.responding);
+    if (listeningState !== 'chatMode') {
+        document.dispatchEvent(listeningStateEvents.responding);
+    }
     
     listenAfter = listen;
 
     getTtsToken().then(function (token) {
 
-        if (isPlaying()) {
+        if (isSpeaking()) {
             
-            playWhenDonePlaying(text, token, voice);
+            outputWhenDoneSpeaking(text, token, voice);
             
         } else {
             
-            speak(text, token, voice);
+            if (listeningState !== 'chatMode') {
+                speak(text, token, voice);
+            } else {
+                chat(text);
+            }
             
         }
 
@@ -185,7 +198,7 @@ function outputTextAndSpeech(text, voice, listen) {
         if (!isMuted) {
             
             outputQueueSize++;
-            unmuteWhenDonePlaying();
+            unmuteWhenDoneSpeaking();
 
         }
         
@@ -304,11 +317,6 @@ function getSttToken() {
             });
 
         }
-
-        if(!muteButtonPressed) {
-            davisView.listening();
-            micOn.play();
-        }
         
     });
     
@@ -328,7 +336,7 @@ function createSttStream(token) {
         stream = WatsonSpeech.SpeechToText.recognizeMicrophone({
             token: token,
             keepMic: true,
-            outputElement: '#textInput'
+            outputElement: '#'+davisView.getTextInputElemId()
         });
 
         stream.on('error', function (err) {
@@ -350,8 +358,6 @@ function createSttStream(token) {
  */
 function speak(text, token, voice) {
     
-    if (listeningState !== 'silentMode') {
-        
         player.onplay = function () {
             davisView.addToInteractionLog(text, true, true);
         };
@@ -362,33 +368,31 @@ function speak(text, token, voice) {
             voice: voice,
             element: player
         });
-        
-    } else {
-        
-        davisView.addToInteractionLog(text, true, false);
-        
-    }
     
 }
 
+function chat(text) {
+    davisView.addToInteractionLog(text, true, false);
+}
+
 /**
- * isPlaying() returns whether TTS audio is being played
+ * isSpeaking() returns whether TTS audio is being played
  * 
  * @return {Boolean}
  */
-function isPlaying() {
+function isSpeaking() {
     return !(player.ended || player.paused);
 }
 
 /**
- * unmuteWhenDonePlaying() enables the mic when done playing TTS audio
+ * unmuteWhenDoneSpeaking() enables the mic when done playing TTS audio
  * 
  */
-function unmuteWhenDonePlaying() {
+function unmuteWhenDoneSpeaking() {
     
-    if (isPlaying()) {
+    if (isSpeaking()) {
         
-        var timeout = setTimeout(unmuteWhenDonePlaying, 60);
+        var timeout = setTimeout(unmuteWhenDoneSpeaking, 60);
         
     } else {
         
@@ -399,7 +403,7 @@ function unmuteWhenDonePlaying() {
             momentsOfSilence = 0;
             outputQueueSize--;
             
-            if (outputQueueSize < 1 && listeningState !== 'silentMode' && !muteButtonPressed && listenAfter) {
+            if (outputQueueSize < 1 && listeningState !== 'chatMode' && !muteButtonPressed && listenAfter) {
                 
               listen();
               
@@ -413,7 +417,7 @@ function unmuteWhenDonePlaying() {
         } else {
             
             momentsOfSilence++;
-            var timeout = setTimeout(unmuteWhenDonePlaying, 60);
+            var timeout = setTimeout(unmuteWhenDoneSpeaking, 60);
             
         }
         
@@ -422,24 +426,29 @@ function unmuteWhenDonePlaying() {
 }
 
 /**
- * playWhenDonePlaying() forwards text and a token for use with IBM Watson TTS API 
+ * outputWhenDoneSpeaking() forwards text and a token for use with IBM Watson TTS API 
  * when all previous TTS audio is done playing
  * 
  * @param {String} text
  * @param {String} token
  */
-function playWhenDonePlaying(text, token, voice) {
+function outputWhenDoneSpeaking(text, token, voice) {
     
-    if (isPlaying()) {
+    if (isSpeaking()) {
         
         var timeout = setTimeout(function () { 
-            playWhenDonePlaying(text, token, voice); 
+            outputWhenDoneSpeaking(text, token, voice); 
         }, 50);
         
     } else {
         
         clearTimeout(timeout);
-        speak(text, token, voice);
+        
+        if (listeningState !== 'chatMode') {
+            speak(text, token, voice);
+        } else {
+            chat(text);
+        }
         
     }
     
@@ -451,8 +460,7 @@ function playWhenDonePlaying(text, token, voice) {
  */
 function listen() {
     
-    if (listeningState !== localResponses.listeningStates.listening 
-        && listeningState !== localResponses.listeningStates.silentMode) {
+    if (listeningState !== 'listening') {
 
         getSttToken()
         .then(function (token) {
@@ -502,7 +510,7 @@ function enableListenForKeyword(listen) {
 /**
  * toggleMute() toggles the mic on/off
  * 
- * Unless in silent mode, mic off mode 
+ * Unless in chat mode, mic off mode 
  * still listens for key phrases with annyang
  * 
  * @param {Boolean} mute
@@ -510,6 +518,8 @@ function enableListenForKeyword(listen) {
 function toggleMute(mute) {
     
     listenAfter = true;
+    
+    document.dispatchEvent(listeningStateEvents.sleeping);
     
     if (!isMuted && mute == undefined && !muteButtonPressed) {
         muteButtonPressed = true;
@@ -520,7 +530,6 @@ function toggleMute(mute) {
     if ((!isMuted && mute != false) || muteButtonPressed) {
         
         isMuted = true;
-        document.dispatchEvent(listeningStateEvents.sleeping);
         davisView.muted();
         
         if (stream != null) {
@@ -532,10 +541,9 @@ function toggleMute(mute) {
     } else {
         
         isMuted = false;
-        document.dispatchEvent(listeningStateEvents.sleeping);
         davisView.listening();
         enableListenForKeyword(false);
-        unmuteWhenDonePlaying();
+        unmuteWhenDoneSpeaking();
         
     }
     
@@ -546,8 +554,8 @@ function toggleMute(mute) {
  */
 function noMic() {
     
-    document.dispatchEvent(listeningStateEvents.silentMode);
-    speak(localResponses.errors.noMic);
+    document.dispatchEvent(listeningStateEvents.chatMode);
+    outputTextAndSpeech(localResponses.errors.noMic, localResponses.voices.michael, false);
     davisView.noMic();
     davisView.muted();
     
@@ -562,7 +570,7 @@ function init() {
     
     if (typeof window.chrome != 'object') {
         
-        document.dispatchEvent(listeningStateEvents.silentMode);
+        document.dispatchEvent(listeningStateEvents.chatMode);
         davisView.noMic();
         davisView.muted();
         davisView.addToInteractionLog(localResponses.errors.noBrowserSupport, true, false);
@@ -597,8 +605,8 @@ return {
     enableListenForKeyword: function (listen) {
         enableListenForKeyword(listen);
     },
-    enableSilentMode: function () {
-        document.dispatchEvent(listeningStateEvents.silentMode);
+    enableChatMode: function () {
+        document.dispatchEvent(listeningStateEvents.chatMode);
     },
     init: function () {
         init();

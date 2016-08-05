@@ -35,10 +35,12 @@ var davisView = (function() {
      * @param {String} state
      */
     function setListeningState (state) {
-        if (localResponses.listeningStates[state] != localResponses.listeningStates.enablingMic) {
-            $('#'+listeningStateElemId).hide().html(localResponses.listeningStates[state]).fadeIn(800);
-        } else {
-            $('#'+listeningStateElemId).html(localResponses.listeningStates[state]);
+        if (localResponses.listeningStates[state] !== $('#'+listeningStateElemId).html()) {
+            if (localResponses.listeningStates[state] !== localResponses.listeningStates.enablingMic) {
+                $('#'+listeningStateElemId).hide().html(localResponses.listeningStates[state]).fadeIn(800);
+            } else {
+                $('#'+listeningStateElemId).html(localResponses.listeningStates[state]);
+            }
         }
     };
     
@@ -176,6 +178,10 @@ var davisView = (function() {
         
         submitTextInput: function (keyCode) {
             submitTextInput(keyCode);
+        },
+        
+        getTextInputElemId: function () {
+            return textInputElemId;
         }
         
     };

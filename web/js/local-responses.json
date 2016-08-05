@@ -26,6 +26,6 @@
         "listening": "Listening ...",
         "processing": "Processing ...",
         "responding": "Responding ...",
-        "silentMode": "Chat Mode"
+        "chatMode": "Chat Mode"
     }
 }
