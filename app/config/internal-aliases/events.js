@@ -64,6 +64,14 @@ let events = [
     {
         name: 'PROCESS_CUSTOM_ERROR',
         friendly: ['a user defined process error']
+    },
+    {
+        name: 'INSUFFICIENT_DISK_QUEUE_DEPTH',
+        friendly: ['an insufficient disk queue depth']
+    },
+    {
+        name: 'PROCESS_CRASHED',
+        friendly: ['a process that crashed', 'a crashed process']
     }
 ];
 

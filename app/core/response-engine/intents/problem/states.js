@@ -43,8 +43,18 @@ const state = {
 
     manyProblems: (davis) => {
         logger.debug('Processing state many');
-        davis.exchange.response.finished = true;
-        return 'I would recommend either asking a more specific question or checking out the problem dashboard.';
+        const state = {
+            type: 'multipleProblems',
+            problemIds:  [_.get(davis, 'intentData.problem.result.problems[0].id'), _.get(davis, 'intentData.problem.result.problems[1].id'), _.get(davis, 'intentData.problem.result.problems[2].id')],
+            next: {
+                multipleChoice: 'problemDetails',
+                yes: 'problemDetails',
+                no: null
+            }
+        };
+        davis.exchange.state = state;
+        davis.exchange.response.finished = false;
+        return _.sample(['Would you be interested in hearing more about the first, second, or third issue?']);
     }
 };
 

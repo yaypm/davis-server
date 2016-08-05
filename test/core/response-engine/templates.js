@@ -7,7 +7,7 @@ const   BbPromise = require('bluebird'),
 
 describe('Tests the template engine', function() {
     it('should dynamically load in the appropriate templates', function(done) {
-        fs.readFileAsync('./logs/template_builder/intents-problemDetails-templates-en-us-tense-past-default-response.txt')
+        fs.readFileAsync('./logs/template_builder/intents-problem-templates-en-us-tense-past-many-default-response.txt')
             .then(data => {
                 data = JSON.parse(data);
                 const template =  data.template.text,
