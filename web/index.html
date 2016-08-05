@@ -8,9 +8,10 @@
 		<script src="./js/third-party/fetch/fetch.js"></script>
 		<script src="./js/third-party/timezone-detect/dist/jstz.min.js"></script>
 		<script src="./js/watson-speech.js"></script>
-		<script src="./js/davis.js"></script>
+		<script src="./js/davisView.js"></script>
+		<script src="./js/davisController.js"></script>
 	</head>
-	<body onload="davis.init()">
+	<body onload="davisController.init()">
 	    <div class="site-wrapper">
 	    	<div class="site-wrapper-inner">
 	        	<div class="inner" id="interactionLog">
@@ -18,11 +19,11 @@
 				<div class="inputWrapper">
 					<div id="listeningState"></div>
 					<input id="textInput" type="text" 
-						onkeypress="davis.submitTextInput(event.keyCode)"
-						onfocus="davis.enableSilentMode()" 
-						onblur="davis.resetPlaceholder()" />
-					<div id="muteWrapper" onclick="davis.toggleMute()">
-						<img src="images/muted.svg" id="muteSVG" />
+						onkeypress="davisView.submitTextInput(event.keyCode)"
+						onfocus="davisController.enableSilentMode()" 
+						onblur="davisView.resetPlaceholder()" />
+					<div id="muteWrapper" onclick="davisController.toggleMute()">
+						<img src="images/microphone.svg" id="muteSVG" />
 					</div>
      			</div>
     		</div>
