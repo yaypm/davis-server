@@ -2,17 +2,18 @@ var localResponses;
 
 var davisView = (function () {
     
-    // Globals
     var listeningStateElemId = 'listeningState';
     var interactionLogElemId = 'interactionLog';
     var muteWrapperElemId = 'muteWrapper';
     var muteSVGElemId = 'muteSVG';
     var textInputElemId = 'textInput';
+    var connectedUrlElemId = 'connectedUrl';
     var sentences = [];                                         // Array of response sentences to be typed into interaction log
 
     $.getJSON('./js/local-responses.json', function (data){
         localResponses = data;
         resetPlaceholder();
+        setListeningState('sleeping');
         if (typeof window.chrome != 'object') {
            
            addToInteractionLog(localResponses.errors.noBrowserSupport, true, false);
@@ -242,6 +243,10 @@ var davisView = (function () {
         
         enableChatMode: function () {
            enableChatMode();
+        },
+        
+        setConnectedUrl: function (url) {
+            $('#'+connectedUrlElemId).html('Connected: '+url);
         }
         
     };

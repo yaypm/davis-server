@@ -281,6 +281,25 @@ function getDavisUserToken() {
 }
 
 /**
+ * getConnectedServerUrl() returns url of server connected to Davis instance 
+ * 
+ * @return {Promise} connected url
+ */
+function getConnectedServerUrl() {
+    
+    var options = {
+        method: 'get',
+        mode: 'cors'
+    };
+    
+    return fetch('/web/server', options)
+    .then(function (response) {
+        return response.text();
+    });
+    
+}
+
+/**
  * getTtsToken() returns a token for use with IBM Watson TTS
  * 
  * IBM Watson tokens have a time to live (TTL) of one hour, 
@@ -661,6 +680,9 @@ function init() {
         
         timezone = jstz.determine().name();
         getDavisUserToken();
+        getConnectedServerUrl().then(function (url) {
+            davisView.setConnectedUrl(url);
+        });
         annyangInit();
         enableListenForKeyword(true);
         document.dispatchEvent(listeningStateEvents.sleeping);

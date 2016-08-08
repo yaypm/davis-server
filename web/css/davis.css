@@ -36,6 +36,17 @@
 		margin-bottom: 3px;
 	}
 	
+	#connectedUrl {
+		position: relative;
+		float: left;
+		font-family: BerninaSans, Arial;
+		font-size: 12px;
+		color: white;
+		margin-left: 8px;
+		margin-bottom: 3px;
+		opacity: 0.3;
+	}
+	
 	#textInput {	
 		position: relative;
 		clear: both;
