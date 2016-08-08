@@ -128,3 +128,16 @@
 	    from {background-color: #007ee6;}
 	    to {background-color: #33a3ff;}
 	}
+	
+	table.debug {
+	    border-collapse: collapse;
+	    margin: auto 0;
+	}
+	
+	table.debug, th.debug, td.debug {
+		color: white;
+	    border: 1px solid white;
+	    padding: 10px;
+	    position: relative;
+	    margin: auto;
+	}

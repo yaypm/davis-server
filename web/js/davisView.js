@@ -1,6 +1,6 @@
 var localResponses;
 
-var davisView = (function() {
+var davisView = (function () {
     
     // Globals
     var listeningStateElemId = 'listeningState';
@@ -13,19 +13,70 @@ var davisView = (function() {
     $.getJSON('./js/local-responses.json', function (data){
         localResponses = data;
         resetPlaceholder();
+        if (typeof window.chrome != 'object') {
+           
+           addToInteractionLog(localResponses.errors.noBrowserSupport, true, false);
+           addToInteractionLog(localResponses.errors.chrome, true, false);
+           addToInteractionLog(localResponses.errors.getChrome, true, false); 
+            
+        } else {
+        
+            if (!localStorage.getItem("davis-user-token")) {
+                
+                addToInteractionLog(localResponses.greetings.micPermission, true, false);
+                setTimeout(function () {
+                   addToInteractionLog(localResponses.greetings.thenHelp, true, false);
+                }, 5000);
+                
+            } else {
+                addToInteractionLog(localResponses.greetings.help, true, false);
+            }
+    
+        }
     });
     
+    window.onload = function () {
+        davisController.init();
+        attachEventListeners();
+    };
+    
+    /**
+     * attachEventListeners() initializes event listeners
+     */
+    function attachEventListeners() {
+        
+		$('#'+textInputElemId).keypress(function (event) {
+            submitTextInput(event.keyCode);
+        });
+        
+	    $('#'+textInputElemId).click(function () {
+            enableChatMode();
+        });
+	    
+	    $('#'+textInputElemId).focus(function () {
+            enableChatMode();
+        });
+        
+        $('#'+textInputElemId).blur(function () {
+            resetPlaceholder();
+        });
+        
+        $('#'+muteWrapperElemId).click(function () {
+            davisController.toggleMute();
+        });
+    }
+
     /**
      * resetPlaceholder() resets textInput's placeholder
      */
-    function resetPlaceholder () {
+    function resetPlaceholder() {
         $('#'+textInputElemId).attr('placeholder', localResponses.placeholders.easyTravel);
     }
     
     /**
      * resetTextInput() resets textInput's value
      */
-    function resetTextInput () {
+    function resetTextInput() {
         $('#'+textInputElemId).val('');
     }
     
@@ -34,7 +85,7 @@ var davisView = (function() {
      * 
      * @param {String} state
      */
-    function setListeningState (state) {
+    function setListeningState(state) {
         if (localResponses.listeningStates[state] !== $('#'+listeningStateElemId).html()) {
             if (localResponses.listeningStates[state] !== localResponses.listeningStates.enablingMic) {
                 $('#'+listeningStateElemId).hide().html(localResponses.listeningStates[state]).fadeIn(800);
@@ -47,7 +98,7 @@ var davisView = (function() {
     /**
      * brightenBackground() brightens the body's background-color
      */
-    function brightenBackground () {
+    function brightenBackground() {
         $('body').addClass('micOn');
         $('body').removeClass('micOff');
     }
@@ -55,18 +106,23 @@ var davisView = (function() {
     /**
      * dimBackground() dims the body's background-color
      */
-    function dimBackground () {
-        if ($('body').css("background-color") === 'rgb(51, 163, 255)') {
+    function dimBackground() {
+        if ($('body').hasClass('micOn')) {
             $('body').addClass('micOff');
             $('body').removeClass('micOn');
         }
     }
     
-    function muteOn () {
+    function enableChatMode() {
+        dimBackground();
+        davisController.enableChatMode();
+    }
+    
+    function muteOn() {
         $('#'+muteSVGElemId).removeClass('muteOff');
     }
     
-    function muteOff () {
+    function muteOff() {
         $('#'+muteSVGElemId).addClass('muteOff');
     }
     
@@ -77,11 +133,11 @@ var davisView = (function() {
         $('#'+interactionLogElemId).find('p:first').remove();
     }
     
-    function noMic () {
+    function noMic() {
         $('#'+muteWrapperElemId).hide();
     }
     
-    function addToInteractionLog (text, isDavisSpeaking, typeWriter) {
+    function addToInteractionLog(text, isDavisSpeaking, typeWriter) {
         
         if (typeWriter) {
             typeText(text);
@@ -182,6 +238,10 @@ var davisView = (function() {
         
         getTextInputElemId: function () {
             return textInputElemId;
+        },
+        
+        enableChatMode: function () {
+           enableChatMode();
         }
         
     };

@@ -1,6 +1,5 @@
-var davisController = (function() {
+var davisController = (function () {
 
-// Globals
 var isMuted = true;                       // No STT
 var muteButtonPressed = false;            // Prevent automatically unmutting if mute button is pressed
 var inactivityTimeout = 1;                // Seconds of silence before Watson STT API stops listening
@@ -12,7 +11,12 @@ var outputQueueSize = 0;                  // Counter for keeping track of queued
 var timezone;                             // User's timezone
 var userToken;                            // Random token used in place of a user ID to store/retrieve conversations in web version
 var listenAfter = true;                   // Make Watson listen after outputting a response
+var debug = false;                        // Debug mode
 
+if (localStorage.getItem('davis-debug-mode')) {
+    debug = localStorage.getItem('davis-debug-mode');
+    console.log('Davis: debug = ' + debug);
+}
 
 // Speech-To-Text (STT) & Text-To-Speech (TTS) token objects
 var savedSttTokenObj = {
@@ -40,6 +44,7 @@ var listeningStateEvents = {
 document.addEventListener('sleeping', function (event) {
     listeningState = 'sleeping';
     davisView.setListeningState(listeningState);
+    davisView.muted();
 }, false);
 
 document.addEventListener('enablingMic', function (event) {
@@ -85,80 +90,114 @@ document.addEventListener('chatMode', function (event) {
  * @param {String} request
  */
 function interactWithRuxit(request) {
-
-    if (request === '') {
-        toggleMute(true);
-        inactivityTimeout = 2;
-    } else {
-        inactivityTimeout = 1;
-    }
-
-    davisView.muted();
     
-    if (listeningState !== 'chatMode') {
-        document.dispatchEvent(listeningStateEvents.processing);
-    }
-
-    if (request) {
-
-        davisView.addToInteractionLog(request, false, false);
-    
-        var date = new Date();
-    
-        var input = {
-            sessionId: 'websession-' + date.getDate() + date.getMonth() + date.getFullYear(),
-            request: request,
-            user: userToken,
-            timezone: timezone
-        };
-    
-        var options = {
-            method: 'post',
-            mode: 'cors',
-            body: JSON.stringify(input),
-            headers: new Headers({
-                'Content-Type': 'application/json; charset=utf-8'
-            })
-        };
-
-        fetch('/web', options)
-        .then(function (response) {
+    // Debug mode
+    if (request.includes('debug = true') || (debug && request.includes('debug ') && !request.includes('debug = false'))) {
+        
+        debug = true;
+        localStorage.setItem('davis-debug-mode', 'true');
+        console.log('Davis: Debug mode enabled');
+        
+        // Output missed phrases option flag
+        if (request.includes(' -m') && localStorage.getItem('davis-missed-phrases')) {
             
-            return response.json();
+            let missedPhrases = JSON.parse(localStorage.getItem('davis-missed-phrases'));
+            let html = "<table class='debug'>";
             
-        }).then(function (data) {
-            
-            if (!data.response.text) {
+            for (let i = 0; i < missedPhrases.phrases.length; i++) {
                 
-                outputTextAndSpeech(localResponses.errors.nullResponse, localResponses.voices.michael, false);
-                return;
-                
-            } else if (!data.response) {
-                
-                document.dispatchEvent(listeningStateEvents.sleeping);
-                return;
-                
+                html += "<tr class='debug'><td class='debug'>" + missedPhrases.phrases[i].phrase + "</td>";
+                html += "<td class='debug'>" + missedPhrases.phrases[i].count + "</td></tr>";
+
             }
+            
+            html += "</table>";
+            davisView.addToInteractionLog(html);
+            
+        }
+        
+    } else if (request.includes('debug = false')) {
+        
+        debug = false;
+        localStorage.setItem('davis-debug-mode', 'false');
+        console.log('Davis: Debug mode disabled');
+        
+    } else {
+
+        if (request === '') {
+            toggleMute(true);
+            inactivityTimeout = 2;
+        } else {
+            inactivityTimeout = 1;
+        }
     
-            if (data.response) {
+        davisView.muted();
+        
+        if (listeningState !== 'chatMode') {
+            document.dispatchEvent(listeningStateEvents.processing);
+        }
+    
+        if (request) {
+    
+            davisView.addToInteractionLog(request, false, false);
+        
+            var date = new Date();
+        
+            var input = {
+                sessionId: 'websession-' + date.getDate() + date.getMonth() + date.getFullYear(),
+                request: request,
+                user: userToken,
+                timezone: timezone
+            };
+        
+            var options = {
+                method: 'post',
+                mode: 'cors',
+                body: JSON.stringify(input),
+                headers: new Headers({
+                    'Content-Type': 'application/json; charset=utf-8'
+                })
+            };
+    
+            fetch('/web', options)
+            .then(function (response) {
                 
-                outputTextAndSpeech(data.response.text, localResponses.voices.michael, !data.response.shouldEndSession);
+                return response.json();
                 
-                // "Show me" hyperlink push functionality
-                if (data.response.hyperlink) {
-                    window.open(data.response.hyperlink, '_blank').focus();
+            }).then(function (data) {
+                
+                if (!data.response.text) {
+                    
+                    outputTextAndSpeech(localResponses.errors.nullResponse, localResponses.voices.michael, false);
+                    return;
+                    
+                } else if (!data.response) {
+                    
+                    document.dispatchEvent(listeningStateEvents.sleeping);
+                    return;
+                    
+                }
+        
+                if (data.response) {
+                    
+                    outputTextAndSpeech(data.response.text, localResponses.voices.michael, !data.response.shouldEndSession);
+                    
+                    // "Show me" hyperlink push functionality
+                    if (data.response.hyperlink) {
+                        window.open(data.response.hyperlink, '_blank').focus();
+                    }
+                    
+                } else {
+                    document.dispatchEvent(listeningStateEvents.sleeping);
                 }
                 
-            } else {
-                document.dispatchEvent(listeningStateEvents.sleeping);
-            }
-            
-        }).catch(function (err) {
-            outputTextAndSpeech(localResponses.errors.server, localResponses.voices.michael, false);
-            console.log('interactWithRuxit - Error: ' + err);
-        });
-    } else {
-         document.dispatchEvent(listeningStateEvents.sleeping);
+            }).catch(function (err) {
+                outputTextAndSpeech(localResponses.errors.server, localResponses.voices.michael, false);
+                console.log('interactWithRuxit - Error: ' + err);
+            });
+        } else {
+             document.dispatchEvent(listeningStateEvents.sleeping);
+        }
     }
 }
 
@@ -482,16 +521,62 @@ function listen() {
 function annyangInit() {
     
     if (annyang) {
-
+        
+        annyang.setLanguage('en');
+        
         annyang.addCallback('result', function (phrases) {
-            if (phrases[0].toLowerCase().includes('hey davis') || phrases[0].toLowerCase().includes('ok davis')) {
+            
+            let launch = false;
+            
+            localResponses.phrases.forEach(function (phrase) {
+               if (phrases[0].toLowerCase().trim().includes(phrase)) {
+                   launch = true;
+               } 
+            });
+            
+            if (launch) {
+                
                 document.dispatchEvent(listeningStateEvents.enablingMic);
                 listenAfter = true;
                 toggleMute(false);
+                
+            } else if (debug && phrases[0].toLowerCase().trim().split(' ').length < 5) {
+                
+                let missedPhrases = {phrases: []};
+                let missedPhrase = phrases[0].toLowerCase().trim();
+                
+                console.log('Davis: Missed phrase logged');
+                console.log('"'+ missedPhrase +'"');
+                
+                // check if JSON is stored in localStorage
+                if (localStorage.getItem('davis-missed-phrases')) {
+                
+                    missedPhrases = JSON.parse(localStorage.getItem('davis-missed-phrases'));
+                    
+                    // Check if missed phrase is already stored in array [{phrase, count}] within object 
+                    // Increment count if already stored, push if not
+                    for (var i = 0; i < missedPhrases.phrases.length; i++) {
+                       
+                        if (missedPhrases.phrases[i].phrase == missedPhrase) {
+                            missedPhrases.phrases[i].count++;
+                            i = -1; // Mark as found
+                            break;
+                        }
+                        
+                    }
+                    
+                    if (i != -1) {
+                        missedPhrases.phrases.push({phrase: missedPhrase, count: 1});
+                    }
+                    
+                } else {
+                    missedPhrases.phrases.push({phrase: missedPhrase, count: 1});
+                }
+                
+                localStorage.setItem('davis-missed-phrases', JSON.stringify(missedPhrases));
             }
             
         });
-        annyang.setLanguage('en');
 
     }
     
@@ -566,32 +651,20 @@ function noMic() {
  */
 function init() {
     
-    davisView.resetPlaceholder();
-    
     if (typeof window.chrome != 'object') {
         
         document.dispatchEvent(listeningStateEvents.chatMode);
         davisView.noMic();
         davisView.muted();
-        davisView.addToInteractionLog(localResponses.errors.noBrowserSupport, true, false);
-        davisView.addToInteractionLog(localResponses.errors.chrome, true, false);
-        davisView.addToInteractionLog(localResponses.errors.getChrome, true, false); 
         
     } else {
         
         timezone = jstz.determine().name();
-        
-        if (!localStorage.getItem("davis-user-token")) {
-            davisView.addToInteractionLog(localResponses.greetings.micPermission, true, false);
-            davisView.addToInteractionLog(localResponses.greetings.thenHelp, true, false);
-        } else {
-            davisView.addToInteractionLog(localResponses.greetings.help, true, false);
-        }
-        
         getDavisUserToken();
         annyangInit();
         enableListenForKeyword(true);
         document.dispatchEvent(listeningStateEvents.sleeping);
+        
     }
     
 }
@@ -619,6 +692,9 @@ return {
     },
     toggleMute: function () {
         toggleMute();    
+    },
+    process: function () {
+        interactWithRuxit($('#'+davisView.getTextInputElemId()).val());
     }
     
 }

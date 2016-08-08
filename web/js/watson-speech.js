@@ -7086,7 +7086,7 @@ RecognizeStream.prototype.initialize = function() {
    */
   function emitError(msg, frame, err) {
     if(msg.includes('No speech detected for')) {
-      davisController.interactWithRuxit($("#textInput").val());
+      davisController.process();
     } else {
       if (err) {
         err.message = msg + ' ' + err.message;
