@@ -11,19 +11,15 @@
 		<script src="./js/davisView.js"></script>
 		<script src="./js/davisController.js"></script>
 	</head>
-	<body onload="davisController.init()">
+	<body>
 	    <div class="site-wrapper">
 	    	<div class="site-wrapper-inner">
 	        	<div class="inner" id="interactionLog">
 	        	</div>
 				<div class="inputWrapper">
 					<div id="listeningState"></div>
-					<input id="textInput" type="text" 
-						onkeypress="davisView.submitTextInput(event.keyCode)"
-						onclick="davisView.enableChatMode()"
-						onfocus="davisView.enableChatMode()" 
-						onblur="davisView.resetPlaceholder()" />
-					<div id="muteWrapper" onclick="davisController.toggleMute()">
+					<input id="textInput" type="text" />
+					<div id="muteWrapper">
 						<img src="images/microphone.svg" id="muteSVG" />
 					</div>
      			</div>

@@ -1,4 +1,4 @@
-var davisController = (function() {
+var davisController = (function () {
 
 var isMuted = true;                       // No STT
 var muteButtonPressed = false;            // Prevent automatically unmutting if mute button is pressed
@@ -92,7 +92,7 @@ document.addEventListener('chatMode', function (event) {
 function interactWithRuxit(request) {
     
     // Debug mode
-    if (request.includes('debug = true') || (debug && !request.includes('debug = false'))) {
+    if (request.includes('debug = true') || (debug && request.includes('debug ') && !request.includes('debug = false'))) {
         
         debug = true;
         localStorage.setItem('davis-debug-mode', 'true');
@@ -526,13 +526,21 @@ function annyangInit() {
         
         annyang.addCallback('result', function (phrases) {
             
-            if (phrases[0].toLowerCase().includes('hey davis') || phrases[0].toLowerCase().includes('ok davis')) {
+            let launch = false;
+            
+            localResponses.phrases.forEach(function (phrase) {
+               if (phrases[0].toLowerCase().trim().includes(phrase)) {
+                   launch = true;
+               } 
+            });
+            
+            if (launch) {
                 
                 document.dispatchEvent(listeningStateEvents.enablingMic);
                 listenAfter = true;
                 toggleMute(false);
                 
-            } else if (debug) {
+            } else if (debug && phrases[0].toLowerCase().trim().split(' ').length < 5) {
                 
                 let missedPhrases = {phrases: []};
                 let missedPhrase = phrases[0].toLowerCase().trim();
@@ -684,6 +692,9 @@ return {
     },
     toggleMute: function () {
         toggleMute();    
+    },
+    process: function () {
+        interactWithRuxit($('#'+davisView.getTextInputElemId()).val());
     }
     
 }
