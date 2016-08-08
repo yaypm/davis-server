@@ -28,7 +28,7 @@ module.exports = {
                     return [sayTemplate, textTemplate, showTemplate];
                 })
                 .spread((say, text, show) => {
-                    templateBuilderHelper(say, text, show, davis);
+                    if (process.env.DEBUG) templateBuilderHelper(say, text, show, davis);
                     const greetingResponse = (shouldGreet) ? getGreeting(davis) : null,
                         sayResponse = (!_.isNil(say)) ? nunjucks(davis.config.aliases).renderAsync(say, davis) : null,
                         textResponse = (!_.isNil(text)) ? nunjucks(davis.config.aliases).renderAsync(text, davis): null,

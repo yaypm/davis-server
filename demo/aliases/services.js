@@ -1,6 +1,6 @@
 'use strict';
 
-let services = [{
+const services = [{
     name: 'nginx',
     display: {
         audible: 'Engine-X',

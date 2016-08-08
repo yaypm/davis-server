@@ -4,7 +4,7 @@
  * Allows you, the davis admin, to map multiple aliases with the name defined in Dynatrace
  */
 
-let applications = [{
+const applications = [{
     name: 'login',
     display: {
         audible: 'Single Sign On',
