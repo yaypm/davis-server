@@ -13,6 +13,26 @@ var davisView = (function() {
     $.getJSON('./js/local-responses.json', function (data){
         localResponses = data;
         resetPlaceholder();
+        if (typeof window.chrome != 'object') {
+           
+           addToInteractionLog(localResponses.errors.noBrowserSupport, true, false);
+           addToInteractionLog(localResponses.errors.chrome, true, false);
+           addToInteractionLog(localResponses.errors.getChrome, true, false); 
+            
+        } else {
+        
+            if (!localStorage.getItem("davis-user-token")) {
+                
+                addToInteractionLog(localResponses.greetings.micPermission, true, false);
+                setTimeout(function () {
+                   addToInteractionLog(localResponses.greetings.thenHelp, true, false);
+                }, 5000);
+                
+            } else {
+                addToInteractionLog(localResponses.greetings.help, true, false);
+            }
+    
+        }
     });
     
     /**
@@ -56,7 +76,7 @@ var davisView = (function() {
      * dimBackground() dims the body's background-color
      */
     function dimBackground () {
-        if ($('body').css("background-color") === 'rgb(51, 163, 255)') {
+        if ($('body').hasClass('micOn')) {
             $('body').addClass('micOff');
             $('body').removeClass('micOn');
         }
@@ -182,6 +202,11 @@ var davisView = (function() {
         
         getTextInputElemId: function () {
             return textInputElemId;
+        },
+        
+        enableChatMode: function () {
+            dimBackground();
+            davisController.enableChatMode();
         }
         
     };
