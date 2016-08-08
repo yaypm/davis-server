@@ -1,3 +1,27 @@
+	/* unvisited link */
+	a:link {
+	    color: white;
+	    text-decoration: none;
+	    opacity: 0.4;
+	}
+	
+	/* visited link */
+	a:visited {
+	    color: white;
+	}
+	
+	/* mouse over link */
+	a:hover {
+	    color: white;
+	    opacity: 1.0;
+	    text-decoration: underline;
+	}
+	
+	/* selected link */
+	a:active {
+	    color: white;
+	}
+	
 	#interactionlog {
 		position: absolute;
 		top: 50px;
@@ -37,14 +61,13 @@
 	}
 	
 	#connectedUrl {
-		position: relative;
-		float: left;
+		position: absolute;
+		z-index: 1001;
+		left: calc(50% - 115px);
+		bottom: 8px;
 		font-family: BerninaSans, Arial;
 		font-size: 12px;
 		color: white;
-		margin-left: 8px;
-		margin-bottom: 3px;
-		opacity: 0.3;
 	}
 	
 	#textInput {	

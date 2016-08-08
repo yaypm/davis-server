@@ -246,7 +246,7 @@ var davisView = (function () {
         },
         
         setConnectedUrl: function (url) {
-            $('#'+connectedUrlElemId).html('Connected: '+url);
+            $('#'+connectedUrlElemId).html('<span style="opacity:0.4;">Connected:</span> <a href="' + url + '" target="_blank">'+url+'</a>');
         }
         
     };
