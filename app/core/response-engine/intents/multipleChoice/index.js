@@ -19,13 +19,13 @@ const process = function process(davis) {
                     let request = davis.exchange.request.text,
                         requestString = S(request);
 
-                    if (requestString.include('third') || requestString.include('three')) {
+                    if (requestString.include('third') || requestString.include('three') || requestString.include('3')) {
                         logger.debug('The user asked for the third choice');
                         state.problemId = result[1].state.problemIds[2];
-                    } else if (requestString.include('second') || requestString.include('two')) {
+                    } else if (requestString.include('second') || requestString.include('two') || requestString.include('2')) {
                         logger.debug('The user asked for the second choice');
                         state.problemId = result[1].state.problemIds[1];
-                    } else if (requestString.include('first') || requestString.include('one')) {
+                    } else if (requestString.include('first') || requestString.include('one') || requestString.include('1')) {
                         logger.debug('The user asked for the first choice');
                         state.problemId = result[1].state.problemIds[0];
                     }  else {
