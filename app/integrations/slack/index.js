@@ -2,7 +2,8 @@
 
 const Botkit = require('botkit'),
     logger = require('../../utils/logger'),
-    SlackService = require('./services/SlackService');
+    SlackService = require('./services/SlackService'),
+    moment = require('moment');
 
 module.exports = function (config) {
     
@@ -15,9 +16,10 @@ module.exports = function (config) {
         token: config.slack.key
     }).startRTM();
     
-    var initialInteraction;
+    let initialInteraction;
     let initialResponse;
-    var lastInteractionTime;
+    let lastInteractionTime;
+    let shouldEndSession;
     
     /**
      * initConvo() is a recursive function that acts as a loop for continuing the conversation flow
@@ -27,15 +29,16 @@ module.exports = function (config) {
      */
     let initConvo = function (err, convo) {
         
-        lastInteractionTime = new Date();
+        lastInteractionTime = moment();
     
-        if (!initialInteraction.text.includes('hey davis')) {
+        if (!initialInteraction.text.toLowerCase().includes('hey davis')) {
             
                 SlackService(config).askDavis(initialInteraction)
                 .then(resp => {
                     
                     logger.info('Sending a response back to the Slack service');
                     initialResponse = resp.response.outputSpeech.text;
+                    shouldEndSession = resp.response.shouldEndSession;
 
                     convo.ask(initialResponse, function (response, convo) {
                         addToConvo(response, convo);
@@ -52,6 +55,8 @@ module.exports = function (config) {
         } else {
             
             initialResponse = "Hi, my name's Davis, your virtual Dev-Ops assistant. What can I help you with today?";
+            shouldEndSession = false;
+            
             convo.ask(initialResponse, function (response, convo) {
                 addToConvo(response, convo);
             });
@@ -64,38 +69,43 @@ module.exports = function (config) {
     
     let addToConvo = function (response, convo) {
         
-        let isTimedOut = lastInteractionTime < new Date((new Date) * 1 - 1000 * 600);
+        // Timeout of 30 seconds
+        let isTimedOut = moment().subtract(30, 'seconds').isAfter(lastInteractionTime);
         
-        // if exit, quit, or stop are mentioned, or lastInteractionTime is more than 10 minutes ago, end conversation
-        if (response.text.includes("exit") || response.text.includes("quit") || response.text.includes("stop") || isTimedOut) {
+        // Reset last interaction timestamp
+        lastInteractionTime = moment();
+        
+        // if exit, quit, or stop are mentioned, or lastInteractionTime is more than 30 seconds ago, end conversation
+        if (shouldEndSession || isTimedOut) {
             
             logger.info('Stopped');
-            
-            if (!isTimedOut) {
-                
-                convo.say("Goodbye!");
-                convo.next();
-                
-            } else {
-                convo.stop();
-            }
+            convo.stop();
             
         } else {
             
             SlackService(config).askDavis(response)
             .then(resp => {
+                
                 logger.info('Sending a response back to the Slack service');
                 
-                // send reply and listen for next interaction
-                convo.ask(resp.response.outputSpeech.text, function (response, convo) {
-                    
-                    // reset last interaction timestamp
-                    lastInteractionTime = new Date();
+                shouldEndSession = resp.response.shouldEndSession;
                 
-                    addToConvo(response, convo);
+                if (shouldEndSession) {
                     
-                });
-                convo.next();
+                    convo.say(resp.response.outputSpeech.text);
+                    convo.next();
+                    
+                } else {
+
+                    // send reply and listen for next interaction
+                    convo.ask(resp.response.outputSpeech.text, function (response, convo) {
+                    
+                        addToConvo(response, convo);
+                        
+                    });
+                    convo.next();
+                    
+                }
     
             })
             .catch(err => {
