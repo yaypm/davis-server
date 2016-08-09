@@ -1,25 +1,80 @@
-	/* unvisited link */
+	body {
+		background-color: #007ee6;
+		font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;	
+		margin: 0;
+	}
+	
+	body.micOff {
+	    -webkit-animation-name: micOff; /* Chrome, Safari, Opera */
+	    -webkit-animation-duration: 4s; /* Chrome, Safari, Opera */
+	    animation-name: micOff;
+	    animation-duration: 1s;
+	    background-color: #007ee6;
+	}
+	
+	body.micOn {
+	    -webkit-animation-name: micOn; /* Chrome, Safari, Opera */
+	    -webkit-animation-duration: 4s; /* Chrome, Safari, Opera */
+	    animation-name: micOn;
+	    animation-duration: 1s;
+	    background-color: #33a3ff;
+	}
+
 	a:link {
 	    color: white;
 	    text-decoration: none;
 	    opacity: 0.4;
 	}
 	
-	/* visited link */
 	a:visited {
 	    color: white;
 	}
 	
-	/* mouse over link */
 	a:hover {
 	    color: white;
 	    opacity: 1.0;
 	    text-decoration: underline;
 	}
 	
-	/* selected link */
 	a:active {
 	    color: white;
+	}
+	
+	/* Chrome, Safari, Opera */
+	@-webkit-keyframes micOff {
+	    from {background-color: #33a3ff;}
+	    to {background-color: #007ee6;}
+	}
+	
+	/* Standard syntax */
+	@keyframes micOff {
+	    from {background-color: #33a3ff;}
+	    to {background-color: #007ee6;}
+	}
+	
+	/* Chrome, Safari, Opera */
+	@-webkit-keyframes micOn {
+	    from {background-color: #007ee6;}
+	    to {background-color: #33a3ff;}
+	}
+	
+	/* Standard syntax */
+	@keyframes micOn {
+	    from {background-color: #007ee6;}
+	    to {background-color: #33a3ff;}
+	}
+	
+	table.debug {
+	    border-collapse: collapse;
+	    margin: auto 0;
+	}
+	
+	table.debug, th.debug, td.debug {
+		color: white;
+	    border: 1px solid white;
+	    padding: 10px;
+	    position: relative;
+	    margin: auto;
 	}
 	
 	#interactionlog {
@@ -97,6 +152,7 @@
 		padding: 5px 10px 0px 10px;
 		cursor: pointer;
 	}
+	
 	#muteSVG {
 		position: relative;
 		float: left;
@@ -105,73 +161,14 @@
 		opacity: 1.0;
 	}
 	
+	#muteSVG.muteOff {
+	    opacity: 0.3;
+	}
+	
 	.userStyle {
 		color: rgba(0, 0, 0, 0.2) !important;
 	}
 	
 	.botStyle {
 		color: white;
-	}
-	
-	body {
-		background-color: #007ee6;
-		font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;	
-		margin: 0;
-	}
-	
-	body.micOff {
-	    -webkit-animation-name: micOff; /* Chrome, Safari, Opera */
-	    -webkit-animation-duration: 4s; /* Chrome, Safari, Opera */
-	    animation-name: micOff;
-	    animation-duration: 1s;
-	    background-color: #007ee6;
-	}
-	
-	body.micOn {
-	    -webkit-animation-name: micOn; /* Chrome, Safari, Opera */
-	    -webkit-animation-duration: 4s; /* Chrome, Safari, Opera */
-	    animation-name: micOn;
-	    animation-duration: 1s;
-	    background-color: #33a3ff;
-	}
-	
-	#muteSVG.muteOff {
-	    opacity: 0.3;
-	}
-	
-	/* Chrome, Safari, Opera */
-	@-webkit-keyframes micOff {
-	    from {background-color: #33a3ff;}
-	    to {background-color: #007ee6;}
-	}
-	
-	/* Standard syntax */
-	@keyframes micOff {
-	    from {background-color: #33a3ff;}
-	    to {background-color: #007ee6;}
-	}
-	
-	/* Chrome, Safari, Opera */
-	@-webkit-keyframes micOn {
-	    from {background-color: #007ee6;}
-	    to {background-color: #33a3ff;}
-	}
-	
-	/* Standard syntax */
-	@keyframes micOn {
-	    from {background-color: #007ee6;}
-	    to {background-color: #33a3ff;}
-	}
-	
-	table.debug {
-	    border-collapse: collapse;
-	    margin: auto 0;
-	}
-	
-	table.debug, th.debug, td.debug {
-		color: white;
-	    border: 1px solid white;
-	    padding: 10px;
-	    position: relative;
-	    margin: auto;
 	}
