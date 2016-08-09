@@ -125,7 +125,7 @@ var davis = (function () {
          * Resets textInput's placeholder
          */
         function resetPlaceholder() {
-            $('#'+textInputElemId).attr('placeholder', localResponses.placeholders.easyTravel);
+            $('#'+textInputElemId).attr('placeholder', localResponses.placeholders[Math.floor(Math.random() * localResponses.placeholders.length)]);
         }
         
         /**

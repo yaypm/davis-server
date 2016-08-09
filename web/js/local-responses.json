@@ -12,9 +12,12 @@
         "thenHelp": "Then say \"Hey Davis\" or click the microphone when you're ready for help.",
         "help": "Say \"Hey Davis\" or click the mic to wake me."
     },
-    "placeholders": {
-        "easyTravel": "How's easyTravel doing?"
-    },
+    "placeholders": [
+        "How's easyTravel doing?",
+        "What happened yesterday around 9 am?",
+        "Did anything happened this morning?",
+        "What happened last Monday between 9 am and 5 pm?"
+    ],
     "voices": {
         "allison": "en-US_AllisonVoice",
         "lisa": "en-US_LisaVoice",
