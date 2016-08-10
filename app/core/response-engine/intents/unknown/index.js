@@ -6,7 +6,7 @@ const _ = require('lodash'),
     logger = require('../../../../utils/logger');
 
 const process = function process(davis) {
-    logger.warn(`The user ran into an unknown intent when asking '${davis.exchange.request.text}`);
+    logger.warn(`The user ran into an unknown intent when asking '${davis.exchange.request.text}'`);
     const responses = [
         'Unfortunately, I don\'t know how to respond to that yet.  However, pull requests are always welcome!',
         'I\'m sorry but I don\'t understand.',
