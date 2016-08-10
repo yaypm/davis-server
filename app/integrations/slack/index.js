@@ -21,6 +21,16 @@ module.exports = function (config) {
     let lastInteractionTime;
     let shouldEndSession;
     
+    // Launch phrases
+    let phrases = [
+        "hey davis",
+        "okay davis",
+        "ok davis",
+        "k davis", 
+        "hello davis",
+        "hi davis"
+    ];
+    
     /**
      * initConvo() is a recursive function that acts as a loop for continuing the conversation flow
      * 
@@ -30,55 +40,54 @@ module.exports = function (config) {
     let initConvo = function (err, convo) {
         
         lastInteractionTime = moment();
-    
-        if (!initialInteraction.text.toLowerCase().includes('hey davis')) {
-            
-                SlackService(config).askDavis(initialInteraction)
-                .then(resp => {
-                    
-                    logger.info('Sending a response back to the Slack service');
-                    initialResponse = resp.response.outputSpeech.text;
-                    shouldEndSession = resp.response.shouldEndSession;
 
-                    convo.ask(initialResponse, function (response, convo) {
-                        addToConvo(response, convo);
-                    });
-                    convo.next();
-                    
-                })
-                .catch(err => {
-                    //ToDo add an error response.
-                    logger.error('Unable to respond to the request received from Slack');
-                    logger.error(err);
-                });
+        phrases.forEach(function (phrase) {
             
-        } else {
+            if (initialInteraction.text.toLowerCase().includes(phrase)) {
+                
+                if (phrase.length == initialInteraction.text.trim().length) {
+                    initialInteraction.text = 'Start davis';
+                } else {
+                    initialInteraction.text = initialInteraction.text.toLowerCase().replace(phrase, '');
+                }
+                
+            }
             
-            initialResponse = "Hi, my name's Davis, your virtual Dev-Ops assistant. What can I help you with today?";
-            shouldEndSession = false;
+        });
             
+        SlackService(config).askDavis(initialInteraction)
+        .then(resp => {
+            
+            logger.info('Sending a response back to the Slack service');
+            initialResponse = resp.response.outputSpeech.text;
+            shouldEndSession = resp.response.shouldEndSession;
+
             convo.ask(initialResponse, function (response, convo) {
                 addToConvo(response, convo);
             });
-            
             convo.next();
             
-        }
+        })
+        .catch(err => {
+            //ToDo add an error response.
+            logger.error('Unable to respond to the request received from Slack');
+            logger.error(err);
+        });
         
     };
     
     let addToConvo = function (response, convo) {
         
-        // Timeout of 30 seconds
-        let isTimedOut = moment().subtract(30, 'seconds').isAfter(lastInteractionTime);
+        // Timeout of 60 seconds
+        let isTimedOut = moment().subtract(60, 'seconds').isAfter(lastInteractionTime);
         
         // Reset last interaction timestamp
         lastInteractionTime = moment();
         
-        // if exit, quit, or stop are mentioned, or lastInteractionTime is more than 30 seconds ago, end conversation
+        // if lastInteractionTime is more than 30 seconds ago, end conversation
         if (shouldEndSession || isTimedOut) {
             
-            logger.info('Stopped');
+            logger.info('Slack: Conversation stopped');
             convo.stop();
             
         } else {
@@ -86,10 +95,11 @@ module.exports = function (config) {
             SlackService(config).askDavis(response)
             .then(resp => {
                 
-                logger.info('Sending a response back to the Slack service');
+                logger.info('Slack: Sending a response');
                 
                 shouldEndSession = resp.response.shouldEndSession;
                 
+                // if no followup question
                 if (shouldEndSession) {
                     
                     convo.say(resp.response.outputSpeech.text);
@@ -97,7 +107,7 @@ module.exports = function (config) {
                     
                 } else {
 
-                    // send reply and listen for next interaction
+                    // Send response and listen for request
                     convo.ask(resp.response.outputSpeech.text, function (response, convo) {
                     
                         addToConvo(response, convo);
@@ -118,20 +128,14 @@ module.exports = function (config) {
         
     };
     
-    controller.hears(['me'], 'direct_message,direct_mention', (bot, message) => {
-        logger.info('direct mention of me');
-        initialInteraction = message;
-        bot.startPrivateConversation(message, initConvo);
-    });
-    
     controller.hears(['(.*)'], 'direct_message,direct_mention', (bot, message) => {
-        logger.info('direct mention of anything');
+        logger.info('Slack: Starting public conversation (direct)');
         initialInteraction = message;
         bot.startConversation(message, initConvo);
     });
     
-    controller.hears(['hey davis'], 'mention,ambient', (bot, message) => {
-        logger.info('mention of hey davis');
+    controller.hears(phrases, 'mention,ambient', (bot, message) => {
+        logger.info('Slack: Starting public conversation (ambient)');
         initialInteraction = message;
         bot.startConversation(message, initConvo);
     });

@@ -10,7 +10,7 @@
     "greetings": {
         "micPermission": "Please select \"Allow\" if asked for permission to use your microphone.",
         "thenHelp": "Then say \"Hey Davis\" or click the microphone when you're ready for help.",
-        "help": "Say \"Hey Davis\" or click the mic to wake me."
+        "help": "Say \"Hey Davis\", type a question, or click the mic to wake me."
     },
     "placeholders": [
         "How's easyTravel doing?",
@@ -34,9 +34,10 @@
     "phrases": [
         "hey davis",
         "okay davis",
-        "hello davis",
         "ok davis",
         "k davis",
+        "hello davis",
+        "hi davis",
         "the davis",
         "hey david",
         "okay david",
