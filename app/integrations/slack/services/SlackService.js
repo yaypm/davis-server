@@ -37,10 +37,13 @@ module.exports = function SlackService(config) {
     return {
         /**
          * Interacts with Davis via Slack
+         * 
          * @param {Object} req - The request received from Slack.
+         * @param {Object} member - Slack member details
+         * 
          * @returns {promise} res - The response formatted for Slack.
          */
-        askDavis: (req) => {
+        askDavis: (req, member) => {
             
             logger.info('Starting our interaction with Davis');
             
@@ -49,10 +52,10 @@ module.exports = function SlackService(config) {
                 // Use Slack user property as id for Davis user 
                 // Avoids having to enter Slack user property for each Davis user for association
                 let user = {
-                    'id': 'slack-user-' + req.user, 
+                    'id': member.id, 
                     'nlp': config.nlp,
                     'dynatrace': config.slack.dynatrace,
-                    'timezone': config.slack.timezone
+                    'timezone': member.tz
                 };
     
                 // Starts or continues our conversation

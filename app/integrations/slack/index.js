@@ -3,6 +3,7 @@
 const Botkit = require('botkit'),
     logger = require('../../utils/logger'),
     SlackService = require('./services/SlackService'),
+    fetch = require('node-fetch'),
     moment = require('moment');
 
 module.exports = function (config) {
@@ -12,14 +13,21 @@ module.exports = function (config) {
         interactive_replies: true
     });
     
-    controller.spawn({
+    var bot = controller.spawn({
         token: config.slack.key
-    }).startRTM();
+    });
+    
+    bot.startRTM(function (err, bot, payload) {
+        if (err) {
+            throw new Error('Could not connect to Slack');
+        }
+    });
     
     let initialInteraction;
     let initialResponse;
     let lastInteractionTime;
     let shouldEndSession;
+    let user;
     
     // Launch phrases
     let phrases = [
@@ -39,10 +47,12 @@ module.exports = function (config) {
      */
     let initConvo = function (err, convo) {
         
+        showTypingNotification();
+        
         lastInteractionTime = moment();
-
+        
         phrases.forEach(function (phrase) {
-            
+                    
             if (initialInteraction.text.toLowerCase().includes(phrase)) {
                 
                 if (phrase.length == initialInteraction.text.trim().length) {
@@ -55,7 +65,7 @@ module.exports = function (config) {
             
         });
             
-        SlackService(config).askDavis(initialInteraction)
+        SlackService(config).askDavis(initialInteraction, user)
         .then(resp => {
             
             logger.info('Sending a response back to the Slack service');
@@ -78,6 +88,8 @@ module.exports = function (config) {
     
     let addToConvo = function (response, convo) {
         
+        showTypingNotification();
+
         // Timeout of 60 seconds
         let isTimedOut = moment().subtract(60, 'seconds').isAfter(lastInteractionTime);
         
@@ -89,10 +101,11 @@ module.exports = function (config) {
             
             logger.info('Slack: Conversation stopped');
             convo.stop();
+            bot.destroy.bind(bot);
             
         } else {
             
-            SlackService(config).askDavis(response)
+            SlackService(config).askDavis(response, user)
             .then(resp => {
                 
                 logger.info('Slack: Sending a response');
@@ -128,16 +141,77 @@ module.exports = function (config) {
         
     };
     
+    let startConvo = function (bot, message, newConvo) {
+        
+        // Get Slack user details (for timezone)
+        if (!user || !newConvo) {
+            var options = {
+                method: 'get',
+                headers: {
+                  accept: 'application/json'
+                }
+            };
+            
+            fetch('https://slack.com/api/users.list?token='+config.slack.key, options)
+            .then(function (response) {
+                
+                return response.json();
+                
+            }).then(function (resp) {
+            
+                resp.members.forEach(function (member) {
+                   
+                    if (member.id.toLowerCase() === initialInteraction.user.toLowerCase()) {
+                        
+                        user = member;
+                        
+                        if (newConvo) {
+                            bot.startConversation(message, initConvo);
+                        }
+                        
+                    }   
+                    
+                });
+                
+            }).catch(function (err) {
+                console.log(err);
+            });
+        
+        } else {
+            
+            bot.startConversation(message, initConvo);
+            
+        }
+        
+    }
+    
+    let showTypingNotification = function () {
+        
+        setTimeout(function () {
+            
+            bot.say({
+                type: "typing",
+                channel: initialInteraction.channel // a valid slack channel, group, mpim, or im ID
+            });
+            
+        }, 500);
+        
+    }
+    
     controller.hears(['(.*)'], 'direct_message,direct_mention', (bot, message) => {
         logger.info('Slack: Starting public conversation (direct)');
         initialInteraction = message;
-        bot.startConversation(message, initConvo);
+        startConvo(bot, message, true);
     });
     
     controller.hears(phrases, 'mention,ambient', (bot, message) => {
         logger.info('Slack: Starting public conversation (ambient)');
         initialInteraction = message;
-        bot.startConversation(message, initConvo);
+        startConvo(bot, message, true);
+    });
+    
+    controller.on('user_channel_join',function(bot,message) {
+        startConvo(bot, message, false);
     });
     
 };
