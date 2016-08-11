@@ -4,7 +4,7 @@ const Botkit = require('botkit'),
     BbPromise = require('bluebird'),
     logger = require('../../utils/logger'),
     SlackService = require('./services/SlackService'),
-    fetch = require('node-fetch'),
+    rp = require('request-promise'),
     moment = require('moment');
 
 module.exports = function (config) {
@@ -31,14 +31,6 @@ module.exports = function (config) {
         "hi davis"
     ];
     
-    // Fetch options
-    var options = {
-        method: 'get',
-        headers: {
-          accept: 'application/json'
-        }
-    };
-    
     /**
      * Gets user details
      * Important for using correct timezone and finding the davis bot's id
@@ -49,12 +41,14 @@ module.exports = function (config) {
         
          return new BbPromise((resolve, reject) => {
              
-            fetch('https://slack.com/api/users.list?token='+config.slack.key, options)
-            .then( (response) => {
-                
-                return response.json();
-                
-            }).then( (resp) => {
+            let options = {
+                uri: 'https://slack.com/api/users.list?token='+config.slack.key,
+                json: true
+            };
+             
+             
+            rp(options)
+            .then( (resp) => {
             
                 resp.members.forEach( (member) => {
                     
@@ -85,12 +79,13 @@ module.exports = function (config) {
             
             getUserDetails().then( (res) => {
              
-                fetch('https://slack.com/api/users.getPresence?token=' + config.slack.key + '&user=' + botId, options)
-                .then( (response) => {
-                    
-                    return response.json();
-                    
-                }).then( (respJson) => {
+                let options = {
+                    uri: 'https://slack.com/api/users.getPresence?token=' + config.slack.key + '&user=' + botId,
+                    json: true
+                };
+             
+                rp(options)
+                .then( (respJson) => {
                     
                     return resolve(respJson.online);
                     
