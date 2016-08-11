@@ -255,14 +255,10 @@ module.exports = function (config) {
     
     let showTypingNotification = function () {
         
-        setTimeout( () => {
-            
-            bot.say({
-                type: "typing",
-                channel: initialInteraction.channel // a valid slack channel, group, mpim, or im ID
-            });
-            
-        }, 500);
+        bot.say({
+            type: "typing",
+            channel: initialInteraction.channel // a valid slack channel, group, mpim, or im ID
+        });
         
     }
     
