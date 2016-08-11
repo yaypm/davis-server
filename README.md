@@ -36,3 +36,5 @@ We had fun building DAVIS and now it is your turn to enjoy the magic of DAVIS po
 **Let's get started!**
 
 #### <i class="icon-file"></i> Create a new a new davis project
+
+![enter image description here](https://s3.amazonaws.com/davis-project/cog-awesome.png) Some sample text here.
