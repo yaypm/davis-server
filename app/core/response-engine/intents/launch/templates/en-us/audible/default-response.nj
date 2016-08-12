@@ -1,3 +1,0 @@
-{% filter replace("Dynatrace", "dynaTrace") %}
-{%- include "intents/launch/templates/en-us/default-response.nj" -%}
-{% endfilter %}
