@@ -102,7 +102,7 @@
 		position: absolute;
 		z-index: 1001;
 		left: calc(50% - 300px);
-		bottom: 30px;
+		bottom: 20px;
 	}
 	
 	#listeningState {
@@ -116,13 +116,14 @@
 	}
 	
 	#connectedUrl {
-		position: absolute;
-		z-index: 1001;
-		left: calc(50% - 115px);
-		bottom: 8px;
-		font-family: BerninaSans, Arial;
-		font-size: 12px;
-		color: white;
+		position: relative;
+	    clear: both;
+	    margin: auto 0;
+	    text-align: center;
+	    width: 600px;
+	    font-family: BerninaSans, Arial;
+	    font-size: 12px;
+	    color: white;
 	}
 	
 	#textInput {	
@@ -131,6 +132,7 @@
 		float: left;
 		width: 600px;
 		height: 51px;
+		margin-bottom: 20px;
 		padding: 6px 0px 6px 16px;
 		background-color: white;
 		border-radius: 9px;
