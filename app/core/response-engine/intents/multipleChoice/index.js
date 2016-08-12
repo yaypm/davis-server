@@ -11,10 +11,11 @@ const _ = require('lodash'),
 const process = function process(davis) {
     logger.debug('Starting a multiple choice intent.');
     return new BbPromise((resolve, reject) => {
-        davis.conversation.getHistory(2)
+        davis.conversation.lastMultipleChoiceData()
             .then(result => {
-                let nextIntent = _.get(result, '[1].state.next.multipleChoice', 'error'),
-                    state = {};
+                let nextIntent = _.get(result, '[0].state.next.multipleChoice', 'error');
+
+                const state = {};
 
                 if (nextIntent !== 'error') {
                     //ToDo remove the assumption that we're drilling into problem details!
@@ -22,22 +23,22 @@ const process = function process(davis) {
 
                     if (sentenceContain(request, ['third', 'three', '3'])) {
                         logger.debug('The user asked for the third choice');
-                        state.problemId = result[1].state.problemIds[2];
+                        state.problemId = result[0].state.problemIds[2];
                     } else if (sentenceContain(request, ['second', 'two', '2'])) {
                         logger.debug('The user asked for the second choice');
-                        state.problemId = result[1].state.problemIds[1];
+                        state.problemId = result[0].state.problemIds[1];
                     } else if (sentenceContain(request, ['first', 'one', '1'])) {
                         logger.debug('The user asked for the first choice');
-                        state.problemId = result[1].state.problemIds[0];
+                        state.problemId = result[0].state.problemIds[0];
                     } else if (sentenceContain(request, ['neither', 'none', 'not interested', 'zero', '0'])) {
                         logger.debug('The user couldn\'t make up their mind');
                         //updating the next intent to 'no' because the user isn't interested in any of these values
                         nextIntent = 'no';
                     } else {
-                        const choices = (result[1].state.problemIds.length === 2) ? 'either the first one or the second one' : 'either the first, second, or third one';
+                        const choices = (result[0].state.problemIds.length === 2) ? 'either the first one or the second one' : 'either the first, second, or third one';
                         state.error = { message: `I know choice is hard but you need to make one!  Please let me know which one you're interested in by saying ${choices}.` };
                         davis.exchange.state = {
-                            problemIds:  result[1].state.problemIds,
+                            problemIds:  result[0].state.problemIds,
                             next: {
                                 multipleChoice: 'problemDetails'
                             }
