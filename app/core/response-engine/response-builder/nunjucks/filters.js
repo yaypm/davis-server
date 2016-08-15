@@ -76,7 +76,7 @@ function getEntityType(entity) {
     } else if (entity.impactLevel === 'INFRASTRUCTURE') {
         return 'infrastructure';
     } else {
-        logger.warn(`Unknown impact level: ${entity.impactLeve}`);
+        logger.warn(`Unknown impact level: ${entity.impactLevel}`);
     }
 }
 

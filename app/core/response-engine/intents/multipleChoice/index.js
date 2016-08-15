@@ -30,7 +30,7 @@ const process = function process(davis) {
                     } else if (sentenceContain(request, ['first', 'one', '1'])) {
                         logger.debug('The user asked for the first choice');
                         state.problemId = result[0].state.problemIds[0];
-                    } else if (sentenceContain(request, ['neither', 'none', 'not interested', 'zero', '0'])) {
+                    } else if (sentenceContain(request, ['neither', 'none', 'zero', '0'])) {
                         logger.debug('The user couldn\'t make up their mind');
                         //updating the next intent to 'no' because the user isn't interested in any of these values
                         nextIntent = 'no';

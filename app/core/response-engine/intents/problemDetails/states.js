@@ -6,29 +6,27 @@ const _ = require('lodash'),
 const state = {
     default: (davis) => {
         logger.debug('We aren\'t able to push the URL anywhere');
-        const state = {
+        davis.exchange.state = {
             type: 'problemDetails',
             next: {
                 yes: null,
                 no: 'stop'
             }
         };
-        davis.exchange.state = state;
         davis.exchange.response.finished = false;
-        return _.sample(['Is there anything else I can help with?']);
+        return _.sample(['Is there anything else I can help with?', 'What else can I help you with?', 'What else would you like to know?']);
     },
 
     openLink: (davis) => {
-        const state = {
+        davis.exchange.state = {
             type: 'problemDetails',
-            url:  _.get(davis, 'intentData.problem.result.problems[0].id'),
+            url:  `${davis.user.dynatrace.url}#problems;filter=watched/problemdetails;pid=${davis.intentData.problemDetails.result.id}`,
             next: {
                 send: null,
                 yes: 'send',
                 no: null
             }
         };
-        davis.exchange.state = state;
         davis.exchange.response.finished = false;
         return _.sample(['Would you like for me to open this for you?']);
     }

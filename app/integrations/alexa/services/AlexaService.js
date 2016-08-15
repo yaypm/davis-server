@@ -23,7 +23,9 @@ module.exports = function AlexaService(config) {
      */
     function getUser(req) {
         logger.info('Attempting to get a user');
-        return AccountService(config.users).getUser(_.get(req, 'session.user.userId', null), REQUEST_SOURCE);
+        const user =  AccountService(config.users).getUser(_.get(req, 'session.user.userId', null), REQUEST_SOURCE);
+        user.nlp = config.nlp;
+        return user;
     }
 
     /**

@@ -41,11 +41,11 @@ const ConversationService = {
     /**
      * Starts a new exchange
      * @param {object} conversation - The conversation object associated with the user
+     * @param {string} request - The request the user made to Davis
      * @param {string} source - The source of the request
      * @returns {promise} resolves to an exchange object
      */
     startExchange: (conversation, request, source) => {
-        logger.info('conversation: '+JSON.stringify(conversation));
         logger.info('source: '+JSON.stringify(source));
         logger.info('request: '+JSON.stringify(request));
 
@@ -60,12 +60,12 @@ const ConversationService = {
             });
             
             exchange.save()
-            .then(() => {
-                return resolve(exchange);
-            })
-            .catch( err => {
-                return reject(err);
-            });
+                .then(() => {
+                    return resolve(exchange);
+                })
+                .catch( err => {
+                    return reject(err);
+                });
         });
     }
 };

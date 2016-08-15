@@ -2,20 +2,26 @@
 
 const _ = require('lodash'),
     BbPromise = require('bluebird'),
-    intents = require('../'),
+    common = require('../../utils/common'),
     logger = require('../../../../utils/logger');
 
 const process = function process(davis) {
     return new BbPromise((resolve, reject) => {
         davis.conversation.getHistory(2)
             .then(result => {
-                const nextIntent = _.get(result, '[1].state.next.yes', 'error'),
-                    errorState = {error: { message: 'I\'m sorry but I don\'t know how to respond to that!' }};
+                const url = _.get(result, '[1].state.url');
 
-                davis.exchange.intent.push(nextIntent);
-                return intents.runIntent(nextIntent, davis, _.get(result, '[1].state', errorState));
-            })
-            .then(davis => {
+                if (_.isNil(url)) {
+                    logger.warn('Unable to send a URL because we don\'t know what to send!');
+                    davis.exchange.response.finished = false;
+                    common.addTextResponse(davis.exchange, 'I don\'t know what to send you!');
+                } else {
+                    logger.debug(`Sending the link ${url}`);
+                    //Ending the session so the user can focus on the dashboard
+                    davis.exchange.response.finished = true;
+                    davis.exchange.response.visual.hyperlink = url;
+                    common.addTextResponse(davis.exchange, 'OK, here you go!');
+                }
                 resolve(davis);
             })
             .catch(err => {
