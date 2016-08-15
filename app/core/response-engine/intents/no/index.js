@@ -25,13 +25,18 @@ const process = function process(davis) {
     return new BbPromise((resolve, reject) => {
         davis.conversation.getHistory(2)
             .then(result => {
-                const previousIntent = _.get(result, '[1].state.type');
+                const previousIntent = _.get(result, '[1].state.type'),
+                    nextRoute = _.get(result, '[1].state.next.no');
 
                 if (previousIntent === 'no') {
                     logger.debug('We were just in the no intent');
                     const nextIntent = _.get(result, '[1].state.next.no');
                     davis.exchange.intent.push(nextIntent);
                     return intents.runIntent(nextIntent, davis);
+                } else if (!_.isNil(nextRoute)) {
+                    logger.debug('A no route has been defined');
+                    davis.exchange.intent.push(nextRoute);
+                    return intents.runIntent(nextRoute, davis);
                 } else {
                     davis.exchange.state = state;
                     davis.exchange.request.finished = false;

@@ -16,6 +16,7 @@ const state = {
             type: 'oneProblem',
             problemId:  _.get(davis, 'intentData.problem.result.problems[0].id'),
             next: {
+                send: null,
                 yes: 'problemDetails',
                 no: null
             }
@@ -32,6 +33,7 @@ const state = {
             problemIds:  [_.get(davis, 'intentData.problem.result.problems[0].id'), _.get(davis, 'intentData.problem.result.problems[1].id')],
             next: {
                 multipleChoice: 'problemDetails',
+                send: null,
                 yes: 'problemDetails',
                 no: null
             }
@@ -48,6 +50,7 @@ const state = {
             problemIds:  [_.get(davis, 'intentData.problem.result.problems[0].id'), _.get(davis, 'intentData.problem.result.problems[1].id'), _.get(davis, 'intentData.problem.result.problems[2].id')],
             next: {
                 multipleChoice: 'problemDetails',
+                send: null,
                 yes: 'problemDetails',
                 no: null
             }
