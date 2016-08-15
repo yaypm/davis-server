@@ -48,14 +48,19 @@ module.exports = function SlackService(config) {
             logger.info('Starting our interaction with Davis');
             
             return new BbPromise((resolve, reject) => {
-                
+        
                 // Use Slack user property as id for Davis user 
                 // Avoids having to enter Slack user property for each Davis user for association
                 let user = {
-                    'id': member.id, 
-                    'nlp': config.nlp,
-                    'dynatrace': config.slack.dynatrace,
-                    'timezone': member.tz
+                    id: member.id, 
+                    name: {
+                        'first': member.first_name, 
+                        'last': member.last_name
+                    },
+                    email: member.email,
+                    nlp: config.nlp,
+                    dynatrace: config.slack.dynatrace,
+                    timezone: member.tz
                 };
     
                 // Starts or continues our conversation
