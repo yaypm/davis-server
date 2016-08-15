@@ -3,11 +3,11 @@
 
 Welcome to the DAVIS project. You'll find comprehensive guides and documentation to help you start working with DAVIS as quickly as possible, as well as support if you get stuck. Let's jump right in!
 
-In many of of the teaser trailers of Dynatrace, Dynatrace has a persona. We have developed an idea that makes that a reality. Our idea was to extend the Dynatrace Platform reach beyond the desktop to capture and process speech in order to respond accurately and appropriately.
+In many of the teaser trailers of Dynatrace, Dynatrace has a persona. We have developed an idea that makes that a reality. Our idea was to extend the Dynatrace Platform reach beyond the desktop to capture and process speech in order to respond accurately and appropriately.
 
 We have been to the front lines and back and have been witness to the rudimentary questions that we 'ask' the Dynatrace's Platform to provide us on a daily basis. We believe that these can be channeled through a voice operating system.
 
-What happened at?
+What happened at 8:00am?
 What is happening right now?
 What is the overall response time of our application? In each geography?
 What is our conversion rate?
@@ -35,7 +35,7 @@ We had fun building DAVIS and now it is your turn to enjoy the magic of DAVIS po
 
 **Let's get started! - Prerequisites**
 
-1. Mongo Database installed with FQN address. This can be local or remote. You will want the database to persist for each iteration and version of DAVIS you upgrade to. [Check out this neat guide to get MongoDB setup on an AWS EC2 and Route53.](https://github.com/ruxit/davis-server/blob/master/setup/Create%20Mongo%20DB%20Instance.md)
+1. Mongo Database installed with a fully qualified domain name (FQDN). This can be local or remote. You will want the database to persist for each iteration and version of DAVIS you upgrade to. [Check out this neat guide to get MongoDB setup on an AWS EC2 and Route53.](https://github.com/ruxit/davis-server/blob/master/setup/Create%20Mongo%20DB%20Instance.md)
 
 
 **Initialize DAVIS**
