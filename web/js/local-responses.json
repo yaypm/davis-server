@@ -5,7 +5,7 @@
         "getChrome": "<a href='https://www.google.com/chrome/browser/desktop/' target='_blank'>Download Chrome</a>",
         "noMic": "Unfortunately, there appears to be no microphone enabled on your device. That's okay, as an alternative, feel free to use the text-box below to chat with me.",
         "server": "There's an issue with the Davis server right now, please try again later.",
-        "nullResponse": "Sorry about that, I'm not sure what you meant, please try again."
+        "nullResponse": "I'm sorry, but I'm not sure what you meant.  Please try again."
     },
     "greetings": {
         "micPermission": "Please select \"Allow\" if asked for permission to use your microphone.",
