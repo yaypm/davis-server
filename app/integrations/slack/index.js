@@ -232,7 +232,14 @@ module.exports = function (config) {
                 .then(resp => {
                     
                     logger.info('Sending a response back to the Slack service');
-                    this.initialResponse = resp.response.outputSpeech.text;
+                    
+                    if (resp.response.outputSpeech.card) {
+                        resp.response.outputSpeech.card.attachments[0].pretext = this.directPrefix + resp.response.outputSpeech.card.attachments[0].pretext;
+                        this.initialResponse = resp.response.outputSpeech.card;
+                    } else {
+                        this.initialResponse = this.directPrefix + resp.response.outputSpeech.text;
+                    }
+                   
                     this.shouldEndSession = resp.response.shouldEndSession;
                     
                     // Listen for typing event
@@ -246,7 +253,7 @@ module.exports = function (config) {
                         
                     });
         
-                    convo.ask(this.directPrefix + this.initialResponse, (response, convo) => {
+                    convo.ask(this.initialResponse, (response, convo) => {
                         clearTimeout(this.inactivityTimeout);
                         this.addToConvo(response, convo);
                     });
@@ -308,7 +315,7 @@ module.exports = function (config) {
                     } else {
     
                         // Send response and listen for request
-                        convo.ask(this.directPrefix + resp.response.outputSpeech.text, (response, convo) => {
+                        convo.ask(resp.response.outputSpeech.card, (response, convo) => {
                         
                             this.addToConvo(response, convo);
                             
