@@ -150,6 +150,24 @@ var davis = (function () {
             }
         };
         
+         /**
+         * Displays the logo
+         */
+        function showLogo() {
+            $('#logo').addClass('logoOn');
+            $('#logo').removeClass('logoOff');
+        }
+        
+        /**
+         * Hides the logo
+         */
+        function hideLogo() {
+            if ($('#logo').hasClass('logoOn')) {
+                $('#logo').addClass('logoOff');
+                $('#logo').removeClass('logoOn');
+            }
+        }
+        
         /**
          * Brightens the body's background-color
          */
@@ -329,6 +347,14 @@ var davis = (function () {
             
             attachEventListeners: function () {
                 attachEventListeners();
+            },
+            
+            hideLogo: function () {
+                hideLogo();
+            },
+            
+            showLogo: function () {
+                showLogo();
             }
             
         };
@@ -433,6 +459,8 @@ var davis = (function () {
          * @param {String} request
          */
         function interactWithRuxit(request) {
+            
+            view.hideLogo();
             
             // Debug mode
             if (request.includes('debug = true') || (debug && request.includes('debug ') && !request.includes('debug = false'))) {
@@ -1029,6 +1057,7 @@ var davis = (function () {
                 annyangInit();
                 enableListenForKeyword(true);
                 document.dispatchEvent(listeningStateEvents.sleeping);
+                view.showLogo();
                 
             }
             
