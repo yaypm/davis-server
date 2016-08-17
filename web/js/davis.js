@@ -563,6 +563,7 @@ var davis = (function () {
                         }
                         
                     }).catch(function (err) {
+                        document.dispatchEvent(listeningStateEvents.chatMode);
                         outputTextAndSpeech(view.getLocalResponses().errors.server, view.getLocalResponses().voices.michael, false);
                         console.log('interactWithRuxit - Error: ' + err);
                     });
