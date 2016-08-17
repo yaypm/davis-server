@@ -527,7 +527,7 @@ var davis = (function () {
                             
                             // "Show me" hyperlink push functionality
                             if (data.response.hyperlink) {
-                                window.open(data.response.hyperlink, '_blank').focus();
+                                window.open(data.response.hyperlink, '_blank');
                             }
                             
                         } else {
