@@ -65,8 +65,19 @@ const filters = function(env, aliases) {
         if (_.isNil(event)) {
             logger.warn(`Unable to find a friendly event for '${eventName}'!  Please consider adding one.`);
             return S(eventName).humanize().s.toLowerCase();
-        } else  {
+        } else {
             return _.sample(event.friendly);
+        }
+    });
+    
+    env.addFilter('friendlyEventFirstAlias', function(eventName) {
+        let event = _.find(events.events, e => e.name === eventName);
+
+        if (_.isNil(event)) {
+            logger.warn(`Unable to find a friendly event for '${eventName}'!  Please consider adding one.`);
+            return S(eventName).humanize().s.toLowerCase();
+        } else {
+            return event.friendly[0];
         }
     });
     

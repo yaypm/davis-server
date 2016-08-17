@@ -16,7 +16,7 @@ module.exports = function (config) {
     
     let bot;
     let botId;
-    const inactivityTimeoutTime = 60; // Seconds of inactivity until Davis goes to sleep
+    const inactivityTimeoutTime = 30; // Seconds of inactivity until Davis goes to sleep
     
     // Launch phrases
     const phrases = [
@@ -245,7 +245,7 @@ module.exports = function (config) {
                     // Listen for typing event
                     controller.on('user_typing', (bot,message) => {
                 
-                        if (message.user === this.user.id && this.inactivityTimeout && !this.convoEnded) {
+                        if (message.user === this.user.id && this.inactivityTimeout && !this.convoEnded && !this.shouldEndSession) {
                             logger.info('Slack: User typing, resetting timeout');
                             this.lastInteractionTime = moment();
                             this.resetTimeout = true;
@@ -337,7 +337,7 @@ module.exports = function (config) {
         
         /**
          * Recursive method that alerts the user when they've been inactive 
-         * for 60 seconds if they're not in direct message mode
+         * for 30 seconds if they're not in direct message mode
          * 
          * @param {Object} convo - conversation object created by botkit
          */
