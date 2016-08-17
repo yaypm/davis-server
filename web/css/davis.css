@@ -68,7 +68,6 @@
 		width: 150px;
 		height: 30px;
 		position: absolute;
-		/*left: calc(50% - 75px);*/
 		right: 25px;
 		top: 0;
 		background-color: #ffffff;
@@ -83,7 +82,7 @@
 	}
 	
 	#davis-logo {
-		margin: 7px 6px 6px 13px;
+		margin: 8px 6px 6px 13px;
 		background: url(../images/dynatrace-davis-logo.png);
 		background-repeat: no-repeat;
 		background-size: contain;
