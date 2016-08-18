@@ -21,6 +21,8 @@ const filters = function(env, aliases) {
      * @param {string} displayName - undefined, 'audible' or 'visual'
      */
     env.addFilter('friendlyEntityName', function(entity, displayType) {
+        //ToDo overhaul this logic
+        displayType = displayType || 'audible';
         return getFriendlyEntityName(aliases, getEntityType(entity), entity.entityName, displayType);
     });
     
@@ -116,13 +118,9 @@ function getFriendlyEntityName(aliases, type, name, displayType) {
     if (!_.isNull(alias)) {
         logger.debug(`Found a user defined ${type} alias for ${name}.`);
         // Returning the alias display type if defined otherwise returning the name
-        if (_.isNil(displayType)) {
-            return alias.name;
-        } else {
-            return _.get(alias, `display.${displayType}`, alias.name);
-        }
+        return _.get(alias, `display.${displayType}`, alias.name);
     } else {
-        logger.warn(`Unable to find a user defined alias for '${name}'!  Please consider adding one.`);
+        logger.warn(`Unable to find a user defined ${type} alias for '${name}'!  Please consider adding one.`);
         return S(name).humanize().s.toLowerCase();
     }
 }
