@@ -1,7 +1,6 @@
 'use strict';
 
 const ConversationService = require('../../../services/ConversationService'),
-    AccountService = require('../../../services/AccountService'),
     logger = require('../../../utils/logger'),
     Davis = require('../../../core'),
     BbPromise = require('bluebird'),
@@ -81,5 +80,5 @@ module.exports = function SlackService(config) {
             });
             
         }
-    }
+    };
 };

@@ -5,6 +5,9 @@ const express = require('./app'),
 
 class DavisServer {
     constructor(config) {
+        if (typeof config === 'undefined'){
+            throw new Error('No config present!');
+        }
         this.app = express(config);
     }
 

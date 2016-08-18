@@ -15,8 +15,8 @@ module.exports = function AccountService(users) {
          */
         getUser(deviceId, source)  {
             let user = _.find(users, function (o) {
-                    return _.includes(o[source], deviceId);
-                }) || null;
+                return _.includes(o[source], deviceId);
+            }) || null;
 
             if (!_.isNull(user)) {
                 logger.info('Found a valid user');
@@ -27,5 +27,5 @@ module.exports = function AccountService(users) {
 
             return user;
         }
-    }
+    };
 };

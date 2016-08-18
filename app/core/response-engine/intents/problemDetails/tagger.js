@@ -10,7 +10,7 @@ const tagger = {
             tense: common.getTense(davis.exchange),
             containsRootCause: containsRootCause(davis.intentData),
             eligibleToShow: eligibleToShow(davis.exchange)
-        }
+        };
     }
 };
 

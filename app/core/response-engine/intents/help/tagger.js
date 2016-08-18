@@ -6,7 +6,7 @@ const tagger = {
     tag: davis => {
         return {
             lang: common.getLanguage(davis.user)
-        }
+        };
     }
 };
 

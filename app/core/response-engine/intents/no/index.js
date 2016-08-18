@@ -34,12 +34,12 @@ const process = function process(davis) {
                     davis.exchange.intent.push(nextIntent);
                     return intents.runIntent(nextIntent, davis);
                 } else if (!_.isNil(nextRoute)) {
-                    logger.debug('A no route has been defined');
+                    logger.debug('A route has been defined');
                     davis.exchange.intent.push(nextRoute);
                     return intents.runIntent(nextRoute, davis);
                 } else {
                     davis.exchange.state = state;
-                    davis.exchange.request.finished = false;
+                    davis.exchange.response.finished = false;
                     return common.addTextResponse(davis.exchange, _.sample(responses));
                 }
             })

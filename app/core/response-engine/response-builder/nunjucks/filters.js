@@ -18,7 +18,7 @@ require('moment-round');
 const filters = function(env, aliases) {
     /**
      * @param {Object} entity
-     * @param {string} displayName - undefined, 'say' or 'show'
+     * @param {string} displayName - undefined, 'audible' or 'visual'
      */
     env.addFilter('friendlyEntityName', function(entity, displayType) {
         return getFriendlyEntityName(aliases, getEntityType(entity), entity.entityName, displayType);

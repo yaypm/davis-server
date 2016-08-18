@@ -39,7 +39,7 @@ module.exports = {
                     davis.exchange.response.audible.ssml = combinedResponse(greeting, say, followUp);
                     davis.exchange.response.visual.text = combinedResponse(greeting, text, followUp);
                     davis.exchange.response.visual.card = combinedResponse(greeting, show, followUp);
-                    davis.exchange.response.visual.hyperlink = "";
+                    davis.exchange.response.visual.hyperlink = '';
                     return resolve(davis);
                 })
                 .catch(err => {
@@ -74,13 +74,13 @@ function getGreeting(davis) {
                     });
             }
         });
-    })
+    });
 
 }
 
 function combinedResponse(greet, body, followUp) {
     if (_.isNil(body)) {
-        return body
+        return body;
     } else {
         let response = (greet) ? `${greet}  ` : '';
         response = `${response}${body}`;
@@ -107,12 +107,12 @@ function findAdditionalTemplates(relativeTemplatePath, files, reserved_folders) 
                 templatePath = path.join(fullPath, folder);
             fs.readdirAsync(templatePath)
                 .then(files => {
-                    return resolve(randomNunjuckTemplate(path.join(relativeTemplatePath, folder), files))
+                    return resolve(randomNunjuckTemplate(path.join(relativeTemplatePath, folder), files));
                 })
                 .catch(err => {
                     reject(err);
-                })
-        })
+                });
+        });
     }
 }
 

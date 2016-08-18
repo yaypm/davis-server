@@ -14,7 +14,7 @@ class Nlp {
      /**
      * Natural Language Processor
      * @constructs Nlp
-     * @param {Object} davis - The davis object containing user, exchange, and conversertion details
+     * @param {Object} davis - The davis object containing user, exchange, and conversation details
      */
     constructor(davis) {
         Object.assign(this, davis);
@@ -66,12 +66,12 @@ function getDateTime(entities) {
     if (_.has(entities, 'datetime')) {
         timeRange = Dynatrace.generateTimeRange(entities.datetime[0]);
         
-        // if start or stop date is in the future, shift the timeframe backwards by 7 days
+        // if start or stop date is in the future, shift the time frame backwards by 7 days
         if (moment().isSameOrBefore(moment.parseZone(timeRange.startTime))) {
             
             timeRange.startTime = moment.parseZone(timeRange.startTime).subtract(7, 'days');
             timeRange.stopTime = moment.parseZone(timeRange.stopTime).subtract(7, 'days');
-            logger.warn('getDateTime: Timeframe in the future, shifted backwards by 7 days');
+            logger.warn('getDateTime: Time frame in the future, shifted backwards by 7 days');
             
         }
     }
