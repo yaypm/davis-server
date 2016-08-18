@@ -490,6 +490,19 @@ var davis = (function () {
             
         }, false);
         
+        // Listen for keypress
+        // if space-bar and textbox not focused, toggleMute
+        $(function() {
+            $(window).keypress(function(e) {
+                var key = e.which;
+                if (key == 32 && !$("#textInput").is(":focus")) {
+                    $("#muteWrapper").click();
+                } else if (key != 32 && !$("#textInput").is(":focus")) {
+                    $("#textInput").focus();
+                }
+            });
+        });
+        
         /**
          * Sends a request to be processed for its intent 
          * in order to interact with the Ruxit API (provides APM metrics)

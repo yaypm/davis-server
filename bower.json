@@ -19,6 +19,7 @@
     "annyang": "^2.4.0",
     "fetch": "^1.0.0",
     "jquery": "latest",
+    "offline": "latest",
     "timezone-detect": "latest"
   }
 }
