@@ -1,1 +1,1 @@
-It looks like {{ intentData.problem.result.problems.length }} problems occurred {{ exchange.request.analysed.timeRange | friendlyTimeRange(user) }}.  After giving it some though, here are my top three issues.  {% include "intents/problem/templates/en-us/shared/top-three-issues.nj" %}
+It looks like {{ intentData.problem.result.problems.length }} problems occurred {{ exchange.request.analysed.timeRange | friendlyTimeRange(user) }}.  After giving it some thought, here are my top three issues.  {% include "intents/problem/templates/en-us/shared/top-three-issues.nj" %}

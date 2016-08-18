@@ -27,9 +27,16 @@ const filters = function(env, aliases) {
     env.addFilter('friendlyStatus', function(status) {
         return (status == 'OPEN') ? 'ongoing' : 'closed';
     });
+    
+    env.addFilter('time', function(time, user) {
+        return moment.tz(time, user.timezone).calendar(null , {
+            sameDay: '[Today at] h:mm a',
+            lastDay: '[Yesterday at] h:mm a',
+            lastWeek: 'dddd [at] h:mm a'
+        });
+    });
 
     env.addFilter('friendlyTime', function(time, user) {
-        //return moment.tz(time, timezone).floor(5, 'minutes').format('h:mm A');
         return moment.tz(time, user.timezone).floor(5, 'minutes').calendar(null , {
             sameDay: '[around] h:mm a',
             lastDay: '[yesterday around] h:mm a',
@@ -58,13 +65,28 @@ const filters = function(env, aliases) {
         if (_.isNil(event)) {
             logger.warn(`Unable to find a friendly event for '${eventName}'!  Please consider adding one.`);
             return S(eventName).humanize().s.toLowerCase();
-        } else  {
+        } else {
             return _.sample(event.friendly);
+        }
+    });
+    
+    env.addFilter('friendlyEventFirstAlias', function(eventName) {
+        let event = _.find(events.events, e => e.name === eventName);
+
+        if (_.isNil(event)) {
+            logger.warn(`Unable to find a friendly event for '${eventName}'!  Please consider adding one.`);
+            return S(eventName).humanize().s.toLowerCase();
+        } else {
+            return event.friendly[0];
         }
     });
     
     env.addFilter('pluralizeNoun', function(str, count) {
         return count === 1 ? str : nlp.noun(str).pluralize();
+    });
+    
+    env.addFilter('makeTitle', function(str) {
+        return makeTitle(str); 
     });
 };
 
@@ -103,6 +125,19 @@ function getFriendlyEntityName(aliases, type, name, displayType) {
         logger.warn(`Unable to find a user defined alias for '${name}'!  Please consider adding one.`);
         return S(name).humanize().s.toLowerCase();
     }
+}
+
+function makeTitle(title) {
+    // Strip off any leading "a "
+    let titleArray = title.split(' ');
+    if (titleArray[0] == 'a') {
+        titleArray[0] = '';
+    }
+    title = '';
+    titleArray.forEach( (word) => {
+        title += word.charAt(0).toUpperCase() + word.slice(1) + ' ';
+    });
+    return title;
 }
 
 module.exports = filters;

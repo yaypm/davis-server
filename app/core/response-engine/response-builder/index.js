@@ -36,9 +36,10 @@ module.exports = {
                     return [greetingResponse, sayResponse, textResponse, showResponse];
                 })
                 .spread((greeting, say, text, show) => {
+                    show = (show) ? show : text;
                     davis.exchange.response.audible.ssml = combinedResponse(greeting, say, followUp);
                     davis.exchange.response.visual.text = combinedResponse(greeting, text, followUp);
-                    davis.exchange.response.visual.card = combinedResponse(greeting, show, followUp);
+                    davis.exchange.response.visual.card = combinedResponseCard(greeting, show, followUp);
                     davis.exchange.response.visual.hyperlink = '';
                     return resolve(davis);
                 })
@@ -86,6 +87,33 @@ function combinedResponse(greet, body, followUp) {
         response = `${response}${body}`;
         return (followUp) ? `${response}  ${followUp}` : response;
     }
+}
+
+function combinedResponseCard(greet, body, followUp) {
+
+    let card = {};
+    card.attachments = [];
+
+    if (!_.isNil(greet)) {
+        card.attachments.push({pretext: greet});
+    }
+
+    if (!_.isNil(body)) {
+        try {
+            let attachments = JSON.parse(body).attachments;
+            attachments.forEach( (attachment) => {
+                card.attachments.push(attachment);
+            });
+        } catch (e) {
+            card.attachments.push({pretext: body});
+        }
+    }
+
+    if (!_.isNil(followUp)) {
+        card.attachments.push({pretext: followUp});
+    }
+
+    return card;
 }
 
 function getFullPath(relativeTemplatePath) {

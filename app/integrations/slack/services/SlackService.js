@@ -20,15 +20,24 @@ module.exports = function SlackService(config) {
     function formatResponse(davis) {
         logger.info('Generating the response for Slack');
     
-        let response = davis.exchange.response.visual.text;
+        let outputSpeech;
+        
+        if (davis.exchange.response.visual.card) {
+            outputSpeech = {
+                type: 'card',
+                card: davis.exchange.response.visual.card
+            };
+        } else {
+            outputSpeech = {
+                type: 'text',
+                text: davis.exchange.response.visual.text
+            };
+        }
         
         return {
             response: {
                 shouldEndSession: _.get(davis, 'exchange.response.finished', true),
-                outputSpeech: {
-                    type: 'text',
-                    text: response
-                }
+                outputSpeech: outputSpeech
             }
         };
     }

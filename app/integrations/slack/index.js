@@ -16,7 +16,7 @@ module.exports = function (config) {
     
     let bot;
     let botId;
-    const inactivityTimeoutTime = 60; // Seconds of inactivity until Davis goes to sleep
+    const inactivityTimeoutTime = 30; // Seconds of inactivity until Davis goes to sleep
     
     // Launch phrases
     const phrases = [
@@ -225,13 +225,20 @@ module.exports = function (config) {
                 .then(resp => {
                     
                     logger.info('Sending a response back to the Slack service');
-                    this.initialResponse = resp.response.outputSpeech.text;
+
+                    if (resp.response.outputSpeech.card) {
+                        resp.response.outputSpeech.card.attachments[0].pretext = this.directPrefix + resp.response.outputSpeech.card.attachments[0].pretext;
+                        this.initialResponse = resp.response.outputSpeech.card;
+                    } else {
+                        this.initialResponse = this.directPrefix + resp.response.outputSpeech.text;
+                    }
+
                     this.shouldEndSession = resp.response.shouldEndSession;
                     
                     // Listen for typing event
                     controller.on('user_typing', (bot,message) => {
                 
-                        if (message.user === this.user.id && this.inactivityTimeout && !this.convoEnded) {
+                        if (message.user === this.user.id && this.inactivityTimeout && !this.convoEnded && !this.shouldEndSession) {
                             logger.info('Slack: User typing, resetting timeout');
                             this.lastInteractionTime = moment();
                             this.resetTimeout = true;
@@ -239,7 +246,7 @@ module.exports = function (config) {
                         
                     });
         
-                    convo.ask(this.directPrefix + this.initialResponse, (response, convo) => {
+                    convo.ask(this.initialResponse, (response, convo) => {
                         clearTimeout(this.inactivityTimeout);
                         this.addToConvo(response, convo);
                     });
@@ -284,43 +291,44 @@ module.exports = function (config) {
                 showTypingNotification(this.initialInteraction.channel);
                 
                 SlackService(config).askDavis(response, this.user)
-                    .then(resp => {
-
-                        logger.info('Slack: Sending a response');
-
-                        this.shouldEndSession = resp.response.shouldEndSession;
-
-                        // if no followup question
-                        if (this.shouldEndSession) {
-
-                            convo.say(this.directPrefix + resp.response.outputSpeech.text);
-                            convo.next();
-                            clearTimeout(this.inactivityTimeout);
-
-                        } else {
-
-                            // Send response and listen for request
-                            convo.ask(this.directPrefix + resp.response.outputSpeech.text, (response, convo) => {
-
-                                this.addToConvo(response, convo);
-
-                            });
-                            convo.next();
-                            clearTimeout(this.inactivityTimeout);
-
-                        }
-
-                    })
-                    .catch(err => {
-                        logger.error('Unable to respond to the request received from Slack');
-                        logger.error(err);
-                    });
+                .then(resp => {
+                    
+                    logger.info('Slack: Sending a response');
+                    
+                    this.shouldEndSession = resp.response.shouldEndSession;
+                    
+                    // if no followup question
+                    if (this.shouldEndSession) {
+                        
+                        convo.say(this.directPrefix + resp.response.outputSpeech.text);
+                        convo.next();
+                        clearTimeout(this.inactivityTimeout);
+                        
+                    } else {
+    
+                        // Send response and listen for request
+                        convo.ask(resp.response.outputSpeech.card, (response, convo) => {
+                        
+                            this.addToConvo(response, convo);
+                            
+                        });
+                        convo.next();
+                        clearTimeout(this.inactivityTimeout);
+                        
+                    }
+        
+                })
+                .catch(err => {
+                    logger.error('Unable to respond to the request received from Slack');
+                    logger.error(err);
+                });
+                
             }
         }
         
         /**
          * Recursive method that alerts the user when they've been inactive 
-         * for 60 seconds if they're not in direct message mode
+         * for 30 seconds if they're not in direct message mode
          * 
          * @param {Object} convo - conversation object created by botkit
          */

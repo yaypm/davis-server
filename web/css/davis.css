@@ -6,7 +6,7 @@
 	
 	body.micOff {
 	    -webkit-animation-name: micOff; /* Chrome, Safari, Opera */
-	    -webkit-animation-duration: 4s; /* Chrome, Safari, Opera */
+	    -webkit-animation-duration: 1s; /* Chrome, Safari, Opera */
 	    animation-name: micOff;
 	    animation-duration: 1s;
 	    background-color: #007ee6;
@@ -14,7 +14,7 @@
 	
 	body.micOn {
 	    -webkit-animation-name: micOn; /* Chrome, Safari, Opera */
-	    -webkit-animation-duration: 4s; /* Chrome, Safari, Opera */
+	    -webkit-animation-duration: 1s; /* Chrome, Safari, Opera */
 	    animation-name: micOn;
 	    animation-duration: 1s;
 	    background-color: #33a3ff;
@@ -64,6 +64,83 @@
 	    to {background-color: #33a3ff;}
 	}
 	
+	#davis-logo-wrapper {
+		width: 150px;
+		height: 30px;
+		position: absolute;
+		right: 25px;
+		top: 0;
+		background-color: #ffffff;
+		border-bottom-left-radius: 9px;
+		border-bottom-right-radius: 9px;
+		z-index: 1001;
+	}
+	
+	#davis-logo-wrapper:hover {
+		background-color: #f2f2f2;
+		cursor: pointer;
+	}
+	
+	#davis-logo {
+		margin: 8px 6px 6px 13px;
+		background: url(../images/dynatrace-davis-logo.png);
+		background-repeat: no-repeat;
+		background-size: contain;
+		height: 15px;
+	}
+	
+	#logo {
+		position: relative;
+		margin: 0 auto;
+		margin-top: 150px;
+		background: url(../images/logo.png);
+		background-repeat: no-repeat;
+		background-size: contain;
+		opacity: 0;
+		width: 500px;
+		height: 500px;
+	}
+	
+	#logo.logoOff {
+		-webkit-animation-name: micOn; /* Chrome, Safari, Opera */
+	    -webkit-animation-duration: 1s; /* Chrome, Safari, Opera */
+	    animation-name: logoOff;
+	    animation-duration: 1s;
+		opacity: 0;		
+	}
+	
+	#logo.logoOn {
+		-webkit-animation-name: micOn; /* Chrome, Safari, Opera */
+	    -webkit-animation-duration: 3s; /* Chrome, Safari, Opera */
+	    animation-name: logoOn;
+	    animation-duration: 3s;
+		opacity: 0.1;
+	}
+	
+	/* Chrome, Safari, Opera */
+	@-webkit-keyframes logoOff {
+	    from {opacity: 0.1;}
+	    to {opacity: 0;}
+	}
+	
+	/* Standard syntax */
+	@keyframes logoOff {
+	    from {opacity: 0.1;}
+	    to {opacity: 0;}
+	}
+	
+	/* Chrome, Safari, Opera */
+	@-webkit-keyframes logoOn {
+	    from {opacity: 0;}
+	    to {opacity: 0.1;}
+	}
+	
+	/* Standard syntax */
+	@keyframes logoOn {
+	    from {opacity: 0;}
+	    to {opacity: 0.1;}
+	}
+	
 	table.debug {
 	    border-collapse: collapse;
 	    margin: auto 0;
@@ -82,6 +159,7 @@
 		top: 50px;
 		text-align: center;
 		width: 100%;
+		z-index: 2;
 	}
 	
 	#interactionlog p {
