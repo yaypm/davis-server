@@ -1,12 +1,19 @@
 'use strict';
 
 const services = [{
-    name: 'nginx',
+    name: 'AuthenticationService',
     display: {
-        audible: 'Engine-X',
-        visual: 'Nginx'
+        audible: 'authentication',
+        visual: 'authentication'
     },
-    aliases: ['engine x', 'engine ex']
+    aliases: []
+}, {
+    name: 'EasyTravelWebserver:18079',
+    display: {
+        audible: 'Easy Travel Web Server',
+        visual: 'easyTravel Web Server'
+    },
+    aliases: []
 }];
 
 module.exports = services;
