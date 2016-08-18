@@ -1,0 +1,11 @@
+{%- set problems = intentData.problem.result.problems %}
+{
+    "attachments": [
+        {
+            "pretext": "It looks like <{{user.dynatrace.url}}#problems|{{ intentData.problem.result.problems.length }} problems> occurred {{ exchange.request.analysed.timeRange | friendlyTimeRange(user) }}. \nAfter giving it some thought, here are my top three issues:"
+        },
+        {% for i in range(0, 3) %}
+           {% include "intents/problem/templates/en-us/shared/visual/problemSummary.nj" %}{%- if not loop.last %},{% endif %}
+        {%- endfor %}
+    ]
+}

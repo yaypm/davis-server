@@ -11,7 +11,7 @@ const tagger = {
             lang: common.getLanguage(davis.user),
             tense: getTense(davis.exchange),
             problems: getCount(davis.intentData)
-        }
+        };
     }
 };
 

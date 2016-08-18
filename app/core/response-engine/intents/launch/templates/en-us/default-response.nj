@@ -1,1 +1,0 @@
-Hi, welcome to Davis, powered by Dynatrace!  {{ ['What would you like to know?', 'How can I be of service?', 'How can I help you?']|random }}

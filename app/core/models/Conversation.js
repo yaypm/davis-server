@@ -23,5 +23,9 @@ conversation.methods.lastInteraction = function lastInteraction() {
     return ExchangeModel.find({_conversation: this.id}).limit(2).sort({'updatedAt': -1}).select('updatedAt').exec();
 };
 
+conversation.methods.lastMultipleChoiceData = function lastMultipleChoiceData() {
+    return ExchangeModel.find({_conversation: this.id, 'state.next.multipleChoice': { $exists: true }}).limit(1).sort({'updatedAt': -1}).exec();
+};
+
 conversation.set('autoIndex', false);
 module.exports = mongoose.model('Conversation', conversation);

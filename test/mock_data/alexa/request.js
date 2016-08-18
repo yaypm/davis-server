@@ -3,18 +3,18 @@ module.exports.requests = {
         'version': '1.0',
         'session': {
             'new': false,
-            'sessionId': 'amzn1.echo-api.session.abeee1a7-aee0-41e6-8192-e6faaed9f5ef',
+            'sessionId': 'amzn1.echo-api.session.abeee1a7-aee0-41e6-8192',
             'application': {
-                'applicationId': 'amzn1.echo-sdk-ams.app.000000-d0ed-0000-ad00-000000d00ebe'
+                'applicationId': 'amzn1.echo-sdk-ams.app.000000'
             },
             'attributes': {},
             'user': {
-                'userId': 'amzn1.echo-sdk-account.AHIGWMSYVEQY5XIZIQNCTH5HZ5RW3JK43LUVBQEG6IM6B73UA5CLA'
+                'userId': 'amzn1.echo-sdk-account.test'
             }
         },
         'request': {
             'type': 'IntentRequest',
-            'requestId': 'amzn1.echo-api.request.6919844a-733e-4e89-893a-fdcb77e2ef0d',
+            'requestId': 'amzn1.echo-api.request.6919844a-733e-4e89-893a',
             'timestamp': '2015-05-13T12:34:56Z',
             'intent': {
                 'name': '',

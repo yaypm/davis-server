@@ -9,14 +9,14 @@ module.exports = function AccountService(users) {
     return {
         /**
          * Validates a user based on their device and request source
-         * @param {string} deviceId - The ID that uniquely represence a device from a particular source.
+         * @param {string} deviceId - The ID that uniquely represents a device from a particular source.
          * @param {string} source - The source of the request (I.E. alexa, web, ect)
          * @returns {Object} [user=null] - The user object contains user specific configuration settings.
          */
         getUser(deviceId, source)  {
             let user = _.find(users, function (o) {
-                    return _.includes(o[source], deviceId);
-                }) || null;
+                return _.includes(o[source], deviceId);
+            }) || null;
 
             if (!_.isNull(user)) {
                 logger.info('Found a valid user');
@@ -27,5 +27,5 @@ module.exports = function AccountService(users) {
 
             return user;
         }
-    }
+    };
 };

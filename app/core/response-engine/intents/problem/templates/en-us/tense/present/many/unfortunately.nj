@@ -1,0 +1,1 @@
+Unfortunately there are {{ intentData.problem.result.problems.length }} currently active problems.  After careful consideration, I would focus on one of the following issues first.  {% include "intents/problem/templates/en-us/shared/top-three-issues.nj" %}

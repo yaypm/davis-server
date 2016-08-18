@@ -150,6 +150,24 @@ var davis = (function () {
             }
         };
         
+         /**
+         * Displays the logo
+         */
+        function showLogo() {
+            $('#logo').addClass('logoOn');
+            $('#logo').removeClass('logoOff');
+        }
+        
+        /**
+         * Hides the logo
+         */
+        function hideLogo() {
+            if ($('#logo').hasClass('logoOn')) {
+                $('#logo').addClass('logoOff');
+                $('#logo').removeClass('logoOn');
+            }
+        }
+        
         /**
          * Brightens the body's background-color
          */
@@ -329,6 +347,14 @@ var davis = (function () {
             
             attachEventListeners: function () {
                 attachEventListeners();
+            },
+            
+            hideLogo: function () {
+                hideLogo();
+            },
+            
+            showLogo: function () {
+                showLogo();
             }
             
         };
@@ -434,6 +460,8 @@ var davis = (function () {
          */
         function interactWithRuxit(request) {
             
+            view.hideLogo();
+            
             // Debug mode
             if (request.includes('debug = true') || (debug && request.includes('debug ') && !request.includes('debug = false'))) {
                 
@@ -527,7 +555,7 @@ var davis = (function () {
                             
                             // "Show me" hyperlink push functionality
                             if (data.response.hyperlink) {
-                                window.open(data.response.hyperlink, '_blank').focus();
+                                window.open(data.response.hyperlink, '_blank');
                             }
                             
                         } else {
@@ -535,6 +563,7 @@ var davis = (function () {
                         }
                         
                     }).catch(function (err) {
+                        document.dispatchEvent(listeningStateEvents.chatMode);
                         outputTextAndSpeech(view.getLocalResponses().errors.server, view.getLocalResponses().voices.michael, false);
                         console.log('interactWithRuxit - Error: ' + err);
                     });
@@ -1029,6 +1058,7 @@ var davis = (function () {
                 annyangInit();
                 enableListenForKeyword(true);
                 document.dispatchEvent(listeningStateEvents.sleeping);
+                view.showLogo();
                 
             }
             

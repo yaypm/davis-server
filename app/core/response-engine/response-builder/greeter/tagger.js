@@ -3,12 +3,11 @@
 const _ = require('lodash'),
     moment = require('moment-timezone'),
     common = require('../../utils/common'),
-    time = require('../../utils/time'),
     logger = require('../../../../utils/logger');
 
 const GREETING_WEEK_THRESHOLD = 1,
-    GREETING_DAY_THRESHOLD = 2,
-    GREETING_HOUR_THRESHOLD = 2;
+    GREETING_DAY_THRESHOLD = 1,
+    GREETING_HOUR_THRESHOLD = 1;
 
 const tagger = {
     tag: (davis, interactionHistory) => {
@@ -17,16 +16,11 @@ const tagger = {
 
         return {
             lang: common.getLanguage(davis.user),
-            newUser: isNewUser(davis.user),
             lastInteraction: lastInteraction(currentInteractionTime, lastInteractionTime, davis.user.timezone),
             timeOfDay: timeOfDay(currentInteractionTime, davis.user.timezone)
-        }
+        };
     }
 };
-
-function isNewUser(lastInteractionTime) {
-    return _.isNil(lastInteractionTime);
-}
 
 function lastInteraction(currentInteractionTime, lastInteractionTime, timezone) {
     if(_.isNil(lastInteractionTime)) {
@@ -40,7 +34,7 @@ function lastInteraction(currentInteractionTime, lastInteractionTime, timezone) 
             logger.debug('We just talked... no reason to greet.');
             return 'recent';
         } else if (current.isoWeekday() === 1 && last.isoWeekday() === 5) {
-            logger.debug('Today is Monday and we haven\'t spoken since Friday.  Lets assume the user just got back from weekend and NOT that they didn\'t want to talk to us');
+            logger.debug('Today is Monday and we haven\'t spoken since Friday.  Lets assume the user just got back from weekend and NOT that they didn\'t want to talk to us!');
             return 'weekend';
         } else if (current.isoWeekday() === (last.isoWeekday() + 1)) {
             logger.debug('We last spoke yesterday');

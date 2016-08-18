@@ -3,36 +3,42 @@
 const _ = require('lodash'),
     BbPromise = require('bluebird'),
     intents = require('../'),
-    S = require('string'),
+    natural = require('natural'),
+    tokenizer = new natural.WordTokenizer(),
+    Trie = natural.Trie,
     logger = require('../../../../utils/logger');
 
 const process = function process(davis) {
     logger.debug('Starting a multiple choice intent.');
     return new BbPromise((resolve, reject) => {
-        davis.conversation.getHistory(2)
+        davis.conversation.lastMultipleChoiceData()
             .then(result => {
-                const nextIntent = _.get(result, '[1].state.next.multipleChoice', 'error'),
-                    state = {};
+                let nextIntent = _.get(result, '[0].state.next.multipleChoice', 'error');
+
+                const state = {};
 
                 if (nextIntent !== 'error') {
                     //ToDo remove the assumption that we're drilling into problem details!
-                    let request = davis.exchange.request.text,
-                        requestString = S(request);
+                    let request = davis.exchange.request.text;
 
-                    if (requestString.include('third') || requestString.include('three') || requestString.include('3')) {
+                    if (sentenceContain(request, ['third', 'three', '3'])) {
                         logger.debug('The user asked for the third choice');
-                        state.problemId = result[1].state.problemIds[2];
-                    } else if (requestString.include('second') || requestString.include('two') || requestString.include('2')) {
+                        state.problemId = result[0].state.problemIds[2];
+                    } else if (sentenceContain(request, ['second', 'two', '2'])) {
                         logger.debug('The user asked for the second choice');
-                        state.problemId = result[1].state.problemIds[1];
-                    } else if (requestString.include('first') || requestString.include('one') || requestString.include('1')) {
+                        state.problemId = result[0].state.problemIds[1];
+                    } else if (sentenceContain(request, ['first', 'one', '1'])) {
                         logger.debug('The user asked for the first choice');
-                        state.problemId = result[1].state.problemIds[0];
-                    }  else {
-                        let choices = (result[1].state.problemIds.length === 2) ? 'either the first one or the second one' : 'either the first, second, or third one';
+                        state.problemId = result[0].state.problemIds[0];
+                    } else if (sentenceContain(request, ['neither', 'none', 'zero', '0'])) {
+                        logger.debug('The user couldn\'t make up their mind');
+                        //updating the next intent to 'no' because the user isn't interested in any of these values
+                        nextIntent = 'no';
+                    } else {
+                        const choices = (result[0].state.problemIds.length === 2) ? 'either the first one or the second one' : 'either the first, second, or third one';
                         state.error = { message: `I know choice is hard but you need to make one!  Please let me know which one you're interested in by saying ${choices}.` };
                         davis.exchange.state = {
-                            problemIds:  result[1].state.problemIds,
+                            problemIds:  result[0].state.problemIds,
                             next: {
                                 multipleChoice: 'problemDetails'
                             }
@@ -55,5 +61,15 @@ const process = function process(davis) {
             });
     });
 };
+
+function sentenceContain(sentence, values) {
+    const tokenizedSentence = tokenizer.tokenize(sentence),
+        trie = new Trie();
+
+    trie.addStrings(tokenizedSentence);
+    return _.some(values, value => {
+        return trie.contains(value);
+    });
+}
 
 module.exports.process = process;

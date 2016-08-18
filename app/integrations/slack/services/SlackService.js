@@ -1,7 +1,6 @@
 'use strict';
 
 const ConversationService = require('../../../services/ConversationService'),
-    AccountService = require('../../../services/AccountService'),
     logger = require('../../../utils/logger'),
     Davis = require('../../../core'),
     BbPromise = require('bluebird'),
@@ -21,15 +20,24 @@ module.exports = function SlackService(config) {
     function formatResponse(davis) {
         logger.info('Generating the response for Slack');
     
-        let response = davis.exchange.response.visual.text;
+        let outputSpeech;
+        
+        if (davis.exchange.response.visual.card) {
+            outputSpeech = {
+                type: 'card',
+                card: davis.exchange.response.visual.card
+            };
+        } else {
+            outputSpeech = {
+                type: 'text',
+                text: davis.exchange.response.visual.text
+            };
+        }
         
         return {
             response: {
                 shouldEndSession: _.get(davis, 'exchange.response.finished', true),
-                outputSpeech: {
-                    type: 'text',
-                    text: response
-                }
+                outputSpeech: outputSpeech
             }
         };
     }
@@ -37,22 +45,30 @@ module.exports = function SlackService(config) {
     return {
         /**
          * Interacts with Davis via Slack
+         * 
          * @param {Object} req - The request received from Slack.
+         * @param {Object} member - Slack member details
+         * 
          * @returns {promise} res - The response formatted for Slack.
          */
-        askDavis: (req) => {
+        askDavis: (req, member) => {
             
             logger.info('Starting our interaction with Davis');
             
             return new BbPromise((resolve, reject) => {
-                
+        
                 // Use Slack user property as id for Davis user 
                 // Avoids having to enter Slack user property for each Davis user for association
                 let user = {
-                    'id': 'slack-user-' + req.user, 
-                    'nlp': config.nlp,
-                    'dynatrace': config.slack.dynatrace,
-                    'timezone': config.slack.timezone
+                    id: member.id, 
+                    name: {
+                        'first': member.first_name, 
+                        'last': member.last_name
+                    },
+                    email: member.email,
+                    nlp: config.nlp,
+                    dynatrace: config.slack.dynatrace,
+                    timezone: member.tz
                 };
     
                 // Starts or continues our conversation
@@ -73,5 +89,5 @@ module.exports = function SlackService(config) {
             });
             
         }
-    }
+    };
 };

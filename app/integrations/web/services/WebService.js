@@ -1,14 +1,12 @@
 'use strict';
 
 const ConversationService = require('../../../services/ConversationService'),
-    AccountService = require('../../../services/AccountService'),
     logger = require('../../../utils/logger'),
     Davis = require('../../../core'),
     BbPromise = require('bluebird'),
     _ = require('lodash');
 
-const RESPONSE_VERSION = '1.0',
-    REQUEST_SOURCE = 'web';
+const REQUEST_SOURCE = 'web';
 
 
 module.exports = function WebService(config) {
@@ -71,5 +69,5 @@ module.exports = function WebService(config) {
                 
             });
         }
-    }
+    };
 };
