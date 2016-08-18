@@ -82,9 +82,6 @@
 		this.loopCount = this.options.loopCount;
 		this.curLoop = 0;
 
-		// for stopping
-		this.stop = false;
-
 		// custom cursor
 		this.cursorChar = this.options.cursorChar;
 
@@ -95,6 +92,13 @@
 
 		// All systems go!
 		this.build();
+		
+		// Add public function to allow clearing the type timer so it can be 
+        // called to stop itself.
+        this.stop = function() {
+            clearTimeout(this.timeout);
+            return true;
+        };
 	};
 
 	Typed.prototype = {
@@ -354,12 +358,12 @@
 
 		// Start & Stop currently not working
 
-		// , stop: function() {
+		// stop: function() {
 		//     var self = this;
 
 		//     self.stop = true;
 		//     clearInterval(self.timeout);
-		// }
+		// },
 
 		// , start: function() {
 		//     var self = this;

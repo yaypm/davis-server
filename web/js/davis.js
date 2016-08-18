@@ -71,6 +71,8 @@ var davis = (function () {
         this.connectedUrlElemId = connectedUrlElemId;
         
         var sentences = []; // Array of response sentences to be typed into interaction log
+        var textBeingTyped;
+        var elementBeingTyped;
        
         resetPlaceholder();
         setListeningState('sleeping');
@@ -232,12 +234,16 @@ var davis = (function () {
         function addToInteractionLog(text, isDavisSpeaking, isTypeWriter) {
             
             if (isTypeWriter) {
+                
                 typeText(text);
+                
             } else {
-                let styleClass = isDavisSpeaking ? 'botStyle' : 'userStyle';   
-                let el = $('<p>' + text + '</p>').css('display', 'none').addClass(styleClass);
+                
+                let styleClass = isDavisSpeaking ? 'botStyle' : 'userStyle';
+                let el = $('<p>' + text.trim() + '</p>').css('display', 'none').addClass(styleClass);
                 $('#'+interactionLogElemId).append(el);
                 el.fadeIn(400);
+                
             }
         
             if ($('#'+interactionLogElemId).children().length > 3) {
@@ -259,16 +265,32 @@ var davis = (function () {
             var text = sentences[0];
             sentences.splice(0, 1);
         
-            var node = $('<p></p>').addClass('botStyle');
+            textBeingTyped = text;
+            elementBeingTyped = $('<p></p>').addClass('botStyle');
         
-            $('#'+interactionLogElemId).append(node);
+            $('#'+interactionLogElemId).append(elementBeingTyped);
         
-            node.typed({
+            elementBeingTyped.typed({
                 strings: [text],
                 typeSpeed: 10,
                 startDelay: 600,
                 showCursor: false
             });
+            
+        }
+        
+        /**
+         * Stops typing animation and displays text being typed
+         */
+        function stopTypewriter() {
+            
+            // Stop typing
+            elementBeingTyped.data('typed').stop();
+            
+            // Display text
+            $(elementBeingTyped).css('display', 'none');
+            $(elementBeingTyped).html(textBeingTyped);
+            $(elementBeingTyped).fadeIn(400);
             
         }
         
@@ -355,6 +377,14 @@ var davis = (function () {
             
             showLogo: function () {
                 showLogo();
+            },
+            
+            getTextBeingTyped: function () {
+                return textBeingTyped;  
+            },
+            
+            stopTypewriter: function () {
+                stopTypewriter();
             }
             
         };
@@ -445,11 +475,19 @@ var davis = (function () {
             listeningState = 'chatMode';
             view.setListeningState(listeningState);
         
+            // Stop typewriter and any audio that's playing
+            player.pause();
+            player.currentTime = 0;
+            
             if (!isMuted) {
-                toggleMute(true);
+                view.stopTypewriter();
             }
             
+            isMuted = true;
+            view.muted();
+            
             enableListenForKeyword(false);
+            
         }, false);
         
         /**
@@ -539,6 +577,7 @@ var davis = (function () {
                         
                         if (!data.response.text) {
                             
+                            document.dispatchEvent(listeningStateEvents.chatMode);
                             outputTextAndSpeech(view.getLocalResponses().errors.nullResponse, view.getLocalResponses().voices.michael, false);
                             return;
                             
@@ -563,9 +602,11 @@ var davis = (function () {
                         }
                         
                     }).catch(function (err) {
+                        
                         document.dispatchEvent(listeningStateEvents.chatMode);
                         outputTextAndSpeech(view.getLocalResponses().errors.server, view.getLocalResponses().voices.michael, false);
                         console.log('interactWithRuxit - Error: ' + err);
+                        
                     });
                 } else {
                      document.dispatchEvent(listeningStateEvents.sleeping);
@@ -1003,24 +1044,38 @@ var davis = (function () {
                 muteButtonPressed = false;
             }
             
-            if ((!isMuted && mute != false) || muteButtonPressed) {
+            if (!player.paused && !player.ended && muteButtonPressed) {
                 
-                isMuted = true;
-                view.muted();
-                
-                if (stream != null) {
-                    stream.stop();
-                }
-                
-                enableListenForKeyword(true);
-                
-            } else {
-                
+                // Stop typewriter and any audio that's playing
+                player.pause();
+                player.currentTime = 0;
+                view.stopTypewriter();
                 isMuted = false;
-                view.listening();
                 enableListenForKeyword(false);
                 unmuteWhenDoneSpeaking();
                 
+            } else {
+            
+                if ((!isMuted && mute != false) || muteButtonPressed) {
+                    
+                    isMuted = true;
+                    view.muted();
+                    
+                    if (stream != null) {
+                        stream.stop();
+                    }
+                    
+                    enableListenForKeyword(true);
+                    
+                } else {
+                   
+                    isMuted = false;
+                    view.listening();
+                    enableListenForKeyword(false);
+                    unmuteWhenDoneSpeaking();
+                    
+                }
+            
             }
             
         }
@@ -1034,6 +1089,25 @@ var davis = (function () {
             outputTextAndSpeech(view.getLocalResponses().errors.noMic, view.getLocalResponses().voices.michael, false);
             view.noMic();
             view.muted();
+            
+        }
+        
+        /**
+         * Check if string includes words commonly found in a question
+         */
+        function isQuestion(str) {
+            
+            const words = ['who', 'what', 'when', 'where', 'why', 'is there', 'is the', 'did the', 'did any'];
+            
+            let result = false;
+            
+            words.forEach( function (word) {
+                if (str.toLowerCase().includes(word)) {
+                    result = true;
+                }
+            });
+           
+            return result;
             
         }
         
@@ -1089,7 +1163,14 @@ var davis = (function () {
                 toggleMute();    
             },
             process: function () {
+                
+                // if question, replace period with question mark
+                if (isQuestion($('#'+view.getTextInputElemId()).val())) {
+                    $('#'+view.getTextInputElemId()).val($('#'+view.getTextInputElemId()).val().replace('.', '?'));   
+                }    
+                
                 interactWithRuxit($('#'+view.getTextInputElemId()).val());
+                
             }
             
         };
