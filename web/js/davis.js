@@ -76,6 +76,20 @@ var davis = (function () {
        
         resetPlaceholder();
         setListeningState('sleeping');
+        
+        // Listen for keypress
+        // if space-bar and textbox not focused, toggleMute
+        $(function() {
+            $(window).keypress(function(e) {
+                var key = e.which;
+                if (key == 32 && !$("#"+textInputElemId).is(":focus")) {
+                    $("#"+muteWrapperElemId).click();
+                } else if (key != 32 && !$("#"+textInputElemId).is(":focus")) {
+                    $("#"+textInputElemId).focus();
+                }
+            });      
+        });
+        
         if (typeof window.chrome != 'object') {
            
            addToInteractionLog(localResponses.errors.noBrowserSupport, true, false);
@@ -313,6 +327,19 @@ var davis = (function () {
             }
             
         }
+        
+        /**
+         * Enable offline mode
+         * 
+         * @param {Boolean} isEnabled
+         */
+        function enableOfflineMode(isEnabled) {
+            
+            $("#"+textInputElemId).prop('disabled', isEnabled);
+            (isEnabled) ? $("#"+muteWrapperElemId).hide() : $("#"+muteWrapperElemId).show();
+            (isEnabled) ? $("#"+connectedUrlElemId).hide() : $("#"+connectedUrlElemId).show();
+
+        }
           
         // view global methods  
         return {
@@ -385,6 +412,10 @@ var davis = (function () {
             
             stopTypewriter: function () {
                 stopTypewriter();
+            },
+            
+            enableOfflineMode: function (isEnabled) {
+                enableOfflineMode(isEnabled);
             }
             
         };
@@ -437,7 +468,8 @@ var davis = (function () {
             listening: new Event('listening'),
             processing: new Event('processing'),
             responding: new Event('responding'),
-            chatMode: new Event('chatMode')
+            chatMode: new Event('chatMode'),
+            offlineMode: new Event('offlineMode')
         }
         
         document.addEventListener('sleeping', function (event) {
@@ -490,18 +522,36 @@ var davis = (function () {
             
         }, false);
         
-        // Listen for keypress
-        // if space-bar and textbox not focused, toggleMute
-        $(function() {
-            $(window).keypress(function(e) {
-                var key = e.which;
-                if (key == 32 && !$("#textInput").is(":focus")) {
-                    $("#muteWrapper").click();
-                } else if (key != 32 && !$("#textInput").is(":focus")) {
-                    $("#textInput").focus();
+        document.addEventListener('offlineMode', function (event) {
+            listeningState = 'offlineMode';
+            view.setListeningState(listeningState);
+        }, false);
+        
+        // Listen for if offline
+        var offlineCheck = function(){
+            
+            if (Offline.state === 'up') {
+                
+                Offline.check();
+                
+                if (listeningState == 'offlineMode') {
+                    view.enableOfflineMode(false);
+                    document.dispatchEvent(listeningStateEvents.sleeping);
+                    listen();
                 }
-            });
-        });
+                
+            } else {
+                
+                if (listeningState != 'offlineMode') {
+                    document.dispatchEvent(listeningStateEvents.offlineMode);
+                }
+                
+                view.enableOfflineMode(true)
+                
+            }
+            
+        }
+        setInterval(offlineCheck, 5000);
         
         /**
          * Sends a request to be processed for its intent 
