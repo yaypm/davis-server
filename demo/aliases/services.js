@@ -14,6 +14,13 @@ const services = [{
         visual: 'easyTravel Web Server'
     },
     aliases: []
+}, {
+    name: 'easyTravelVmware-Business',
+    display: {
+        audible: 'Easy Travel business backend',
+        visual: 'easyTravel business backend'
+    },
+    aliases: []
 }];
 
 module.exports = services;
