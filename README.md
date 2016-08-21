@@ -63,7 +63,9 @@ database: {
 ####Watson Setup [More..](https://github.com/ruxit/davis-server/blob/master/setup/watson.md)
 ---
 
-*You will need to obtain a Bluemix Username, Password, and token to be able to interact with the IBM Watson service that is powering the Speech To Text in the Web UI version of DAVIS. Navigate to [IBM Bluemix] (https://console.ng.bluemix.net/) and create a free IBM Bluemix acccount.* Click [here](https://github.com/ruxit/davis-server/blob/master/setup/watson.md) for futher instructions.
+Watson Speech to Text can be used anywhere there is a need to bridge the gap between the spoken word and its written form. This easy-to-use service uses machine intelligence to combine information about grammar and language structure with knowledge of the composition of an audio signal to generate an accurate transcription. It uses IBM's speech recognition capabilities to convert speech in multiple languages into text. The transcription of incoming audio is continuously sent back to the client with minimal delay, and it is corrected as more speech is heard
+
+*You will need to obtain a Bluemix username, password, and token to be able to interact with the IBM Watson service that is powering the Speech To Text in the Web UI version of DAVIS. Navigate to [IBM Bluemix] (https://console.ng.bluemix.net/) and create a free IBM Bluemix acccount.* Click [here](https://github.com/ruxit/davis-server/blob/master/setup/watson.md) for futher instructions.
 
 ````javascript
 watson: {
@@ -81,8 +83,9 @@ watson: {
 ---
 ####Slack Setup [More...](https://github.com/ruxit/davis-server/blob/master/setup/slack.md)
 ---
+**Slack**: Be Less Busy; Brings all your communication together in one place. It's real-time messaging, archiving and search for modern teams. Bot users have many of the same qualities as their human counterparts: they have profile photos, names, and bios, they exist in the team directory, they can be direct messaged or mentioned, they can post messages and upload files, and they can be invited to and kicked out of channels and private groups.
 
-DAVIS isn't just voice. It's an Ecosytem. Follow the steps below to integrate DAVIS with your **#Slack** account. We packed alot of cool features into our Slack configuration, but if you don't have an account, set the **enabled** field to *false*. Once configured use a @davis to bring Dynatrace Platform intelligence to your preferred channel. Click [here](https://github.com/ruxit/davis-server/blob/master/setup/slack.md) for futher instructions.
+DAVIS isn't just voice. It's an Ecosytem. Follow the steps below to integrate DAVIS with your **#Slack** account. We packed alot of cool features into our Slack bot configuration, but if you don't have an account, set the **enabled** field to *false*. Once configured use a @davis to bring Dynatrace Platform intelligence to your preferred channel. Click [here](https://github.com/ruxit/davis-server/blob/master/setup/slack.md) for futher instructions.
 
 ````javascript
 slack: {
@@ -110,7 +113,7 @@ Examples:
 The possibilities are endless. Provide your ideas in the comments section below!
 
 - [Echo Configuration and Alexa UserID Token](https://github.com/ruxit/davis-server/blob/master/setup/echo.md)
-- [Dynatrace Token]
+- [Dynatrace Token] **TODO//**
 - [WIT Token] **//TODO**
 
 ````javascript
