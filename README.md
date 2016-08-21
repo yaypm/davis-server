@@ -44,40 +44,9 @@ TODO: How to configure the config.js file
 *Once you have your Mongo Database configured and either have a IP or hostname available move replace the <mongodb_database_dsn> parameter with the one you obtained.*
 
 
-**4. Watson**
+	##**[Watson Setup](https://localpath/setup/Watson.md)**
 
-*You will need to obtain a Bluemix Username, Password, and token to be able to interact with the IBM Watson service that is powering the Speech To Text in the Web UI version of DAVIS. Navigate to https://console.ng.bluemix.net/catalog/services/speech-to-text and create a free IBM Bluemix acccount.*
-
-	1. Create IBM Bluemix Account (https://new-console.ng.bluemix.net/)
-	2. Create a Bluemix Organization (davis)
-	3. Create a Bluemix Space (davis)
-	4. Browse the Bluemix Catalog or search for Speech-To-Text
-	5. Create the Speech-To-Text service and obtain Service Credentials.
-
-*Your speech to text credential file will look similar to the following:*
-
-````javascript
-{
-  "credentials": {
-    "url": "https://stream.watsonplatform.net/speech-to-text/api",
-    "password": "AbcDeFghiJk",
-    "username": "aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeee"
-  }
-}
-````
-
-*Your text to speech credential file will look similar to the following (notice the URL change:*
-
-````javascript
-{
-  "credentials": {
-    "url": "https://stream.watsonplatform.net/speech-to-text/api",
-    "password": "AbcDeFghiJk",
-    "username": "aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeee"
-  }
-}
-````
-
+	*You will need to obtain a Bluemix Username, Password, and token to be able to interact with the IBM Watson service that is powering the Speech To Text in the Web UI version of DAVIS. Navigate to https://console.ng.bluemix.net/catalog/services/speech-to-text and create a free IBM Bluemix acccount.*
 
 DAVIS isn't just voice. It's an Ecosytem. Follow the steps below to integrate DAVIS with your **#SLACK** account. We packed alot of cool features into our slack configuration, but if you don't have an account. Set the **enabled** field to *false*. Once configured use a @davis to bring Dynatrace Platform intelligence to your preferred channel.
 
