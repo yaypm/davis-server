@@ -42,22 +42,12 @@ TODO: How to configure the config.js file
 ####Watson Setup [More..](https://localpath/setup/Watson.md)
 ---
 
-*You will need to obtain a Bluemix Username, Password, and token to be able to interact with the IBM Watson service that is powering the Speech To Text in the Web UI version of DAVIS. Navigate to https://console.ng.bluemix.net/catalog/services/speech-to-text and create a free IBM Bluemix acccount.*
+*You will need to obtain a Bluemix Username, Password, and token to be able to interact with the IBM Watson service that is powering the Speech To Text in the Web UI version of DAVIS. Navigate to [IBM Bluemix] (https://console.ng.bluemix.net/catalog/services/speech-to-text) and create a free IBM Bluemix acccount.*
 
 ####5. Slack Setup [More...](https://localpath/setup/Slack.md)
+---
 
-DAVIS isn't just voice. It's an Ecosytem. Follow the steps below to integrate DAVIS with your **#SLACK** account. We packed alot of cool features into our slack configuration, but if you don't have an account. Set the **enabled** field to *false*. Once configured use a @davis to bring Dynatrace Platform intelligence to your preferred channel.
-
-1. Go to **[#Slack]** (https://api.slack.com/bot-users) and start to create 	your davis bot. 	Your goal is to obtain a BOT API Token. For visual 	instructions follow this [guide](https://localpath/slack-bot-guide.md) Sample davis BOT image supplied [here](https://localpath/slack-bot-guide-logo.png)
-2. Once you have obtained a token apply it in your config file.
-
-````javascript
-
-slack: {
-        enabled: true, //set this to false if you don't have a SLACK account.
-        key: '<slack_token>'
-    },
-````
+DAVIS isn't just voice. It's an Ecosytem. Follow the steps below to integrate DAVIS with your **#SLACK** account. We packed alot of cool features into our Slack configuration, but if you don't have an account set the **enabled** field to *false*. Once configured use a @davis to bring Dynatrace Platform intelligence to your preferred channel.
 
 **6. Users**
 
