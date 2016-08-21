@@ -56,7 +56,7 @@ const config = {
 ````javascript
 database: {
         dsn: '<davis.foo.com>'
-    },
+    }
 ````
 
 ---
