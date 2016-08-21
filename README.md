@@ -7,42 +7,39 @@ We had fun building DAVIS and now it is your turn to enjoy the magic of DAVIS po
 
 ####Let's get started! - Prerequisites
 
-1. Mongo Database installed with a fully qualified domain name (FQDN). This can be local or remote. You will want the database to persist for each iteration and version of DAVIS you upgrade to. [Check out this neat guide to get MongoDB setup on an AWS EC2 and Route53.](https://github.com/ruxit/davis-server/blob/master/setup/Create%20Mongo%20DB%20Instance.md)
+1. Mongo Database installed with a fully qualified domain name (FQDN). This can be local to your DAVIS instance or remote. You will want the database to persist for each iteration and version of DAVIS you upgrade to. [Check out this guide to get MongoDB setup on an AWS EC2 and Route53.](https://github.com/ruxit/davis-server/blob/master/setup/Mongo.md)
 
 #####Initialize DAVIS
 
 1. Start a new project folder.
-2. npm init and use the guide. Call your project davis-server.
-3. (Optional) Version 1.0.0
-4. (Optional) Description
-5. (Required) Use default index.js. You will be creating this file later.
-6. test command
-7. (Required) Define the git respository. Right now since project is only 	available through private GitHub Repo you need access to Dynatrace 	Innovation lab (https://[username]@github.com/ruxit/davis-server.git#dev).
+2. npm init and use the auto initiation guide. Give your project a unique name.
+3. *(Optional)* Version 1.0.0
+4. *(Optional)* Description
+5. **(Required)** Use default index.js. You will be creating this file later.
+6. **(Required)** Define the git respository. Right now since project is only available through private GitHub Repo you need access to the Dynatrace Innovation lab (https://[username]@github.com/ruxit/davis-server.git#master).
 
 
-Before we initialize DAVIS you need to conifgure a few custom parameters for your environments. Make a copy of */demo/config.sample.js*. Please use the following sections as guidiance and direction on how to get your instance up and running.
-TODO: How to configure the config.js file
+Before we initialize DAVIS you need to conifgure a few custom parameters for your environments. Make a copy of */demo/config.sample.js*. Please use the following sections as guidiance and direction on how to get your DAVIS instance up and running.
 
 ####1. Default DAVIS Port : 3000
 ---
 
-*This is the default port that davis will be available on. Set this to a desired port. DAVIS needs to be a secure endpoint so you will need to determine how you would like to do this. We prefer an Elastic Load balancer that can handle both a listening port, redirection, and HTTPS. We have chosen AWS's Elastic Beanstalk service to host DAVIS where ELB is native to out of the box configuration.*
-
+*This is the default port that davis will be available on. Set this to a desired port. DAVIS needs to be a secure endpoint so you will need to determine how you would like to do this. We prefer an Elastic Load balancer that can handle both a listening port, redirection, and HTTPS. We have chosen AWS's Elastic Beanstalk service to host DAVIS where ELB is a native and out of the box configuration.*
 
 ####2. (Optional) NGINX Proxy
 ---
 
-*Others have chosen to install a NGINX reverse proxy and a self signed certificate while developing*
+*You can install a NGINX reverse proxy and a self signed certificate for advanced routing. For example having more than one DAVIS server on the same instance*
 
 ####3. Mongo DB DSN Entry
 ---
 
-*Once you have your Mongo Database configured and either have a IP or hostname available move replace the <mongodb_database_dsn> parameter with the one you obtained.*
+*Once you have your Mongo Database configured and either have a IP or FQDN available replace the <mongodb_database_dsn> parameter with the one you obtained.*
 
 ####Watson Setup [More..](https://github.com/ruxit/davis-server/blob/master/setup/Watson.md)
 ---
 
-*You will need to obtain a Bluemix Username, Password, and token to be able to interact with the IBM Watson service that is powering the Speech To Text in the Web UI version of DAVIS. Navigate to [IBM Bluemix] (https://console.ng.bluemix.net/catalog/services/speech-to-text) and create a free IBM Bluemix acccount.*
+*You will need to obtain a Bluemix Username, Password, and token to be able to interact with the IBM Watson service that is powering the Speech To Text in the Web UI version of DAVIS. Navigate to [IBM Bluemix] (https://console.ng.bluemix.net/) and create a free IBM Bluemix acccount.* Click [here](https://github.com/ruxit/davis-server/blob/master/setup/Watson.md) for futher instructions.
 
 ####5. Slack Setup [More...](https://github.com/ruxit/davis-server/blob/master/setup/Slack.md)
 ---
