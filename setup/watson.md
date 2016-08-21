@@ -1,9 +1,9 @@
 **Watson**
 
-*You will need to obtain a Bluemix Username, Password, and token to be able to interact with the IBM Watson service that is powering the Speech To Text in the Web UI version of DAVIS. Navigate to https://console.ng.bluemix.net/catalog/services/speech-to-text and create a free IBM Bluemix acccount.*
+*You will need to obtain a Bluemix Username, Password, and token to be able to interact with the IBM Watson service that is powering the Speech To Text in the Web UI version of DAVIS. Navigate to [IBM Bluemix](https://console.ng.bluemix.net/catalog/services/speech-to-text) and create a free IBM Bluemix acccount.*
 
 [Create IBM Bluemix Account](https://new-console.ng.bluemix.net/)
-Create a Bluemix Organization (davis)
+Create a Bluemix Organization (davis-ai)
 Create a Bluemix Space (davis)
 	
 ![Watson](https://s3.amazonaws.com/davis-project/docs/watson-organization.png)
