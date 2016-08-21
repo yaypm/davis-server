@@ -20,20 +20,31 @@ You will need a Mongo Database installed with a fully qualified domain name (FQD
 
 Before we initialize DAVIS you need to conifgure a few custom parameters for your environments. Make a copy of **/demo/config.sample.js**. Please use the following sections as guidiance and direction on how to get your DAVIS instance up and running in only a few minutes.
 
+**Table of Contents**
+
+[Accessing DAVIS](https://github.com/ruxit/davis-server#1-default-davis-port--3000)
+[NGINX Proxy](https://github.com/ruxit/davis-server#optional-nginx-proxy)
+[Mongo DSN](https://github.com/ruxit/davis-server#mongo-db-dsn-entry)
+[Watson Setup](https://github.com/ruxit/davis-server#watson-setup-more)
+[Slack Setup](https://github.com/ruxit/davis-server#slack-setup-more)
+[Defining Users](https://github.com/ruxit/davis-server#users)
+
+
+
 ---
-####1. Default DAVIS Port : 3000
+####Default DAVIS Port : 3000
 ---
 
 *This is the default port that DAVIS will be available on. Set this to a desired port. DAVIS needs to be a secure endpoint so you will need to determine how you would like to do this. We prefer an Elastic Load balancer that can handle both a listening port, redirection, and HTTPS. We have chosen AWS's Elastic Beanstalk service to host DAVIS where ELB is a native and out of the box configuration.*
 
 ---
-####2. (Optional) NGINX Proxy
+####(Optional) NGINX Proxy
 ---
 
 *You can install a NGINX reverse proxy and a self signed certificate for advanced routing. For example having more than one DAVIS server on the same instance*
 
 ---
-####3. Mongo DB DSN Entry
+####Mongo DB DSN Entry
 ---
 
 *Once you have your Mongo Database configured and either have a IP or FQDN available replace the <mongodb_database_dsn> parameter with the one you obtained.*
@@ -45,31 +56,31 @@ Before we initialize DAVIS you need to conifgure a few custom parameters for you
 *You will need to obtain a Bluemix Username, Password, and token to be able to interact with the IBM Watson service that is powering the Speech To Text in the Web UI version of DAVIS. Navigate to [IBM Bluemix] (https://console.ng.bluemix.net/) and create a free IBM Bluemix acccount.* Click [here](https://github.com/ruxit/davis-server/blob/master/setup/Watson.md) for futher instructions.
 
 ---
-####5. Slack Setup [More...](https://github.com/ruxit/davis-server/blob/master/setup/Slack.md)
+####Slack Setup [More...](https://github.com/ruxit/davis-server/blob/master/setup/Slack.md)
 ---
 
 DAVIS isn't just voice. It's an Ecosytem. Follow the steps below to integrate DAVIS with your **#SLACK** account. We packed alot of cool features into our Slack configuration, but if you don't have an account set the **enabled** field to *false*. Once configured use a @davis to bring Dynatrace Platform intelligence to your preferred channel. Click [here](https://github.com/ruxit/davis-server/blob/master/setup/Slack.md) for futher instructions.
 
 ---
-####6. Users**
+####Users**
 ---
 
 
 
-####7. Alexa Tokens**
+####Alexa Tokens**
 ---
 
-####8. Time Zones (Echo Only)**
+####Time Zones (Echo Only)**
 ---
 
-####9. Token + Tenant**
+####Token + Tenant**
 ---
 
-####10. Wit Token**
+####Wit Token**
 ---
 
-####11. Aliases and their definitions.**
+####Aliases and their definitions.**
 ---
 
-####12. TODO: npm install and save TODO: start davis**
+####TODO: npm install and save TODO: start davis**
 ---
