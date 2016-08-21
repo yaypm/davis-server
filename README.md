@@ -15,8 +15,8 @@ You will need a Mongo Database installed with a fully qualified domain name (FQD
 2. ````npm init ```` and use the auto initiation guide. Give your project a unique name.
 3. *(Optional)* Version 1.0.0
 4. *(Optional)* Description
-5. **(Required)** Use default index.js. You will be creating this file later.
-6. **(Required)** Define the git respository. Right now since project is only available through private GitHub Repo you need access to the Dynatrace Innovation lab (https://[username]@github.com/ruxit/davis-server.git#master).
+5. **(Required)** Use default index.js. You will be creating this file later
+6. **(Required)** Define the git respository. Right now since project is only available through private GitHub Repo you need access to the Dynatrace Innovation lab (https://[username]@github.com/ruxit/davis-server.git#master)
 
 Before you initialize DAVIS you need to conifgure a few custom parameters for your environments. Make a copy of **/demo/config.sample.js**. Please use the following sections as guidiance and direction on how to get your DAVIS instance up and running in only a few minutes.
 
@@ -59,10 +59,10 @@ database: {
 ````
 
 ---
-####Watson Setup [More..](https://github.com/ruxit/davis-server/blob/master/setup/Watson.md)
+####Watson Setup [More..](https://github.com/ruxit/davis-server/blob/master/setup/watson.md)
 ---
 
-*You will need to obtain a Bluemix Username, Password, and token to be able to interact with the IBM Watson service that is powering the Speech To Text in the Web UI version of DAVIS. Navigate to [IBM Bluemix] (https://console.ng.bluemix.net/) and create a free IBM Bluemix acccount.* Click [here](https://github.com/ruxit/davis-server/blob/master/setup/Watson.md) for futher instructions.
+*You will need to obtain a Bluemix Username, Password, and token to be able to interact with the IBM Watson service that is powering the Speech To Text in the Web UI version of DAVIS. Navigate to [IBM Bluemix] (https://console.ng.bluemix.net/) and create a free IBM Bluemix acccount.* Click [here](https://github.com/ruxit/davis-server/blob/master/setup/watson.md) for futher instructions.
 
 ````
 watson: {
@@ -91,8 +91,21 @@ slack: {
 ````
 
 ---
-####Users**
+####Users
 
+You can customize the experiance for your users with a few simple flags in the User object.
+
+Examples:
+
+If you want to have a specific Amazon Echo have access to only 1 of your Dynatrace tenants.
+If you want to have a user or Application Owner mapped to a specific Dynatrace tenant.
+If you are developing you are personalizing own DAVIS WIT template and wanted to QA new intents before promoting a template to production you could map a test user to a different WIT account.
+
+The possibilities are endless. Provide your ideas in the comments section below!
+
+- [Alexa Token]
+- [Dynatrace Token]
+- [WIT Token]
 
 ````
     users: [{
@@ -114,25 +127,24 @@ slack: {
         }
     }]
 ````
-
 ---
 ---
-####Alexa Tokens**
----
-
----
-####Time Zones (Echo Only)**
+####Alexa Tokens
 ---
 
 ---
-####Wit Token**
+####Time Zones (Echo Only)
 ---
 
 ---
-####Aliases and their definitions.**
+####Wit Token
+---
+
+---
+####Aliases and their definitions.
 ---
 
 
 ---
-####TODO: npm install and save TODO: start davis**
+####TODO: npm install and save TODO: start davis
 ---
