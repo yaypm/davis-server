@@ -33,13 +33,18 @@ Before you initialize DAVIS you need to conifgure a few custom parameters for yo
 ####Default DAVIS Port : 3000
 ---
 
-*This is the default port that DAVIS will be available on. Set this to a desired port (Default Node.js is 3000). DAVIS needs to be a secure endpoint so you will need to determine how you would like to do this. We prefer an Elastic Load balancer that can handle both a listening port, redirection, and HTTPS. We have chosen AWS's Elastic Beanstalk service to host DAVIS where ELB is a native and out of the box configuration.*
+*3000 is the default port that DAVIS will be available on. Set this to a desired port (Default Node.js is 3000). DAVIS needs to be a secure endpoint so you will need to determine how you would like to do this. We prefer an Elastic Load balancer that can handle both a listening port, redirection, and HTTPS. We have chosen AWS's Elastic Beanstalk service to host DAVIS where ELB is a native and out of the box configuration.*
 
+````
+const config = {
+    port: process.env.PORT || 3000,
+    ip: process.env.IP || '0.0.0.0',
+````
 ---
 ####(Optional) NGINX Proxy
 ---
 
-*You can install a NGINX reverse proxy and a self signed certificate for advanced routing. For example you could have more than one DAVIS server on the same instance*
+*You can install a NGINX reverse proxy and a self signed certificate for advanced routing. For example, you could have more than one DAVIS instance on the same server*
 
 ---
 ####Mongo DB DSN Entry
