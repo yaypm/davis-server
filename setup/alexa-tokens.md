@@ -13,7 +13,7 @@
 ---
 ###5 - Name Your Skill
 
-The *Invocation Name* is the keyword heard by your Echo device that prompts the Alexa service to use your DAVIS skill.
+> The *Invocation Name* is the keyword heard by your Echo device that prompts the Alexa service to use your DAVIS skill.
 
 ![Alexa Homepage](https://s3.amazonaws.com/davis-project/docs/alex-token-5.png)
 ---
@@ -61,4 +61,4 @@ DoCommand {script parameters|command}
 
 ---
 
-Use this UserID in your config.js file when defining new users.
+> Use this UserID in your config.js file when defining new users.
