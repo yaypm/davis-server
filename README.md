@@ -44,7 +44,7 @@ Before we initialize DAVIS you need to conifgure a few custom parameters for you
 ####5. Slack Setup [More...](https://github.com/ruxit/davis-server/blob/master/setup/Slack.md)
 ---
 
-DAVIS isn't just voice. It's an Ecosytem. Follow the steps below to integrate DAVIS with your **#SLACK** account. We packed alot of cool features into our Slack configuration, but if you don't have an account set the **enabled** field to *false*. Once configured use a @davis to bring Dynatrace Platform intelligence to your preferred channel.
+DAVIS isn't just voice. It's an Ecosytem. Follow the steps below to integrate DAVIS with your **#SLACK** account. We packed alot of cool features into our Slack configuration, but if you don't have an account set the **enabled** field to *false*. Once configured use a @davis to bring Dynatrace Platform intelligence to your preferred channel. Click [here](https://github.com/ruxit/davis-server/blob/master/setup/Slack.md) for futher instructions.
 
 **6. Users**
 
