@@ -6,8 +6,9 @@
 	2. Create a Bluemix Organization (davis)
 	3. Create a Bluemix Space (davis)
 	
-	Sample:
-	![alt text](https://s3.amazonaws.com/davis-project/docs/watson-org.png "Logo Title Text 1")
+Reference-style: 
+![alt text][logo]
+[logo]: https://s3.amazonaws.com/davis-project/docs/watson-org.png "Logo Title Text 2"
 	
 	4. Browse the Bluemix Catalog or search for Speech-To-Text
 	5. Create the Speech-To-Text service and obtain Service Credentials.
