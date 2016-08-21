@@ -1,27 +1,22 @@
 
-1
+###1 - Navigate to Amazon's Alexa Service
 ![Alexa Homepage](https://s3.amazonaws.com/davis-project/docs/alex-token-1.png)
-1
 ---
-2
+###2 - Get Started
 ![Alexa Homepage](https://s3.amazonaws.com/davis-project/docs/alex-token-2.png)
-2
 ---
-3
+###3 - Add A New Skill
 ![Alexa Homepage](https://s3.amazonaws.com/davis-project/docs/alex-token-3.png)
-3
 ---
-4
+4 - Name Your Skill
 ![Alexa Homepage](https://s3.amazonaws.com/davis-project/docs/alex-token-4.png)
-4
 ---
-5
+5 - Configure Intent Schema
 ![Alexa Homepage](https://s3.amazonaws.com/davis-project/docs/alex-token-5.png)
-5
 ---
-6
+6 - 
 ![Alexa Homepage](https://s3.amazonaws.com/davis-project/docs/alex-token-6.png)
-6
+
 ````
 #Intent Schema
 
