@@ -8,9 +8,10 @@
 	
 ![Watson](https://s3.amazonaws.com/davis-project/docs/watson-org.png)
 
-	
 	4. Browse the Bluemix Catalog or search for Speech-To-Text
 	5. Create the Speech-To-Text service and obtain Service Credentials.
+	
+![Watson](https://s3.amazonaws.com/davis-project/docs/watson-speech.png)
 
 *Your speech to text credential file will look similar to the following:*
 
