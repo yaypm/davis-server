@@ -36,7 +36,7 @@ Before you initialize DAVIS you need to conifgure a few custom parameters for yo
 
 *3000 is the default port that DAVIS will be available on. Set this to a desired port (Default Node.js is 3000). DAVIS needs to be a secure endpoint so you will need to determine how you would like to do this. We prefer an Elastic Load balancer that can handle both a listening port, redirection, and HTTPS. We have chosen AWS's Elastic Beanstalk service to host DAVIS where ELB is a native and out of the box configuration.*
 
-````
+````javascript
 const config = {
     port: process.env.PORT || 3000,
     ip: process.env.IP || '0.0.0.0',
@@ -53,7 +53,7 @@ const config = {
 
 *Once you have your Mongo Database configured and either have a IP or FQDN available replace the <mongodb_database_dsn> parameter with the one you obtained.*
 
-````
+````javascript
 database: {
         dsn: '<davis.foo.com>'
     },
@@ -65,7 +65,7 @@ database: {
 
 *You will need to obtain a Bluemix Username, Password, and token to be able to interact with the IBM Watson service that is powering the Speech To Text in the Web UI version of DAVIS. Navigate to [IBM Bluemix] (https://console.ng.bluemix.net/) and create a free IBM Bluemix acccount.* Click [here](https://github.com/ruxit/davis-server/blob/master/setup/watson.md) for futher instructions.
 
-````
+````javascript
 watson: {
         enabled: true,
         stt: {
@@ -84,7 +84,7 @@ watson: {
 
 DAVIS isn't just voice. It's an Ecosytem. Follow the steps below to integrate DAVIS with your **#SLACK** account. We packed alot of cool features into our Slack configuration, but if you don't have an account set the **enabled** field to *false*. Once configured use a @davis to bring Dynatrace Platform intelligence to your preferred channel. Click [here](https://github.com/ruxit/davis-server/blob/master/setup/slack.md) for futher instructions.
 
-````
+````javascript
 slack: {
         enabled: true,
         key: '<slack_token>'
@@ -113,7 +113,7 @@ The possibilities are endless. Provide your ideas in the comments section below!
 - [Dynatrace Token]
 - [WIT Token] **//TODO**
 
-````
+````javascript
     users: [{
         id: '<user_id>',
         name: {
