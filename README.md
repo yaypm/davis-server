@@ -22,7 +22,7 @@ Before you initialize DAVIS you need to conifgure a few custom parameters for yo
 
 **Table of Contents**
 
-1. [Accessing DAVIS](https://github.com/ruxit/davis-server#1-default-davis-port--3000)
+1. [Accessing DAVIS](https://github.com/ruxit/davis-server#default-davis-port--3000)
 2. [NGINX Proxy](https://github.com/ruxit/davis-server#optional-nginx-proxy)
 3. [Mongo DSN](https://github.com/ruxit/davis-server#mongo-db-dsn-entry)
 4. [Watson Setup](https://github.com/ruxit/davis-server#watson-setup-more)
