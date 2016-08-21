@@ -22,12 +22,12 @@ Before we initialize DAVIS you need to conifgure a few custom parameters for you
 
 **Table of Contents**
 
-[Accessing DAVIS](https://github.com/ruxit/davis-server#1-default-davis-port--3000)
-[NGINX Proxy](https://github.com/ruxit/davis-server#optional-nginx-proxy)
-[Mongo DSN](https://github.com/ruxit/davis-server#mongo-db-dsn-entry)
-[Watson Setup](https://github.com/ruxit/davis-server#watson-setup-more)
-[Slack Setup](https://github.com/ruxit/davis-server#slack-setup-more)
-[Defining Users](https://github.com/ruxit/davis-server#users)
+1. [Accessing DAVIS](https://github.com/ruxit/davis-server#1-default-davis-port--3000)
+2. [NGINX Proxy](https://github.com/ruxit/davis-server#optional-nginx-proxy)
+3. [Mongo DSN](https://github.com/ruxit/davis-server#mongo-db-dsn-entry)
+4. [Watson Setup](https://github.com/ruxit/davis-server#watson-setup-more)
+5. [Slack Setup](https://github.com/ruxit/davis-server#slack-setup-more)
+6. [Defining Users](https://github.com/ruxit/davis-server#users)
 
 
 
