@@ -60,10 +60,10 @@ database: {
 *You will need to obtain a Bluemix Username, Password, and token to be able to interact with the IBM Watson service that is powering the Speech To Text in the Web UI version of DAVIS. Navigate to [IBM Bluemix] (https://console.ng.bluemix.net/) and create a free IBM Bluemix acccount.* Click [here](https://github.com/ruxit/davis-server/blob/master/setup/Watson.md) for futher instructions.
 
 ---
-####Slack Setup [More...](https://github.com/ruxit/davis-server/blob/master/setup/Slack.md)
+####Slack Setup [More...](https://github.com/ruxit/davis-server/blob/master/setup/slack.md)
 ---
 
-DAVIS isn't just voice. It's an Ecosytem. Follow the steps below to integrate DAVIS with your **#SLACK** account. We packed alot of cool features into our Slack configuration, but if you don't have an account set the **enabled** field to *false*. Once configured use a @davis to bring Dynatrace Platform intelligence to your preferred channel. Click [here](https://github.com/ruxit/davis-server/blob/master/setup/Slack.md) for futher instructions.
+DAVIS isn't just voice. It's an Ecosytem. Follow the steps below to integrate DAVIS with your **#SLACK** account. We packed alot of cool features into our Slack configuration, but if you don't have an account set the **enabled** field to *false*. Once configured use a @davis to bring Dynatrace Platform intelligence to your preferred channel. Click [here](https://github.com/ruxit/davis-server/blob/master/setup/slack.md) for futher instructions.
 
 ---
 ####Users**
