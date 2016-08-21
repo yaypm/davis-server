@@ -27,6 +27,7 @@ Before you initialize DAVIS you need to conifgure a few custom parameters for yo
 - [Mongo DSN](https://github.com/ruxit/davis-server#mongo-db-dsn-entry)
 - [Watson Setup](https://github.com/ruxit/davis-server#watson-setup-more)
 - [Slack Setup](https://github.com/ruxit/davis-server#slack-setup-more)
+- [Echo Setup](https://github.com/ruxit/davis-server#echo-setup)
 - [Defining Users](https://github.com/ruxit/davis-server#users)
 
 ---
@@ -91,21 +92,26 @@ slack: {
 ````
 
 ---
+####Echo Setup[More...](https://github.com/ruxit/davis-server/blob/master/setup/echo.md)
+
+Amazon Echo is a hands-free speaker you control with your voice. Echo connects to the Alexa Voice Service to play music, provide information, news, sports scores, weather, and more—instantly. Wouldn't it be great to have your Echo provide you Application problems and updates. Assist you in finding the root cause of an Application problem? Wait no more..First, jump over to [Amazon.com](https://www.amazon.com/dp/B00X4WHP5E) and order yourself an Echo, Echo Tap, Echo DOT, or even a FireTV and follow the instructions to start receiving soundbites packed with performance data.
+
+---
 ####Users
 
-You can customize the experiance for your users with a few simple flags in the User object.
+You can customize the experience for your users with a few simple flags in the User object.
 
 Examples:
 
-If you want to have a specific Amazon Echo have access to only 1 of your Dynatrace tenants.
-If you want to have a user or Application Owner mapped to a specific Dynatrace tenant.
-If you are developing you are personalizing own DAVIS WIT template and wanted to QA new intents before promoting a template to production you could map a test user to a different WIT account.
+- If you want to have a specific Amazon Echo have access to only 1 of your Dynatrace tenants.
+- If you want to have a user or Application Owner mapped to a specific Dynatrace tenant.
+- If you are developing you are personalizing own DAVIS WIT template and wanted to QA new intents before promoting a template to production you could map a test user to a different WIT account.
 
 The possibilities are endless. Provide your ideas in the comments section below!
 
-- [Echo Configuration and Alexa UserID Token]
+- [Echo Configuration and Alexa UserID Token](https://github.com/ruxit/davis-server/blob/master/setup/echo.md)
 - [Dynatrace Token]
-- [WIT Token]
+- [WIT Token] **//TODO**
 
 ````
     users: [{
@@ -132,12 +138,12 @@ The possibilities are endless. Provide your ideas in the comments section below!
 ---
 ####Wit Token
 
-TODO: Export WIT Template and Document WIT Token Retrieve
+**TODO:** Export WIT Template and Document WIT Token Retrieve
 
 ---
 ####Aliases and Friendly Names
 
-TODO: Explain to User why Friendly names are so important.
+**TODO:** Explain to User why Friendly names are so important.
 
 ---
 
@@ -145,6 +151,6 @@ TODO: Explain to User why Friendly names are so important.
 ---
 ####Install & Start DAVIS Server
 
-TODO: Instuctions for including the config.js file and starting DAVIS server.
+**TODO:** Instuctions for including the config.js file and starting DAVIS server.
 
 ---
