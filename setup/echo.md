@@ -11,6 +11,7 @@
 - [Add Your DAVIS Endpoint](https://github.com/ruxit/davis-server/blob/master/setup/echo.md#8---add-your-davis-endpoint)
 - [Configure Security](https://github.com/ruxit/davis-server/blob/master/setup/echo.md#9---configure-security)
 - [Obtain Echo UserID from Sample Request](https://github.com/ruxit/davis-server/blob/master/setup/echo.md#10---obtain-echo-userid-from-sample-request)
+
 ***
 ###1 - Navigate to Amazon's Alexa Service
 ![Alexa Homepage](https://s3.amazonaws.com/davis-project/docs/alex-token-1.png)
