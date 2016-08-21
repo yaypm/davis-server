@@ -39,12 +39,12 @@ TODO: How to configure the config.js file
 
 *Once you have your Mongo Database configured and either have a IP or hostname available move replace the <mongodb_database_dsn> parameter with the one you obtained.*
 
-####Watson Setup [More..](https://localpath/setup/Watson.md)
+####Watson Setup [More..](https://github.com/ruxit/davis-server/blob/master/setup/Watson.md)
 ---
 
 *You will need to obtain a Bluemix Username, Password, and token to be able to interact with the IBM Watson service that is powering the Speech To Text in the Web UI version of DAVIS. Navigate to [IBM Bluemix] (https://console.ng.bluemix.net/catalog/services/speech-to-text) and create a free IBM Bluemix acccount.*
 
-####5. Slack Setup [More...](https://localpath/setup/Slack.md)
+####5. Slack Setup [More...](https://github.com/ruxit/davis-server/blob/master/setup/Slack.md)
 ---
 
 DAVIS isn't just voice. It's an Ecosytem. Follow the steps below to integrate DAVIS with your **#SLACK** account. We packed alot of cool features into our Slack configuration, but if you don't have an account set the **enabled** field to *false*. Once configured use a @davis to bring Dynatrace Platform intelligence to your preferred channel.
