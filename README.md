@@ -34,7 +34,7 @@ Before you initialize DAVIS you need to conifgure a few custom parameters for yo
 ####Default DAVIS Port : 3000
 ---
 
-*3000 is the default port that DAVIS will be available on. Set this to a desired port (Default Node.js is 3000). DAVIS needs to be a secure endpoint so you will need to determine how you would like to do this. We prefer an Elastic Load balancer that can handle both a listening port, redirection, and HTTPS. We have chosen AWS's Elastic Beanstalk service to host DAVIS where ELB is a native and out of the box configuration.*
+*3000 is the default port that DAVIS will be available on. Set this to a desired port (Default Node.js is 3000). DAVIS needs to be a secure endpoint so you will need to determine how you would like to do this. We prefer an AWS Elastic Load balancer that can handle both a listening port, redirection, and HTTPS. We have chosen AWS's Elastic Beanstalk service to host DAVIS where ELB is a native and out of the box configuration.*
 
 ````javascript
 const config = {
@@ -82,7 +82,7 @@ watson: {
 ####Slack Setup [More...](https://github.com/ruxit/davis-server/blob/master/setup/slack.md)
 ---
 
-DAVIS isn't just voice. It's an Ecosytem. Follow the steps below to integrate DAVIS with your **#SLACK** account. We packed alot of cool features into our Slack configuration, but if you don't have an account set the **enabled** field to *false*. Once configured use a @davis to bring Dynatrace Platform intelligence to your preferred channel. Click [here](https://github.com/ruxit/davis-server/blob/master/setup/slack.md) for futher instructions.
+DAVIS isn't just voice. It's an Ecosytem. Follow the steps below to integrate DAVIS with your **#Slack** account. We packed alot of cool features into our Slack configuration, but if you don't have an account, set the **enabled** field to *false*. Once configured use a @davis to bring Dynatrace Platform intelligence to your preferred channel. Click [here](https://github.com/ruxit/davis-server/blob/master/setup/slack.md) for futher instructions.
 
 ````javascript
 slack: {
@@ -94,12 +94,12 @@ slack: {
 ---
 ####Echo Setup[More...](https://github.com/ruxit/davis-server/blob/master/setup/echo.md)
 
-Amazon Echo is a hands-free speaker you control with your voice. Echo connects to the Alexa Voice Service to play music, provide information, news, sports scores, weather, and more—instantly. Wouldn't it be great to have your Echo provide you Application problems and updates. Assist you in finding the root cause of an Application problem? Wait no more..First, jump over to [Amazon.com](https://www.amazon.com/dp/B00X4WHP5E) and order yourself an Echo, Echo Tap, Echo DOT, or even a FireTV and follow the instructions to start receiving soundbites packed with performance data.
+Amazon Echo is a hands-free speaker you control with your voice. Echo connects to the Alexa Voice Service to play music, provide information, news, sports scores, weather, and more—instantly. Wouldn't it be great to have your Echo provide you application and digital performance problems and updates? Assist you in finding the root cause of an Application problem? Wait no more! First, jump over to [Amazon.com](https://www.amazon.com/dp/B00X4WHP5E) and order yourself an Echo, Echo Tap, Echo DOT, or even a FireTV and follow the instructions [here](https://github.com/ruxit/davis-server/blob/master/setup/echo.md) to start receiving soundbites packed with performance data.
 
 ---
 ####Users
 
-You can customize the experience for your users with a few simple flags in the User object.
+You can customize the experience for your DAVIS users with a few simple flags in the User object.
 
 Examples:
 
