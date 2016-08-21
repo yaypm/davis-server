@@ -18,7 +18,7 @@ You will need a Mongo Database installed with a fully qualified domain name (FQD
 5. **(Required)** Use default index.js. You will be creating this file later.
 6. **(Required)** Define the git respository. Right now since project is only available through private GitHub Repo you need access to the Dynatrace Innovation lab (https://[username]@github.com/ruxit/davis-server.git#master).
 
-Before we initialize DAVIS you need to conifgure a few custom parameters for your environments. Make a copy of **/demo/config.sample.js**. Please use the following sections as guidiance and direction on how to get your DAVIS instance up and running in only a few minutes.
+Before you initialize DAVIS you need to conifgure a few custom parameters for your environments. Make a copy of **/demo/config.sample.js**. Please use the following sections as guidiance and direction on how to get your DAVIS instance up and running in only a few minutes.
 
 **Table of Contents**
 
@@ -29,25 +29,29 @@ Before we initialize DAVIS you need to conifgure a few custom parameters for you
 5. [Slack Setup](https://github.com/ruxit/davis-server#slack-setup-more)
 6. [Defining Users](https://github.com/ruxit/davis-server#users)
 
-
-
 ---
 ####Default DAVIS Port : 3000
 ---
 
-*This is the default port that DAVIS will be available on. Set this to a desired port. DAVIS needs to be a secure endpoint so you will need to determine how you would like to do this. We prefer an Elastic Load balancer that can handle both a listening port, redirection, and HTTPS. We have chosen AWS's Elastic Beanstalk service to host DAVIS where ELB is a native and out of the box configuration.*
+*This is the default port that DAVIS will be available on. Set this to a desired port (Default Node.js is 3000). DAVIS needs to be a secure endpoint so you will need to determine how you would like to do this. We prefer an Elastic Load balancer that can handle both a listening port, redirection, and HTTPS. We have chosen AWS's Elastic Beanstalk service to host DAVIS where ELB is a native and out of the box configuration.*
 
 ---
 ####(Optional) NGINX Proxy
 ---
 
-*You can install a NGINX reverse proxy and a self signed certificate for advanced routing. For example having more than one DAVIS server on the same instance*
+*You can install a NGINX reverse proxy and a self signed certificate for advanced routing. For example you could have more than one DAVIS server on the same instance*
 
 ---
 ####Mongo DB DSN Entry
 ---
 
 *Once you have your Mongo Database configured and either have a IP or FQDN available replace the <mongodb_database_dsn> parameter with the one you obtained.*
+
+````
+database: {
+        dsn: '<davis.foo.com>'
+    },
+````
 
 ---
 ####Watson Setup [More..](https://github.com/ruxit/davis-server/blob/master/setup/Watson.md)
@@ -66,21 +70,27 @@ DAVIS isn't just voice. It's an Ecosytem. Follow the steps below to integrate DA
 ---
 
 
-
+---
 ####Alexa Tokens**
 ---
 
+---
 ####Time Zones (Echo Only)**
 ---
 
+---
 ####Token + Tenant**
 ---
 
+---
 ####Wit Token**
 ---
 
+---
 ####Aliases and their definitions.**
 ---
 
+
+---
 ####TODO: npm install and save TODO: start davis**
 ---
