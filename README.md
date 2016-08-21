@@ -103,7 +103,7 @@ If you are developing you are personalizing own DAVIS WIT template and wanted to
 
 The possibilities are endless. Provide your ideas in the comments section below!
 
-- [Alexa Token]
+- [Echo Configuration and Alexa UserID Token]
 - [Dynatrace Token]
 - [WIT Token]
 
@@ -128,23 +128,23 @@ The possibilities are endless. Provide your ideas in the comments section below!
     }]
 ````
 ---
----
-####Alexa Tokens
----
-
----
 ####Time Zones (Echo Only)
 ---
-
----
 ####Wit Token
----
+
+TODO: Export WIT Template and Document WIT Token Retrieve
 
 ---
-####Aliases and their definitions.
+####Aliases and Friendly Names
+
+TODO: Explain to User why Friendly names are so important.
+
 ---
 
 
 ---
-####TODO: npm install and save TODO: start davis
+####Install & Start DAVIS Server
+
+TODO: Instuctions for including the config.js file and starting DAVIS server.
+
 ---
