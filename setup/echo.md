@@ -37,7 +37,7 @@
 
 ![Alexa Homepage](https://s3.amazonaws.com/davis-project/docs/alex-token-6-2.png)
 
-````
+````javascript
 #Intent Schema
 
 {
@@ -59,7 +59,7 @@
 
 ![Alexa Homepage](https://s3.amazonaws.com/davis-project/docs/alex-token-7.png)
 
-````
+````javascript
 DoCommand {script parameters|command}
 ````
 ***
