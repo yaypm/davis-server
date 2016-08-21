@@ -19,7 +19,7 @@ We had fun building DAVIS and now it is your turn to enjoy the magic of DAVIS po
 6. **(Required)** Define the git respository. Right now since project is only available through private GitHub Repo you need access to the Dynatrace Innovation lab (https://[username]@github.com/ruxit/davis-server.git#master).
 
 
-Before we initialize DAVIS you need to conifgure a few custom parameters for your environments. Make a copy of */demo/config.sample.js*. Please use the following sections as guidiance and direction on how to get your DAVIS instance up and running.
+Before we initialize DAVIS you need to conifgure a few custom parameters for your environments. Make a copy of **/demo/config.sample.js**. Please use the following sections as guidiance and direction on how to get your DAVIS instance up and running.
 
 ####1. Default DAVIS Port : 3000
 ---
