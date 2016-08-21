@@ -12,10 +12,16 @@
 ![Alexa Homepage](https://s3.amazonaws.com/davis-project/docs/alex-token-4.png)
 ---
 ###5 - Name Your Skill
+
+The *Invocation Name* is the keyword heard by your Echo device that prompts the Alexa service to use your DAVIS skill.
+
 ![Alexa Homepage](https://s3.amazonaws.com/davis-project/docs/alex-token-5.png)
 ---
-###6 - Configure Intent Schema
-![Alexa Homepage](https://s3.amazonaws.com/davis-project/docs/alex-token-6.png)
+###6 - Configure Intent Schema - Pass Through
+
+> This allows Alexa to pass through content heard on the Echo device through to your DAVIS service.
+
+![Alexa Homepage](https://s3.amazonaws.com/davis-project/docs/alex-token-6-2.png)
 
 ````
 #Intent Schema
@@ -37,8 +43,6 @@
 ---
 ###7 - Configure Sample Utterances - Pass Through
 
-> This allows Alexa to pass through content heard on the Echo device through to your DAVIS service.
-
 ![Alexa Homepage](https://s3.amazonaws.com/davis-project/docs/alex-token-7.png)
 
 ````
@@ -56,3 +60,5 @@ DoCommand {script parameters|command}
 ![Alexa Homepage](https://s3.amazonaws.com/davis-project/docs/alex-token-10.png)
 
 ---
+
+Use this UserID in your config.js file when defining new users.
