@@ -7,24 +7,23 @@ We had fun building DAVIS and now it is your turn to enjoy the magic of DAVIS po
 
 ####Let's get started! - Prerequisites
 
-1. Mongo Database installed with a fully qualified domain name (FQDN). This can be local to your DAVIS instance or remote. You will want the database to persist for each iteration and version of DAVIS you upgrade to. [Check out this guide to get MongoDB setup on an AWS EC2 and Route53.](https://github.com/ruxit/davis-server/blob/master/setup/Mongo.md)
+You will need a Mongo Database installed with a fully qualified domain name (FQDN). This can be local to your DAVIS instance or remote. You will want the database of conversations and exchanges with DAVIS to persist when upgrading to a new version of DAVIS. [Check out this guide to get MongoDB setup on an AWS EC2 and Route53.](https://github.com/ruxit/davis-server/blob/master/setup/Mongo.md)
 
 #####Initialize DAVIS
 
 1. Start a new project folder.
-2. npm init and use the auto initiation guide. Give your project a unique name.
+2. ````npm init ```` and use the auto initiation guide. Give your project a unique name.
 3. *(Optional)* Version 1.0.0
 4. *(Optional)* Description
 5. **(Required)** Use default index.js. You will be creating this file later.
 6. **(Required)** Define the git respository. Right now since project is only available through private GitHub Repo you need access to the Dynatrace Innovation lab (https://[username]@github.com/ruxit/davis-server.git#master).
 
-
-Before we initialize DAVIS you need to conifgure a few custom parameters for your environments. Make a copy of **/demo/config.sample.js**. Please use the following sections as guidiance and direction on how to get your DAVIS instance up and running.
+Before we initialize DAVIS you need to conifgure a few custom parameters for your environments. Make a copy of **/demo/config.sample.js**. Please use the following sections as guidiance and direction on how to get your DAVIS instance up and running in only a few minutes.
 
 ####1. Default DAVIS Port : 3000
 ---
 
-*This is the default port that davis will be available on. Set this to a desired port. DAVIS needs to be a secure endpoint so you will need to determine how you would like to do this. We prefer an Elastic Load balancer that can handle both a listening port, redirection, and HTTPS. We have chosen AWS's Elastic Beanstalk service to host DAVIS where ELB is a native and out of the box configuration.*
+*This is the default port that DAVIS will be available on. Set this to a desired port. DAVIS needs to be a secure endpoint so you will need to determine how you would like to do this. We prefer an Elastic Load balancer that can handle both a listening port, redirection, and HTTPS. We have chosen AWS's Elastic Beanstalk service to host DAVIS where ELB is a native and out of the box configuration.*
 
 ####2. (Optional) NGINX Proxy
 ---
@@ -46,18 +45,25 @@ Before we initialize DAVIS you need to conifgure a few custom parameters for you
 
 DAVIS isn't just voice. It's an Ecosytem. Follow the steps below to integrate DAVIS with your **#SLACK** account. We packed alot of cool features into our Slack configuration, but if you don't have an account set the **enabled** field to *false*. Once configured use a @davis to bring Dynatrace Platform intelligence to your preferred channel. Click [here](https://github.com/ruxit/davis-server/blob/master/setup/Slack.md) for futher instructions.
 
-**6. Users**
+####6. Users**
+---
 
 
 
-**7. Alexa Tokens**
+####7. Alexa Tokens**
+---
 
-**8. Time Zones (Echo Only)**
+####8. Time Zones (Echo Only)**
+---
 
-**9. Token + Tenant**
+####9. Token + Tenant**
+---
 
-**10. Wit Token**
+####10. Wit Token**
+---
 
-**11. Aliases and their definitions.**
+####11. Aliases and their definitions.**
+---
 
-**12. TODO: npm install and save TODO: start davis**
+####12. TODO: npm install and save TODO: start davis**
+---
