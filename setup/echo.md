@@ -1,3 +1,16 @@
+##Amazon Echo Configuration and UserID
+
+
+- Navigate to Amazon's Alexa Service
+- Select Alexa
+- Get Started
+- Add A New Skill
+- Name Your Skill
+- Configure Intent Schema - Pass Through
+- Configure Sample Utterances - Pass Through
+- Add Your DAVIS Endpoint
+- Configure Security
+- Obtain Echo UserID from Sample Request
 
 ###1 - Navigate to Amazon's Alexa Service
 ![Alexa Homepage](https://s3.amazonaws.com/davis-project/docs/alex-token-1.png)
