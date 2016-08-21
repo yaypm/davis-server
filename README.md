@@ -18,7 +18,7 @@ You will need a Mongo Database installed with a fully qualified domain name (FQD
 5. **(Required)** Use default index.js. You will be creating this file later
 6. **(Required)** Define the git respository. Right now since project is only available through private GitHub Repo you need access to the Dynatrace Innovation lab (https://[username]@github.com/ruxit/davis-server.git#master)
 
-Before you initialize DAVIS you need to conifgure a few custom parameters for your environments. Make a copy of **/demo/config.sample.js**. Please use the following sections as guidiance and direction on how to get your DAVIS instance up and running in only a few minutes.
+Before you initialize DAVIS you need to configure a few custom parameters for your environments. Make a copy of **/demo/config.sample.js**. Please use the following sections as guidiance and direction on how to get your DAVIS instance up and running in only a few minutes.
 
 **Table of Contents**
 
