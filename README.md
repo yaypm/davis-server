@@ -115,7 +115,7 @@ The possibilities are endless. Provide your ideas in the comments section below!
 - **[Echo Configuration and Alexa UserID Token](https://github.com/ruxit/davis-server/blob/master/setup/echo.md)**
 - **Dynatrace Token**
 
-> Navigate to your [Dynatrace Tenant](https://signin.dynatrace.com) and login.
+> Navigate to your [Dynatrace Tenant](https://signin.dynatrace.com) and login
 > then generate an [API Key](/#settings/integration/apikeys)
 
 - [WIT Token] **//TODO**
