@@ -27,7 +27,7 @@ Before you initialize DAVIS you need to configure a few custom parameters for yo
 - [Mongo DSN](https://github.com/ruxit/davis-server#mongo-db-dsn-entry)
 - [Watson Setup](https://github.com/ruxit/davis-server#watson-setup-more)
 - [Slack Setup](https://github.com/ruxit/davis-server#slack-setup-more)
-- [Echo Setup](https://github.com/ruxit/davis-server#echo-setup)
+- [Echo Setup](https://github.com/ruxit/davis-server#echo-setup-more)
 - [Defining Users](https://github.com/ruxit/davis-server#users)
 
 ---
