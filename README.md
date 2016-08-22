@@ -143,10 +143,11 @@ The possibilities are endless. Provide your ideas in the comments section below!
 ---
 ####Time Zones (Echo Only)
 
-When configuring an Echo user you will need to manually set the canonical time zone of the Echo device
+When configuring an Echo user you will need to manually set the Canonical time zone of the Echo device being used.
 
 For example: America/Detroit
----
+
+***
 ####Wit Token
 
 **TODO:** Export WIT Template and Document WIT Token Retrieve
