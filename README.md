@@ -113,7 +113,7 @@ Examples:
 The possibilities are endless. Provide your ideas in the comments section below!
 
 - **[Echo Configuration and Alexa UserID Token](https://github.com/ruxit/davis-server/blob/master/setup/echo.md)**
-- **[Dynatrace Token]**
+- **Dynatrace Token**
 
 > Navigate to your [Dynatrace Tenant](https://signin.dynatrace.com) and login
 > Generate an [API Key](/#settings/integration/apikeys)
@@ -158,8 +158,6 @@ For example: America/Detroit
 
 ---
 
-
----
 ####Install & Start DAVIS Server
 
 **TODO:** Instuctions for including the config.js file and starting DAVIS server.
