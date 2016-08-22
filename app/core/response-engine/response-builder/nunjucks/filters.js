@@ -125,7 +125,9 @@ function getFriendlyEntityName(aliases, type, name, displayType) {
     }
 }
 
-function makeTitle(title) {
+function makeTitle(title, toLowerCase) {
+    title = (toLowerCase) ? title.toLowerCase() : title;
+    
     // Strip off any leading "a "
     let titleArray = title.split(' ');
     if (titleArray[0] == 'a') {

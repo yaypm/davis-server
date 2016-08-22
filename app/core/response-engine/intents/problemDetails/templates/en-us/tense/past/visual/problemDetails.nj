@@ -1,0 +1,34 @@
+{%- set problem = intentData.problemDetails.result -%}
+{%- set startingEvent = problem.rankedEvents | last -%}
+{%- set currentEvent = problem.rankedEvents | first -%}
+{
+    "attachments": [
+        {
+            "color": "{% if problem.status == 'OPEN' %}#dc172a{% else %}#7dc540{% endif %}",
+            "title": "{{ currentEvent.eventType | friendlyEventFirstAlias | makeTitle(false) }}",
+            "title_link": "{{user.dynatrace.url}}#problems;filter=watched/problemdetails;pid={{problem.id}}",
+            "fields": [
+                {
+                    "title": "Impacted",
+                    "value": "{{ currentEvent |  friendlyEntityName | makeTitle(false) }} \n{{ problem.impactLevel | makeTitle(true) }}",
+                    "short": "true"
+                },
+                {
+                    "title": "Initial Event",
+                    "value": "{{ startingEvent.eventType | friendlyEventFirstAlias | makeTitle(false) }}",
+                    "short": "true"
+                },
+                {
+                    "title": "Time frame",
+                    "value": "{{ problem.startTime | time(user) }} -\n{{ problem.endTime | time(user) }}",
+                    "short": "true"
+                },
+                {
+                    "title": "Status",
+                    "value": "{% if problem.status == 'OPEN' %}Unresolved{% else %}Resolved{% endif %}",
+                    "short": "true"
+                }
+            ]
+        }
+    ]
+}

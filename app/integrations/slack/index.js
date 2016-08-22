@@ -15,7 +15,6 @@ module.exports = function (config) {
     });
     
     let bot;
-    let botId;
     const inactivityTimeoutTime = 30; // Seconds of inactivity until Davis goes to sleep
     
     // Launch phrases
@@ -50,9 +49,7 @@ module.exports = function (config) {
                     
                     if (member.id === userId) {
                         return resolve(member);
-                    } else if (member.name.includes('davis') && member.is_bot) {
-                        botId = member.id;
-                    }   
+                    }
                     
                 });
                 
@@ -76,7 +73,7 @@ module.exports = function (config) {
             getUserDetails().then( (res) => {
              
                 let options = {
-                    uri: 'https://slack.com/api/users.getPresence?token=' + config.slack.key + '&user=' + botId,
+                    uri: 'https://slack.com/api/users.getPresence?token=' + config.slack.key,
                     json: true
                 };
              
