@@ -95,7 +95,7 @@ slack: {
 ````
 
 ---
-####Echo Setup[More...](https://github.com/ruxit/davis-server/blob/master/setup/echo.md)
+####Echo Setup [More...](https://github.com/ruxit/davis-server/blob/master/setup/echo.md)
 
 Amazon Echo is a hands-free speaker you control with your voice. Echo connects to the Alexa Voice Service to play music, provide information, news, sports scores, weather, and more—instantly. Wouldn't it be great to have your Echo provide you application and digital performance problems and updates? Assist you in finding the root cause of an Application problem? Wait no more! First, jump over to [Amazon.com](https://www.amazon.com/dp/B00X4WHP5E) and order yourself an Echo, Echo Tap, Echo DOT, or even a FireTV and follow the instructions [here](https://github.com/ruxit/davis-server/blob/master/setup/echo.md) to start receiving soundbites packed with performance data.
 
@@ -114,6 +114,10 @@ The possibilities are endless. Provide your ideas in the comments section below!
 
 - [Echo Configuration and Alexa UserID Token](https://github.com/ruxit/davis-server/blob/master/setup/echo.md)
 - [Dynatrace Token] **TODO//**
+
+> Navigate to your [Dynatrace Tenant](https://signin.dynatrace.com) and login
+> Generate an [API Key](/#settings/integration/apikeys)
+
 - [WIT Token] **//TODO**
 
 ````javascript
@@ -138,6 +142,10 @@ The possibilities are endless. Provide your ideas in the comments section below!
 ````
 ---
 ####Time Zones (Echo Only)
+
+When configuring an Echo user you will need to manually set the canonical time zone of the Echo device
+
+For example: America/Detroit
 ---
 ####Wit Token
 
@@ -146,7 +154,7 @@ The possibilities are endless. Provide your ideas in the comments section below!
 ---
 ####Aliases and Friendly Names
 
-**TODO:** Explain to User why Friendly names are so important.
+**TODO:** Explain to User why friendly names are so important.
 
 ---
 
