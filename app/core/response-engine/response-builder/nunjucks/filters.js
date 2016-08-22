@@ -16,6 +16,33 @@ require('moment-round');
  * 
  ***********************************************************/
 const filters = function(env, aliases) {
+    
+    const startFormat = {
+        normal: {
+            sameDay: '[Today] h:mm A',
+            lastDay: '[Yesterday] h:mm A',
+            lastWeek: 'dddd [at] h:mm A'
+        },
+        between: {
+            sameDay: '[today between] h:mm A',
+            lastDay: '[yesterday between] h:mm A',
+            lastWeek: '[between] dddd [at] h:mm A'
+        }
+    };
+    
+    const stopFormat = {
+        normal: {
+            sameDay: '[Today] h:mm A',
+            lastDay: '[Yesterday] h:mm A',
+            lastWeek: 'dddd [at] h:mm A'
+        },
+        sameday: {
+            sameDay: 'h:mm A',
+            lastDay: 'h:mm A',
+            lastWeek: 'dddd [at] h:mm A'
+        }
+    };
+    
     /**
      * @param {Object} entity
      * @param {string} displayName - undefined, 'audible' or 'visual'
@@ -32,34 +59,32 @@ const filters = function(env, aliases) {
     
     env.addFilter('time', function(time, user) {
         return moment.tz(time, user.timezone).calendar(null , {
-            sameDay: '[Today at] h:mm a',
-            lastDay: '[Yesterday at] h:mm a',
-            lastWeek: 'dddd [at] h:mm a'
+            sameDay: '[Today at] h:mm A',
+            lastDay: '[Yesterday at] h:mm A',
+            lastWeek: 'dddd [at] h:mm A'
         });
     });
 
     env.addFilter('friendlyTime', function(time, user) {
         return moment.tz(time, user.timezone).floor(5, 'minutes').calendar(null , {
-            sameDay: '[around] h:mm a',
-            lastDay: '[yesterday around] h:mm a',
-            lastWeek: 'dddd [around] h:mm a'
+            sameDay: '[around] h:mm A',
+            lastDay: '[yesterday around] h:mm A',
+            lastWeek: 'dddd [around] h:mm A'
         });
     });
-
-    env.addFilter('friendlyTimeRange', function(timeRange, user) {
-        let sentence = moment.tz(timeRange.startTime, user.timezone).calendar(null , {
-            sameDay: '[today between] h:mm a',
-            lastDay: '[yesterday between] h:mm a',
-            lastWeek: '[between] dddd [at] h:mm a'
-        });
-        sentence += ' and ';
-        sentence += moment.tz(timeRange.stopTime, user.timezone).calendar(null , {
-            sameDay: 'h:mm a',
-            lastDay: 'h:mm a',
-            lastWeek: 'dddd [at] h:mm a'
-        });
+    
+    env.addFilter('friendlyTimeRange', function(timeRange, user, isCompact) {
+        let sentence = (isCompact) ? moment.tz(timeRange.startTime, user.timezone).calendar(null , startFormat.normal) : moment.tz(timeRange.startTime, user.timezone).calendar(null , startFormat.between);
+        if (moment.duration(moment.tz(timeRange.stopTime, user.timezone).diff(moment.tz(timeRange.startTime, user.timezone), 'hours')) < 24 && isCompact) {
+            sentence += (isCompact) ? ' - ' : ' and ';
+            sentence += moment.tz(timeRange.stopTime, user.timezone).calendar(null , stopFormat.sameday);
+        } else {
+            sentence += (isCompact) ? ' - \\n' : ' and ';
+            sentence += moment.tz(timeRange.stopTime, user.timezone).calendar(null , stopFormat.normal); 
+        }
+        
         return sentence;
-    });
+    })
 
     env.addFilter('friendlyEvent', function(eventName) {
         let event = _.find(events.events, e => e.name === eventName);
@@ -89,6 +114,10 @@ const filters = function(env, aliases) {
     
     env.addFilter('makeTitle', function(str) {
         return makeTitle(str); 
+    });
+    
+    env.addFilter('capitalizeFirstChar', function(str) {
+        return capitalizeFirstCharacter(str); 
     });
 };
 
@@ -125,8 +154,7 @@ function getFriendlyEntityName(aliases, type, name, displayType) {
     }
 }
 
-function makeTitle(title, toLowerCase) {
-    title = (toLowerCase) ? title.toLowerCase() : title;
+function makeTitle(title) {
     
     // Strip off any leading "a "
     let titleArray = title.split(' ');
@@ -135,9 +163,13 @@ function makeTitle(title, toLowerCase) {
     }
     title = '';
     titleArray.forEach( (word) => {
-        title += word.charAt(0).toUpperCase() + word.slice(1) + ' ';
+        title += capitalizeFirstCharacter(word);
     });
     return title;
+}
+
+function capitalizeFirstCharacter(str) {
+    return str.charAt(0).toUpperCase() + str.slice(1) + ' ';
 }
 
 module.exports = filters;

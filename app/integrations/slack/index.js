@@ -294,9 +294,15 @@ module.exports = function (config) {
             } else {
                 
                 showTypingNotification(this.initialInteraction.channel);
-                
+                   
                 SlackService(config).askDavis(response, this.user)
                 .then(resp => {
+                    
+                    if (resp.response.outputSpeech.card) {
+                        resp.response.outputSpeech.card.attachments[0].pretext = this.directPrefix + resp.response.outputSpeech.card.attachments[0].pretext;
+                    } else {
+                        resp.response.outputSpeech.text = this.directPrefix + resp.response.outputSpeech.text;
+                    }
                     
                     logger.info('Slack: Sending a response');
                     
@@ -305,7 +311,7 @@ module.exports = function (config) {
                     // if no followup question
                     if (this.shouldEndSession) {
                         
-                        convo.say(this.directPrefix + resp.response.outputSpeech.text);
+                        convo.say(resp.response.outputSpeech.text);
                         convo.next();
                         clearTimeout(this.inactivityTimeout);
                         
