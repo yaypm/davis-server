@@ -1,7 +1,7 @@
 'use strict';
 
-const ConversationModel = require('../core/models/Conversation'),
-    ExchangeModel = require('../core/models/Exchange'),
+const ConversationModel = require('../models/Conversation'),
+    ExchangeModel = require('../models/Exchange'),
     _ = require('lodash'),
     logger = require('../utils/logger'),
     BbPromise = require('bluebird');
@@ -17,24 +17,21 @@ const ConversationService = {
         return new BbPromise((resolve, reject) => {
             
             ConversationModel.findOne({userId: user.id})
-            .then( res => {
-                // We found an existing conversation;
-                if (!_.isNull(res)) return resolve(res);
+                .then( res => {
+                    // We found an existing conversation;
+                    if (!_.isNull(res)) return resolve(res);
 
-                let conversation = new ConversationModel({userId: user.id});
+                    let conversation = new ConversationModel({userId: user.id});
 
-                conversation.save()
-                .then(() => {
-                    return resolve(conversation);
+                    return conversation.save();
                 })
-                .catch(err => {
-                    return reject(err);
+                .then((conversation) => {
+                    resolve(conversation);
+                })
+                .catch( err => {
+                    logger.error(`Unable to load or create a conversation for ${user.id}.`);
+                    reject(err);
                 });
-            })
-            .catch( err => {
-                logger.error(`Unable to load or create a conversation for ${user.id}.`);
-                reject(err);
-            });
         });
     },
 

@@ -23,6 +23,7 @@
     "moment-round": "^1.0.1",
     "moment-timezone": "^0.5.4",
     "mongoose": "^4.4.19",
+    "mongoose-validators": "^0.1.0",
     "morgan": "^1.7.0",
     "natural": "^0.4.0",
     "nlp_compromise": "^4.6.1",
