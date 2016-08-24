@@ -1160,7 +1160,7 @@ var davis = (function () {
          */
         function isQuestion(str) {
             
-            const words = ['who', 'what', 'when', 'where', 'why', 'is there', 'is the', 'did the', 'did any'];
+            const words = ['who', 'what', 'when', 'where', 'why', "could", "can", 'is there', 'is the', 'did the', 'did any'];
             
             let result = false;
             

@@ -57,7 +57,7 @@ module.exports = function SlackService(config) {
             logger.warn('Error: Slack stripped emojis and was going to send an empty string to Wit');
         }
         
-        if (result !== str) {
+        if (result !== str.trim()) {
             logger.warn('Emojis stripped from user request: ');
             logger.warn('"' + str + '"');
         }

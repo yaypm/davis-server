@@ -176,7 +176,6 @@ module.exports = function (config) {
             this.shouldEndSession;
             this.user;
             this.directPrefix = '';
-            this.convoEnded = false;
         }
             
         /**
@@ -191,7 +190,11 @@ module.exports = function (config) {
             
             this.lastInteractionTime = moment();
 
-            this.inactivityTimeout = this.setInactivityTimeout(convo);
+            if (this.shouldEndSession != true) {
+                this.inactivityTimeout = this.setInactivityTimeout(convo);
+            } else {
+                clearTimeout(this.inactivityTimeout);
+            }
             
             getUserDetails(this.initialInteraction.user).then( (details) => {
                 
@@ -242,10 +245,11 @@ module.exports = function (config) {
                     // Listen for typing event
                     controller.on('user_typing', (bot,message) => {
                 
-                        if (message.user === this.user.id && this.inactivityTimeout && !this.convoEnded && !this.shouldEndSession) {
-                            logger.info('Slack: User typing, resetting timeout');
+                        if (message.user === this.user.id && this.inactivityTimeout && !this.shouldEndSession) {
                             this.lastInteractionTime = moment();
                             this.resetTimeout = true;
+                        } else {
+                            this.resetTimeout = false;
                         }  
                         
                     });
@@ -281,14 +285,17 @@ module.exports = function (config) {
             // Reset last interaction timestamp
             this.lastInteractionTime = moment();
             
-            this.inactivityTimeout = this.setInactivityTimeout(convo);
+            if (this.shouldEndSession != true) {
+                this.inactivityTimeout = this.setInactivityTimeout(convo);
+            } else {
+                clearTimeout(this.inactivityTimeout);
+            }
             
             // if lastInteractionTime is more than 30 seconds ago, end conversation
             if (!this.isDirectMessage && (this.shouldEndSession || isTimedOut)) {
                 
                 logger.info('Slack: Conversation stopped');
                 convo.stop();
-                this.convoEnded = true;
                 clearTimeout(this.inactivityTimeout);
                 
             } else {
@@ -350,11 +357,10 @@ module.exports = function (config) {
             return setTimeout( () => {
                 
                 // if not a direct message, let the user know they need to wake Davis
-                if(!this.isDirectMessage && !this.resetTimeout) {
+                if(!this.isDirectMessage && !this.resetTimeout && !this.shouldEndSession) {
                     
                     convo.say(this.directPrefix + ":ZZZ: I've fallen asleep");
                     convo.next();
-                    this.convoEnded = true;
                     clearTimeout(this.inactivityTimeout);
                     
                     // Allows convo.say to execute beforehand

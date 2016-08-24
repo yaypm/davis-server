@@ -1,0 +1,19 @@
+{
+    "attachments": [
+        {
+            "pretext": "Sounds like you could use a little help! \nTypes of questions you can ask me:"
+        },
+        {
+            "title": "Ask for problems in a specific time range",
+            "text": "{% include "intents/help/templates/en-us/shared/filterByTimeRangeExample1.nj" %} \n {% include "intents/help/templates/en-us/shared/filterByTimeRangeExample2.nj" %} \n {% include "intents/help/templates/en-us/shared/filterByTimeRangeExample3.nj" %}"
+        },
+        {
+            "title": "Ask for problems in a specific application",
+            "text": "{% include "intents/help/templates/en-us/shared/filterByApplicationExample1.nj" %}"
+        },
+        {
+            "title": "Ask for problems in a specific application and time range",
+            "text": "{% include "intents/help/templates/en-us/shared/filterByTimeRangeAndApplicationExample1.nj" %}"
+        }
+    ]
+}
