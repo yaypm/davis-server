@@ -314,17 +314,21 @@ module.exports = function (config) {
                     logger.info('Slack: Sending a response');
                     
                     this.shouldEndSession = resp.response.shouldEndSession;
+                    let output = (resp.response.outputSpeech.card) ? resp.response.outputSpeech.card : resp.response.outputSpeech.text;
+                    
+                    if (!output) {
+                        throw new Error('Unable to respond, probably a template error');
+                    }
                     
                     // if no followup question
                     if (this.shouldEndSession) {
                         
-                        convo.say(resp.response.outputSpeech.text);
+                        convo.say(output);
                         convo.next();
                         clearTimeout(this.inactivityTimeout);
                         
                     } else {
     
-                        let output = (resp.response.outputSpeech.card) ? resp.response.outputSpeech.card : resp.response.outputSpeech.text;
                         // Send response and listen for request
                         convo.ask(output, (response, convo) => {
                         
@@ -340,6 +344,8 @@ module.exports = function (config) {
                 .catch(err => {
                     logger.error('Unable to respond to the request received from Slack');
                     logger.error(err);
+                    convo.say("Sorry about that, I'm having issues responding to your request at this time.");
+                    convo.next();
                 });
                 
             }
