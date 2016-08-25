@@ -324,8 +324,9 @@ module.exports = function (config) {
                         
                     } else {
     
+                        let output = (resp.response.outputSpeech.card) ? resp.response.outputSpeech.card : resp.response.outputSpeech.text;
                         // Send response and listen for request
-                        convo.ask(resp.response.outputSpeech.card, (response, convo) => {
+                        convo.ask(output, (response, convo) => {
                         
                             this.addToConvo(response, convo);
                             
