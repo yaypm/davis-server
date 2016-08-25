@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE speak PUBLIC "-//W3C//DTD SYNTHESIS 1.0//EN" "http://www.w3.org/TR/speech-synthesis/synthesis.dtd">
+
+<speak version="1.0" xmlns="www.w3.org/2001/10/synthesis">
+    It looks like {{ intentData.problem.result.problems.length }} problems occurred {{ exchange.request.analysed.timeRange | friendlyTimeRange(user) }}.  
+    <break time="1s" />After giving it some thought, here are my top three issues.  
+    {% include "intents/problem/templates/en-us/shared/top-three-issues.nj" %}
+</speak>

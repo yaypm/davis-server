@@ -35,10 +35,10 @@ const process = function process(davis) {
                     logger.debug('The user appears to be confused.  We should suggest a path.');
 
                     davis.exchange.state = state;
-                    davis.exchange.request.finished = false;
+                    davis.exchange.response.finished = false;
                     common.addTextResponse(davis.exchange, _.sample(helpResponses));
                 } else {
-                    davis.exchange.request.finished = false;
+                    davis.exchange.response.finished = false;
                     common.addTextResponse(davis.exchange, _.sample(responses));
                 }
                 resolve(davis);

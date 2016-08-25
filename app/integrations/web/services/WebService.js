@@ -19,6 +19,10 @@ module.exports = function WebService(config) {
     function formatResponse(davis) {
         //ToDo Add support for cards.
         logger.info('Generating the response for web');
+        
+        if (davis.exchange.response.audible.ssml) {
+            davis.exchange.response.visual.text = davis.exchange.response.audible.ssml.replace(/(<([^>]+)>)/ig, "").trim();
+        }
 
         return {
             response: {

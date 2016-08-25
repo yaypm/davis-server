@@ -83,30 +83,30 @@ var davis = (function () {
             $(window).keypress(function(e) {
                 var key = e.which;
                 if (key == 32 && !$("#"+textInputElemId).is(":focus")) {
-                    $("#"+muteWrapperElemId).click();
+                    controller.toggleMute(true);
                 } else if (key != 32 && !$("#"+textInputElemId).is(":focus")) {
                     $("#"+textInputElemId).focus();
                 }
-            });      
+            });   
         });
         
         if (typeof window.chrome != 'object') {
            
-           addToInteractionLog(localResponses.errors.noBrowserSupport, true, false);
-           addToInteractionLog(localResponses.errors.chrome, true, false);
-           addToInteractionLog(localResponses.errors.getChrome, true, false); 
+           addToInteractionLog(localResponses.errors.noBrowserSupport.text, true, false);
+           addToInteractionLog(localResponses.errors.chrome.text, true, false);
+           addToInteractionLog(localResponses.errors.getChrome.text, true, false); 
             
         } else {
         
             if (!localStorage.getItem("davis-user-token")) {
                 
-                addToInteractionLog(localResponses.greetings.micPermission, true, false);
+                addToInteractionLog(localResponses.greetings.micPermission.text, true, false);
                 setTimeout(function () {
-                   addToInteractionLog(localResponses.greetings.thenHelp, true, false);
+                   addToInteractionLog(localResponses.greetings.thenHelp.text, true, false);
                 }, 5000);
                 
             } else {
-                addToInteractionLog(localResponses.greetings.help, true, false);
+                addToInteractionLog(localResponses.greetings.help.text, true, false);
             }
     
         }
@@ -431,17 +431,17 @@ var davis = (function () {
     var davisController = function () {
     
         var isMuted = true;                       // No STT
-        var muteButtonPressed = false;            // Prevent automatically unmutting if mute button is pressed
         var inactivityTimeout = 1;                // Seconds of silence before Watson STT API stops listening
         var momentsOfSilence = 0;                 // Used for polling number of moments of silence 60 ms apart (avoid cutting off TTS playback) 
         var player = new Audio();                 // Audio element used to play TTS audio
         var micOn = new Audio('./audio/pop.wav'); // Mic on sound effect
         var stream;                               // IBM STT stream
-        var outputQueueSize = 0;                  // Counter for keeping track of queued outputTextAndSpeech() calls
+        var outputQueue = [];                  // Counter for keeping track of queued outputTextAndSpeech() calls
         var timezone;                             // User's timezone
         var userToken;                            // Random token used in place of a user ID to store/retrieve conversations in web version
-        var listenAfter = true;                   // Make Watson listen after outputting a response
         var debug = false;                        // Debug mode
+        var isSpeaking = false;
+        var currentTtsToken;
         
         if (localStorage.getItem('davis-debug-mode')) {
             debug = localStorage.getItem('davis-debug-mode');
@@ -486,10 +486,8 @@ var davis = (function () {
         document.addEventListener('listening', function (event) {
             listeningState = 'listening';
             view.setListeningState(listeningState);
-            if(!muteButtonPressed) {
-                view.listening();
-                micOn.play();
-            }
+            view.listening();
+            micOn.play();
         }, false);
         
         document.addEventListener('processing', function (event) {
@@ -652,8 +650,8 @@ var davis = (function () {
                         }
                 
                         if (data.response) {
-                            
-                            outputTextAndSpeech(data.response.text, view.getLocalResponses().voices.michael, !data.response.shouldEndSession);
+
+                            outputTextAndSpeech(data.response, view.getLocalResponses().voices.michael, !data.response.shouldEndSession);
                             
                             // "Show me" hyperlink push functionality
                             if (data.response.hyperlink) {
@@ -680,44 +678,25 @@ var davis = (function () {
         /**
          *  Forwards text to be added to the interaction log and be spoken
          * 
-         * @param {String} text
+         * @param {Object} response
          * @param {String} voice
          * @param {Boolean} listen
          **/
-        function outputTextAndSpeech(text, voice, listen) {
-            
+        function outputTextAndSpeech(response, voice, listen) {
+        
             if (listeningState !== 'chatMode') {
-                document.dispatchEvent(listeningStateEvents.responding);
-            }
-            
-            listenAfter = listen;
-        
-            getTtsToken().then(function (token) {
-        
-                if (isSpeaking()) {
-                    
-                    outputWhenDoneSpeaking(text, token, voice);
-                    
+                
+                if (!isSpeaking) {
+                    document.dispatchEvent(listeningStateEvents.responding);
+                    speak(response, voice, listen);
                 } else {
-                    
-                    if (listeningState !== 'chatMode') {
-                        speak(text, token, voice);
-                    } else {
-                        chat(text);
-                    }
-                    
+                    outputQueue.push({response: response, voice: voice, listen: listen});
                 }
         
-            }).then(function () {
-                
-                if (!isMuted) {
+            } else {
+                chat(response.text);
+            }
                     
-                    outputQueueSize++;
-                    unmuteWhenDoneSpeaking();
-        
-                }
-                
-            });
         }
         
         /**
@@ -884,24 +863,58 @@ var davis = (function () {
         }
         
         /**
+         * Listens to user request or plays response
+         * 
+         * @param {Boolean} listen - listen to user after playing
+         */
+        function listenOrSpeak(listen) {
+            isSpeaking = false;
+            if (listen && outputQueue.length == 0) {
+                unmute();
+            } else if (outputQueue.length > 0) {
+                let output = outputQueue.shift();
+                speak(output.text, output.voice, output.listen);
+            } else {
+                document.dispatchEvent(listeningStateEvents.sleeping);
+            }
+        }
+        
+        /**
          * Forwards text and a token for use with IBM Watson TTS API
          * 
-         * @param {String} text
-         * @param {String} token
-         * @param {String} voice
+         * @param {Object} response - text to be spoken and/or displayed
+         * @param {String} voice - select voice for TTS
+         * @param {Boolean} listen - listen after TTS plays
          */
-        function speak(text, token, voice) {
+        function speak(response, voice, listen) {
+            
+                let watsonText = (response.ssml) ? response.ssml : response.text;
             
                 player.onplay = function () {
-                    view.addToInteractionLog(text, true, true);
+                    isSpeaking = true;
+                    view.addToInteractionLog(response.text, true, true);
                 };
                 
-                WatsonSpeech.TextToSpeech.synthesize({
-                    text: text,
-                    token: token,
-                    voice: voice,
-                    element: player
+                player.onpause = function () {
+                    listenOrSpeak(listen);
+                };
+                
+                player.onended = function () {
+                    listenOrSpeak(listen);
+                };
+                
+                getTtsToken().then( token => {
+                    WatsonSpeech.TextToSpeech.synthesize({
+                        text: watsonText,
+                        token: token,
+                        voice: voice,
+                        element: player
+                    });
+                }).catch(err => {
+                   console.log(err);
+                   noMic();
                 });
+               
             
         }
         
@@ -913,79 +926,17 @@ var davis = (function () {
         }
         
         /**
-         * Returns whether TTS audio is being played
-         * 
-         * @return {Boolean}
-         */
-        function isSpeaking() {
-            return !(player.ended || player.paused);
-        }
-        
-        /**
          *Enables the mic when done playing TTS audio
          */
-        function unmuteWhenDoneSpeaking() {
+        function unmute() {
             
-            if (isSpeaking()) {
+            if (outputQueue.length < 1 && listeningState !== 'chatMode') {
                 
-                var timeout = setTimeout(unmuteWhenDoneSpeaking, 60);
-                
-            } else {
-                
-                clearTimeout(timeout);
-                
-                if (momentsOfSilence >= 1) {
-                    
-                    momentsOfSilence = 0;
-                    outputQueueSize--;
-                    
-                    if (outputQueueSize < 1 && listeningState !== 'chatMode' && !muteButtonPressed && listenAfter) {
-                        
-                      listen();
-                      
-                    } else if (!listenAfter) {
-                        toggleMute(true);
-                        enableListenForKeyword(true);
-                    } else {
-                        muteButtonPressed = false;
-                    }
-                    
-                } else {
-                    
-                    momentsOfSilence++;
-                    var timeout = setTimeout(unmuteWhenDoneSpeaking, 60);
-                    
-                }
-                
-            }
-            
-        }
-        
-        /**
-         * Forwards text and a token for use with IBM Watson TTS API 
-         * when all previous TTS audio is done playing
-         * 
-         * @param {String} text
-         * @param {String} token
-         */
-        function outputWhenDoneSpeaking(text, token, voice) {
-            
-            if (isSpeaking()) {
-                
-                var timeout = setTimeout(function () { 
-                    outputWhenDoneSpeaking(text, token, voice); 
-                }, 50);
-                
-            } else {
-                
-                clearTimeout(timeout);
-                
-                if (listeningState !== 'chatMode') {
-                    speak(text, token, voice);
-                } else {
-                    chat(text);
-                }
-                
+                listen();
+              
+            } else if (listeningState !== 'chatMode') {
+                toggleMute(true);
+                enableListenForKeyword(true);
             }
             
         }
@@ -995,9 +946,7 @@ var davis = (function () {
          * when there's no interaction in progress already
          */
         function listen() {
-            
             if (listeningState !== 'listening') {
-        
                 getSttToken()
                 .then(function (token) {
                     createSttStream(token);
@@ -1034,7 +983,6 @@ var davis = (function () {
                     if (launch) {
                         
                         document.dispatchEvent(listeningStateEvents.enablingMic);
-                        listenAfter = true;
                         toggleMute(false);
                         
                     } else if (debug && phrases[0].toLowerCase().trim().split(' ').length < 5) {
@@ -1097,17 +1045,9 @@ var davis = (function () {
          */
         function toggleMute(mute) {
             
-            listenAfter = true;
-            
             document.dispatchEvent(listeningStateEvents.sleeping);
             
-            if (!isMuted && mute == undefined && !muteButtonPressed) {
-                muteButtonPressed = true;
-            } else {
-                muteButtonPressed = false;
-            }
-            
-            if (!player.paused && !player.ended && muteButtonPressed) {
+            if (isSpeaking) {
                 
                 // Stop typewriter and any audio that's playing
                 player.pause();
@@ -1115,11 +1055,11 @@ var davis = (function () {
                 view.stopTypewriter();
                 isMuted = false;
                 enableListenForKeyword(false);
-                unmuteWhenDoneSpeaking();
+                unmute();
                 
             } else {
             
-                if ((!isMuted && mute != false) || muteButtonPressed) {
+                if (!isMuted && mute) {
                     
                     isMuted = true;
                     view.muted();
@@ -1135,7 +1075,7 @@ var davis = (function () {
                     isMuted = false;
                     view.listening();
                     enableListenForKeyword(false);
-                    unmuteWhenDoneSpeaking();
+                    unmute();
                     
                 }
             
@@ -1156,25 +1096,6 @@ var davis = (function () {
         }
         
         /**
-         * Check if string includes words commonly found in a question
-         */
-        function isQuestion(str) {
-            
-            const words = ['who', 'what', 'when', 'where', 'why', "could", "can", 'is there', 'is the', 'did the', 'did any'];
-            
-            let result = false;
-            
-            words.forEach( function (word) {
-                if (str.toLowerCase().includes(word)) {
-                    result = true;
-                }
-            });
-           
-            return result;
-            
-        }
-        
-        /**
          * Controller's initializer (called via onload) 
          */
         function init() {
@@ -1187,16 +1108,34 @@ var davis = (function () {
                 
             } else {
                 
-                timezone = jstz.determine().name();
-                getDavisUserToken();
-                getConnectedServerUrl().then(function (url) {
-                    view.setConnectedUrl(url);
+                // Get tokens and confirm using SSL
+                // if failure fallback to chat mode
+                getSttToken()
+                .then( token => {
+                    return getTtsToken();
+                }).then( token => {
+                    
+                    if (location.protocol === 'https:') {
+                        
+                        timezone = jstz.determine().name();
+                        getDavisUserToken();
+                        getConnectedServerUrl().then(function (url) {
+                            view.setConnectedUrl(url);
+                        });
+                        annyangInit();
+                        enableListenForKeyword(true);
+                        document.dispatchEvent(listeningStateEvents.sleeping);
+                        view.showLogo();
+                        
+                    } else {
+                        noMic();
+                    }
+                    
+                })
+                .catch( err => {
+                    console.log(err);
+                    noMic();
                 });
-                annyangInit();
-                enableListenForKeyword(true);
-                document.dispatchEvent(listeningStateEvents.sleeping);
-                view.showLogo();
-                
             }
             
         }
@@ -1222,15 +1161,10 @@ var davis = (function () {
             submitTextInput: function (keycode) {
                 submitTextInput(keycode);
             },
-            toggleMute: function () {
-                toggleMute();    
+            toggleMute: function (mute) {
+                toggleMute(mute);    
             },
             process: function () {
-                
-                // if question, replace period with question mark
-                if (isQuestion($('#'+view.getTextInputElemId()).val())) {
-                    $('#'+view.getTextInputElemId()).val($('#'+view.getTextInputElemId()).val().replace('.', '?'));   
-                }    
                 
                 interactWithRuxit($('#'+view.getTextInputElemId()).val());
                 
