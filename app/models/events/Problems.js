@@ -13,7 +13,7 @@ const state = {
 };
 
 const impact = {
-    values: 'APPLICATION SERVICE INFRASTRUCTURE'.split(' '),
+    values: 'APPLICATION SERVICES INFRASTRUCTURE'.split(' '),
     message: '`{VALUE}` is an invalid `{PATH}`.'
 };
 
@@ -27,9 +27,10 @@ const problems = new Schema({
     Tags: { type: Array, required: false }
 });
 
-/*problems.pre('save', function(next) {
-    this.Tags = this.Tags.split(',');
+problems.pre('validate', function(next) {
+    //Moving the comma separated list into an array before the validate occurs
+    this.Tags = (this.Tags[0] !== '') ? this.Tags[0].replace(/ /g, '').split(',') : null;
     next();
-})*/
+});
 
 module.exports = mongoose.model('Problems', problems);

@@ -22,7 +22,7 @@ const process = function process(davis) {
                             no: 'stop'
                         }
                     };
-                    davis.exchange.request.finished = false;
+                    davis.exchange.response.finished = false;
                     return common.addTextResponse(davis.exchange, _.sample(['OK, great!  What would you like to know?', 'Awesome!  What can I help with?']));
                 } else {
                     davis.exchange.intent.push(nextIntent);

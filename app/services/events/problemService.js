@@ -1,43 +1,41 @@
 'use strict';
 
 const BbPromise = require('bluebird'),
-    EventEmitter = require('events').EventEmitter,
+    EventEmitter2 = require('eventemitter2').EventEmitter2,
     _ = require('lodash'),
     ProblemsModel = require('../../models/events/Problems'),
     logger = require('../../utils/logger');
 
-let instance = null;
+const problemService = new EventEmitter2({wildcard: true});
 
-class ProblemService extends EventEmitter {
-
-    constructor() {
-        super();
-
-        // Simulates a singleton
-        if(!instance) {
-            instance = this;
-        }
-    }
-
-    saveProblem(problem) {
-        return new BbPromise((resolve, reject) => {
-            logger.debug('Saving a new problem');
+/**
+ * Validates and saves the problem received from Dynatrace.
+ * @param problem - The problem object received from the Dynatrace web hook.
+ * @return Promise
+ */
+problemService.saveProblem = function(problem) {
+    return new BbPromise((resolve, reject) => {
+        if (problem.ProblemID === 'TESTID') {
+            logger.info('Received a custom integration test connection');
+            return resolve();
+        } else {
             ProblemsModel.findOne({PID: problem.PID})
                 .then(res => {
-                    if(!_.isNull(res)) {
-                        if(res.State === problem.State) {
+                    if (!_.isNull(res)) {
+                        if (res.State === problem.State) {
                             return reject(new Error('A problem with that ID already exists.'));
                         }
-                        this.emit('closedProblem', problem);
-                        res = {
-                            State: problem.State,
-                            ProblemImpact: problem.ProblemImpact,
-                            ImpactedEntity: problem.ImpactedEntity,
-                            Tags: problem.Tags
-                        };
+                        logger.debug('Updating problem');
+                        this.emit('event.problem.resolved', problem);
+                        res.State = problem.State;
+                        res.ProblemImpact = problem.ProblemImpact;
+                        res.ImpactedEntity = problem.ImpactedEntity;
+                        res.Tags = problem.Tags;
+
                         return res.save();
                     } else {
-                        this.emit('openProblem', problem);
+                        logger.debug('Saving a new problem');
+                        this.emit('event.problem.open', problem);
                         const problems = new ProblemsModel(problem);
                         return problems.save();
                     }
@@ -49,8 +47,8 @@ class ProblemService extends EventEmitter {
                 .catch(err => {
                     reject(err);
                 });
-        });
-    }
-}
+        }
+    });
+};
 
-module.exports = new ProblemService();
+module.exports = problemService;
