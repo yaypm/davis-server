@@ -472,10 +472,14 @@ var davis = (function () {
             offlineMode: new Event('offlineMode')
         }
         
+        var evt = new Event('change-stance', {bubbles: false});
+        
         document.addEventListener('sleeping', function (event) {
             listeningState = 'sleeping';
             view.setListeningState(listeningState);
             view.muted();
+            evt.targetStance = 'standard';
+            document.getElementById('davisContainer').dispatchEvent(evt);
         }, false);
         
         document.addEventListener('enablingMic', function (event) {
@@ -488,22 +492,30 @@ var davis = (function () {
             view.setListeningState(listeningState);
             view.listening();
             micOn.play();
+            evt.targetStance = 'listening';
+           document.getElementById('davisContainer').dispatchEvent(evt);
         }, false);
         
         document.addEventListener('processing', function (event) {
             listeningState = 'processing';
             view.setListeningState(listeningState);
             view.resetTextInput();
+            evt.targetStance = 'thinking';
+            document.getElementById('davisContainer').dispatchEvent(evt);
         }, false);
         
         document.addEventListener('responding', function (event) {
             listeningState = 'responding';
             view.setListeningState(listeningState);
+            evt.targetStance = 'answer';
+            document.getElementById('davisContainer').dispatchEvent(evt);
         }, false);
         
         document.addEventListener('chatMode', function (event) {
             listeningState = 'chatMode';
             view.setListeningState(listeningState);
+            evt.targetStance = 'empty';
+            document.getElementById('davisContainer').dispatchEvent(evt);
         
             // Stop typewriter and any audio that's playing
             player.pause();
@@ -876,6 +888,7 @@ var davis = (function () {
                 speak(output.text, output.voice, output.listen);
             } else {
                 document.dispatchEvent(listeningStateEvents.sleeping);
+                enableListenForKeyword(true);
             }
         }
         
@@ -1125,7 +1138,8 @@ var davis = (function () {
                         annyangInit();
                         enableListenForKeyword(true);
                         document.dispatchEvent(listeningStateEvents.sleeping);
-                        view.showLogo();
+                        evt.targetStance = 'dynatrace';
+                        document.getElementById('davisContainer').dispatchEvent(evt);
                         
                     } else {
                         noMic();
