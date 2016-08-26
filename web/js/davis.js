@@ -398,7 +398,12 @@ var davis = (function () {
                     branch = ' (' + git.branch + ')';
                 }
                 
-                $('#'+gitElemId).html('<a href="https://github.com/ruxit/davis-server/releases/tag/' + git.tag + '" target="_blank">' + git.tag + branch + '</a>');
+                let updated = '';
+                if (git.lastUpdate) {
+                    updated = ' <br /><span>Updated: ' + git.lastUpdate + '</span>';
+                }
+                
+                $('#'+gitElemId).html('<a href="https://github.com/ruxit/davis-server/releases/tag/' + git.tag + '" target="_blank">' + git.tag + branch + '</a>' + updated);
                 
             },
             
