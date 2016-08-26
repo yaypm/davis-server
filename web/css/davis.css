@@ -254,13 +254,18 @@
 	}
 
 	.davisvisual__container {
-		margin-top: 450px;
+		margin-top: 400px;
 		position: relative;
-		min-height: 250px;
+		min-height: 150px;
 	}
 
 	.davisvisual__davis {
 		position: absolute;
 		left: 50%;
 		top: 50%;
+	}
+	
+	.davisvisual__davis:first-child canvas{
+		width: 150px !important;
+		height: 150px !important;
 	}

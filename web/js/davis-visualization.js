@@ -4,7 +4,7 @@ var onReady = function() {
   */
   var container = document.getElementsByClassName('site-wrapper-inner')[0];
   var davisContainer = document.getElementById('davisContainer');
-  var canvasSize = 250;
+  var canvasSize = 50;
   var canvasSizePercent = (100 / 1000) * canvasSize;
   var canvasResize = function() {
     var desiredSize = (container.offsetWidth / 100) * canvasSizePercent;
