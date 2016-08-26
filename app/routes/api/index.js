@@ -15,11 +15,7 @@ router.get('/git', function(req, res) {
     logger.info('Received a request for Git info!');
     git.branch( branch => {
         git.tag( tag => {
-            if (branch !== 'master') {
-                res.send(tag + ' (' +  branch + ')');
-            } else {
-                res.send(tag);
-            }
+            res.json({branch: branch, tag: tag});
         });
     })
 });

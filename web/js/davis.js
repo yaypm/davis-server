@@ -392,7 +392,14 @@ var davis = (function () {
             },
             
             setGit: function (git) {
-                $('#'+gitElemId).html('<a href="https://github.com/ruxit/davis-server" target="_blank">'+git+'</a>');
+                
+                let branch = '';
+                if (git.branch !== 'master') {
+                    branch = ' (' + git.branch + ')';
+                }
+                
+                $('#'+gitElemId).html('<a href="https://github.com/ruxit/davis-server/releases/tag/' + git.tag + '" target="_blank">' + git.tag + branch + '</a>');
+                
             },
             
             getLocalResponses: function () {
@@ -785,7 +792,7 @@ var davis = (function () {
             
             return fetch('/api/v1/git', options)
             .then(function (response) {
-                return response.text();
+                return response.json();
             });
             
         }
@@ -1150,8 +1157,8 @@ var davis = (function () {
                 getConnectedServerUrl().then( url => {
                     view.setConnectedUrl(url);
                 });
-                getGit().then( tag => {
-                   view.setGit(tag);
+                getGit().then( git => {
+                   view.setGit(git);
                 });
         
                 // Get tokens and confirm using SSL
