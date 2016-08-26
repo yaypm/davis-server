@@ -37,11 +37,11 @@ var davis = (function () {
      * @param {String} listeningStateElemId
      * @param {String} connectedUrlElemId
      */
-    var init = function (interactionLogElemId, textInputElemId, muteWrapperElemId, muteSVGElemId, listeningStateElemId, connectedUrlElemId) {
+    var init = function (interactionLogElemId, textInputElemId, muteWrapperElemId, muteSVGElemId, listeningStateElemId, connectedUrlElemId, gitElemId) {
         
         $.getJSON('./js/local-responses.json', function (data){
             localResponses = data;
-            view = new davisView(interactionLogElemId, textInputElemId, muteWrapperElemId, muteSVGElemId, listeningStateElemId, connectedUrlElemId);
+            view = new davisView(interactionLogElemId, textInputElemId, muteWrapperElemId, muteSVGElemId, listeningStateElemId, connectedUrlElemId, gitElemId);
             controller = new davisController();
             controller.init();
             view.attachEventListeners();
@@ -61,7 +61,7 @@ var davis = (function () {
      * 
      * @return {Object} global methods
      */
-    var davisView = function (interactionLogElemId, textInputElemId, muteWrapperElemId, muteSVGElemId, listeningStateElemId, connectedUrlElemId) {
+    var davisView = function (interactionLogElemId, textInputElemId, muteWrapperElemId, muteSVGElemId, listeningStateElemId, connectedUrlElemId, gitElemId) {
         
         this.interactionLogElemId = interactionLogElemId;
         this.textInputElemId = textInputElemId;
@@ -69,6 +69,7 @@ var davis = (function () {
         this.muteSVGElemId = muteSVGElemId;
         this.listeningStateElemId = listeningStateElemId;
         this.connectedUrlElemId = connectedUrlElemId;
+        this.gitElemId = gitElemId;
         
         var sentences = []; // Array of response sentences to be typed into interaction log
         var textBeingTyped;
@@ -235,7 +236,7 @@ var davis = (function () {
          * Hides mic button
          */
         function noMic() {
-            $('#'+muteWrapperElemId).hide();
+            $('#'+muteWrapperElemId).css('visibility', 'hidden');
         }
         
         /**
@@ -390,6 +391,10 @@ var davis = (function () {
                 $('#'+connectedUrlElemId).html('<span style="opacity:0.4;">Connected:</span> <a href="' + url + '" target="_blank">'+url+'</a>');
             },
             
+            setGit: function (git) {
+                $('#'+gitElemId).html('<a href="https://github.com/ruxit/davis-server" target="_blank">'+git+'</a>');
+            },
+            
             getLocalResponses: function () {
                 return localResponses;
             },
@@ -478,7 +483,7 @@ var davis = (function () {
             listeningState = 'sleeping';
             view.setListeningState(listeningState);
             view.muted();
-            evt.targetStance = 'standard';
+            evt.targetStance = 'empty';
             document.getElementById('davisContainer').dispatchEvent(evt);
         }, false);
         
@@ -760,6 +765,25 @@ var davis = (function () {
             };
             
             return fetch('/web/server', options)
+            .then(function (response) {
+                return response.text();
+            });
+            
+        }
+        
+        /**
+         * Returns Git info
+         * 
+         * @return {Promise} info
+         */
+        function getGit() {
+            
+            var options = {
+                method: 'get',
+                mode: 'cors'
+            };
+            
+            return fetch('/api/v1/git', options)
             .then(function (response) {
                 return response.text();
             });
@@ -1121,6 +1145,15 @@ var davis = (function () {
                 
             } else {
                 
+                timezone = jstz.determine().name();
+                getDavisUserToken();
+                getConnectedServerUrl().then( url => {
+                    view.setConnectedUrl(url);
+                });
+                getGit().then( tag => {
+                   view.setGit(tag);
+                });
+        
                 // Get tokens and confirm using SSL
                 // if failure fallback to chat mode
                 getSttToken()
@@ -1129,12 +1162,7 @@ var davis = (function () {
                 }).then( token => {
                     
                     if (location.protocol === 'https:') {
-                        
-                        timezone = jstz.determine().name();
-                        getDavisUserToken();
-                        getConnectedServerUrl().then(function (url) {
-                            view.setConnectedUrl(url);
-                        });
+                    
                         annyangInit();
                         enableListenForKeyword(true);
                         document.dispatchEvent(listeningStateEvents.sleeping);

@@ -203,6 +203,13 @@
 	    font-size: 12px;
 	    color: white;
 	}
+	
+	#git {
+		position: absolute;
+		right: 30px;
+		bottom: 20px;
+		font-size: 12px;
+	}
 
 	#textInput {
 		position: relative;
