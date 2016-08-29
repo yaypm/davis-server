@@ -1,8 +1,8 @@
 'use strict';
 
 const router = require('express').Router(),
-    git = require('git-rev'),
     watson = require('./watson'),
+    git = require('../../utils/git-rev'),
     logger = require('../../utils/logger');
 
 // middleware to use for all requests
@@ -13,22 +13,29 @@ router.use((req, res, next) => {
 
 router.get('/git', function(req, res) {
     logger.info('Received a request for Git info!');
-    // Commented out for now, there's an uncaught exception about an unexpected number when calling git.log()
-    // git.log( gitLog => {
         
-        let lastUpdate;
-        
-        // if (gitLog[0][2]) {
-        //     lastUpdate = gitLog[0][2];
-            
-        // }
-        
-        git.branch( branch => {
-            git.tag( tag => {
-                res.json({branch: branch, tag: tag, lastUpdate: lastUpdate });
-            });
-        });
-    // });
+    let branch, tag, lastUpdate;
+
+    git.getBranch()
+    .then( result => {
+        branch = result;
+        return git.getTag();
+    })
+    .then( result => {
+        tag = result;
+        return git.getLastCommitDate();
+    })
+    .then( result => {
+        lastUpdate = result;
+        res.json({branch: branch, tag: tag, lastUpdate: lastUpdate });
+    })
+    .catch(err => {
+        //ToDo
+        logger.error('Unable to respond to get Git info');
+        logger.error(err.message);
+        res.end();
+    });
+    
 });
 
 router.use('/watson', watson);

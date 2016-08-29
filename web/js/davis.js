@@ -84,7 +84,7 @@ var davis = (function () {
             $(window).keypress(function(e) {
                 var key = e.which;
                 if (key == 32 && !$("#"+textInputElemId).is(":focus")) {
-                    controller.toggleMute(true);
+                    controller.toggleMute($('#'+listeningStateElemId).html() === localResponses.listeningStates.listening);
                 } else if (key != 32 && !$("#"+textInputElemId).is(":focus")) {
                     $("#"+textInputElemId).focus();
                 }
@@ -159,11 +159,7 @@ var davis = (function () {
          */
         function setListeningState(state) {
             if (localResponses.listeningStates[state] !== $('#'+listeningStateElemId).html()) {
-                if (localResponses.listeningStates[state] !== localResponses.listeningStates.enablingMic) {
-                    $('#'+listeningStateElemId).hide().html(localResponses.listeningStates[state]).fadeIn(800);
-                } else {
-                    $('#'+listeningStateElemId).html(localResponses.listeningStates[state]);
-                }
+                $('#'+listeningStateElemId).html(localResponses.listeningStates[state]);
             }
         };
         
@@ -393,17 +389,13 @@ var davis = (function () {
             
             setGit: function (git) {
                 
-                let branch = '';
+                let branch, updated;
                 if (git.branch !== 'master') {
                     branch = ' (' + git.branch + ')';
+                    updated = ' <br /><span>' + git.lastUpdate + '</span>';
                 }
                 
-                let updated = '';
-                if (git.lastUpdate) {
-                    updated = ' <br /><span>Updated: ' + git.lastUpdate + '</span>';
-                }
-                
-                $('#'+gitElemId).html('<a href="https://github.com/ruxit/davis-server/releases/tag/' + git.tag + '" target="_blank">' + git.tag + branch + '</a>' + updated);
+                $('#'+gitElemId).html('<a href="https://github.com/ruxit/davis-server/releases/tag/' + git.tag + '" target="_blank">' + git.tag + branch + updated + '</a>');
                 
             },
             
@@ -510,7 +502,7 @@ var davis = (function () {
             view.listening();
             micOn.play();
             evt.targetStance = 'listening';
-           document.getElementById('davisContainer').dispatchEvent(evt);
+            document.getElementById('davisContainer').dispatchEvent(evt);
         }, false);
         
         document.addEventListener('processing', function (event) {
@@ -538,7 +530,7 @@ var davis = (function () {
             player.pause();
             player.currentTime = 0;
             
-            if (!isMuted) {
+            if (!isMuted && isSpeaking) {
                 view.stopTypewriter();
             }
             
@@ -699,7 +691,9 @@ var davis = (function () {
                         
                     });
                 } else {
-                     document.dispatchEvent(listeningStateEvents.sleeping);
+                    if (listeningState !== 'chatMode') {
+                        document.dispatchEvent(listeningStateEvents.sleeping);
+                    }
                 }
             }
         }
@@ -902,9 +896,8 @@ var davis = (function () {
         
                 stream.on('error', function (err) {
                     console.log(err);
+                    noMic();
                 });
-                
-                document.dispatchEvent(listeningStateEvents.listening);
         
             });
             
@@ -998,6 +991,7 @@ var davis = (function () {
             if (listeningState !== 'listening') {
                 getSttToken()
                 .then(function (token) {
+                    document.dispatchEvent(listeningStateEvents.listening);
                     createSttStream(token);
                 })
                 .catch(function (err) { 
@@ -1071,6 +1065,8 @@ var davis = (function () {
                     }
                     
                 });
+                
+                enableListenForKeyword(true);
         
             }
             
@@ -1082,7 +1078,7 @@ var davis = (function () {
          * Note: Used when toggling between the annyang STT library and IBM Watson STT API
          */
         function enableListenForKeyword(listen) {
-            listen ? annyang.start({ 'autoRestart': true, 'continuous': true }) : annyang.abort();
+            listen ? annyang.start({ 'autoRestart': true, 'continuous': false }) : annyang.abort();
         }
         
         /**
@@ -1094,7 +1090,9 @@ var davis = (function () {
          */
         function toggleMute(mute) {
             
-            document.dispatchEvent(listeningStateEvents.sleeping);
+            if (listeningState !== 'chatMode') {
+                document.dispatchEvent(listeningStateEvents.sleeping);
+            }
             
             if (isSpeaking) {
                 
@@ -1104,6 +1102,7 @@ var davis = (function () {
                 view.stopTypewriter();
                 isMuted = false;
                 enableListenForKeyword(false);
+                document.dispatchEvent(listeningStateEvents.enablingMic);
                 unmute();
                 
             } else {
@@ -1119,11 +1118,11 @@ var davis = (function () {
                     
                     enableListenForKeyword(true);
                     
-                } else {
+                } else if (!mute) {
                    
                     isMuted = false;
-                    view.listening();
                     enableListenForKeyword(false);
+                    document.dispatchEvent(listeningStateEvents.enablingMic);
                     unmute();
                     
                 }
@@ -1176,7 +1175,6 @@ var davis = (function () {
                     if (location.protocol === 'https:') {
                     
                         annyangInit();
-                        enableListenForKeyword(true);
                         document.dispatchEvent(listeningStateEvents.sleeping);
                         evt.targetStance = 'dynatrace';
                         document.getElementById('davisContainer').dispatchEvent(evt);
