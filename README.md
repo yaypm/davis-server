@@ -116,7 +116,7 @@ The possibilities are endless. Provide your ideas in the comments section below!
 - **Dynatrace Token**
 
 > Navigate to your [Dynatrace Tenant](https://signin.dynatrace.com) and login
-> then generate an [API Key](/#settings/integration/apikeys)
+> then generate an [API Key] @ <tenant URL>/#settings/integration/apikeys
 
 - [WIT Token] **//TODO**
 
@@ -150,12 +150,31 @@ For example: America/Detroit
 ***
 ####Wit Token
 
-**TODO:** Export WIT Template and Document WIT Token Retrieve
+**TODO:** Export WIT Template and Document WIT Token Retrieve //Complete on 08/30/2016
 
 ---
 ####Aliases and Friendly Names
 
-**TODO:** Explain to User why friendly names are so important.
+Dynatrace is really good at understanding the architecture of your application right out of the box and displaying it in a fluid manner in Smartscape. DAVIS is built with filtering technology to do its best at properly pronouncing the services and infrastructure that support your application, but there will be some that it has a hard time with. You can assist DAVIS’s pronunciation of these assets with configurable aliases.
+
+For example:
+
+Application Server - 0000001 can be renamed Application Server One.
+
+You will find examples for Application aliases and Service aliases in the /demo/aliases directory.
+
+````javascript
+
+const services = [{
+	    name: 'nginx',
+	    display: {
+	        audible: 'Engine-X',
+	        visual: 'Nginx'
+	    },
+	    aliases: ['engine x', 'engine ex']
+	}];
+````
+
 
 ---
 
