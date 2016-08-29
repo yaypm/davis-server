@@ -119,7 +119,7 @@ The possibilities are endless. Provide your ideas in the comments section below!
 - **Dynatrace Token**
 
 > Navigate to your [Dynatrace Tenant](https://signin.dynatrace.com) and login
-> then generate an [API Key] @ <tenant URL>/#settings/integration/apikeys
+> then generate an API Key @ <tenant URL>/#settings/integration/apikeys
 
 - [WIT Token] **//TODO**
 
