@@ -45,7 +45,7 @@ const config = {
 ####(Optional) NGINX Proxy
 ---
 
-*You can install a NGINX reverse proxy and a self signed certificate for advanced routing. For example, you could have more than one DAVIS instance on the same server*
+*You can install a NGINX reverse proxy and a self signed certificate for advanced routing. For example, you could have more than one DAVIS instance on the same server*.
 
 ---
 ####Mongo DB DSN Entry
@@ -93,6 +93,9 @@ slack: {
         key: '<slack_token>'
     }
 ````
+
+![](https://s3.amazonaws.com/davis-project/docs/davis-slack-example-notes.png)
+
 
 ---
 ####Echo Setup [More...](https://github.com/ruxit/davis-server/blob/master/setup/echo.md)
