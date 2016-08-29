@@ -7,6 +7,7 @@ const _ = require('lodash'),
     nunjucks = require('./nunjucks'),
     path = require('path'),
     greeter = require('./greeter'),
+    git = require('../../../utils/git-rev'),
     logger = require('../../../utils/logger');
 
 const NUNJUCK_EXTENSION = '.nj',
@@ -33,13 +34,50 @@ module.exports = {
                         sayResponse = (!_.isNil(say)) ? nunjucks(davis.config.aliases).renderAsync(say, davis) : null,
                         textResponse = (!_.isNil(text)) ? nunjucks(davis.config.aliases).renderAsync(text, davis): null,
                         showResponse = (!_.isNil(show)) ? nunjucks(davis.config.aliases).renderAsync(show, davis) : null;
-                    return [greetingResponse, sayResponse, textResponse, showResponse];
+                        
+                        return [greetingResponse, sayResponse, textResponse, showResponse];
                 })
                 .spread((greeting, say, text, show) => {
+                        
+                        let branch, tag, lastUpdate;
+                        let gitInfo = git.getBranch()
+                        .then( result => {
+                            branch = result;
+                            return git.getTag();
+                        })
+                        .then( result => {
+                            tag = result;
+                            return git.getLastCommitDate();
+                        })
+                        .then( result => {
+                            lastUpdate = result;
+                            
+                            if (branch) {
+                                
+                                return {
+                                    branch: branch, 
+                                    tag: tag, 
+                                    lastUpdate: lastUpdate
+                                };
+            
+                            } else {
+                                return;
+                            }
+                            
+                        })
+                        .catch(err => {
+                            //ToDo
+                            logger.error('Unable to respond to get Git info');
+                            logger.error(err.message);
+                        });
+                     
+                        return [greeting, say, text, show, gitInfo];
+                })
+                .spread((greeting, say, text, show, gitInfo) => {
                     show = (show) ? show : text;
                     davis.exchange.response.audible.ssml = combinedResponse(greeting, say, followUp);
                     davis.exchange.response.visual.text = combinedResponse(greeting, text, followUp);
-                    davis.exchange.response.visual.card = combinedResponseCard(greeting, show, followUp);
+                    davis.exchange.response.visual.card = combinedResponseCard(greeting, show, followUp, gitInfo);
                     davis.exchange.response.visual.hyperlink = '';
                     return resolve(davis);
                 })
@@ -89,8 +127,8 @@ function combinedResponse(greet, body, followUp) {
     }
 }
 
-function combinedResponseCard(greet, body, followUp) {
-
+function combinedResponseCard(greet, body, followUp, gitInfo) {
+    
     let card = {};
     card.attachments = [];
 
@@ -112,8 +150,14 @@ function combinedResponseCard(greet, body, followUp) {
     if (!_.isNil(followUp)) {
         card.attachments.push({pretext: followUp});
     }
-
+    
+    if (!_.isNil(gitInfo) && !_.isNil(followUp)) {
+        card.attachments[card.attachments.length - 1].footer_icon = 'https://d3fzhvprqmsab7.cloudfront.net/wp-content/uploads/2014/07/Google-icon.jpg';
+        card.attachments[card.attachments.length - 1].footer = 'Dynatrace Davis ' + gitInfo.tag + ' (' + gitInfo.branch + ') - Updated on ' + gitInfo.lastUpdate;
+    }
+    
     return card;
+    
 }
 
 function getFullPath(relativeTemplatePath) {

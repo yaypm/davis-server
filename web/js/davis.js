@@ -395,7 +395,9 @@ var davis = (function () {
                     updated = ' <br /><span>' + git.lastUpdate + '</span>';
                 }
                 
-                $('#'+gitElemId).html('<a href="https://github.com/ruxit/davis-server/releases/tag/' + git.tag + '" target="_blank">' + git.tag + branch + updated + '</a>');
+                if (git.branch) {
+                    $('#'+gitElemId).html('<a href="https://github.com/ruxit/davis-server/releases/tag/' + git.tag + '" target="_blank">' + git.tag + branch + updated + '</a>');
+                }
                 
             },
             
