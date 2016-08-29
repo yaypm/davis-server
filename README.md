@@ -94,7 +94,7 @@ slack: {
     }
 ````
 
-![](https://s3.amazonaws.com/davis-project/docs/davis-slack-example-notes.png)
+![](https://s3.amazonaws.com/davis-project/docs/davis-slack-examples.png)
 
 
 ---
