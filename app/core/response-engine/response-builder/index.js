@@ -7,7 +7,7 @@ const _ = require('lodash'),
     nunjucks = require('./nunjucks'),
     path = require('path'),
     greeter = require('./greeter'),
-    git = require('../../../utils/git-rev'),
+    git = require('git-rev'),
     logger = require('../../../utils/logger');
 
 const NUNJUCK_EXTENSION = '.nj',

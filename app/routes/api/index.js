@@ -2,7 +2,7 @@
 
 const router = require('express').Router(),
     watson = require('./watson'),
-    git = require('../../utils/git-rev'),
+    git = require('git-rev'),
     logger = require('../../utils/logger');
 
 // middleware to use for all requests
