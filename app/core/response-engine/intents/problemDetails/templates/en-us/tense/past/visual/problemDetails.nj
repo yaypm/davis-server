@@ -1,6 +1,8 @@
 {%- set problem = intentData.problemDetails.result -%}
 {%- set startingEvent = problem.rankedEvents | last -%}
 {%- set currentEvent = problem.rankedEvents | first -%}
+{%- set eventsDisplayed = 0 -%}
+{%- set rootCauseCount = 0 -%}
 {
     "attachments": [
         {
@@ -33,5 +35,25 @@
                 }
             ]
         }
+        {% for event in problem.rankedEvents %}
+            {% if event.isRootCause %}
+                {% set rootCauseCount = rootCauseCount + 1 %}
+            {% endif %}
+        {%- endfor %}
+        {% for event in problem.rankedEvents %}
+            {% if event.isRootCause and eventsDisplayed < 3 %}
+                {% if eventsDisplayed == 0 %}
+                    ,{
+                        "pretext": "Root cause event{% if rootCauseCount > 1 %}s{% endif %}:"
+                    }
+                {% endif %}
+                {% if rootCauseCount > 1 %}
+                    ,{% include "intents/problemDetails/templates/en-us/shared/visual/multiEventSummary.nj" %}
+                {% else %}
+                    ,{% include "intents/problemDetails/templates/en-us/shared/visual/singleEventSummary.nj" %}
+                {% endif %}
+               {% set eventsDisplayed = eventsDisplayed + 1 %}
+            {% endif %}
+        {%- endfor %}
     ]
 }

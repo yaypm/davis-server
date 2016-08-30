@@ -1,0 +1,18 @@
+{
+    "fallback": "{% if rootCauseCount > 1 %}{{ loop.index }}. {% endif %}{{ event.eventType | friendlyEventFirstAlias | makeTitle(false) }}\nImpacted: {{ event | friendlyEntityName | makeTitle(false) }}\n{% if event.status == 'OPEN' %}Unresolved{% else %}Resolved - {{ event.endTime | time(user) }}{% endif %}",
+    "color": "{% if event.status == 'OPEN' %}#dc172a{% else %}#7dc540{% endif %}",
+    "title": "{{ loop.index }}. {{ event.eventType | friendlyEventFirstAlias | makeTitle(false) }}",
+    "title_link": "{{user.dynatrace.url}}#problems;filter=watched/problemdetails;pid={{event.id}}",
+    "fields": [
+        {
+            "title": "Impacted",
+            "value": "{{ event | friendlyEntityName | makeTitle(false) }}",
+            "short": "true"
+        },
+        {
+            "title": "Status",
+            "value": "{% if event.status == 'OPEN' %}Unresolved{% else %}Resolved - {{ event.endTime | time(user) }}{% endif %}",
+            "short": "true"
+        }
+    ]
+}
