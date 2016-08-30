@@ -235,6 +235,7 @@ module.exports = function (config) {
                     
                     if (resp.response.outputSpeech.card) {
                         resp.response.outputSpeech.card.attachments[0].pretext = this.directPrefix + resp.response.outputSpeech.card.attachments[0].pretext;
+                        resp.response.outputSpeech.card.attachments[0].fallback = this.directPrefix + resp.response.outputSpeech.card.attachments[0].fallback;
                         this.initialResponse = resp.response.outputSpeech.card;
                     } else {
                         this.initialResponse = this.directPrefix + resp.response.outputSpeech.text;
@@ -307,6 +308,7 @@ module.exports = function (config) {
                     
                     if (resp.response.outputSpeech.card) {
                         resp.response.outputSpeech.card.attachments[0].pretext = this.directPrefix + resp.response.outputSpeech.card.attachments[0].pretext;
+                        resp.response.outputSpeech.card.attachments[0].fallback = this.directPrefix + resp.response.outputSpeech.card.attachments[0].fallback;
                     } else {
                         resp.response.outputSpeech.text = this.directPrefix + resp.response.outputSpeech.text;
                     }
