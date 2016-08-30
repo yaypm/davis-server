@@ -89,10 +89,10 @@ module.exports = function SlackService(config) {
                 let user = {
                     id: member.id, 
                     name: {
-                        'first': member.first_name, 
-                        'last': member.last_name
+                        first: member.profile.first_name, 
+                        last: member.profile.last_name
                     },
-                    email: member.email,
+                    email: member.profile.email,
                     nlp: config.nlp,
                     dynatrace: config.slack.dynatrace,
                     timezone: member.tz
