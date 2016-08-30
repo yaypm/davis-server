@@ -2,7 +2,8 @@
 {
     "attachments": [
         {
-            "pretext": "There's one issue at the moment:"
+            "pretext": "There's one issue at the moment:",
+            "fallback": "There's one issue at the moment:"
         },
         {% for problem in problems %}
            {% include "intents/problem/templates/en-us/shared/visual/problemSummary.nj" %}{%- if not loop.last %},{% endif %}

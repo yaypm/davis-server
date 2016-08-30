@@ -2,7 +2,8 @@
 {
     "attachments": [
         {
-            "pretext": "There were a couple of issues during that time frame:"
+            "pretext": "There were a couple of issues during that time frame:",
+            "fallback": "There were a couple of issues during that time frame:"
         },
         {% for problem in problems %}
            {% include "intents/problem/templates/en-us/shared/visual/problemSummary.nj" %}{%- if not loop.last %},{% endif %}
