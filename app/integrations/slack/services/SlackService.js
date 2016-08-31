@@ -50,7 +50,8 @@ module.exports = function SlackService(config) {
      */
     function stripEmojis(str) {
         
-        let result = str.replace(/\:.+\:/g, '').trim();
+        // Allow key emoji, so user can ask what our usage of the key means
+        let result = (str.includes(':key:')) ? str : str.replace(/\:.+\:/g, '').trim();
         
         if (result == '') {
             result = 'hey davis';

@@ -6,9 +6,11 @@
 {
     "attachments": [
         {
-            "pretext": ""  
+            "pretext": "",
+            "fallback": ""
         },
         {
+            "fallback": "{{ currentEvent.eventType | friendlyEventFirstAlias | makeTitle }}\nImpacted: {{ currentEvent |  friendlyEntityName | makeTitle }} \n{{ problem.impactLevel | capitalize }}\nInitial Event: {{ startingEvent.eventType | friendlyEventFirstAlias | makeTitle }}\nStatus: {% if problem.status == 'OPEN' %}Unresolved{% else %}Resolved{% endif %}",
             "color": "{% if problem.status == 'OPEN' %}#dc172a{% else %}#7dc540{% endif %}",
             "title": "{{ currentEvent.eventType | friendlyEventFirstAlias | makeTitle }}",
             "title_link": "{{user.dynatrace.url}}#problems;filter=watched/problemdetails;pid={{problem.id}}",
@@ -44,7 +46,7 @@
             {% if event.isRootCause and eventsDisplayed < 3 %}
                 {% if eventsDisplayed == 0 %}
                     ,{
-                        "pretext": "Root cause event{% if rootCauseCount > 1 %}s{% endif %}:"
+                        "pretext": "{% if rootCauseCount > 1 %}Top root cause events{% else %}Root cause event{% endif %}:"
                     }
                 {% endif %}
                 {% if rootCauseCount > 1 %}
