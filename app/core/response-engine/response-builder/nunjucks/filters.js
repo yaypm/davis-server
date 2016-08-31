@@ -119,6 +119,11 @@ const filters = function(env, aliases) {
     env.addFilter('capitalizeFirstChar', function(str) {
         return capitalizeFirstCharacter(str); 
     });
+    
+    env.addFilter('friendlyVersion', function(version) {
+        return version.replace('v', '');
+    });
+    
 };
 
 function getEntityType(entity) {
