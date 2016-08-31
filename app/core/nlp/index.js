@@ -49,7 +49,8 @@ function analyseEntities(davis, entities) {
     let processed = {
         intent: getIntent(davis, entities),
         timeRange: getDateTime(entities),
-        appName: _.get(entities, 'app_name[0].value', null)
+        appName: _.get(entities, 'app_name[0].value', null),
+        emoji: _.get(entities, 'emoji[0].value', null)
     };
     davis.exchange.intent.push(processed.intent);
     return processed;
