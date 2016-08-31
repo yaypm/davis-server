@@ -47,7 +47,6 @@ module.exports = function WebService(config) {
             return new BbPromise((resolve, reject) => {
 
                 // Use web user token as id for Davis user 
-                //ToDo review this
                 let user = {
                     'id': 'web-user-' + req.body.user, 
                     'nlp': config.nlp,
@@ -67,7 +66,6 @@ module.exports = function WebService(config) {
                 })
                 .catch(err => {
                     logger.error(`Unfortunately, something went wrong.  ${err.message}`);
-                    //ToDo Add failure response
                     return reject(err.message);
                 });
                 

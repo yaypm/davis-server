@@ -7,8 +7,8 @@ const _ = require('lodash'),
     nunjucks = require('./nunjucks'),
     path = require('path'),
     greeter = require('./greeter'),
-    git = require('git-rev'),
-    logger = require('../../../utils/logger');
+    logger = require('../../../utils/logger'),
+    version = require('../../../utils/version');
 
 const NUNJUCK_EXTENSION = '.nj',
     RESERVED_FOLDER_NAMES = {
@@ -38,46 +38,10 @@ module.exports = {
                         return [greetingResponse, sayResponse, textResponse, showResponse];
                 })
                 .spread((greeting, say, text, show) => {
-                        
-                        let branch, tag, lastUpdate;
-                        let gitInfo = git.getBranch()
-                        .then( result => {
-                            branch = result;
-                            return git.getTag();
-                        })
-                        .then( result => {
-                            tag = result;
-                            return git.getLastCommitDate();
-                        })
-                        .then( result => {
-                            lastUpdate = result;
-                            
-                            if (branch) {
-                                
-                                return {
-                                    branch: branch, 
-                                    tag: tag, 
-                                    lastUpdate: lastUpdate
-                                };
-            
-                            } else {
-                                return;
-                            }
-                            
-                        })
-                        .catch(err => {
-                            //ToDo
-                            logger.error('Unable to respond to get Git info');
-                            logger.error(err.message);
-                        });
-                     
-                        return [greeting, say, text, show, gitInfo];
-                })
-                .spread((greeting, say, text, show, gitInfo) => {
                     show = (show) ? show : text;
                     davis.exchange.response.audible.ssml = combinedResponse(greeting, say, followUp);
                     davis.exchange.response.visual.text = combinedResponse(greeting, text, followUp);
-                    davis.exchange.response.visual.card = combinedResponseCard(greeting, show, followUp, gitInfo);
+                    davis.exchange.response.visual.card = combinedResponseCard(greeting, show, followUp);
                     davis.exchange.response.visual.hyperlink = '';
                     return resolve(davis);
                 })
@@ -127,7 +91,7 @@ function combinedResponse(greet, body, followUp) {
     }
 }
 
-function combinedResponseCard(greet, body, followUp, gitInfo) {
+function combinedResponseCard(greet, body, followUp) {
     
     let card = {};
     card.attachments = [];
@@ -151,9 +115,9 @@ function combinedResponseCard(greet, body, followUp, gitInfo) {
         card.attachments.push({pretext: followUp});
     }
     
-    if (!_.isNil(gitInfo) && !_.isNil(followUp)) {
+    if (version.initialized && !_.isNil(followUp)) {
         card.attachments[card.attachments.length - 1].footer_icon = 'https://d3fzhvprqmsab7.cloudfront.net/wp-content/uploads/2014/07/Google-icon.jpg';
-        card.attachments[card.attachments.length - 1].footer = 'Dynatrace Davis ' + gitInfo.tag + ' (' + gitInfo.branch + ') - Updated on ' + gitInfo.lastUpdate;
+        card.attachments[card.attachments.length - 1].footer = 'Dynatrace Davis ' + version.tag + ' (' + version.branch + ') - Updated on ' + version.lastUpdate;
     }
     
     return card;

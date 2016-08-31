@@ -6,6 +6,7 @@ const express = require('express'),
     favicon = require('serve-favicon'),
     routes = require('./routes/index'),
     logger = require('./utils/logger'),
+    version = require('./utils/version'),
     mongoose = require('mongoose');
 
 module.exports = function setupApp(config) {
@@ -30,6 +31,14 @@ module.exports = function setupApp(config) {
     app.use(bodyParser.json());
     app.use(bodyParser.urlencoded({extended: false}));
     app.use('/', routes);
+    
+    /**
+     * Getting Git version
+     */
+    version.init()
+        .then( () => {
+            logger.info('Successfully got Git version');
+        });
 
     /**
      * Starting slackbot

@@ -3,7 +3,8 @@
 const router = require('express').Router(),
     watson = require('./watson'),
     git = require('git-rev'),
-    logger = require('../../utils/logger');
+    logger = require('../../utils/logger'),
+    version = require('../../utils/version');
 
 // middleware to use for all requests
 router.use((req, res, next) => {
@@ -13,29 +14,7 @@ router.use((req, res, next) => {
 
 router.get('/git', function(req, res) {
     logger.info('Received a request for Git info!');
-        
-    let branch, tag, lastUpdate;
-
-    git.getBranch()
-    .then( result => {
-        branch = result;
-        return git.getTag();
-    })
-    .then( result => {
-        tag = result;
-        return git.getLastCommitDate();
-    })
-    .then( result => {
-        lastUpdate = result;
-        res.json({branch: branch, tag: tag, lastUpdate: lastUpdate });
-    })
-    .catch(err => {
-        //ToDo
-        logger.error('Unable to respond to get Git info');
-        logger.error(err.message);
-        res.end();
-    });
-    
+    res.json({branch: version.branch, tag: version.tag, lastUpdate: version.lastUpdate });
 });
 
 router.use('/watson', watson);
