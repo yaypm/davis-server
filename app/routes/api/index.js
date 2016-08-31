@@ -2,7 +2,6 @@
 
 const router = require('express').Router(),
     watson = require('./watson'),
-    git = require('git-rev'),
     logger = require('../../utils/logger'),
     version = require('../../utils/version');
 
