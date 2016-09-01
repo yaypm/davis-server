@@ -35,7 +35,7 @@ module.exports = {
                         textResponse = (!_.isNil(text)) ? nunjucks(davis.config.aliases).renderAsync(text, davis): null,
                         showResponse = (!_.isNil(show)) ? nunjucks(davis.config.aliases).renderAsync(show, davis) : null;
                         
-                        return [greetingResponse, sayResponse, textResponse, showResponse];
+                    return [greetingResponse, sayResponse, textResponse, showResponse];
                 })
                 .spread((greeting, say, text, show) => {
                     show = (show) ? show : text;
