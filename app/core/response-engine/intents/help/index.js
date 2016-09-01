@@ -3,7 +3,6 @@
 const BbPromise = require('bluebird'),
     Decide = require('../../utils/decide'),
     decision_model = require('./model'),
-    common = require('../../utils/common'),
     responseBuilder = require('../../response-builder'),
     tagger = require('./tagger'),
     logger = require('../../../../utils/logger');
