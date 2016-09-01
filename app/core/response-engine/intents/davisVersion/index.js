@@ -30,7 +30,7 @@ const process = function process(davis) {
         } else {
             const state = {
                 error: { 
-                    message: 'No Git version info available.' 
+                    message: 'Unfortunately, I wasn\'t able to determine my current Git version.'
                 }
             };
                        
