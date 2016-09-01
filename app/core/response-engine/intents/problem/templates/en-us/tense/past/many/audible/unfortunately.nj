@@ -3,5 +3,5 @@
 
 <speak version="1.0" xmlns="www.w3.org/2001/10/synthesis">
     Unfortunately there were {{ intentData.problem.result.problems.length }} problems detected {{ exchange.request.analysed.timeRange | friendlyTimeRange(user) }}.  
-    After careful consideration, I would focus on one of the following issues first. <break time="1s" />{% include "intents/problem/templates/en-us/shared/top-three-issues.nj" %}
+    After careful consideration, I would focus on one of the following problems first. <break time="1s" />{% include "intents/problem/templates/en-us/shared/top-three-problems.nj" %}
 </speak>

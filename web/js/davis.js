@@ -1174,7 +1174,7 @@ var davis = (function () {
                     return getTtsToken();
                 }).then( token => {
                     
-                    if (location.protocol === 'https:') {
+                    if (location.protocol === 'https:' || location.href.includes('127.0.0.1') || location.href.includes('localhost')) {
                     
                         annyangInit();
                         document.dispatchEvent(listeningStateEvents.sleeping);

@@ -1,1 +1,1 @@
-It looks like there are {{ intentData.problem.result.problems.length }} active issues.  After giving it some though, here are my top three.  {% include "intents/problem/templates/en-us/shared/top-three-issues.nj" %}
+It looks like there are {{ intentData.problem.result.problems.length }} active problems.  After giving it some though, here are my top three.  {% include "intents/problem/templates/en-us/shared/top-three-problems.nj" %}

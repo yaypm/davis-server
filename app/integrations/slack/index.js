@@ -232,15 +232,11 @@ module.exports = function (config) {
                 .then(resp => {
                     
                     logger.info('Sending a response back to the Slack service');
-                    
-                    if (resp.response.outputSpeech.card) {
-                        resp.response.outputSpeech.card.attachments[0].pretext = this.directPrefix + resp.response.outputSpeech.card.attachments[0].pretext;
-                        resp.response.outputSpeech.card.attachments[0].fallback = this.directPrefix + resp.response.outputSpeech.card.attachments[0].fallback;
-                        this.initialResponse = resp.response.outputSpeech.card;
-                    } else {
-                        this.initialResponse = this.directPrefix + resp.response.outputSpeech.text;
+                    if (this.directPrefix) {
+                        resp.response.outputSpeech.card.text = this.directPrefix + resp.response.outputSpeech.card.text;
                     }
-                   
+                    this.initialResponse = resp.response.outputSpeech.card;
+                    
                     this.shouldEndSession = resp.response.shouldEndSession;
                     
                     // Listen for typing event
@@ -306,14 +302,10 @@ module.exports = function (config) {
                 SlackService(config).askDavis(response, this.user)
                 .then(resp => {
                     
-                    if (resp.response.outputSpeech.card) {
-                        resp.response.outputSpeech.card.attachments[0].pretext = this.directPrefix + resp.response.outputSpeech.card.attachments[0].pretext;
-                        resp.response.outputSpeech.card.attachments[0].fallback = this.directPrefix + resp.response.outputSpeech.card.attachments[0].fallback;
-                    } else {
-                        resp.response.outputSpeech.text = this.directPrefix + resp.response.outputSpeech.text;
-                    }
-                    
                     logger.info('Slack: Sending a response');
+                    if (this.directPrefix) {
+                        resp.response.outputSpeech.card.text = this.directPrefix + resp.response.outputSpeech.card.text;
+                    }
                     
                     this.shouldEndSession = resp.response.shouldEndSession;
                     let output = (resp.response.outputSpeech.card) ? resp.response.outputSpeech.card : resp.response.outputSpeech.text;

@@ -38,7 +38,7 @@ module.exports = {
                         return [greetingResponse, sayResponse, textResponse, showResponse];
                 })
                 .spread((greeting, say, text, show) => {
-                    show = (show) ? show : text;
+                    show = (show) ? JSON.parse(show) : createSlackCard(text);
                     davis.exchange.response.audible.ssml = combinedResponse(greeting, say, followUp);
                     davis.exchange.response.visual.text = combinedResponse(greeting, text, followUp);
                     davis.exchange.response.visual.card = combinedResponseCard(greeting, show, followUp);
@@ -52,6 +52,12 @@ module.exports = {
         });
     }
 };
+
+function createSlackCard(text) {
+    return {
+        text: text
+    };
+}
 
 function templateBuilderHelper(say, text, show, davis){
     let name = S(text).replaceAll('/', '-').replaceAll('\\', '-').replaceAll(NUNJUCK_EXTENSION, '').s;
@@ -97,27 +103,19 @@ function combinedResponseCard(greet, body, followUp) {
     card.attachments = [];
 
     if (!_.isNil(greet)) {
-        card.attachments.push({pretext: greet});
-    }
-
-    if (!_.isNil(body)) {
-        try {
-            let attachments = JSON.parse(body).attachments;
-            attachments.forEach( (attachment) => {
-                card.attachments.push(attachment);
-            });
-        } catch (e) {
-            card.attachments.push({pretext: body});
-        }
-    }
-
-    if (!_.isNil(followUp)) {
-        card.attachments.push({pretext: followUp});
+        card.text = (!_.isNil(body.text)) ? `${greet} ${body.text}` : greet;
+    } else {
+        card.text = _.get(body, 'text');
     }
     
-    if (version.initialized && !_.isNil(followUp)) {
-        card.attachments[card.attachments.length - 1].footer_icon = 'https://d3fzhvprqmsab7.cloudfront.net/wp-content/uploads/2014/07/Google-icon.jpg';
-        card.attachments[card.attachments.length - 1].footer = 'Dynatrace Davis ' + version.tag + ' (' + version.branch + ') - Updated on ' + version.lastUpdate;
+    if (!_.isNil(followUp) && !_.isNil(body.attachments)) {
+        body.attachments.push({pretext: followUp});
+    } else {
+        card.text = (!_isNil(card.text)) ? `${card.text}\n${followUp}` : followUp;
+    }
+    
+    if (!_.isNil(body.attachments)) {
+        card.attachments = body.attachments;
     }
     
     return card;

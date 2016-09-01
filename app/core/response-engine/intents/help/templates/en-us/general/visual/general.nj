@@ -1,8 +1,6 @@
 {
+    text": "Sounds like you could use a little help! \nTypes of questions you can ask me:",
     "attachments": [
-        {
-            "pretext": "Sounds like you could use a little help! \nTypes of questions you can ask me:"
-        },
         {
             "title": "Ask for problems in a specific time range",
             "text": "{% include "intents/help/templates/en-us/shared/filterByTimeRangeExample1.nj" %} \n {% include "intents/help/templates/en-us/shared/filterByTimeRangeExample2.nj" %} \n {% include "intents/help/templates/en-us/shared/filterByTimeRangeExample3.nj" %}"
