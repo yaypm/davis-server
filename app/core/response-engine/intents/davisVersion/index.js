@@ -36,14 +36,8 @@ const process = function process(davis) {
                        
             const nextIntent = 'error';
             davis.exchange.intent.push(nextIntent);
-            intents.runIntent(nextIntent, davis, state)
-                .then( () => {
-                    resolve();
-                })
-                .catch(err => {
-                    logger.error(err.message);
-                    reject(err);
-                });
+            intents.runIntent(nextIntent, davis, state);
+            resolve();
         }
     });
 };

@@ -317,6 +317,11 @@ const events = [
         name: 'OSI_DOCKER_DEVICEMAPPER_LOW_METADATA_SPACE',
         type: EVENT_TYPES.resources,
         friendly: ['a lack of metadata space affecting Docker']
+    },
+    {
+        name: 'HOST_DATASTORE_LOW_DISK_SPACE',
+        type: EVENT_TYPES.resources,
+        friendly: ['a data store running out of disk space']
     }
 
 ];
