@@ -61,7 +61,7 @@ const state = {
             }
         };
         davis.exchange.response.finished = false;
-        return _.sample(['Would you be interested in hearing more about the first, second, or third issue?']);
+        return _.sample(['Would you be interested in hearing more about the first, second, or third problem?']);
     }
 };
 

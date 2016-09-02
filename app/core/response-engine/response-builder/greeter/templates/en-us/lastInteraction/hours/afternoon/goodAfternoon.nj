@@ -1,1 +1,1 @@
-Good afternoon.
+Good afternoon{% include "response-builder/greeter/templates/en-us/shared/commaUser.nj" %}.

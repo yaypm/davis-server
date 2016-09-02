@@ -21,13 +21,16 @@ const process = function process(davis) {
                     //ToDo remove the assumption that we're drilling into problem details!
                     let request = davis.exchange.request.text;
 
-                    if (sentenceContain(request, ['third', 'three', '3'])) {
+                    if (sentenceContain(request, ['last', 'bottom'])) {
+                        logger.debug('The user asked for the last one in the list');
+                        state.problemId = _.last(result[0].state.problemIds);
+                    } else if (sentenceContain(request, ['third', 'three', '3'])) {
                         logger.debug('The user asked for the third choice');
                         state.problemId = result[0].state.problemIds[2];
-                    } else if (sentenceContain(request, ['second', 'two', '2'])) {
+                    } else if (sentenceContain(request, ['second', 'two', '2', 'middle'])) {
                         logger.debug('The user asked for the second choice');
                         state.problemId = result[0].state.problemIds[1];
-                    } else if (sentenceContain(request, ['first', 'one', '1'])) {
+                    } else if (sentenceContain(request, ['first', 'one', '1', 'top'])) {
                         logger.debug('The user asked for the first choice');
                         state.problemId = result[0].state.problemIds[0];
                     } else if (sentenceContain(request, ['neither', 'none', 'zero', '0'])) {
@@ -36,14 +39,15 @@ const process = function process(davis) {
                         nextIntent = 'no';
                     } else {
                         const choices = (result[0].state.problemIds.length === 2) ? 'either the first one or the second one' : 'either the first, second, or third one';
-                        state.error = { message: `I know choice is hard but you need to make one!  Please let me know which one you're interested in by saying ${choices}.` };
+                        nextIntent = 'message';
+                        state.message = `I know choosing is hard but you need to make one!  Please let me know which one you're interested in by saying ${choices}.`;
+                        state.finished = false;
                         davis.exchange.state = {
                             problemIds:  result[0].state.problemIds,
                             next: {
                                 multipleChoice: 'problemDetails'
                             }
                         };
-                        davis.exchange.response.finished = false;
                     }
                 } else {
                     logger.warn('Unable to let the user choose an option because we don\'t have any context.');
@@ -64,7 +68,7 @@ const process = function process(davis) {
 
 function sentenceContain(sentence, values) {
     const tokenizedSentence = tokenizer.tokenize(sentence),
-        trie = new Trie();
+        trie = new Trie(false);
 
     trie.addStrings(tokenizedSentence);
     return _.some(values, value => {

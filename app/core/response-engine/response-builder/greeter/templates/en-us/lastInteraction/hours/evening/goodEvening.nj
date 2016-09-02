@@ -1,1 +1,1 @@
-Hope you're having a good evening so far.
+Good evening{% include "response-builder/greeter/templates/en-us/shared/commaUser.nj" %}.

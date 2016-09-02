@@ -81,7 +81,7 @@ const events = [
     {
         name: 'DOCKER_MEMORY_SATURATION',
         type: EVENT_TYPES.resources,
-        friendly: ['an issue with Docker using all of it\'s allocated memory']
+        friendly: ['an problem with Docker using all of it\'s allocated memory']
     },
     {
         name: 'CPU_SATURATED',
@@ -181,12 +181,12 @@ const events = [
     {
         name: 'HOST_CONNECTION_LOST',
         type: EVENT_TYPES.availability,
-        friendly: ['an issue connecting to the host']
+        friendly: ['an problem connecting to the host']
     },
     {
         name: 'HOST_CONNECTION_FAILED',
         type: EVENT_TYPES.errors,
-        friendly: ['an issue connecting to the host']
+        friendly: ['an problem connecting to the host']
     },
     {
         name: 'HOST_MAINTENANCE',
@@ -246,17 +246,17 @@ const events = [
     {
         name: 'PROCESS_CUSTOM_PERFORMANCE',
         type: EVENT_TYPES.performance,
-        friendly: ['a performance issue affecting a user defined process']
+        friendly: ['a performance problem affecting a user defined process']
     },
     {
         name: 'PROCESS_LOG_AVAILABILITY',
         type: EVENT_TYPES.availability,
-        friendly: ['an availability issue affecting a user defined process']
+        friendly: ['an availability problem affecting a user defined process']
     },
     {
         name: 'PROCESS_LOG_PERFORMANCE',
         type: EVENT_TYPES.performance,
-        friendly: ['a performance issue discovered in the logs affecting a process']
+        friendly: ['a performance problem discovered in the logs affecting a process']
     },
     {
         name: 'MOBILE_APP_CRASH_RATE_INCREASED',
@@ -301,12 +301,12 @@ const events = [
     {
         name: 'HOST_LOG_AVAILABILITY',
         type: EVENT_TYPES.availability,
-        friendly: ['a host availability issue was discovered in the logs']
+        friendly: ['a host availability problem was discovered in the logs']
     },
     {
         name: 'HOST_LOG_PERFORMANCE',
         type: EVENT_TYPES.performance,
-        friendly: ['a host performance issue was discovered in the logs']
+        friendly: ['a host performance problem was discovered in the logs']
     },
     {
         name: 'OSI_DOCKER_DEVICEMAPPER_LOW_DATA_SPACE',
@@ -317,6 +317,11 @@ const events = [
         name: 'OSI_DOCKER_DEVICEMAPPER_LOW_METADATA_SPACE',
         type: EVENT_TYPES.resources,
         friendly: ['a lack of metadata space affecting Docker']
+    },
+    {
+        name: 'HOST_DATASTORE_LOW_DISK_SPACE',
+        type: EVENT_TYPES.resources,
+        friendly: ['a data store running out of disk space']
     }
 
 ];

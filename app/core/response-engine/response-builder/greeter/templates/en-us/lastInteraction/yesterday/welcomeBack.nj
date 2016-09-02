@@ -1,1 +1,1 @@
-Hey there, welcome back!
+Hey {% include "response-builder/greeter/templates/en-us/shared/user.nj" %}, welcome back!

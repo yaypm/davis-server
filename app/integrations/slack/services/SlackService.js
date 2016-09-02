@@ -41,6 +41,31 @@ module.exports = function SlackService(config) {
             }
         };
     }
+    
+    /**
+     * Strips out emojis
+     * 
+     * @param {String} str
+     * @returns {String} result
+     */
+    function stripEmojis(str) {
+        
+        // Allow key emoji, so user can ask what our usage of the key means
+        let result = (str.includes(':key:')) ? str : str.replace(/\:.+\:/g, '').trim();
+        
+        if (result == '') {
+            result = 'hey davis';
+            logger.warn('Error: Slack stripped emojis and was going to send an empty string to Wit');
+        }
+        
+        if (result !== str.trim()) {
+            logger.warn('Emojis stripped from user request: ');
+            logger.warn('"' + str + '"');
+        }
+        
+        return result;
+        
+    }
 
     return {
         /**
@@ -56,16 +81,19 @@ module.exports = function SlackService(config) {
             logger.info('Starting our interaction with Davis');
             
             return new BbPromise((resolve, reject) => {
+                
+                // Strip emojis
+                req.text = stripEmojis(req.text);
         
                 // Use Slack user property as id for Davis user 
                 // Avoids having to enter Slack user property for each Davis user for association
                 let user = {
                     id: member.id, 
                     name: {
-                        'first': member.first_name, 
-                        'last': member.last_name
+                        first: member.profile.first_name, 
+                        last: member.profile.last_name
                     },
-                    email: member.email,
+                    email: member.profile.email,
                     nlp: config.nlp,
                     dynatrace: config.slack.dynatrace,
                     timezone: member.tz

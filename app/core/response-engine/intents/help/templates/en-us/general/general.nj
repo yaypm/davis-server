@@ -1,0 +1,2 @@
+Sounds like you could use a little help, here's a few examples of the types of questions you can ask me:
+"{% include "intents/help/templates/en-us/shared/filterByTimeRangeExample2.nj" %}", "{% include "intents/help/templates/en-us/shared/filterByApplicationExample1.nj" %}", and "{% include "intents/help/templates/en-us/shared/filterByTimeRangeAndApplicationExample1.nj" %}"

@@ -6393,7 +6393,15 @@ FormatStream.prototype.capitalize = function capitalize(text) {
  * @returns {string}
  */
 FormatStream.prototype.period = function period(text) {
-  return text + (this.isJaCn ? '。' : '. ');
+  // Detect if a question mark should be used instead
+  const words = ['who', 'what', 'when', 'where', 'why', "how", "could", "can", 'is there', 'is the', 'did the', 'did any'];
+  let result = '. ';
+  words.forEach( function (word) {
+      if (text.toLowerCase().includes(word)) {
+          result = '? ';
+      }
+  });
+  return text + (this.isJaCn ? '。' : result);
 };
 
 FormatStream.prototype.formatString = function(chunk, encoding, next) {
@@ -7181,8 +7189,10 @@ RecognizeStream.prototype.sendJSON = function sendJSON(msg) {
 };
 
 RecognizeStream.prototype.sendData = function sendData(data) {
-  this.emit('send-data', data);
-  return this.socket.send(data);
+  if (this.socket.readyState == WebSocket.OPEN) {
+    this.emit('send-data', data);
+    return this.socket.send(data);
+  }
 };
 
 RecognizeStream.prototype._read = function(/* size*/) {

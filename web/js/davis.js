@@ -37,11 +37,11 @@ var davis = (function () {
      * @param {String} listeningStateElemId
      * @param {String} connectedUrlElemId
      */
-    var init = function (interactionLogElemId, textInputElemId, muteWrapperElemId, muteSVGElemId, listeningStateElemId, connectedUrlElemId) {
+    var init = function (interactionLogElemId, textInputElemId, muteWrapperElemId, muteSVGElemId, listeningStateElemId, connectedUrlElemId, gitElemId) {
         
         $.getJSON('./js/local-responses.json', function (data){
             localResponses = data;
-            view = new davisView(interactionLogElemId, textInputElemId, muteWrapperElemId, muteSVGElemId, listeningStateElemId, connectedUrlElemId);
+            view = new davisView(interactionLogElemId, textInputElemId, muteWrapperElemId, muteSVGElemId, listeningStateElemId, connectedUrlElemId, gitElemId);
             controller = new davisController();
             controller.init();
             view.attachEventListeners();
@@ -61,7 +61,7 @@ var davis = (function () {
      * 
      * @return {Object} global methods
      */
-    var davisView = function (interactionLogElemId, textInputElemId, muteWrapperElemId, muteSVGElemId, listeningStateElemId, connectedUrlElemId) {
+    var davisView = function (interactionLogElemId, textInputElemId, muteWrapperElemId, muteSVGElemId, listeningStateElemId, connectedUrlElemId, gitElemId) {
         
         this.interactionLogElemId = interactionLogElemId;
         this.textInputElemId = textInputElemId;
@@ -69,28 +69,45 @@ var davis = (function () {
         this.muteSVGElemId = muteSVGElemId;
         this.listeningStateElemId = listeningStateElemId;
         this.connectedUrlElemId = connectedUrlElemId;
+        this.gitElemId = gitElemId;
         
         var sentences = []; // Array of response sentences to be typed into interaction log
+        var textBeingTyped;
+        var elementBeingTyped;
        
         resetPlaceholder();
         setListeningState('sleeping');
+        
+        // Listen for keypress
+        // if space-bar and textbox not focused, toggleMute
+        $(function() {
+            $(window).keypress(function(e) {
+                var key = e.which;
+                if (key == 32 && !$("#"+textInputElemId).is(":focus")) {
+                    controller.toggleMute($('#'+listeningStateElemId).html() === localResponses.listeningStates.listening);
+                } else if (key != 32 && !$("#"+textInputElemId).is(":focus")) {
+                    $("#"+textInputElemId).focus();
+                }
+            });   
+        });
+        
         if (typeof window.chrome != 'object') {
            
-           addToInteractionLog(localResponses.errors.noBrowserSupport, true, false);
-           addToInteractionLog(localResponses.errors.chrome, true, false);
-           addToInteractionLog(localResponses.errors.getChrome, true, false); 
+           addToInteractionLog(localResponses.errors.noBrowserSupport.text, true, false);
+           addToInteractionLog(localResponses.errors.chrome.text, true, false);
+           addToInteractionLog(localResponses.errors.getChrome.text, true, false); 
             
         } else {
         
             if (!localStorage.getItem("davis-user-token")) {
                 
-                addToInteractionLog(localResponses.greetings.micPermission, true, false);
+                addToInteractionLog(localResponses.greetings.micPermission.text, true, false);
                 setTimeout(function () {
-                   addToInteractionLog(localResponses.greetings.thenHelp, true, false);
+                   addToInteractionLog(localResponses.greetings.thenHelp.text, true, false);
                 }, 5000);
                 
             } else {
-                addToInteractionLog(localResponses.greetings.help, true, false);
+                addToInteractionLog(localResponses.greetings.help.text, true, false);
             }
     
         }
@@ -142,11 +159,7 @@ var davis = (function () {
          */
         function setListeningState(state) {
             if (localResponses.listeningStates[state] !== $('#'+listeningStateElemId).html()) {
-                if (localResponses.listeningStates[state] !== localResponses.listeningStates.enablingMic) {
-                    $('#'+listeningStateElemId).hide().html(localResponses.listeningStates[state]).fadeIn(800);
-                } else {
-                    $('#'+listeningStateElemId).html(localResponses.listeningStates[state]);
-                }
+                $('#'+listeningStateElemId).html(localResponses.listeningStates[state]);
             }
         };
         
@@ -219,7 +232,7 @@ var davis = (function () {
          * Hides mic button
          */
         function noMic() {
-            $('#'+muteWrapperElemId).hide();
+            $('#'+muteWrapperElemId).css('visibility', 'hidden');
         }
         
         /**
@@ -232,12 +245,16 @@ var davis = (function () {
         function addToInteractionLog(text, isDavisSpeaking, isTypeWriter) {
             
             if (isTypeWriter) {
+                
                 typeText(text);
+                
             } else {
-                let styleClass = isDavisSpeaking ? 'botStyle' : 'userStyle';   
-                let el = $('<p>' + text + '</p>').css('display', 'none').addClass(styleClass);
+                
+                let styleClass = isDavisSpeaking ? 'botStyle' : 'userStyle';
+                let el = $('<p>' + text.trim() + '</p>').css('display', 'none').addClass(styleClass);
                 $('#'+interactionLogElemId).append(el);
                 el.fadeIn(400);
+                
             }
         
             if ($('#'+interactionLogElemId).children().length > 3) {
@@ -259,16 +276,32 @@ var davis = (function () {
             var text = sentences[0];
             sentences.splice(0, 1);
         
-            var node = $('<p></p>').addClass('botStyle');
+            textBeingTyped = text;
+            elementBeingTyped = $('<p></p>').addClass('botStyle');
         
-            $('#'+interactionLogElemId).append(node);
+            $('#'+interactionLogElemId).append(elementBeingTyped);
         
-            node.typed({
+            elementBeingTyped.typed({
                 strings: [text],
                 typeSpeed: 10,
                 startDelay: 600,
                 showCursor: false
             });
+            
+        }
+        
+        /**
+         * Stops typing animation and displays text being typed
+         */
+        function stopTypewriter() {
+            
+            // Stop typing
+            elementBeingTyped.data('typed').stop();
+            
+            // Display text
+            $(elementBeingTyped).css('display', 'none');
+            $(elementBeingTyped).html(textBeingTyped);
+            $(elementBeingTyped).fadeIn(400);
             
         }
         
@@ -290,6 +323,19 @@ var davis = (function () {
                 
             }
             
+        }
+        
+        /**
+         * Enable offline mode
+         * 
+         * @param {Boolean} isEnabled
+         */
+        function enableOfflineMode(isEnabled) {
+            
+            $("#"+textInputElemId).prop('disabled', isEnabled);
+            (isEnabled) ? $("#"+muteWrapperElemId).hide() : $("#"+muteWrapperElemId).show();
+            (isEnabled) ? $("#"+connectedUrlElemId).hide() : $("#"+connectedUrlElemId).show();
+
         }
           
         // view global methods  
@@ -341,6 +387,20 @@ var davis = (function () {
                 $('#'+connectedUrlElemId).html('<span style="opacity:0.4;">Connected:</span> <a href="' + url + '" target="_blank">'+url+'</a>');
             },
             
+            setGit: function (git) {
+                
+                let branch, updated;
+                if (git.branch !== 'master') {
+                    branch = ' (' + git.branch + ')';
+                    updated = ' <br /><span>' + git.lastUpdate + '</span>';
+                }
+                
+                if (git.branch) {
+                    $('#'+gitElemId).html('<a href="https://github.com/ruxit/davis-server/releases/tag/' + git.tag + '" target="_blank">' + git.tag + branch + updated + '</a>');
+                }
+                
+            },
+            
             getLocalResponses: function () {
                 return localResponses;
             },
@@ -355,6 +415,18 @@ var davis = (function () {
             
             showLogo: function () {
                 showLogo();
+            },
+            
+            getTextBeingTyped: function () {
+                return textBeingTyped;  
+            },
+            
+            stopTypewriter: function () {
+                stopTypewriter();
+            },
+            
+            enableOfflineMode: function (isEnabled) {
+                enableOfflineMode(isEnabled);
             }
             
         };
@@ -370,17 +442,17 @@ var davis = (function () {
     var davisController = function () {
     
         var isMuted = true;                       // No STT
-        var muteButtonPressed = false;            // Prevent automatically unmutting if mute button is pressed
         var inactivityTimeout = 1;                // Seconds of silence before Watson STT API stops listening
         var momentsOfSilence = 0;                 // Used for polling number of moments of silence 60 ms apart (avoid cutting off TTS playback) 
         var player = new Audio();                 // Audio element used to play TTS audio
         var micOn = new Audio('./audio/pop.wav'); // Mic on sound effect
         var stream;                               // IBM STT stream
-        var outputQueueSize = 0;                  // Counter for keeping track of queued outputTextAndSpeech() calls
+        var outputQueue = [];                  // Counter for keeping track of queued outputTextAndSpeech() calls
         var timezone;                             // User's timezone
         var userToken;                            // Random token used in place of a user ID to store/retrieve conversations in web version
-        var listenAfter = true;                   // Make Watson listen after outputting a response
         var debug = false;                        // Debug mode
+        var isSpeaking = false;
+        var currentTtsToken;
         
         if (localStorage.getItem('davis-debug-mode')) {
             debug = localStorage.getItem('davis-debug-mode');
@@ -407,13 +479,18 @@ var davis = (function () {
             listening: new Event('listening'),
             processing: new Event('processing'),
             responding: new Event('responding'),
-            chatMode: new Event('chatMode')
+            chatMode: new Event('chatMode'),
+            offlineMode: new Event('offlineMode')
         }
+        
+        var evt = new Event('change-stance', {bubbles: false});
         
         document.addEventListener('sleeping', function (event) {
             listeningState = 'sleeping';
             view.setListeningState(listeningState);
             view.muted();
+            evt.targetStance = 'empty';
+            document.getElementById('davisContainer').dispatchEvent(evt);
         }, false);
         
         document.addEventListener('enablingMic', function (event) {
@@ -424,33 +501,78 @@ var davis = (function () {
         document.addEventListener('listening', function (event) {
             listeningState = 'listening';
             view.setListeningState(listeningState);
-            if(!muteButtonPressed) {
-                view.listening();
-                micOn.play();
-            }
+            view.listening();
+            micOn.play();
+            evt.targetStance = 'listening';
+            document.getElementById('davisContainer').dispatchEvent(evt);
         }, false);
         
         document.addEventListener('processing', function (event) {
             listeningState = 'processing';
             view.setListeningState(listeningState);
             view.resetTextInput();
+            evt.targetStance = 'thinking';
+            document.getElementById('davisContainer').dispatchEvent(evt);
         }, false);
         
         document.addEventListener('responding', function (event) {
             listeningState = 'responding';
             view.setListeningState(listeningState);
+            evt.targetStance = 'answer';
+            document.getElementById('davisContainer').dispatchEvent(evt);
         }, false);
         
         document.addEventListener('chatMode', function (event) {
             listeningState = 'chatMode';
             view.setListeningState(listeningState);
+            evt.targetStance = 'empty';
+            document.getElementById('davisContainer').dispatchEvent(evt);
         
-            if (!isMuted) {
-                toggleMute(true);
+            // Stop typewriter and any audio that's playing
+            player.pause();
+            player.currentTime = 0;
+            
+            if (!isMuted && isSpeaking) {
+                view.stopTypewriter();
             }
             
+            isMuted = true;
+            view.muted();
+            
             enableListenForKeyword(false);
+            
         }, false);
+        
+        document.addEventListener('offlineMode', function (event) {
+            listeningState = 'offlineMode';
+            view.setListeningState(listeningState);
+        }, false);
+        
+        // Listen for if offline
+        var offlineCheck = function(){
+            
+            if (Offline.state === 'up') {
+                
+                Offline.check();
+                
+                if (listeningState == 'offlineMode') {
+                    view.enableOfflineMode(false);
+                    document.dispatchEvent(listeningStateEvents.sleeping);
+                    listen();
+                }
+                
+            } else {
+                
+                if (listeningState != 'offlineMode') {
+                    document.dispatchEvent(listeningStateEvents.offlineMode);
+                }
+                
+                view.enableOfflineMode(true)
+                
+            }
+            
+        }
+        setInterval(offlineCheck, 5000);
         
         /**
          * Sends a request to be processed for its intent 
@@ -539,6 +661,7 @@ var davis = (function () {
                         
                         if (!data.response.text) {
                             
+                            document.dispatchEvent(listeningStateEvents.chatMode);
                             outputTextAndSpeech(view.getLocalResponses().errors.nullResponse, view.getLocalResponses().voices.michael, false);
                             return;
                             
@@ -550,8 +673,8 @@ var davis = (function () {
                         }
                 
                         if (data.response) {
-                            
-                            outputTextAndSpeech(data.response.text, view.getLocalResponses().voices.michael, !data.response.shouldEndSession);
+
+                            outputTextAndSpeech(data.response, view.getLocalResponses().voices.michael, !data.response.shouldEndSession);
                             
                             // "Show me" hyperlink push functionality
                             if (data.response.hyperlink) {
@@ -563,12 +686,16 @@ var davis = (function () {
                         }
                         
                     }).catch(function (err) {
+                        
                         document.dispatchEvent(listeningStateEvents.chatMode);
                         outputTextAndSpeech(view.getLocalResponses().errors.server, view.getLocalResponses().voices.michael, false);
                         console.log('interactWithRuxit - Error: ' + err);
+                        
                     });
                 } else {
-                     document.dispatchEvent(listeningStateEvents.sleeping);
+                    if (listeningState !== 'chatMode') {
+                        document.dispatchEvent(listeningStateEvents.sleeping);
+                    }
                 }
             }
         }
@@ -576,44 +703,25 @@ var davis = (function () {
         /**
          *  Forwards text to be added to the interaction log and be spoken
          * 
-         * @param {String} text
+         * @param {Object} response
          * @param {String} voice
          * @param {Boolean} listen
          **/
-        function outputTextAndSpeech(text, voice, listen) {
-            
+        function outputTextAndSpeech(response, voice, listen) {
+        
             if (listeningState !== 'chatMode') {
-                document.dispatchEvent(listeningStateEvents.responding);
-            }
-            
-            listenAfter = listen;
-        
-            getTtsToken().then(function (token) {
-        
-                if (isSpeaking()) {
-                    
-                    outputWhenDoneSpeaking(text, token, voice);
-                    
+                
+                if (!isSpeaking) {
+                    document.dispatchEvent(listeningStateEvents.responding);
+                    speak(response, voice, listen);
                 } else {
-                    
-                    if (listeningState !== 'chatMode') {
-                        speak(text, token, voice);
-                    } else {
-                        chat(text);
-                    }
-                    
+                    outputQueue.push({response: response, voice: voice, listen: listen});
                 }
         
-            }).then(function () {
-                
-                if (!isMuted) {
+            } else {
+                chat(response.text);
+            }
                     
-                    outputQueueSize++;
-                    unmuteWhenDoneSpeaking();
-        
-                }
-                
-            });
         }
         
         /**
@@ -667,6 +775,25 @@ var davis = (function () {
             return fetch('/web/server', options)
             .then(function (response) {
                 return response.text();
+            });
+            
+        }
+        
+        /**
+         * Returns Git info
+         * 
+         * @return {Promise} info
+         */
+        function getGit() {
+            
+            var options = {
+                method: 'get',
+                mode: 'cors'
+            };
+            
+            return fetch('/api/v1/git', options)
+            .then(function (response) {
+                return response.json();
             });
             
         }
@@ -771,33 +898,67 @@ var davis = (function () {
         
                 stream.on('error', function (err) {
                     console.log(err);
+                    noMic();
                 });
-                
-                document.dispatchEvent(listeningStateEvents.listening);
         
             });
             
         }
         
         /**
+         * Listens to user request or plays response
+         * 
+         * @param {Boolean} listen - listen to user after playing
+         */
+        function listenOrSpeak(listen) {
+            isSpeaking = false;
+            if (listen && outputQueue.length == 0) {
+                unmute();
+            } else if (outputQueue.length > 0) {
+                let output = outputQueue.shift();
+                speak(output.text, output.voice, output.listen);
+            } else {
+                document.dispatchEvent(listeningStateEvents.sleeping);
+                enableListenForKeyword(true);
+            }
+        }
+        
+        /**
          * Forwards text and a token for use with IBM Watson TTS API
          * 
-         * @param {String} text
-         * @param {String} token
-         * @param {String} voice
+         * @param {Object} response - text to be spoken and/or displayed
+         * @param {String} voice - select voice for TTS
+         * @param {Boolean} listen - listen after TTS plays
          */
-        function speak(text, token, voice) {
+        function speak(response, voice, listen) {
+            
+                let watsonText = (response.ssml) ? response.ssml : response.text;
             
                 player.onplay = function () {
-                    view.addToInteractionLog(text, true, true);
+                    isSpeaking = true;
+                    view.addToInteractionLog(response.text, true, true);
                 };
                 
-                WatsonSpeech.TextToSpeech.synthesize({
-                    text: text,
-                    token: token,
-                    voice: voice,
-                    element: player
+                player.onpause = function () {
+                    listenOrSpeak(listen);
+                };
+                
+                player.onended = function () {
+                    listenOrSpeak(listen);
+                };
+                
+                getTtsToken().then( token => {
+                    WatsonSpeech.TextToSpeech.synthesize({
+                        text: watsonText,
+                        token: token,
+                        voice: voice,
+                        element: player
+                    });
+                }).catch(err => {
+                   console.log(err);
+                   noMic();
                 });
+               
             
         }
         
@@ -809,79 +970,17 @@ var davis = (function () {
         }
         
         /**
-         * Returns whether TTS audio is being played
-         * 
-         * @return {Boolean}
-         */
-        function isSpeaking() {
-            return !(player.ended || player.paused);
-        }
-        
-        /**
          *Enables the mic when done playing TTS audio
          */
-        function unmuteWhenDoneSpeaking() {
+        function unmute() {
             
-            if (isSpeaking()) {
+            if (outputQueue.length < 1 && listeningState !== 'chatMode') {
                 
-                var timeout = setTimeout(unmuteWhenDoneSpeaking, 60);
-                
-            } else {
-                
-                clearTimeout(timeout);
-                
-                if (momentsOfSilence >= 1) {
-                    
-                    momentsOfSilence = 0;
-                    outputQueueSize--;
-                    
-                    if (outputQueueSize < 1 && listeningState !== 'chatMode' && !muteButtonPressed && listenAfter) {
-                        
-                      listen();
-                      
-                    } else if (!listenAfter) {
-                        toggleMute(true);
-                        enableListenForKeyword(true);
-                    } else {
-                        muteButtonPressed = false;
-                    }
-                    
-                } else {
-                    
-                    momentsOfSilence++;
-                    var timeout = setTimeout(unmuteWhenDoneSpeaking, 60);
-                    
-                }
-                
-            }
-            
-        }
-        
-        /**
-         * Forwards text and a token for use with IBM Watson TTS API 
-         * when all previous TTS audio is done playing
-         * 
-         * @param {String} text
-         * @param {String} token
-         */
-        function outputWhenDoneSpeaking(text, token, voice) {
-            
-            if (isSpeaking()) {
-                
-                var timeout = setTimeout(function () { 
-                    outputWhenDoneSpeaking(text, token, voice); 
-                }, 50);
-                
-            } else {
-                
-                clearTimeout(timeout);
-                
-                if (listeningState !== 'chatMode') {
-                    speak(text, token, voice);
-                } else {
-                    chat(text);
-                }
-                
+                listen();
+              
+            } else if (listeningState !== 'chatMode') {
+                toggleMute(true);
+                enableListenForKeyword(true);
             }
             
         }
@@ -891,11 +990,10 @@ var davis = (function () {
          * when there's no interaction in progress already
          */
         function listen() {
-            
             if (listeningState !== 'listening') {
-        
                 getSttToken()
                 .then(function (token) {
+                    document.dispatchEvent(listeningStateEvents.listening);
                     createSttStream(token);
                 })
                 .catch(function (err) { 
@@ -930,7 +1028,6 @@ var davis = (function () {
                     if (launch) {
                         
                         document.dispatchEvent(listeningStateEvents.enablingMic);
-                        listenAfter = true;
                         toggleMute(false);
                         
                     } else if (debug && phrases[0].toLowerCase().trim().split(' ').length < 5) {
@@ -970,6 +1067,8 @@ var davis = (function () {
                     }
                     
                 });
+                
+                enableListenForKeyword(true);
         
             }
             
@@ -981,7 +1080,7 @@ var davis = (function () {
          * Note: Used when toggling between the annyang STT library and IBM Watson STT API
          */
         function enableListenForKeyword(listen) {
-            listen ? annyang.start({ 'autoRestart': true, 'continuous': true }) : annyang.abort();
+            listen ? annyang.start({ 'autoRestart': true, 'continuous': false }) : annyang.abort();
         }
         
         /**
@@ -993,34 +1092,43 @@ var davis = (function () {
          */
         function toggleMute(mute) {
             
-            listenAfter = true;
-            
-            document.dispatchEvent(listeningStateEvents.sleeping);
-            
-            if (!isMuted && mute == undefined && !muteButtonPressed) {
-                muteButtonPressed = true;
-            } else {
-                muteButtonPressed = false;
+            if (listeningState !== 'chatMode') {
+                document.dispatchEvent(listeningStateEvents.sleeping);
             }
             
-            if ((!isMuted && mute != false) || muteButtonPressed) {
+            if (isSpeaking) {
                 
-                isMuted = true;
-                view.muted();
-                
-                if (stream != null) {
-                    stream.stop();
-                }
-                
-                enableListenForKeyword(true);
+                // Stop typewriter and any audio that's playing
+                player.pause();
+                player.currentTime = 0;
+                view.stopTypewriter();
+                isMuted = false;
+                enableListenForKeyword(false);
+                document.dispatchEvent(listeningStateEvents.enablingMic);
+                unmute();
                 
             } else {
-                
-                isMuted = false;
-                view.listening();
-                enableListenForKeyword(false);
-                unmuteWhenDoneSpeaking();
-                
+            
+                if (!isMuted && mute) {
+                    
+                    isMuted = true;
+                    view.muted();
+                    
+                    if (stream != null) {
+                       stream.stop();
+                    }
+                    
+                    enableListenForKeyword(true);
+                    
+                } else if (!mute) {
+                   
+                    isMuted = false;
+                    enableListenForKeyword(false);
+                    document.dispatchEvent(listeningStateEvents.enablingMic);
+                    unmute();
+                    
+                }
+            
             }
             
         }
@@ -1052,14 +1160,36 @@ var davis = (function () {
                 
                 timezone = jstz.determine().name();
                 getDavisUserToken();
-                getConnectedServerUrl().then(function (url) {
+                getConnectedServerUrl().then( url => {
                     view.setConnectedUrl(url);
                 });
-                annyangInit();
-                enableListenForKeyword(true);
-                document.dispatchEvent(listeningStateEvents.sleeping);
-                view.showLogo();
-                
+                getGit().then( git => {
+                   view.setGit(git);
+                });
+        
+                // Get tokens and confirm using SSL
+                // if failure fallback to chat mode
+                getSttToken()
+                .then( token => {
+                    return getTtsToken();
+                }).then( token => {
+                    
+                    if (location.protocol === 'https:' || location.href.includes('127.0.0.1') || location.href.includes('localhost')) {
+                    
+                        annyangInit();
+                        document.dispatchEvent(listeningStateEvents.sleeping);
+                        evt.targetStance = 'dynatrace';
+                        document.getElementById('davisContainer').dispatchEvent(evt);
+                        
+                    } else {
+                        noMic();
+                    }
+                    
+                })
+                .catch( err => {
+                    console.log(err);
+                    noMic();
+                });
             }
             
         }
@@ -1085,11 +1215,13 @@ var davis = (function () {
             submitTextInput: function (keycode) {
                 submitTextInput(keycode);
             },
-            toggleMute: function () {
-                toggleMute();    
+            toggleMute: function (mute) {
+                toggleMute(mute);    
             },
             process: function () {
+                
                 interactWithRuxit($('#'+view.getTextInputElemId()).val());
+                
             }
             
         };

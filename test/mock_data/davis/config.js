@@ -5,23 +5,23 @@ let config = {
     ip: process.env.IP || '0.0.0.0',
 
     database: {
-        dsn: '<mongodb_database_dsn>'
+        dsn: 'localhost:27017'
     },
     watson: {
         enabled: true,
         stt: {
-            user: '<watson_stt_user_name>',
-            password: '<watson_stt_password>'
+            user: '123456',
+            password: '123456789'
         },
         tts: {
-            user: '<watson_tts_user_name>',
-            password: '<watson_tts_password>'
+            user: '123456',
+            password: '123456789'
         }
     },
 
     slack: {
         enabled: true,
-        key: '<slack_token>'
+        key: '123456789'
     },
 
     users: [{

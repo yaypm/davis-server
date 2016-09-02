@@ -18,8 +18,10 @@
   "dependencies": {
     "annyang": "^2.4.0",
     "fetch": "^1.0.0",
-    "typed.js": "^1.1.4",
     "jquery": "latest",
-    "timezone-detect": "latest"
+    "offline": "latest",
+    "timezone-detect": "latest",
+    "davisvisualization": "http://github.dynatrace.vmta/thomas-heller/davis-visualization/releases/download/v0.0.6/davisvisualization-0.0.6.tar.gz",
+    "p5.js": "p5js#master"
   }
 }
