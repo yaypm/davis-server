@@ -6,6 +6,8 @@ const rp = require('request-promise'),
     BbPromise = require('bluebird'),
     S = require('string'),
     natural = require('natural'),
+    firstBy = require('thenby'),
+    events = require('../../config/internal-aliases/events'),
     logger = require('../../utils/logger');
 
 const STRING_DISTANT_THRESHOLD = .75;
@@ -154,9 +156,9 @@ class Dynatrace {
                 rp(this.options('problem/feed', { relativeTime: 'hour', status: 'open' }))
                     .then( response => {
                         logger.debug(`The prefiltered list is ${response.result.problems.length}`);
-                        response.result.problems = _.filter(response.result.problems, problem => {
+                        response.result.problems = sortProblemsByImportance(_.filter(response.result.problems, problem => {
                             return filterApplicationProblems(applications, problem, this.config.aliases);
-                        });
+                        }));
                         logger.debug(`The post filtered list is ${response.result.problems.length}`);
 
                         resolve(response);
@@ -170,10 +172,10 @@ class Dynatrace {
                 rp(this.options('problem/feed', getTimeFilter(timeRange.startTime)))
                     .then( response => {
                         logger.debug(`The pre filtered list is ${response.result.problems.length}`);
-                        response.result.problems = _.filter(response.result.problems, problem => {
+                        response.result.problems = sortProblemsByImportance(_.filter(response.result.problems, problem => {
                             return isProblemInRange(timeRange.startTime, timeRange.stopTime, problem.startTime, problem.endTime) &&
                                 filterApplicationProblems(applications, problem, this.config.aliases);
-                        });
+                        }));
                         logger.debug(`The post filtered list is ${response.result.problems.length}`);
 
                         resolve(response);
@@ -184,6 +186,58 @@ class Dynatrace {
             }
         });
     }  
+}
+
+function sortProblemsByImportance(problems) {
+    return problems.sort(
+        firstBy(function(problem) {
+            // Puts open issues at the top
+            return (problem.status === 'OPEN') ? 1 : 0;
+        }, -1)
+        .thenBy(function (problem) {
+            // Then the list is sorted by impact.  It goes application to infrastructure.
+            return ['APPLICATION', 'SERVICE', 'INFRASTRUCTURE'].indexOf(problem.impactLevel);
+        })
+        .thenBy(function(problem) {
+            // We then look at the highest rated impact.
+            return _.findIndex(events, {name: findMostImportantImpact(problem)});
+        })
+        // Then we rank problem with root causes slightly highe r.
+        .thenBy('hasRootCause', -1)
+        //  Lastly, we rank by time.  The newest issues are at the top of the list.
+        .thenBy('startTime')
+    );
+}
+
+function findMostImportantImpact(problem){
+    let highestRankedImpact = null,
+        highestRankedImpactName = null;
+
+    _.forEach(problem.rankedImpacts, function(impact) {
+        let category = _.chain(events)
+            .find(function(e) { return e.name === impact.eventType; })
+            .get('type')
+            .value();
+
+        if (category === 'availability') {
+            highestRankedImpact = 'availability';
+            highestRankedImpactName = impact.eventType;
+            //exits the for each loop early
+            return false;
+        } else if (category === 'errors' && highestRankedImpact !== 'errors') {
+            highestRankedImpact = 'errors';
+            highestRankedImpactName = impact.eventType;
+        } else if (category === 'performance' && highestRankedImpact !== 'performance') {
+            highestRankedImpact = 'performance';
+            highestRankedImpactName = impact.eventType;
+        } else if (category === 'resources' && highestRankedImpact !== 'resources') {
+            highestRankedImpact = 'resources';
+            highestRankedImpactName = impact.eventType;
+        } else if (_.isNull(highestRankedImpact)){
+            console.log(`Uncategorized impact '${impact.eventType}'`);
+        }
+    });
+    return highestRankedImpactName;
 }
 
 /**
