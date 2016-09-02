@@ -16,7 +16,7 @@ module.exports = function setupApp(config) {
     app.use(require('morgan')('tiny', {
         stream: logger.stream,
         skip: req => {
-            return req.url.startsWith('/favicon.ico');
+            return req.url.startsWith('/favicon.ico') || req.url.startsWith('/healthCheck.html');
         }
     }));
 
