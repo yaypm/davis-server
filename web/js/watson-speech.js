@@ -7189,8 +7189,10 @@ RecognizeStream.prototype.sendJSON = function sendJSON(msg) {
 };
 
 RecognizeStream.prototype.sendData = function sendData(data) {
-  this.emit('send-data', data);
-  return this.socket.send(data);
+  if (this.socket.readyState == WebSocket.OPEN) {
+    this.emit('send-data', data);
+    return this.socket.send(data);
+  }
 };
 
 RecognizeStream.prototype._read = function(/* size*/) {

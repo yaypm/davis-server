@@ -47,7 +47,7 @@
         "listening": "Listening ...",
         "processing": "Processing ...",
         "responding": "Responding ...",
-        "chatMode": "Chat Mode",
+        "chatMode": "Chat Mode (Launch phrase disabled)",
         "offlineMode": "Offline"
     },
     "phrases": [

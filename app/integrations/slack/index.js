@@ -251,11 +251,24 @@ module.exports = function (config) {
                         
                     });
         
-                    convo.ask(this.initialResponse, (response, convo) => {
-                        clearTimeout(this.inactivityTimeout);
-                        this.addToConvo(response, convo);
-                    });
-                    convo.next();
+                    try{
+                        
+                        if (this.initialResponse) {
+                            
+                            convo.ask(this.initialResponse, (response, convo) => {
+                                clearTimeout(this.inactivityTimeout);
+                                this.addToConvo(response, convo);
+                            });
+                            
+                        } else {
+                            convo.say("Sorry about that, I'm having issues responding to your request at this time.");
+                        }
+                        
+                        convo.next();
+                    
+                    } catch (err) {
+                        logger.warn(err);
+                    }
                     
                 })
                 .catch(err => {
@@ -323,13 +336,25 @@ module.exports = function (config) {
                         
                     } else {
     
-                        // Send response and listen for request
-                        convo.ask(output, (response, convo) => {
-                        
-                            this.addToConvo(response, convo);
+                        try{
                             
-                        });
-                        convo.next();
+                            // Send response and listen for request
+                            convo.ask(output, (response, convo) => {
+                            
+                                if (output) {
+                                    this.addToConvo(response, convo);
+                                } else {
+                                    convo.say("Sorry about that, I'm having issues responding to your request at this time.");
+                                    convo.next();
+                                }
+                                
+                            });
+                            convo.next();
+                        
+                        } catch (err) {
+                            logger.warn(err);
+                        }
+                        
                         clearTimeout(this.inactivityTimeout);
                         
                     }
