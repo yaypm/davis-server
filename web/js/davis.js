@@ -1115,7 +1115,7 @@ var davis = (function () {
                     view.muted();
                     
                     if (stream != null) {
-                        stream.stop();
+                       stream.stop();
                     }
                     
                     enableListenForKeyword(true);
