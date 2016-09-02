@@ -111,7 +111,7 @@ function combinedResponseCard(greet, body, followUp) {
     if (!_.isNil(followUp) && !_.isNil(body.attachments)) {
         body.attachments.push({pretext: followUp});
     } else {
-        card.text = (!_isNil(card.text)) ? `${card.text}\n${followUp}` : followUp;
+        card.text = (!_.isNil(card.text)) ? `${card.text}\n${followUp}` : followUp;
     }
     
     if (!_.isNil(body.attachments)) {
