@@ -38,7 +38,12 @@ module.exports = {
                     return [greetingResponse, sayResponse, textResponse, showResponse];
                 })
                 .spread((greeting, say, text, show) => {
-                    show = (show) ? JSON.parse(show) : createSlackCard(text);
+                    try {
+                        show = (show) ? JSON.parse(show) : createSlackCard(text);
+                    } catch(err) {
+                        show = createSlackCard(text);
+                        logger.warn(err);
+                    }
                     davis.exchange.response.audible.ssml = combinedResponse(greeting, say, followUp);
                     davis.exchange.response.visual.text = combinedResponse(greeting, text, followUp);
                     davis.exchange.response.visual.card = combinedResponseCard(greeting, show, followUp);
@@ -110,7 +115,7 @@ function combinedResponseCard(greet, body, followUp) {
     
     if (!_.isNil(followUp) && !_.isNil(body.attachments)) {
         body.attachments.push({pretext: followUp});
-    } else {
+    } else if (!_.isNil(followUp)){
         card.text = (!_.isNil(card.text)) ? `${card.text}\n${followUp}` : followUp;
     }
     
