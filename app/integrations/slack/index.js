@@ -8,6 +8,8 @@ const Botkit = require('botkit'),
     rp = require('request-promise'),
     moment = require('moment');
 
+const fullChannelList = [];
+
 module.exports = function (config) {
     
     const controller = Botkit.slackbot({
@@ -108,6 +110,17 @@ module.exports = function (config) {
                 if (err) {
                     throw new Error('Could not connect to Slack');
                 }
+
+                // @ https://api.slack.com/methods/channels.list
+                bot.api.channels.list({}, function (err, response) {
+                    if (response.hasOwnProperty('channels') && response.ok) {
+                        var total = response.channels.length;
+                        for (var i = 0; i < total; i++) {
+                            var channel = response.channels[i];
+                            fullChannelList.push({name: channel.name, id: channel.id});
+                        }
+                    }
+                });
             });
             
         } else {
@@ -163,6 +176,12 @@ module.exports = function (config) {
 
     problemService.on('event.problem.**', problem => {
         logger.info(`A problem notification for ${problem.PID} has been received.`);
+        bot.say(
+            {
+                text: `A problem happened ${problem.PID}!`,
+                channel: 'C28MAGNAG' // a valid slack channel, group, mpim, or im ID
+            }
+        );
     });
     
     /**
