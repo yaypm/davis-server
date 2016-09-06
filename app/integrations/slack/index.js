@@ -181,7 +181,6 @@ module.exports = function (config) {
             this.shouldEndSession;
             this.user;
             this.directPrefix = '';
-            this.convoEnded = false;
         }
             
         /**
@@ -196,7 +195,11 @@ module.exports = function (config) {
             
             this.lastInteractionTime = moment();
 
-            this.inactivityTimeout = this.setInactivityTimeout(convo);
+            if (this.shouldEndSession != true) {
+                this.inactivityTimeout = this.setInactivityTimeout(convo);
+            } else {
+                clearTimeout(this.inactivityTimeout);
+            }
             
             getUserDetails(this.initialInteraction.user).then( (details) => {
                 
@@ -234,32 +237,43 @@ module.exports = function (config) {
                 .then(resp => {
                     
                     logger.info('Sending a response back to the Slack service');
-                    
-                    if (resp.response.outputSpeech.card) {
-                        resp.response.outputSpeech.card.attachments[0].pretext = this.directPrefix + resp.response.outputSpeech.card.attachments[0].pretext;
-                        this.initialResponse = resp.response.outputSpeech.card;
-                    } else {
-                        this.initialResponse = this.directPrefix + resp.response.outputSpeech.text;
+                    if (this.directPrefix) {
+                        resp.response.outputSpeech.card.text = this.directPrefix + resp.response.outputSpeech.card.text;
                     }
-                   
+                    this.initialResponse = resp.response.outputSpeech.card;
+                    
                     this.shouldEndSession = resp.response.shouldEndSession;
                     
                     // Listen for typing event
                     controller.on('user_typing', (bot,message) => {
                 
-                        if (message.user === this.user.id && this.inactivityTimeout && !this.convoEnded && !this.shouldEndSession) {
-                            logger.info('Slack: User typing, resetting timeout');
+                        if (message.user === this.user.id && this.inactivityTimeout && !this.shouldEndSession) {
                             this.lastInteractionTime = moment();
                             this.resetTimeout = true;
+                        } else {
+                            this.resetTimeout = false;
                         }  
                         
                     });
         
-                    convo.ask(this.initialResponse, (response, convo) => {
-                        clearTimeout(this.inactivityTimeout);
-                        this.addToConvo(response, convo);
-                    });
-                    convo.next();
+                    try{
+                        
+                        if (this.initialResponse) {
+                            
+                            convo.ask(this.initialResponse, (response, convo) => {
+                                clearTimeout(this.inactivityTimeout);
+                                this.addToConvo(response, convo);
+                            });
+                            
+                        } else {
+                            convo.say("Sorry about that, I'm having issues responding to your request at this time.");
+                        }
+                        
+                        convo.next();
+                    
+                    } catch (err) {
+                        logger.warn(err);
+                    }
                     
                 })
                 .catch(err => {
@@ -286,14 +300,17 @@ module.exports = function (config) {
             // Reset last interaction timestamp
             this.lastInteractionTime = moment();
             
-            this.inactivityTimeout = this.setInactivityTimeout(convo);
+            if (this.shouldEndSession != true) {
+                this.inactivityTimeout = this.setInactivityTimeout(convo);
+            } else {
+                clearTimeout(this.inactivityTimeout);
+            }
             
             // if lastInteractionTime is more than 30 seconds ago, end conversation
             if (!this.isDirectMessage && (this.shouldEndSession || isTimedOut)) {
                 
                 logger.info('Slack: Conversation stopped');
                 convo.stop();
-                this.convoEnded = true;
                 clearTimeout(this.inactivityTimeout);
                 
             } else {
@@ -303,32 +320,46 @@ module.exports = function (config) {
                 SlackService(config).askDavis(response, this.user)
                 .then(resp => {
                     
-                    if (resp.response.outputSpeech.card) {
-                        resp.response.outputSpeech.card.attachments[0].pretext = this.directPrefix + resp.response.outputSpeech.card.attachments[0].pretext;
-                    } else {
-                        resp.response.outputSpeech.text = this.directPrefix + resp.response.outputSpeech.text;
+                    logger.info('Slack: Sending a response');
+                    if (this.directPrefix) {
+                        resp.response.outputSpeech.card.text = this.directPrefix + resp.response.outputSpeech.card.text;
                     }
                     
-                    logger.info('Slack: Sending a response');
-                    
                     this.shouldEndSession = resp.response.shouldEndSession;
+                    let output = (resp.response.outputSpeech.card) ? resp.response.outputSpeech.card : resp.response.outputSpeech.text;
+                    
+                    if (!output) {
+                        throw new Error('Unable to respond, probably a template error');
+                    }
                     
                     // if no followup question
                     if (this.shouldEndSession) {
                         
-                        convo.say(resp.response.outputSpeech.text);
+                        convo.say(output);
                         convo.next();
                         clearTimeout(this.inactivityTimeout);
                         
                     } else {
     
-                        // Send response and listen for request
-                        convo.ask(resp.response.outputSpeech.card, (response, convo) => {
-                        
-                            this.addToConvo(response, convo);
+                        try{
                             
-                        });
-                        convo.next();
+                            // Send response and listen for request
+                            convo.ask(output, (response, convo) => {
+                            
+                                if (output) {
+                                    this.addToConvo(response, convo);
+                                } else {
+                                    convo.say("Sorry about that, I'm having issues responding to your request at this time.");
+                                    convo.next();
+                                }
+                                
+                            });
+                            convo.next();
+                        
+                        } catch (err) {
+                            logger.warn(err);
+                        }
+                        
                         clearTimeout(this.inactivityTimeout);
                         
                     }
@@ -337,6 +368,8 @@ module.exports = function (config) {
                 .catch(err => {
                     logger.error('Unable to respond to the request received from Slack');
                     logger.error(err);
+                    convo.say("Sorry about that, I'm having issues responding to your request at this time.");
+                    convo.next();
                 });
                 
             }
@@ -355,11 +388,10 @@ module.exports = function (config) {
             return setTimeout( () => {
                 
                 // if not a direct message, let the user know they need to wake Davis
-                if(!this.isDirectMessage && !this.resetTimeout) {
+                if(!this.isDirectMessage && !this.resetTimeout && !this.shouldEndSession) {
                     
                     convo.say(this.directPrefix + ":ZZZ: I've fallen asleep");
                     convo.next();
-                    this.convoEnded = true;
                     clearTimeout(this.inactivityTimeout);
                     
                     // Allows convo.say to execute beforehand

@@ -39,15 +39,15 @@ const process = function process(davis) {
                         nextIntent = 'no';
                     } else {
                         const choices = (result[0].state.problemIds.length === 2) ? 'either the first one or the second one' : 'either the first, second, or third one';
-                        state.error = { message: `I know choosing is hard but you need to make one!  Please let me know which one you're interested in by saying ${choices}.` };
+                        nextIntent = 'message';
+                        state.message = `I know choosing is hard but you need to make one!  Please let me know which one you're interested in by saying ${choices}.`;
+                        state.finished = false;
                         davis.exchange.state = {
                             problemIds:  result[0].state.problemIds,
                             next: {
                                 multipleChoice: 'problemDetails'
                             }
                         };
-                        davis.exchange.response.finished = false;
-                        nextIntent = 'error';
                     }
                 } else {
                     logger.warn('Unable to let the user choose an option because we don\'t have any context.');
@@ -68,7 +68,7 @@ const process = function process(davis) {
 
 function sentenceContain(sentence, values) {
     const tokenizedSentence = tokenizer.tokenize(sentence),
-        trie = new Trie();
+        trie = new Trie(false);
 
     trie.addStrings(tokenizedSentence);
     return _.some(values, value => {

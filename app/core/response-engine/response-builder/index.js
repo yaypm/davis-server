@@ -7,7 +7,8 @@ const _ = require('lodash'),
     nunjucks = require('./nunjucks'),
     path = require('path'),
     greeter = require('./greeter'),
-    logger = require('../../../utils/logger');
+    logger = require('../../../utils/logger'),
+    version = require('../../../utils/version');
 
 const NUNJUCK_EXTENSION = '.nj',
     RESERVED_FOLDER_NAMES = {
@@ -33,10 +34,11 @@ module.exports = {
                         sayResponse = (!_.isNil(say)) ? nunjucks(davis.config.aliases).renderAsync(say, davis) : null,
                         textResponse = (!_.isNil(text)) ? nunjucks(davis.config.aliases).renderAsync(text, davis): null,
                         showResponse = (!_.isNil(show)) ? nunjucks(davis.config.aliases).renderAsync(show, davis) : null;
+                        
                     return [greetingResponse, sayResponse, textResponse, showResponse];
                 })
                 .spread((greeting, say, text, show) => {
-                    show = (show) ? show : text;
+                    show = (show) ? JSON.parse(show) : createSlackCard(text);
                     davis.exchange.response.audible.ssml = combinedResponse(greeting, say, followUp);
                     davis.exchange.response.visual.text = combinedResponse(greeting, text, followUp);
                     davis.exchange.response.visual.card = combinedResponseCard(greeting, show, followUp);
@@ -50,6 +52,12 @@ module.exports = {
         });
     }
 };
+
+function createSlackCard(text) {
+    return {
+        text: text
+    };
+}
 
 function templateBuilderHelper(say, text, show, davis){
     let name = S(text).replaceAll('/', '-').replaceAll('\\', '-').replaceAll(NUNJUCK_EXTENSION, '').s;
@@ -90,30 +98,28 @@ function combinedResponse(greet, body, followUp) {
 }
 
 function combinedResponseCard(greet, body, followUp) {
-
+    
     let card = {};
     card.attachments = [];
 
     if (!_.isNil(greet)) {
-        card.attachments.push({pretext: greet});
+        card.text = (!_.isNil(body.text)) ? `${greet} ${body.text}` : greet;
+    } else {
+        card.text = _.get(body, 'text');
     }
-
-    if (!_.isNil(body)) {
-        try {
-            let attachments = JSON.parse(body).attachments;
-            attachments.forEach( (attachment) => {
-                card.attachments.push(attachment);
-            });
-        } catch (e) {
-            card.attachments.push({pretext: body});
-        }
+    
+    if (!_.isNil(followUp) && !_.isNil(body.attachments)) {
+        body.attachments.push({pretext: followUp});
+    } else {
+        card.text = (!_.isNil(card.text)) ? `${card.text}\n${followUp}` : followUp;
     }
-
-    if (!_.isNil(followUp)) {
-        card.attachments.push({pretext: followUp});
+    
+    if (!_.isNil(body.attachments)) {
+        card.attachments = body.attachments;
     }
-
+    
     return card;
+    
 }
 
 function getFullPath(relativeTemplatePath) {

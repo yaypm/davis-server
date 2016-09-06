@@ -29,7 +29,7 @@ const process = function process(davis) {
     return new BbPromise((resolve, reject) => {
         davis.conversation.getHistory(2)
             .then(result => {
-                const previousIntent = _.head(result[1].intent);
+                const previousIntent = _.get(result, '[1].intent[0]');
 
                 if (previousIntent === 'unknown') {
                     logger.debug('The user appears to be confused.  We should suggest a path.');

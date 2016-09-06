@@ -50,14 +50,15 @@ module.exports = function SlackService(config) {
      */
     function stripEmojis(str) {
         
-        let result = str.replace(/\:.+\:/g, '').trim();
+        // Allow key emoji, so user can ask what our usage of the key means
+        let result = (str.includes(':key:')) ? str : str.replace(/\:.+\:/g, '').trim();
         
         if (result == '') {
             result = 'hey davis';
             logger.warn('Error: Slack stripped emojis and was going to send an empty string to Wit');
         }
         
-        if (result !== str) {
+        if (result !== str.trim()) {
             logger.warn('Emojis stripped from user request: ');
             logger.warn('"' + str + '"');
         }
@@ -89,10 +90,10 @@ module.exports = function SlackService(config) {
                 let user = {
                     id: member.id, 
                     name: {
-                        'first': member.first_name, 
-                        'last': member.last_name
+                        first: member.profile.first_name, 
+                        last: member.profile.last_name
                     },
-                    email: member.email,
+                    email: member.profile.email,
                     nlp: config.nlp,
                     dynatrace: config.slack.dynatrace,
                     timezone: member.tz

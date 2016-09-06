@@ -1,1 +1,1 @@
-I hate to be the bearer of bad news, but there are {{ intentData.problem.result.problems.length }} active issues.  I would recommend focusing on one of the following issues.  {% include "intents/problem/templates/en-us/shared/top-three-issues.nj" %}
+I hate to be the bearer of bad news, but there are {{ intentData.problem.result.problems.length }} active problems.  I would recommend focusing on one of the following problems.  {% include "intents/problem/templates/en-us/shared/top-three-problems.nj" %}

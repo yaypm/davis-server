@@ -15,25 +15,31 @@
 		<script>
 			// Initialize davis view and controller
 			// Define UI element ids
-			davis.init('interactionLog', 'textInput', 'muteWrapper', 'muteSVG', 'listeningState', 'connectedUrl');
+			davis.init('interactionLog', 'textInput', 'muteWrapper', 'muteSVG', 'listeningState', 'connectedUrl', 'git');
 		</script>
+		<script src="./js/third-party/p5.js/lib/p5.min.js"></script>
+		<script src="./js/third-party/davisvisualization/index.js"></script>
+		<script src="./js/davis-visualization.js"></script>
 	</head>
 	<body>
 	    <div class="site-wrapper">
 	    	<div class="site-wrapper-inner">
-	        	<div class="inner" id="interactionLog"></div>
-	        	<div id="logo"></div>
+        	<div class="inner" id="interactionLog"></div>
+					<div class="davisvisual__container">
+						<div class="davisvisual__davis" id="davisContainer"></div>
+					</div>
 				<div class="inputWrapper">
 					<div id="listeningState"></div>
 					<input id="textInput" type="text" />
 					<div id="muteWrapper">
 						<img src="images/microphone.svg" id="muteSVG" />
 					</div>
-					<div id="connectedUrl"></div>
+					<div id="connectedUrl">Connecting ...</div>
      			</div>
      			<div id="davis-logo-wrapper" onclick="window.open('https://www.dynatrace.com/platform/')">
      				<div id="davis-logo"></div>
      			</div>
+     			<div id="git" ></div>
     		</div>
 		</div>
 	</body>

@@ -1,0 +1,1 @@
+I'm Davis version {{version.tag | friendlyVersion}} {% if version.branch != "master" %}on the {{version.branch}} branch{% endif %}, I was last updated by Dynatrace on {{version.lastUpdate}}.

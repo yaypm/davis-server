@@ -1,2 +1,2 @@
 {%- set problem = intentData.problem.result.problems[0] -%}
-There is a {{ problem.rankedImpacts[0].eventType | friendlyEvent() }} currently affecting {{ problem.rankedImpacts[0] | friendlyEntityName() }}.  This issue started {{ problem.startTime | friendlyTime(user) }} and {% if problem.status == 'OPEN' %}is unfortunately still on going.{% else %}was resolved {{ problem.endTime | friendlyTime(user) }}.{% endif %}
+There is a {{ problem.rankedImpacts[0].eventType | friendlyEvent() }} currently affecting {{ problem.rankedImpacts[0] | friendlyEntityName() }}.  This problem started {{ problem.startTime | friendlyTime(user) }} and {% if problem.status == 'OPEN' %}is unfortunately still on going.{% else %}was resolved {{ problem.endTime | friendlyTime(user) }}.{% endif %}

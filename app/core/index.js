@@ -34,7 +34,8 @@ class Davis {
             source = 'unknown';
         }
         return new BbPromise((resolve, reject) => {
-            conversationService.startExchange(this.conversation, request, source)
+
+            conversationService.startExchange(this.conversation, request.trim(), source)
                 .then(exchange => {
                     logger.debug('The exchange object was successfully created');
                     this.exchange = exchange;
@@ -53,11 +54,11 @@ class Davis {
                 })
                 .spread(() => {
                     logger.debug('Davis has finished processing the request');
-                    return resolve(this);
+                    resolve(this);
                 })
                 .catch(err => {
                     logger.error(err.message);
-                    return reject(err);
+                    reject(err);
                 });
         });
     }

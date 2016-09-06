@@ -6,14 +6,19 @@ const express = require('express'),
     favicon = require('serve-favicon'),
     routes = require('./routes/index'),
     logger = require('./utils/logger'),
-    problemService = require('./services/events/problemService'),
+    version = require('./utils/version'),
     mongoose = require('mongoose');
 
 module.exports = function setupApp(config) {
 
     app.set('davisConfig', config);
     logger.debug('Overriding Express logger');
-    app.use(require('morgan')('tiny', {'stream': logger.stream}));
+    app.use(require('morgan')('tiny', {
+        stream: logger.stream,
+        skip: req => {
+            return req.url.startsWith('/favicon.ico') || req.url.startsWith('/healthCheck.html');
+        }
+    }));
 
     mongoose.connect(config.database.dsn, function (err) {
         if (err) throw err;
@@ -28,15 +33,20 @@ module.exports = function setupApp(config) {
     app.use('/', routes);
 
     /**
+     * Getting Git version
+     */
+    version.init()
+        .then( () => {
+            logger.info('Successfully got Git version');
+        });
+
+    /**
      * Starting slackbot
      */
     if (config.slack.enabled && config.slack.key) {
         require('./integrations/slack')(config);
     }
 
-    problemService.on('event.problem.**', problem => {
-        logger.info(`A problem notification for ${problem.PID} has been received.`);
-    });
 
     // catch 404 and forward to error handler
     app.use(function (req, res, next) {
