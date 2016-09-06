@@ -4,6 +4,7 @@ const Botkit = require('botkit'),
     BbPromise = require('bluebird'),
     logger = require('../../utils/logger'),
     SlackService = require('./services/SlackService'),
+    problemService = require('../../services/events/problemService'),
     rp = require('request-promise'),
     moment = require('moment');
 
@@ -158,6 +159,10 @@ module.exports = function (config) {
             slackConvo.initConvo(err, convo);
         });
         
+    });
+
+    problemService.on('event.problem.**', problem => {
+        logger.info(`A problem notification for ${problem.PID} has been received.`);
     });
     
     /**

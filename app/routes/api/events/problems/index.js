@@ -17,7 +17,7 @@ router.post('/', (req, res) => {
             } else {
                 message = err.message;
             }
-            logger.error(`Problem Event: ${JSON.message}`);
+            logger.error(`Problem Event: ${message}`);
             res.status(400).send(message);
         });
 });

@@ -6,6 +6,7 @@ const express = require('express'),
     favicon = require('serve-favicon'),
     routes = require('./routes/index'),
     logger = require('./utils/logger'),
+    problemService = require('./services/events/problemService'),
     mongoose = require('mongoose');
 
 module.exports = function setupApp(config) {
@@ -33,6 +34,9 @@ module.exports = function setupApp(config) {
         require('./integrations/slack')(config);
     }
 
+    problemService.on('event.problem.**', problem => {
+        logger.info(`A problem notification for ${problem.PID} has been received.`);
+    });
 
     // catch 404 and forward to error handler
     app.use(function (req, res, next) {
