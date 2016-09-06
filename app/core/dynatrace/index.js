@@ -202,7 +202,7 @@ function sortProblemsByImportance(problems) {
             // We then look at the highest rated impact.
             return _.findIndex(events, {name: findMostImportantImpact(problem)});
         })
-        // Then we rank problem with root causes slightly highe r.
+        // Then we rank problem with root causes slightly higher.
         .thenBy('hasRootCause', -1)
         //  Lastly, we rank by time.  The newest issues are at the top of the list.
         .thenBy('startTime')
