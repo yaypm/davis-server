@@ -316,8 +316,10 @@ module.exports = function (config) {
                 .then(resp => {
                     
                     logger.info('Slack: Sending a response');
-                    if (this.directPrefix) {
+                    if (this.directPrefix && resp.response.outputSpeech.card) {
                         resp.response.outputSpeech.card.text = this.directPrefix + resp.response.outputSpeech.card.text;
+                    } else if (this.directPrefix) {
+                        resp.response.outputSpeech.text = this.directPrefix + resp.response.outputSpeech.text;
                     }
                     
                     this.shouldEndSession = resp.response.shouldEndSession;
