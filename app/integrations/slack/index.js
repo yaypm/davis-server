@@ -8,27 +8,25 @@ const Botkit = require('botkit'),
     rp = require('request-promise'),
     moment = require('moment');
 
-const fullChannelList = [];
+const davisChannels = [];
+const inactivityTimeoutTime = 30; // Seconds of inactivity until Davis goes to sleep
+const ERROR_MESSAGE = 'Sorry about that, I\'m having issues responding to your request at this time.';
+
+// Launch phrases
+const phrases = [
+    'hey davis',
+    'hey, davis',
+    'davis'
+];
 
 module.exports = function (config) {
-    
+    let bot;
+
     const controller = Botkit.slackbot({
         debug: false,
         interactive_replies: true
     });
-    
-    let bot;
-    const inactivityTimeoutTime = 30; // Seconds of inactivity until Davis goes to sleep
-    
-    // Launch phrases
-    const phrases = [
-        "hey davis",
-        "okay davis",
-        "ok davis",
-        "hello davis",
-        "hi davis"
-    ];
-    
+
     /**
      * Gets user details
      * Important for using correct timezone and finding the davis bot's id
@@ -36,113 +34,91 @@ module.exports = function (config) {
      * @param {String} userId - user specific identifier provided by Slack
      */
     let getUserDetails = function (userId) {
-        
-         return new BbPromise((resolve, reject) => {
+        return new BbPromise((resolve, reject) => {
              
             let options = {
                 uri: 'https://slack.com/api/users.list?token='+config.slack.key,
                 json: true
             };
-             
-             
+
             rp(options)
-            .then( (resp) => {
-            
-                resp.members.forEach( (member) => {
-                    
-                    if (member.id === userId) {
-                        return resolve(member);
-                    }
-                    
+                .then(resp => {
+                    resp.members.forEach( (member) => {
+                        if (member.id === userId) {
+                            return resolve(member);
+                        }
+                    });
+                    resolve();
+                }).catch(err => {
+                    reject(new Error(err));
                 });
-                
-                resolve();
-                
-            }).catch(function (err) {
-                reject(new Error(err));
-            });
-             
-         });
-         
-    }
+        });
+    };
     
     /**
      * Get Davis bot online status
      * Important for making sure other another Davis instance isn't running a Slack bot already
      */
     let getDavisBotStatus = function () {
-         return new BbPromise((resolve, reject) => {
-            
-            getUserDetails().then( (res) => {
-             
-                let options = {
-                    uri: 'https://slack.com/api/users.getPresence?token=' + config.slack.key,
-                    json: true
-                };
-             
-                rp(options)
-                .then( (respJson) => {
-                    
-                    return resolve(respJson.online);
-                    
-                }).catch( (err) => {
-                    reject(new Error(err));
+        return new BbPromise((resolve, reject) => {
+            getUserDetails()
+                .then(() => {
+                    return rp({
+                        uri: 'https://slack.com/api/users.getPresence?token=' + config.slack.key,
+                        json: true
+                    });
+                })
+                .then(resp => {
+                    resolve(resp.online);
+                })
+                .catch(err => {
+                    logger.error('Error in getUserDetails');
+                    reject(err);
                 });
-            
-            }).catch(err => {
-                logger.error('Error in getUserDetails');
-                logger.error(err);
-            });
-             
-         });
-    }
+        });
+    };
     
     // Check if bot is already running on another Davis instance
-    getDavisBotStatus().then( (isOnline) => {
-        
-        if (!isOnline) {
-            
-            bot = controller.spawn({
-                token: config.slack.key
-            });
-            
-            bot.startRTM( (err, bot, payload) => {
-                if (err) {
-                    throw new Error('Could not connect to Slack');
-                }
-
-                // @ https://api.slack.com/methods/channels.list
-                bot.api.channels.list({}, function (err, response) {
-                    if (response.hasOwnProperty('channels') && response.ok) {
-                        var total = response.channels.length;
-                        for (var i = 0; i < total; i++) {
-                            var channel = response.channels[i];
-                            fullChannelList.push({name: channel.name, id: channel.id});
-                        }
-                    }
+    getDavisBotStatus()
+        .then(isOnline => {
+            if (!isOnline) {
+                bot = controller.spawn({
+                    token: config.slack.key
                 });
-            });
-            
-        } else {
-            logger.warn('Failed to start Slack bot. A Slack bot may already be running on another instance of Davis using the same API key');
-        }
-        
-    }).catch(err => {
-        logger.error('Error in getDavidBotStatus');
-        logger.error(err);
-    });
+
+                bot.startRTM( (err, bot) => {
+                    if (err) {
+                        throw new Error('Could not connect to Slack');
+                    }
+
+                    bot.api.channels.list({}, function (err, response) {
+                        if (response.hasOwnProperty('channels') && response.ok) {
+                            var total = response.channels.length;
+                            for (var i = 0; i < total; i++) {
+                                var channel = response.channels[i];
+                                // Lets update the list with the channels davis is currently a member of
+                                if (channel.is_member) davisChannels.push({name: channel.name, id: channel.id});
+                            }
+                        }
+                    });
+                });
+            } else {
+                logger.warn('Failed to start Slack bot. A Slack bot may already be running on another instance of Davis using the same API key');
+            }
+        }).catch(err => {
+            logger.error('Error in getDavidBotStatus');
+            logger.error(err);
+        });
     
     /**
      * Makes Slack display that Davis is typing a message (similar to processing in web UI)
      */ 
     let showTypingNotification = function (channel) {
-        
         bot.say({
-            type: "typing",
-            channel: channel // a valid slack channel, group, mpim, or im ID
+            type: 'typing',
+            channel: channel
         });
-        
-    }
+    };
     
     controller.hears(['(.*)'], 'direct_message', (bot, message) => {
         
@@ -173,6 +149,24 @@ module.exports = function (config) {
         });
         
     });
+
+    controller.on('bot_channel_join', (bot, message) => {
+        bot.api.channels.info({channel: message.channel}, (err, res) => {
+            var channel = res.channel;
+            // Lets update the list with the channels davis is currently a member of
+            if (channel.is_member) davisChannels.push({name: channel.name, id: channel.id});
+            bot.say(
+                {
+                    text: 'Hi guys!',
+                    channel: channel.id
+                }
+            );
+        });
+    });
+
+    controller.on('channel_leave', (bot, message) => {
+        console.log('hi');
+    })
 
     problemService.on('event.problem.**', problem => {
         logger.info(`A problem notification for ${problem.PID} has been received.`);
@@ -285,7 +279,7 @@ module.exports = function (config) {
                             });
                             
                         } else {
-                            convo.say("Sorry about that, I'm having issues responding to your request at this time.");
+                            convo.say(ERROR_MESSAGE);
                         }
                         
                         convo.next();
@@ -312,8 +306,7 @@ module.exports = function (config) {
          * @param {Object) convo - conversation object created by botkit
          */ 
         addToConvo(response, convo) {
-    
-            // Timeout of 60 seconds
+
             let isTimedOut = moment().subtract(inactivityTimeoutTime, 'seconds').isAfter(this.lastInteractionTime);
             
             // Reset last interaction timestamp
@@ -353,41 +346,32 @@ module.exports = function (config) {
                     
                     // if no followup question
                     if (this.shouldEndSession) {
-                        
                         convo.say(output);
                         convo.next();
                         clearTimeout(this.inactivityTimeout);
-                        
                     } else {
-    
                         try{
-                            
                             // Send response and listen for request
                             convo.ask(output, (response, convo) => {
                             
                                 if (output) {
                                     this.addToConvo(response, convo);
                                 } else {
-                                    convo.say("Sorry about that, I'm having issues responding to your request at this time.");
+                                    convo.say(ERROR_MESSAGE);
                                     convo.next();
                                 }
-                                
                             });
                             convo.next();
-                        
                         } catch (err) {
                             logger.warn(err);
                         }
-                        
                         clearTimeout(this.inactivityTimeout);
-                        
                     }
-        
                 })
                 .catch(err => {
                     logger.error('Unable to respond to the request received from Slack');
                     logger.error(err);
-                    convo.say("Sorry about that, I'm having issues responding to your request at this time.");
+                    convo.say(ERROR_MESSAGE);
                     convo.next();
                 });
                 
@@ -409,13 +393,13 @@ module.exports = function (config) {
                 // if not a direct message, let the user know they need to wake Davis
                 if(!this.isDirectMessage && !this.resetTimeout && !this.shouldEndSession) {
                     
-                    convo.say(this.directPrefix + ":ZZZ: I've fallen asleep");
+                    convo.say(this.directPrefix + ':ZZZ: I\'ve fallen asleep');
                     convo.next();
                     clearTimeout(this.inactivityTimeout);
                     
                     // Allows convo.say to execute beforehand
                     setTimeout( () => {
-                        convo.stop()
+                        convo.stop();
                     }, 1000);
                     
                 } else {
@@ -423,13 +407,8 @@ module.exports = function (config) {
                     this.resetTimeout = false;
                     clearTimeout(this.inactivityTimeout);
                     this.inactivityTimeout = this.setInactivityTimeout(convo);
-                    
                 }
-                
             }, inactivityTimeoutTime * 1000);
-            
         }
-    
     }
-    
 };
