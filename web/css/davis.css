@@ -20,23 +20,23 @@
 	    background-color: #33a3ff;
 	}
 
-	a:link {
+	a.links:link {
 	    color: white;
 	    text-decoration: none;
 	    opacity: 0.4;
 	}
 
-	a:visited {
+	a.links:visited {
 	    color: white;
 	}
 
-	a:hover {
+	a.links:hover {
 	    color: white;
 	    opacity: 1.0;
 	    text-decoration: underline;
 	}
 
-	a:active {
+	a.links:active {
 	    color: white;
 	}
 
@@ -164,6 +164,7 @@
 
 	#interactionlog p {
 		position: relative;
+		clear: both;
 		color: #BDBDEA;
 		margin-top:10px;
 		font-size: 20px;
@@ -274,7 +275,81 @@
 		top: 50%;
 	}
 	
-	.davisvisual__davis:first-child canvas{
+	.davisvisual__davis:first-child canvas {
 		width: 150px !important;
 		height: 150px !important;
+	}
+
+	.card-wrapper {
+		width: 700px;
+		min-height: 100px;
+		margin: 0 auto;
+		margin-top: 5px;
+		padding: 5px;
+		color: white;
+		text-align: left;
+		border: 1px solid white;
+		border-radius: 6px;
+		font-size: 12px;
+	}
+	
+	.card-pretext {
+	}
+	
+	.card-attachments {
+		padding: 5px;
+	}
+	
+	.card-attachment {
+		border-left: 3px solid white;
+		padding: 10px;
+		margin: 10px;
+		height: 80px;
+	}
+	
+	.card-title {
+		color: white;
+		font-size: 18px;
+		font-weight: bold;
+	}
+	
+	.card-link {
+		color: white;
+		text-decoration: none;
+	}
+	
+	a.card-link:link {
+		color: white;
+	}
+	
+	a.card-link:visited {
+		color: white;
+	}
+	
+	a.card-link:hover {
+		text-decoration: underline;
+		color: #d9d9d9;
+	}
+	
+	a.card-link:active {
+		color: #cccccc;
+	}
+	
+	.card-text {
+		
+	}
+	
+	.card-fields {
+		margin-top: 5px;
+	}
+	
+	.card-field {
+		position: relative;
+		float: left;
+		min-width: 300px;
+		margin-bottom: 5px;
+	}
+	
+	.card-field-title {
+		font-weight: bold;
 	}

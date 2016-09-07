@@ -74,6 +74,7 @@ var davis = (function () {
         var sentences = []; // Array of response sentences to be typed into interaction log
         var textBeingTyped;
         var elementBeingTyped;
+        var cards = localStorage.getItem('davis-cards-enabled') || false;
        
         resetPlaceholder();
         setListeningState('sleeping');
@@ -93,21 +94,21 @@ var davis = (function () {
         
         if (typeof window.chrome != 'object') {
            
-           addToInteractionLog(localResponses.errors.noBrowserSupport.text, true, false);
-           addToInteractionLog(localResponses.errors.chrome.text, true, false);
-           addToInteractionLog(localResponses.errors.getChrome.text, true, false); 
+           addToInteractionLog({text: localResponses.errors.noBrowserSupport.text}, true, false);
+           addToInteractionLog({text: localResponses.errors.chrome.text}, true, false);
+           addToInteractionLog({text: localResponses.errors.getChrome.text}, true, false); 
             
         } else {
         
             if (!localStorage.getItem("davis-user-token")) {
                 
-                addToInteractionLog(localResponses.greetings.micPermission.text, true, false);
+                addToInteractionLog({text: localResponses.greetings.micPermission.text}, true, false);
                 setTimeout(function () {
-                   addToInteractionLog(localResponses.greetings.thenHelp.text, true, false);
+                   addToInteractionLog({text: localResponses.greetings.thenHelp.text}, true, false);
                 }, 5000);
                 
             } else {
-                addToInteractionLog(localResponses.greetings.help.text, true, false);
+                addToInteractionLog({text: localResponses.greetings.help.text}, true, false);
             }
     
         }
@@ -222,10 +223,10 @@ var davis = (function () {
         }
         
         /**
-         * Removes the top <p> element from interactionLog
+         * Removes the top element from interactionLog
          */
         function popTopInteraction() {
-            $('#'+interactionLogElemId).find('p:first').remove();
+            $('#'+interactionLogElemId).find('>:first').remove();
         }
         
         /**
@@ -238,20 +239,24 @@ var davis = (function () {
         /**
          * Adds string to interaction log
          * 
-         * @param {String} text
+         * @param {Object} response
          * @param {Boolean} isDavisSpeaking
          * @param {Boolean} isTypeWriter
          */
-        function addToInteractionLog(text, isDavisSpeaking, isTypeWriter) {
+        function addToInteractionLog(response, isDavisSpeaking, isTypeWriter) {
             
-            if (isTypeWriter) {
+            if (response.card && cards) {
                 
-                typeText(text);
+                addCard(response.card);
+                 
+            } else if (isTypeWriter) {
+                
+                typeText(response.text);
                 
             } else {
                 
                 let styleClass = isDavisSpeaking ? 'botStyle' : 'userStyle';
-                let el = $('<p>' + text.trim() + '</p>').css('display', 'none').addClass(styleClass);
+                let el = $('<p>' + response.text.trim() + '</p>').css('display', 'none').addClass(styleClass);
                 $('#'+interactionLogElemId).append(el);
                 el.fadeIn(400);
                 
@@ -264,6 +269,134 @@ var davis = (function () {
             }
             
         }
+        
+        /**
+         * Constructs and adds card to interactionLog
+         * 
+         * @param {Object} card
+         */
+        function addCard(card) {
+            
+            // Add text
+            if (card.text !== undefined) {
+                addToInteractionLog({text: reformatLinks(card.text)}, true, false);
+            }
+            
+            // Add attachments
+            if (card.attachments !== undefined && card.attachments.length > 0) {
+                
+                let html = localResponses.card.wrapper;
+                
+                let attachments = '';
+                
+                card.attachments.forEach( (atm, index) => {
+                    
+                    let attachment = '';
+                    
+                    // Title
+                    if (atm.title !== undefined) {
+                        
+                       atm.title = atm.title.replace(/\:key\:/g, '🔑');
+                        
+                        if (atm.title_link !== undefined) {
+                            
+                            let title = localResponses.card.link.replace('{{url}}', atm.title_link);
+                            title = title.replace('{{text}}', atm.title);
+                            attachment += localResponses.card.title.replace('{{title}}', title);
+                            
+                        } else {
+                            attachment += localResponses.card.title.replace('{{title}}', atm.title);
+                        }
+                        
+                    }
+                    
+                    // Text
+                    if (atm.text !== undefined) {
+                        attachment += localResponses.card.text.replace('{{text}}', atm.text);
+                    }
+                    
+                    // Fields
+                    if (atm.fields !== undefined) {
+                        
+                        let fields = '';
+                        
+                        atm.fields.forEach( (fd) => {
+                           
+                            let field = localResponses.card.field.replace('{{title}}', fd.title);
+                            fields += field.replace('{{value}}', fd.value);
+
+                        });
+                        
+                        attachment += localResponses.card.fields.replace('{{fields}}', fields);
+                    }
+                    
+                    // Add attachment elements into wrapper
+                    if (attachment.length > 0) {
+                        
+                        attachment = localResponses.card.attachment.replace('{{attachment}}', attachment);
+                        
+                        // Bar color
+                        if (atm.color === undefined) {
+                            atm.color = '';
+                        }
+                        attachment = attachment.replace('{{color}}', atm.color);
+                        
+                    }
+                    
+                    // Pretext
+                    if (atm.pretext !== undefined && attachment.length == 0 && index == card.attachments.length - 1) {
+                        
+                        html = html.replace('{{attachments}}', attachments);
+                        $('#'+interactionLogElemId).append(html); 
+                        addToInteractionLog({text: atm.pretext}, true, false);
+                        
+                    } else if (atm.pretext !== undefined) {
+                        
+                        attachments += localResponses.card.pretext.replace('{{pretext}}', atm.pretext);
+                        attachments += attachment;
+                        
+                        
+                    } else {
+                        attachments += attachment;
+                    }
+                    
+                    if (attachment.length > 0 && index == card.attachments.length - 1) {
+                        $('#'+interactionLogElemId).append(html); 
+                        addToInteractionLog({text: atm.pretext}, true, false);
+                    }    
+                    
+                }); 
+                
+            }
+    
+        }
+        
+        /**
+         * Reformats links from Slack syntax to html
+         */
+         function reformatLinks(str) {
+             
+            if (str.includes('<http')) {
+                
+                let exploded = str.split('<http');
+
+                exploded.forEach( (fragment, index) => {
+                    if (fragment.includes('|') && fragment.includes('>')) {
+                        let link = localResponses.card.link;
+                        let url = fragment.substring(0, fragment.indexOf('>'));
+                        let text = url.substring(url.indexOf('|') + 1);
+                        url = 'http' + url.substring(0, url.indexOf('|'));
+                        link = link.replace('{{text}}', text);
+                        link = link.replace('{{url}}', url);
+                        exploded[index] = fragment.replace(fragment.substring(0, fragment.indexOf('>') + 1), link);
+                    }
+                });
+                
+                str = exploded.join('');
+            }
+            
+            return str;
+         }
         
         /**
          * Forwards text to be added to interactionLog using a type-writer animation
@@ -367,8 +500,8 @@ var davis = (function () {
                 resetTextInput();  
             },
             
-            addToInteractionLog: function (text, isDavisSpeaking, typeText) {
-                addToInteractionLog(text, isDavisSpeaking, typeText);
+            addToInteractionLog: function (response, isDavisSpeaking, typeText) {
+                addToInteractionLog(response, isDavisSpeaking, typeText);
             },
             
             submitTextInput: function (keyCode) {
@@ -384,7 +517,7 @@ var davis = (function () {
             },
             
             setConnectedUrl: function (url) {
-                $('#'+connectedUrlElemId).html('<span style="opacity:0.4;">Connected:</span> <a href="' + url + '" target="_blank">'+url+'</a>');
+                $('#'+connectedUrlElemId).html('<span style="opacity:0.4;">Connected:</span> <a href="' + url + '" target="_blank" class="links">'+url+'</a>');
             },
             
             setGit: function (git) {
@@ -396,7 +529,7 @@ var davis = (function () {
                 }
                 
                 if (git.branch) {
-                    $('#'+gitElemId).html('<a href="https://github.com/ruxit/davis-server/releases/tag/' + git.tag + '" target="_blank">' + git.tag + branch + updated + '</a>');
+                    $('#'+gitElemId).html('<a href="https://github.com/ruxit/davis-server/releases/tag/' + git.tag + '" target="_blank" class="links">' + git.tag + branch + updated + '</a>');
                 }
                 
             },
@@ -427,6 +560,11 @@ var davis = (function () {
             
             enableOfflineMode: function (isEnabled) {
                 enableOfflineMode(isEnabled);
+            },
+            
+            enableCards: function (isEnabled) {
+                cards = isEnabled;
+                (isEnabled) ? addToInteractionLog({text: 'Cards are now enabled'}, true, false) : addToInteractionLog({text: 'Cards have been disabled'}, true, false);
             }
             
         };
@@ -605,8 +743,17 @@ var davis = (function () {
                     }
                     
                     html += "</table>";
-                    view.addToInteractionLog(html);
+                    view.addToInteractionLog({text: html}, true, false);
                     
+                }
+                
+                // Toggle enable cards
+                if (request.includes(' -c') && localStorage.getItem('davis-cards-enabled') == 'true') {
+                    localStorage.setItem('davis-cards-enabled', 'false');
+                    view.enableCards(false);
+                } else if (request.includes(' -c')) {
+                    localStorage.setItem('davis-cards-enabled', 'true');
+                    view.enableCards(true);
                 }
                 
             } else if (request.includes('debug = false')) {
@@ -632,7 +779,7 @@ var davis = (function () {
             
                 if (request) {
             
-                    view.addToInteractionLog(request, false, false);
+                    view.addToInteractionLog({text: request}, false, false);
                 
                     var date = new Date();
                 
@@ -719,7 +866,7 @@ var davis = (function () {
                 }
         
             } else {
-                chat(response.text);
+                chat(response);
             }
                     
         }
@@ -936,7 +1083,7 @@ var davis = (function () {
             
                 player.onplay = function () {
                     isSpeaking = true;
-                    view.addToInteractionLog(response.text, true, true);
+                    view.addToInteractionLog(response, true, true);
                 };
                 
                 player.onpause = function () {
@@ -964,9 +1111,11 @@ var davis = (function () {
         
         /**
          * Add to interaction log in chat mode
+         * 
+         * @param {Object} response
          */
-        function chat(text) {
-            view.addToInteractionLog(text, true, false);
+        function chat(response) {
+            view.addToInteractionLog(response, true, false);
         }
         
         /**
