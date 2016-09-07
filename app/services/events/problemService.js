@@ -6,8 +6,13 @@ const BbPromise = require('bluebird'),
     ProblemsModel = require('../../models/events/Problems'),
     logger = require('../../utils/logger');
 
-const problemService = new EventEmitter2({wildcard: true});
+/*
+This service emits two events
+ - event.problem.open
+ - event.problem.resolved
+ */
 
+const problemService = new EventEmitter2({wildcard: true});
 const BASE_EMIT_EVENT_NAME = 'event.problem';
 
 /**
@@ -43,7 +48,7 @@ problemService.saveProblem = function(problem) {
                 .then(() => {
                     logger.debug(`Problem ${problem.PID} successfully saved to db.`);
                     // Emitting the event after Mongoose validates its validity.
-                    this.emit(`${BASE_EMIT_EVENT_NAME}.${problem.ProblemImpact.toLowerCase()}.${problem.State.toLowerCase()}`, problem);
+                    this.emit(`${BASE_EMIT_EVENT_NAME}.${problem.State.toLowerCase()}`, problem);
                     resolve();
                 })
                 .catch(err => {

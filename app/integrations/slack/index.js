@@ -1,6 +1,7 @@
 'use strict';
 
 const Botkit = require('botkit'),
+    _ = require('lodash'),
     BbPromise = require('bluebird'),
     logger = require('../../utils/logger'),
     SlackService = require('./services/SlackService'),
@@ -86,21 +87,11 @@ module.exports = function (config) {
                     token: config.slack.key
                 });
 
-                bot.startRTM( (err, bot) => {
+                bot.startRTM(err => {
                     if (err) {
                         throw new Error('Could not connect to Slack');
                     }
-
-                    bot.api.channels.list({}, function (err, response) {
-                        if (response.hasOwnProperty('channels') && response.ok) {
-                            var total = response.channels.length;
-                            for (var i = 0; i < total; i++) {
-                                var channel = response.channels[i];
-                                // Lets update the list with the channels davis is currently a member of
-                                if (channel.is_member) davisChannels.push({name: channel.name, id: channel.id});
-                            }
-                        }
-                    });
+                    updateBotChannels();
                 });
             } else {
                 logger.warn('Failed to start Slack bot. A Slack bot may already be running on another instance of Davis using the same API key');
@@ -113,25 +104,42 @@ module.exports = function (config) {
     /**
      * Makes Slack display that Davis is typing a message (similar to processing in web UI)
      */ 
-    let showTypingNotification = function (channel) {
+    const showTypingNotification = function (channel) {
         bot.say({
             type: 'typing',
             channel: channel
         });
     };
-    
-    controller.hears(['(.*)'], 'direct_message', (bot, message) => {
-        
-        logger.info('Slack: Starting public conversation (direct_message)');
-        bot.startConversation(message, (err, convo) => {
-            let slackConvo = new SlackConversation(message, true);
-            slackConvo.initConvo(err, convo);
+
+    const updateBotChannels = function () {
+        davisChannels.splice(0, davisChannels.length);
+        bot.api.channels.list({}, function (err, response) {
+            if (response.hasOwnProperty('channels') && response.ok) {
+                var total = response.channels.length;
+                for (var i = 0; i < total; i++) {
+                    var channel = response.channels[i];
+                    // Lets update the list with the channels davis is currently a member of
+                    if (channel.is_member) davisChannels.push({name: channel.name, id: channel.id});
+                }
+            }
         });
-        
+    };
+
+    controller.hears(['(.*)'], 'direct_message', (bot, message) => {
+        // Slack sends a direct message to a bot when they're removed from a channel
+        if(message.text.startsWith('You have been removed from')) {
+            logger.info('Oh no!  Davis was removed a channel!');
+            updateBotChannels();
+        } else {
+            logger.info('Slack: Starting public conversation (direct_message)');
+            bot.startConversation(message, (err, convo) => {
+                let slackConvo = new SlackConversation(message, true);
+                slackConvo.initConvo(err, convo);
+            });
+        }
     });
     
     controller.hears(['(.*)'], 'direct_mention', (bot, message) => {
-        
         logger.info('Slack: Starting public conversation (direct_mention)');
         bot.startConversation(message, (err, convo) => {
             let slackConvo = new SlackConversation(message, false);
@@ -151,31 +159,30 @@ module.exports = function (config) {
     });
 
     controller.on('bot_channel_join', (bot, message) => {
-        bot.api.channels.info({channel: message.channel}, (err, res) => {
-            var channel = res.channel;
-            // Lets update the list with the channels davis is currently a member of
-            if (channel.is_member) davisChannels.push({name: channel.name, id: channel.id});
+        updateBotChannels();
+        bot.say(
+            {
+                text: 'Thanks for the invite!  Message me if you need anything.',
+                channel: message.channel
+            }
+        );
+    });
+
+    controller.on('rtm_close',function(bot) {
+        logger.warn('The RTM connection was closed for some reason!');
+    });
+
+    problemService.on('event.problem.*', problem => {
+        logger.debug(`A problem notification for ${problem.PID} has been received.`);
+        _.each(davisChannels, channel => {
+            logger.info(`Pushing ${problem.PID} to ${channel.name}`)
             bot.say(
                 {
-                    text: 'Hi guys!',
+                    text: `A problem happened ${problem.PID}!`,
                     channel: channel.id
                 }
             );
         });
-    });
-
-    controller.on('channel_leave', (bot, message) => {
-        console.log('hi');
-    })
-
-    problemService.on('event.problem.**', problem => {
-        logger.info(`A problem notification for ${problem.PID} has been received.`);
-        bot.say(
-            {
-                text: `A problem happened ${problem.PID}!`,
-                channel: 'C28MAGNAG' // a valid slack channel, group, mpim, or im ID
-            }
-        );
     });
     
     /**
@@ -228,21 +235,15 @@ module.exports = function (config) {
                             
                     if (this.initialInteraction.text.toLowerCase().includes(phrase)) {
                         
-                        if (phrase.length == this.initialInteraction.text.trim().length) {
-                            
+                        if (phrase.length === this.initialInteraction.text.trim().length) {
                             // Only a launch phrase detected, use launch intent compatible phrase
                             this.initialInteraction.text = 'Start davis';
-                            
                         } else {
-                            
                             // Strip launch phrase
                             this.initialInteraction.text = this.initialInteraction.text.toLowerCase().replace(phrase, ''); // Remove phrase
                             this.initialInteraction.text = this.initialInteraction.text.replace(/(^\s*,)|(,\s*$)/g, ''); // Remove leading/trailing white-space and commas
-                            
                         }
-                        
                     }
-                    
                 });
                     
                     
@@ -250,10 +251,13 @@ module.exports = function (config) {
                 .then(resp => {
                     
                     logger.info('Sending a response back to the Slack service');
-                    if (this.directPrefix) {
+                    if (this.directPrefix && resp.response.outputSpeech.card) {
                         resp.response.outputSpeech.card.text = this.directPrefix + resp.response.outputSpeech.card.text;
+                        this.initialResponse = resp.response.outputSpeech.card;
+                    } else if (this.directPrefix) {
+                        resp.response.outputSpeech.text = this.directPrefix + resp.response.outputSpeech.text;
+                        this.initialResponse = resp.response.outputSpeech.text;
                     }
-                    this.initialResponse = resp.response.outputSpeech.card;
                     
                     this.shouldEndSession = resp.response.shouldEndSession;
                     
@@ -287,7 +291,6 @@ module.exports = function (config) {
                     } catch (err) {
                         logger.warn(err);
                     }
-                    
                 })
                 .catch(err => {
                     logger.error('Unable to respond to the request received from Slack');
@@ -297,14 +300,14 @@ module.exports = function (config) {
             });
             
         }
-        
+
         /**
          * Recursive method that responds to a request and tells Slack when 
          * the conversation should continue (convo.ask) or end (convo.say, convo.stop)
          * 
          * @param {String} response - text to be sent to user in response to request
          * @param {Object) convo - conversation object created by botkit
-         */ 
+         */
         addToConvo(response, convo) {
 
             let isTimedOut = moment().subtract(inactivityTimeoutTime, 'seconds').isAfter(this.lastInteractionTime);
@@ -333,8 +336,10 @@ module.exports = function (config) {
                 .then(resp => {
                     
                     logger.info('Slack: Sending a response');
-                    if (this.directPrefix) {
+                    if (this.directPrefix && resp.response.outputSpeech.card) {
                         resp.response.outputSpeech.card.text = this.directPrefix + resp.response.outputSpeech.card.text;
+                    } else if (this.directPrefix) {
+                        resp.response.outputSpeech.text = this.directPrefix + resp.response.outputSpeech.text;
                     }
                     
                     this.shouldEndSession = resp.response.shouldEndSession;
