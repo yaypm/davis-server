@@ -74,7 +74,7 @@ var davis = (function () {
         var sentences = []; // Array of response sentences to be typed into interaction log
         var textBeingTyped;
         var elementBeingTyped;
-        var cards = localStorage.getItem('davis-cards-enabled') || false;
+        var cards = localStorage.getItem('davis-cards-enabled') || 'true';
        
         resetPlaceholder();
         setListeningState('sleeping');
@@ -245,7 +245,7 @@ var davis = (function () {
          */
         function addToInteractionLog(response, isDavisSpeaking, isTypeWriter) {
             
-            if (response.card && cards) {
+            if (response.card && cards === 'true') {
                 
                 addCard(response.card);
                  
@@ -261,12 +261,8 @@ var davis = (function () {
                 el.fadeIn(400);
                 
             }
-        
-            if ($('#'+interactionLogElemId).children().length > 3) {
-                
-                popTopInteraction();
-                
-            }
+            
+            $('#'+interactionLogElemId).scrollTop($('#'+interactionLogElemId).prop('scrollHeight'));
             
         }
         
@@ -279,7 +275,7 @@ var davis = (function () {
             
             // Add text
             if (card.text !== undefined) {
-                addToInteractionLog({text: reformatLinks(card.text)}, true, false);
+                addToInteractionLog({text: reformatLinks(card.text, false)}, true, false);
             }
             
             // Add attachments
@@ -300,7 +296,7 @@ var davis = (function () {
                         
                         if (atm.title_link !== undefined) {
                             
-                            let title = localResponses.card.link.replace('{{url}}', atm.title_link);
+                            let title = localResponses.card.linkAttachment.replace('{{url}}', atm.title_link);
                             title = title.replace('{{text}}', atm.title);
                             attachment += localResponses.card.title.replace('{{title}}', title);
                             
@@ -347,7 +343,8 @@ var davis = (function () {
                     if (atm.pretext !== undefined && attachment.length == 0 && index == card.attachments.length - 1) {
                         
                         html = html.replace('{{attachments}}', attachments);
-                        $('#'+interactionLogElemId).append(html); 
+                        $('#'+interactionLogElemId).append(html);
+                        $('.card-wrapper').fadeIn(400);
                         addToInteractionLog({text: atm.pretext}, true, false);
                         
                     } else if (atm.pretext !== undefined) {
@@ -361,7 +358,8 @@ var davis = (function () {
                     }
                     
                     if (attachment.length > 0 && index == card.attachments.length - 1) {
-                        $('#'+interactionLogElemId).append(html); 
+                        $('#'+interactionLogElemId).append(html);
+                        $('.card-wrapper').fadeIn(400); 
                         addToInteractionLog({text: atm.pretext}, true, false);
                     }    
                     
@@ -373,8 +371,11 @@ var davis = (function () {
         
         /**
          * Reformats links from Slack syntax to html
+         * 
+         * @param {String} str
+         * @param {Boolean} isAttachment
          */
-         function reformatLinks(str) {
+         function reformatLinks(str, isAttachment) {
              
             if (str.includes('<http')) {
                 
@@ -382,7 +383,7 @@ var davis = (function () {
 
                 exploded.forEach( (fragment, index) => {
                     if (fragment.includes('|') && fragment.includes('>')) {
-                        let link = localResponses.card.link;
+                        let link = (isAttachment) ? localResponses.card.linkAttachment : localResponses.card.linkText;
                         let url = fragment.substring(0, fragment.indexOf('>'));
                         let text = url.substring(url.indexOf('|') + 1);
                         url = 'http' + url.substring(0, url.indexOf('|'));
@@ -563,7 +564,7 @@ var davis = (function () {
             },
             
             enableCards: function (isEnabled) {
-                cards = isEnabled;
+                cards = isEnabled.toString();
                 (isEnabled) ? addToInteractionLog({text: 'Cards are now enabled'}, true, false) : addToInteractionLog({text: 'Cards have been disabled'}, true, false);
             }
             
@@ -627,8 +628,11 @@ var davis = (function () {
             listeningState = 'sleeping';
             view.setListeningState(listeningState);
             view.muted();
-            evt.targetStance = 'empty';
-            document.getElementById('davisContainer').dispatchEvent(evt);
+            
+            if (evt.targetStance != 'dynatrace') {
+                evt.targetStance = 'dynatrace';
+                document.getElementById('davisContainer').dispatchEvent(evt);
+            }
         }, false);
         
         document.addEventListener('enablingMic', function (event) {
@@ -663,8 +667,11 @@ var davis = (function () {
         document.addEventListener('chatMode', function (event) {
             listeningState = 'chatMode';
             view.setListeningState(listeningState);
-            evt.targetStance = 'empty';
-            document.getElementById('davisContainer').dispatchEvent(evt);
+            
+            if (evt.targetStance != 'dynatrace') {
+                evt.targetStance = 'dynatrace';
+                document.getElementById('davisContainer').dispatchEvent(evt);
+            }
         
             // Stop typewriter and any audio that's playing
             player.pause();
@@ -723,11 +730,11 @@ var davis = (function () {
             view.hideLogo();
             
             // Debug mode
-            if (request.includes('debug = true') || (debug && request.includes('debug ') && !request.includes('debug = false'))) {
+            if ((request.includes('debug') && request.includes('true')) || (request.includes('debug') && !request.includes('false'))) {
                 
                 debug = true;
                 localStorage.setItem('davis-debug-mode', 'true');
-                console.log('Davis: Debug mode enabled');
+                view.addToInteractionLog({text: 'Debug mode enabled'}, true, false);
                 
                 // Output missed phrases option flag
                 if (request.includes(' -m') && localStorage.getItem('davis-missed-phrases')) {
@@ -748,7 +755,7 @@ var davis = (function () {
                 }
                 
                 // Toggle enable cards
-                if (request.includes(' -c') && localStorage.getItem('davis-cards-enabled') == 'true') {
+                if (request.includes(' -c') && localStorage.getItem('davis-cards-enabled') === 'true') {
                     localStorage.setItem('davis-cards-enabled', 'false');
                     view.enableCards(false);
                 } else if (request.includes(' -c')) {
@@ -756,11 +763,11 @@ var davis = (function () {
                     view.enableCards(true);
                 }
                 
-            } else if (request.includes('debug = false')) {
+            } else if (request.includes('debug') && request.includes('false')) {
                 
                 debug = false;
                 localStorage.setItem('davis-debug-mode', 'false');
-                console.log('Davis: Debug mode disabled');
+                view.addToInteractionLog({text: 'Debug mode disabled'}, true, false);
                 
             } else {
         
