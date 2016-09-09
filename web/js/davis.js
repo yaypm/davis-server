@@ -41,11 +41,13 @@ var davis = (function () {
         
         $.getJSON('./js/local-responses.json', function (data){
             localResponses = data;
-            view = new davisView(interactionLogElemId, textInputElemId, muteWrapperElemId, muteSVGElemId, listeningStateElemId, connectedUrlElemId, gitElemId);
-            controller = new davisController(); 
-            view.init();
-            controller.init();
-            view.attachEventListeners();
+            $(document).ready(function() {
+                view = new davisView(interactionLogElemId, textInputElemId, muteWrapperElemId, muteSVGElemId, listeningStateElemId, connectedUrlElemId, gitElemId);
+                controller = new davisController(); 
+                view.init();
+                controller.init();
+                view.attachEventListeners();
+            });
         });
         
     };
