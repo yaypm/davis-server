@@ -1351,12 +1351,10 @@ var davis = (function () {
                     
                     if (location.protocol === 'https:' || location.href.includes('127.0.0.1') || location.href.includes('localhost')) {
 
-                        $(document).ready(function() {
-                            annyangInit();
-                            document.dispatchEvent(listeningStateEvents.sleeping);
-                            evt.targetStance = 'dynatrace';
-                            document.getElementById('davisContainer').dispatchEvent(evt);
-                        });
+                        annyangInit();
+                        document.dispatchEvent(listeningStateEvents.sleeping);
+                        evt.targetStance = 'dynatrace';
+                        document.getElementById('davisContainer').dispatchEvent(evt);
                         
                     } else {
                         noMic();
