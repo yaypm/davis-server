@@ -125,11 +125,11 @@ module.exports = function AlexaService(config) {
                     })
                     .then(davis => {
                         logger.info('Finished processing request');
-                        return resolve(formatResponse(davis));
+                        resolve(formatResponse(davis));
                     })
                     .catch(err => {
                         logger.error(`Unfortunately, something went wrong.  ${err.message}`);
-                        return reject(alexaResponse(`Unfortunately, something went wrong.  ${err.message}`, true));
+                        reject(alexaResponse(`Unfortunately, something went wrong.  ${err.message}`, true));
                     });
             });
         }

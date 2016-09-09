@@ -21,6 +21,7 @@ const BASE_EMIT_EVENT_NAME = 'event.problem';
  * @return Promise
  */
 problemService.saveProblem = function(problem) {
+    problem.Tags = problem.Tags.replace(/ /g, '').split(',');
     return new BbPromise((resolve, reject) => {
         // TESTID is what Dynatrace sends when initially testing the endpoint.
         if (problem.ProblemID === 'TESTID') {
@@ -31,7 +32,7 @@ problemService.saveProblem = function(problem) {
                 .then(res => {
                     if (!_.isNull(res)) {
                         if (res.State === problem.State) {
-                            return reject(new Error('A problem with that ID already exists.'));
+                            throw new Error('A problem with that ID already exists.');
                         }
                         logger.debug('Updating problem');
                         res.State = problem.State;

@@ -21,7 +21,30 @@ const config = {
 
     slack: {
         enabled: true,
-        key: '<slack_token>'
+        key: '<slack_token>',
+        lang: 'en-us',
+        dynatrace: {
+            token: '<dynatrace_token>',
+            url: '<tenant_url>',
+            // Optional - Set to false when using self signed certs
+            strictSSL: true
+        },
+        notifications: {
+            alerts: {
+                enabled: true,
+                channels: [
+                    {
+                        name: '<slack_channel_name',
+                        state: ['open', 'resolved'],
+                        impact: ['application', 'service', 'infrastructure'],
+                        tags: {
+                            includes: [],
+                            excludes: []
+                        }
+                    }
+                ]
+            }
+        }
     },
 
     users: [{
@@ -36,6 +59,7 @@ const config = {
         dynatrace: {
             token: '<dynatrace_token>',
             url: '<tenant_url>',
+            // Optional - Set to false when using self signed certs
             strictSSL: true
         },
         nlp: {

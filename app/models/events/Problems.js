@@ -27,10 +27,4 @@ const problems = new Schema({
     Tags: { type: Array, required: false }
 });
 
-problems.pre('validate', function(next) {
-    //Moving the comma separated list into an array before the validate occurs
-    this.Tags = (this.Tags[0] !== '') ? this.Tags[0].replace(/ /g, '').split(',') : null;
-    next();
-});
-
 module.exports = mongoose.model('Problems', problems);

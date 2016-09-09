@@ -12,6 +12,7 @@ const Botkit = require('botkit'),
 const davisChannels = [];
 const inactivityTimeoutTime = 30; // Seconds of inactivity until Davis goes to sleep
 const ERROR_MESSAGE = 'Sorry about that, I\'m having issues responding to your request at this time.';
+const DAVIS_SLEEP_MESSAGE = ['Wake me up if need something!  :sleeping:', 'I\'ve gone to sleep. :ZZZ:', 'Until next time :spock-hand:'];
 
 // Launch phrases
 const phrases = [
@@ -51,7 +52,7 @@ module.exports = function (config) {
                     });
                     resolve();
                 }).catch(err => {
-                    reject(new Error(err));
+                    reject(err);
                 });
         });
     };
@@ -169,21 +170,47 @@ module.exports = function (config) {
     });
 
     controller.on('rtm_close',function(bot) {
+        // We could consider adding some retry logic here
         logger.warn('The RTM connection was closed for some reason!');
     });
 
-    problemService.on('event.problem.*', problem => {
-        logger.debug(`A problem notification for ${problem.PID} has been received.`);
-        _.each(davisChannels, channel => {
-            logger.info(`Pushing ${problem.PID} to ${channel.name}`)
-            bot.say(
-                {
-                    text: `A problem happened ${problem.PID}!`,
-                    channel: channel.id
+    if (_.get(config, 'slack.notifications.alerts.enabled', false)) {
+        logger.info('Problem notifications in Slack has been enabled');
+        problemService.on('event.problem.*', problem => {
+            logger.debug(`A problem notification for ${problem.PID} has been received.`);
+            _.each(davisChannels, channel => {
+                let foundMatch = false;
+                _.some(_.get(config, 'slack.notifications.alerts.channels', []), subscribedChannel => {
+                    //Making sure the friendly channel names match
+                    if (subscribedChannel.name.toLowerCase() === channel.name.toLowerCase()) {
+                        // Making sure the channel is interested in this state
+                        if (_.includes(subscribedChannel.state, problem.State.toLowerCase())) {
+                            //making sure the channel is interested in this impact
+                            if (_.includes(subscribedChannel.impact, problem.ProblemImpact.toLowerCase())) {
+                                // Making sure at least one tag matches if tags were defined
+                                if (subscribedChannel.tags.includes.length === 0 || _.intersection(problem.Tags, subscribedChannel.tags.includes).length > 0) {
+                                    // Making sure no tags match on the exclude list
+                                    if (_.intersection(problem.Tags, subscribedChannel.tags.excludes).length === 0) {
+                                        foundMatch = true;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+
+                if (foundMatch) {
+                    logger.info(`Push an alert to ${channel.name}`);
+                    bot.say(
+                        {
+                            text: `A problem happened ${problem.PID}!`,
+                            channel: channel.id
+                        }
+                    );
                 }
-            );
+            });
         });
-    });
+    }
     
     /**
      * Slack conversation
@@ -398,7 +425,7 @@ module.exports = function (config) {
                 // if not a direct message, let the user know they need to wake Davis
                 if(!this.isDirectMessage && !this.resetTimeout && !this.shouldEndSession) {
                     
-                    convo.say(this.directPrefix + ':ZZZ: I\'ve fallen asleep');
+                    convo.say(this.directPrefix + _.sample(DAVIS_SLEEP_MESSAGE));
                     convo.next();
                     clearTimeout(this.inactivityTimeout);
                     
