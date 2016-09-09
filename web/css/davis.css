@@ -49,7 +49,7 @@ body.micOn {
 }
 
 ::-webkit-scrollbar-thumb:active {
-  background: #000000;
+  background: #ffffff;
 }
 
 ::-webkit-scrollbar-track {
@@ -348,11 +348,12 @@ table.debug, th.debug, td.debug {
 	position: fixed;
     left: 50%;
     top: 14%;
+    z-index: 1001;
 }
 
 .davisvisual__davis:first-child canvas {
-	width: 150px !important;
-	height: 150px !important;
+	width: 130px !important;
+	height: 130px !important;
 }
 
 .card-wrapper {

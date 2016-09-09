@@ -42,7 +42,8 @@ var davis = (function () {
         $.getJSON('./js/local-responses.json', function (data){
             localResponses = data;
             view = new davisView(interactionLogElemId, textInputElemId, muteWrapperElemId, muteSVGElemId, listeningStateElemId, connectedUrlElemId, gitElemId);
-            controller = new davisController();
+            controller = new davisController(); 
+            view.init();
             controller.init();
             view.attachEventListeners();
         });
@@ -75,43 +76,6 @@ var davis = (function () {
         var textBeingTyped;
         var elementBeingTyped;
         var cards = localStorage.getItem('davis-cards-enabled') || 'true';
-       
-        resetPlaceholder();
-        setListeningState('sleeping');
-        
-        // Listen for keypress
-        // if space-bar and textbox not focused, toggleMute
-        $(function() {
-            $(window).keypress(function(e) {
-                var key = e.which;
-                if (key == 32 && !$("#"+textInputElemId).is(":focus")) {
-                    controller.toggleMute($('#'+listeningStateElemId).html() === localResponses.listeningStates.listening);
-                } else if (key != 32 && !$("#"+textInputElemId).is(":focus")) {
-                    $("#"+textInputElemId).focus();
-                }
-            });   
-        });
-        
-        if (typeof window.chrome != 'object') {
-           
-           addToInteractionLog({text: localResponses.errors.noBrowserSupport.text}, true, false);
-           addToInteractionLog({text: localResponses.errors.chrome.text}, true, false);
-           addToInteractionLog({text: localResponses.errors.getChrome.text}, true, false); 
-            
-        } else {
-        
-            if (!localStorage.getItem("davis-user-token")) {
-                
-                addToInteractionLog({text: localResponses.greetings.micPermission.text}, true, false);
-                setTimeout(function () {
-                   addToInteractionLog({text: localResponses.greetings.thenHelp.text}, true, false);
-                }, 5000);
-                
-            } else {
-                addToInteractionLog({text: localResponses.greetings.help.text}, true, false);
-            }
-    
-        }
         
         /**
          * Initializes event listeners
@@ -186,6 +150,8 @@ var davis = (function () {
          * Brightens the body's background-color
          */
         function brightenBackground() {
+            $('#interactionLogGradientTop').hide();
+            $('#interactionLogGradientBottom').hide();
             $('body').addClass('micOn');
             $('body').removeClass('micOff');
         }
@@ -197,6 +163,8 @@ var davis = (function () {
             if ($('body').hasClass('micOn')) {
                 $('body').addClass('micOff');
                 $('body').removeClass('micOn');
+                $('#interactionLogGradientTop').fadeIn(3000);
+                $('#interactionLogGradientBottom').fadeIn(3000);
             }
         }
         
@@ -471,6 +439,48 @@ var davis = (function () {
             (isEnabled) ? $("#"+connectedUrlElemId).hide() : $("#"+connectedUrlElemId).show();
 
         }
+        
+        /**
+         * View's initializer (called via onload) 
+         */
+        function init() {
+            resetPlaceholder();
+            setListeningState('sleeping');
+            
+            // Listen for keypress
+            // if space-bar and textbox not focused, toggleMute
+            $(function() {
+                $(window).keypress(function(e) {
+                    var key = e.which;
+                    if (key == 32 && !$("#"+textInputElemId).is(":focus")) {
+                        controller.toggleMute($('#'+listeningStateElemId).html() === localResponses.listeningStates.listening);
+                    } else if (key != 32 && !$("#"+textInputElemId).is(":focus")) {
+                        $("#"+textInputElemId).focus();
+                    }
+                });   
+            });
+            
+            if (typeof window.chrome != 'object') {
+               
+               addToInteractionLog({text: localResponses.errors.noBrowserSupport.text}, true, false);
+               addToInteractionLog({text: localResponses.errors.chrome.text}, true, false);
+               addToInteractionLog({text: localResponses.errors.getChrome.text}, true, false); 
+                
+            } else {
+            
+                if (!localStorage.getItem("davis-user-token")) {
+                    
+                    addToInteractionLog({text: localResponses.greetings.micPermission.text}, true, false);
+                    setTimeout(function () {
+                       addToInteractionLog({text: localResponses.greetings.thenHelp.text}, true, false);
+                    }, 5000);
+                    
+                } else {
+                    addToInteractionLog({text: localResponses.greetings.help.text}, true, false);
+                }
+        
+            }
+        }
           
         // view global methods  
         return {
@@ -523,7 +533,8 @@ var davis = (function () {
             
             setGit: function (git) {
                 
-                let branch, updated;
+                let branch = '';
+                let updated = '';
                 if (git.branch !== 'master') {
                     branch = ' (' + git.branch + ')';
                     updated = ' <br /><span>' + git.lastUpdate + '</span>';
@@ -566,6 +577,10 @@ var davis = (function () {
             enableCards: function (isEnabled) {
                 cards = isEnabled.toString();
                 (isEnabled) ? addToInteractionLog({text: 'Cards are now enabled'}, true, false) : addToInteractionLog({text: 'Cards have been disabled'}, true, false);
+            },
+            
+            init: function () {
+                init();
             }
             
         };
@@ -1313,12 +1328,14 @@ var davis = (function () {
                 view.muted();
                 
             } else {
-                
+        
                 timezone = jstz.determine().name();
                 getDavisUserToken();
+                
                 getConnectedServerUrl().then( url => {
                     view.setConnectedUrl(url);
                 });
+                
                 getGit().then( git => {
                    view.setGit(git);
                 });
@@ -1331,11 +1348,13 @@ var davis = (function () {
                 }).then( token => {
                     
                     if (location.protocol === 'https:' || location.href.includes('127.0.0.1') || location.href.includes('localhost')) {
-                    
-                        annyangInit();
-                        document.dispatchEvent(listeningStateEvents.sleeping);
-                        evt.targetStance = 'dynatrace';
-                        document.getElementById('davisContainer').dispatchEvent(evt);
+
+                        $(document).ready(function() {
+                            annyangInit();
+                            document.dispatchEvent(listeningStateEvents.sleeping);
+                            evt.targetStance = 'dynatrace';
+                            document.getElementById('davisContainer').dispatchEvent(evt);
+                        });
                         
                     } else {
                         noMic();
@@ -1346,6 +1365,7 @@ var davis = (function () {
                     console.log(err);
                     noMic();
                 });
+                
             }
             
         }

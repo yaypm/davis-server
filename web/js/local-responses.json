@@ -24,7 +24,7 @@
             "text": "Please select \"Allow\" if asked for permission to use your microphone."
         },
         "thenHelp": {
-            "text": "Then say \"Hey Davis\" or click the microphone when you're ready for help."
+            "text": "Then say \"Hey Davis\", type a question, or click the microphone when you're ready for help."
         },
         "help": {
             "text": "Say \"Hey Davis\", type a question, or click the mic to wake me."
