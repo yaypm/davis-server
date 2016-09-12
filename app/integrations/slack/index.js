@@ -20,6 +20,10 @@ const DAVIS_SLEEP_MESSAGE = ['Wake me up if need something!  :sleeping:', 'I\'ve
 const phrases = [
     'hey davis',
     'hey, davis',
+    'okay davis',
+    'okay, davis',
+    'ok davis',
+    'ok, davis',
     'davis'
 ];
 
