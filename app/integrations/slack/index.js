@@ -6,6 +6,8 @@ const Botkit = require('botkit'),
     logger = require('../../utils/logger'),
     SlackService = require('./services/SlackService'),
     problemService = require('../../services/events/problemService'),
+    ConversationService = require('../../services/ConversationService'),
+    Davis = require('../../core'),
     rp = require('request-promise'),
     moment = require('moment');
 
@@ -169,7 +171,7 @@ module.exports = function (config) {
         );
     });
 
-    controller.on('rtm_close',function(bot) {
+    controller.on('rtm_close',function() {
         // We could consider adding some retry logic here
         logger.warn('The RTM connection was closed for some reason!');
     });
@@ -201,12 +203,32 @@ module.exports = function (config) {
 
                 if (foundMatch) {
                     logger.info(`Push an alert to ${channel.name}`);
-                    bot.say(
-                        {
-                            text: `A problem happened ${problem.PID}!`,
-                            channel: channel.id
-                        }
-                    );
+                    let user = {
+                        'id': 'davis-system',
+                        'nlp': config.nlp,
+                        'dynatrace': config.slack.dynatrace
+                    };
+
+                    ConversationService.getConversation(user)
+                        .then(conversation => {
+                            logger.info('conversation started');
+                            let davis = new Davis(user, conversation, config);
+                            return davis.process('problemDetails', {problemId: problem.PID});
+                        })
+                        .then(davis => {
+                            logger.info('Finished processing request');
+                            let response;
+                            if (davis.exchange.response.visual.card) {
+                                response = davis.exchange.response.visual.card;
+                            } else {
+                                response = davis.exchange.response.visual.text;
+                            }
+                            response.channel = channel.id;
+                            bot.say(response);
+                        })
+                        .catch(err => {
+                            logger.error(`Unable to push alert.  ${err.message}`);
+                        });
                 }
             });
         });

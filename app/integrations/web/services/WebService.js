@@ -48,7 +48,7 @@ module.exports = function WebService(config) {
 
                 // Use web user token as id for Davis user 
                 let user = {
-                    'id': 'web-user-' + req.body.user, 
+                    'id': `web-user-${req.body.use}`,
                     'nlp': config.nlp,
                     'dynatrace': config.web.dynatrace,
                     'timezone': req.body.timezone
@@ -56,19 +56,18 @@ module.exports = function WebService(config) {
                 
                 // Starts or continues our conversation
                 ConversationService.getConversation(user)
-                .then(conversation => {
-                    let davis = new Davis(user, conversation, config);
-                    return davis.interact(req.body.request, REQUEST_SOURCE);
-                })
-                .then(davis => {
-                    logger.info('Finished processing request');
-                    return resolve(formatResponse(davis));
-                })
-                .catch(err => {
-                    logger.error(`Unfortunately, something went wrong.  ${err.message}`);
-                    return reject(err.message);
-                });
-                
+                    .then(conversation => {
+                        let davis = new Davis(user, conversation, config);
+                        return davis.interact(req.body.request, REQUEST_SOURCE);
+                    })
+                    .then(davis => {
+                        logger.info('Finished processing request');
+                        return resolve(formatResponse(davis));
+                    })
+                    .catch(err => {
+                        logger.error(`Unfortunately, something went wrong.  ${err.message}`);
+                        return reject(err.message);
+                    });
             });
         }
     };

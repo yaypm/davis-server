@@ -58,10 +58,10 @@ const ConversationService = {
             
             exchange.save()
                 .then(() => {
-                    return resolve(exchange);
+                    resolve(exchange);
                 })
                 .catch( err => {
-                    return reject(err);
+                    reject(err);
                 });
         });
     }
