@@ -392,6 +392,13 @@ var davis = (function () {
                 showCursor: false
             });
             
+            setTimeout( () => {
+                $('#'+interactionLogElemId).scrollTop($('#'+interactionLogElemId).prop('scrollHeight'));
+            }, 200);
+            setTimeout( () => {
+                $('#'+interactionLogElemId).scrollTop($('#'+interactionLogElemId).prop('scrollHeight'));
+            }, 1000);
+            
         }
         
         /**

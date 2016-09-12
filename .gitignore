@@ -24,3 +24,6 @@ pids
 # demo
 demo/config.js
 test/config.js
+
+# webfonts
+web/css/webfonts
