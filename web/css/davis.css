@@ -446,7 +446,7 @@ a.card-link-attachment:active {
 }
 
 .card-text {
-	
+	clear: both;
 }
 
 .card-fields {

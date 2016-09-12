@@ -245,9 +245,9 @@ var davis = (function () {
             
             // Add text
             if (card.text !== undefined) {
-                addToInteractionLog({text: reformatLinks(card.text, false)}, true, false);
+                addToInteractionLog({text: reformatLinks(card.text.replace(/\n/g, '<br>'), false)}, true, false);
             }
-            
+
             // Add attachments
             if (card.attachments !== undefined && card.attachments.length > 0) {
                 
@@ -278,7 +278,7 @@ var davis = (function () {
                     
                     // Text
                     if (atm.text !== undefined) {
-                        attachment += localResponses.card.text.replace('{{text}}', atm.text);
+                        attachment += localResponses.card.text.replace('{{text}}', atm.text.replace(/\n/g, '<br>'));
                     }
                     
                     // Fields
@@ -289,7 +289,7 @@ var davis = (function () {
                         atm.fields.forEach( (fd) => {
                            
                             let field = localResponses.card.field.replace('{{title}}', fd.title);
-                            fields += field.replace('{{value}}', fd.value);
+                            fields += field.replace('{{value}}', fd.value.replace(/\n/g, '<br>'));
 
                         });
                         
@@ -303,7 +303,7 @@ var davis = (function () {
                         
                         // Bar color
                         if (atm.color === undefined) {
-                            atm.color = '';
+                            atm.color = '#d3d3d3';
                         }
                         attachment = attachment.replace('{{color}}', atm.color);
                         
@@ -315,11 +315,14 @@ var davis = (function () {
                         html = html.replace('{{attachments}}', attachments);
                         $('#'+interactionLogElemId).append(html);
                         $('.card-wrapper').fadeIn(400);
-                        addToInteractionLog({text: atm.pretext}, true, false);
+                        
+                        if (atm.pretext) {
+                            addToInteractionLog({text: atm.pretext.replace(/\n/g, '<br>')}, true, false);
+                        }
                         
                     } else if (atm.pretext !== undefined) {
                         
-                        attachments += localResponses.card.pretext.replace('{{pretext}}', atm.pretext);
+                        attachments += localResponses.card.pretext.replace('{{pretext}}', atm.pretext.replace(/\n/g, '<br>'));
                         attachments += attachment;
                         
                         
@@ -328,9 +331,15 @@ var davis = (function () {
                     }
                     
                     if (attachment.length > 0 && index == card.attachments.length - 1) {
+                        
+                        html = html.replace('{{attachments}}', attachments);
                         $('#'+interactionLogElemId).append(html);
                         $('.card-wrapper').fadeIn(400); 
-                        addToInteractionLog({text: atm.pretext}, true, false);
+                        
+                        if (atm.pretext) {
+                            addToInteractionLog({text: atm.pretext.replace(/\n/g, '<br>')}, true, false);
+                        }
+                        
                     }    
                     
                 }); 
@@ -406,13 +415,18 @@ var davis = (function () {
          */
         function stopTypewriter() {
             
-            // Stop typing
-            elementBeingTyped.data('typed').stop();
-            
-            // Display text
-            $(elementBeingTyped).css('display', 'none');
-            $(elementBeingTyped).html(textBeingTyped);
-            $(elementBeingTyped).fadeIn(400);
+           
+            if (elementBeingTyped) {
+                
+                // Stop typing
+                elementBeingTyped.data('typed').stop();
+                
+                // Display text
+                $(elementBeingTyped).css('display', 'none');
+                $(elementBeingTyped).html(textBeingTyped);
+                $(elementBeingTyped).fadeIn(400);
+                
+            }
             
         }
         
