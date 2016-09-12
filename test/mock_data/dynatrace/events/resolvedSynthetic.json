@@ -1,9 +1,9 @@
 {
-  "PID": "7447260381782878378",
+  "PID": "5198131",
   "ProblemID": "378",
   "State": "RESOLVED",
   "ProblemImpact": "APPLICATION",
-  "ProblemURL": "https://s3.amazonaws.com/ruxit-mobile/common/ruxit-launch.html?url=https%3A%2F%2Fgmg80500.dev.dynatracelabs.com%2F%23problems%2Fproblemdetails%3Bpid%3D7447260381782878378&amp;pid=7447260381782878378&amp;tid=gmg80500&amp;src=email&amp;app=ruxit-e",
-  "ImpactedEntity": "Web check local outage for Web check account-dev.dynatracelabs.com",
+  "ProblemURL": "http://test.com",
+  "ImpactedEntity": "Web check local outage for Web check test.com",
   "Tags": "dev, bas"
 }
