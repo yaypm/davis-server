@@ -310,6 +310,8 @@ module.exports = function (config) {
                     } else if (this.directPrefix) {
                         resp.response.outputSpeech.text = this.directPrefix + resp.response.outputSpeech.text;
                         this.initialResponse = resp.response.outputSpeech.text;
+                    } else {
+                        this.initialResponse = (resp.response.outputSpeech.card) ? resp.response.outputSpeech.card : resp.response.outputSpeech.text;
                     }
                     
                     this.shouldEndSession = resp.response.shouldEndSession;
