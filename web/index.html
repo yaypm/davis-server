@@ -16,7 +16,9 @@
 		<script>
 			// Initialize davis view and controller
 			// Define UI element ids
-			davis.init('interactionLog', 'textInput', 'muteWrapper', 'muteSVG', 'listeningState', 'connectedUrl', 'git');
+			window.onload = function () {
+				davis.init('interactionLog', 'textInput', 'muteWrapper', 'muteSVG', 'listeningState', 'connectedUrl', 'git');
+			}
 		</script>
 		<script src="./js/third-party/p5.js/lib/p5.min.js"></script>
 		<script src="./js/third-party/davisvisualization/index.js"></script>

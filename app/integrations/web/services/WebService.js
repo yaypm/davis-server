@@ -30,7 +30,7 @@ module.exports = function WebService(config) {
                 text: davis.exchange.response.visual.text,
                 card: davis.exchange.response.visual.card,
                 hyperlink: davis.exchange.response.visual.hyperlink,
-                ssml: davis.exchange.response.audible.ssml
+                ssml: '<speak>' + davis.exchange.response.audible.ssml + '</speak>'
             }
         };
     }

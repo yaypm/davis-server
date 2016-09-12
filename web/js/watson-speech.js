@@ -6395,7 +6395,7 @@ FormatStream.prototype.capitalize = function capitalize(text) {
 FormatStream.prototype.period = function period(text) {
   // Detect if a question mark should be used instead
   const words = ['who', 'what', 'when', 'where', 'why', "how", "could", "can", 'is there', 'is the', 'did the', 'did any'];
-  let result = '. ';
+  var result = '. ';
   words.forEach( function (word) {
       if (text.toLowerCase().includes(word)) {
           result = '? ';
@@ -7052,7 +7052,7 @@ RecognizeStream.prototype.initialize = function() {
   // browser params: requestUrl, protocols (all others ignored)
   var socket = this.socket = new W3CWebSocket(url, null, null, options.headers, null);
 
-  // when the input stops, let the service know that we're done
+  // when the input stops, var the service know that we're done
   self.on('finish', self.finish.bind(self));
 
   socket.onerror = function(error) {

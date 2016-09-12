@@ -225,8 +225,8 @@ var davis = (function () {
                 
             } else {
                 
-                let styleClass = isDavisSpeaking ? 'botStyle' : 'userStyle';
-                let el = $('<p>' + response.text.trim() + '</p>').css('display', 'none').addClass(styleClass);
+                var styleClass = (isDavisSpeaking) ? 'botStyle' : 'userStyle';
+                var el = $('<p>' + response.text.trim() + '</p>').css('display', 'none').addClass(styleClass);
                 $('#'+interactionLogElemId).append(el);
                 el.fadeIn(400);
                 
@@ -251,13 +251,13 @@ var davis = (function () {
             // Add attachments
             if (card.attachments !== undefined && card.attachments.length > 0) {
                 
-                let html = localResponses.card.wrapper;
+                var html = localResponses.card.wrapper;
                 
-                let attachments = '';
+                var attachments = '';
                 
                 card.attachments.forEach( (atm, index) => {
                     
-                    let attachment = '';
+                    var attachment = '';
                     
                     // Title
                     if (atm.title !== undefined) {
@@ -266,7 +266,7 @@ var davis = (function () {
                         
                         if (atm.title_link !== undefined) {
                             
-                            let title = localResponses.card.linkAttachment.replace('{{url}}', atm.title_link);
+                            var title = localResponses.card.linkAttachment.replace('{{url}}', atm.title_link);
                             title = title.replace('{{text}}', atm.title);
                             attachment += localResponses.card.title.replace('{{title}}', title);
                             
@@ -284,11 +284,11 @@ var davis = (function () {
                     // Fields
                     if (atm.fields !== undefined) {
                         
-                        let fields = '';
+                        var fields = '';
                         
                         atm.fields.forEach( (fd) => {
                            
-                            let field = localResponses.card.field.replace('{{title}}', fd.title);
+                            var field = localResponses.card.field.replace('{{title}}', fd.title);
                             fields += field.replace('{{value}}', fd.value.replace(/\n/g, '<br>'));
 
                         });
@@ -358,13 +358,13 @@ var davis = (function () {
              
             if (str.includes('<http')) {
                 
-                let exploded = str.split('<http');
+                var exploded = str.split('<http');
 
                 exploded.forEach( (fragment, index) => {
                     if (fragment.includes('|') && fragment.includes('>')) {
-                        let link = (isAttachment) ? localResponses.card.linkAttachment : localResponses.card.linkText;
-                        let url = fragment.substring(0, fragment.indexOf('>'));
-                        let text = url.substring(url.indexOf('|') + 1);
+                        var link = (isAttachment) ? localResponses.card.linkAttachment : localResponses.card.linkText;
+                        var url = fragment.substring(0, fragment.indexOf('>'));
+                        var text = url.substring(url.indexOf('|') + 1);
                         url = 'http' + url.substring(0, url.indexOf('|'));
                         link = link.replace('{{text}}', text);
                         link = link.replace('{{url}}', url);
@@ -556,8 +556,8 @@ var davis = (function () {
             
             setGit: function (git) {
                 
-                let branch = '';
-                let updated = '';
+                var branch = '';
+                var updated = '';
                 if (git.branch !== 'master') {
                     branch = ' (' + git.branch + ')';
                     updated = ' <br /><span>' + git.lastUpdate + '</span>';
@@ -777,10 +777,10 @@ var davis = (function () {
                 // Output missed phrases option flag
                 if (request.includes(' -m') && localStorage.getItem('davis-missed-phrases')) {
                     
-                    let missedPhrases = JSON.parse(localStorage.getItem('davis-missed-phrases'));
-                    let html = "<table class='debug'>";
+                    var missedPhrases = JSON.parse(localStorage.getItem('davis-missed-phrases'));
+                    var html = "<table class='debug'>";
                     
-                    for (let i = 0; i < missedPhrases.phrases.length; i++) {
+                    for (var i = 0; i < missedPhrases.phrases.length; i++) {
                         
                         html += "<tr class='debug'><td class='debug'>" + missedPhrases.phrases[i].phrase + "</td>";
                         html += "<td class='debug'>" + missedPhrases.phrases[i].count + "</td></tr>";
@@ -1107,7 +1107,7 @@ var davis = (function () {
             if (listen && outputQueue.length == 0) {
                 unmute();
             } else if (outputQueue.length > 0) {
-                let output = outputQueue.shift();
+                var output = outputQueue.shift();
                 speak(output.text, output.voice, output.listen);
             } else {
                 document.dispatchEvent(listeningStateEvents.sleeping);
@@ -1124,7 +1124,7 @@ var davis = (function () {
          */
         function speak(response, voice, listen) {
             
-                let watsonText = (response.ssml) ? response.ssml : response.text;
+                var watsonText = (response.ssml) ? response.ssml : response.text;
             
                 player.onplay = function () {
                     isSpeaking = true;
@@ -1211,7 +1211,7 @@ var davis = (function () {
                 
                 annyang.addCallback('result', function (phrases) {
                     
-                    let launch = false;
+                    var launch = false;
                     
                     view.getLocalResponses().phrases.forEach(function (phrase) {
                        if (phrases[0].toLowerCase().trim().includes(phrase)) {
@@ -1226,8 +1226,8 @@ var davis = (function () {
                         
                     } else if (debug && phrases[0].toLowerCase().trim().split(' ').length < 5) {
                         
-                        let missedPhrases = {phrases: []};
-                        let missedPhrase = phrases[0].toLowerCase().trim();
+                        var missedPhrases = {phrases: []};
+                        var missedPhrase = phrases[0].toLowerCase().trim();
                         
                         console.log('Davis: Missed phrase logged');
                         console.log('"'+ missedPhrase +'"');
