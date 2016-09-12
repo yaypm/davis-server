@@ -1,31 +1,36 @@
 'use strict';
 
 const Botkit = require('botkit'),
+    _ = require('lodash'),
     BbPromise = require('bluebird'),
     logger = require('../../utils/logger'),
     SlackService = require('./services/SlackService'),
+    problemService = require('../../services/events/problemService'),
+    ConversationService = require('../../services/ConversationService'),
+    Davis = require('../../core'),
     rp = require('request-promise'),
     moment = require('moment');
 
+const davisChannels = [];
+const inactivityTimeoutTime = 30; // Seconds of inactivity until Davis goes to sleep
+const ERROR_MESSAGE = 'Sorry about that, I\'m having issues responding to your request at this time.';
+const DAVIS_SLEEP_MESSAGE = ['Wake me up if need something!  :sleeping:', 'I\'ve gone to sleep. :ZZZ:', 'Until next time :spock-hand:'];
+
+// Launch phrases
+const phrases = [
+    'hey davis',
+    'hey, davis',
+    'davis'
+];
+
 module.exports = function (config) {
-    
+    let bot;
+
     const controller = Botkit.slackbot({
         debug: false,
         interactive_replies: true
     });
-    
-    let bot;
-    const inactivityTimeoutTime = 30; // Seconds of inactivity until Davis goes to sleep
-    
-    // Launch phrases
-    const phrases = [
-        "hey davis",
-        "okay davis",
-        "ok davis",
-        "hello davis",
-        "hi davis"
-    ];
-    
+
     /**
      * Gets user details
      * Important for using correct timezone and finding the davis bot's id
@@ -33,115 +38,111 @@ module.exports = function (config) {
      * @param {String} userId - user specific identifier provided by Slack
      */
     let getUserDetails = function (userId) {
-        
-         return new BbPromise((resolve, reject) => {
+        return new BbPromise((resolve, reject) => {
              
             let options = {
                 uri: 'https://slack.com/api/users.list?token='+config.slack.key,
                 json: true
             };
-             
-             
+
             rp(options)
-            .then( (resp) => {
-            
-                resp.members.forEach( (member) => {
-                    
-                    if (member.id === userId) {
-                        return resolve(member);
-                    }
-                    
+                .then(resp => {
+                    resp.members.forEach( (member) => {
+                        if (member.id === userId) {
+                            return resolve(member);
+                        }
+                    });
+                    resolve();
+                }).catch(err => {
+                    reject(err);
                 });
-                
-                resolve();
-                
-            }).catch(function (err) {
-                reject(new Error(err));
-            });
-             
-         });
-         
-    }
+        });
+    };
     
     /**
      * Get Davis bot online status
      * Important for making sure other another Davis instance isn't running a Slack bot already
      */
     let getDavisBotStatus = function () {
-         return new BbPromise((resolve, reject) => {
-            
-            getUserDetails().then( (res) => {
-             
-                let options = {
-                    uri: 'https://slack.com/api/users.getPresence?token=' + config.slack.key,
-                    json: true
-                };
-             
-                rp(options)
-                .then( (respJson) => {
-                    
-                    return resolve(respJson.online);
-                    
-                }).catch( (err) => {
-                    reject(new Error(err));
+        return new BbPromise((resolve, reject) => {
+            getUserDetails()
+                .then(() => {
+                    return rp({
+                        uri: 'https://slack.com/api/users.getPresence?token=' + config.slack.key,
+                        json: true
+                    });
+                })
+                .then(resp => {
+                    resolve(resp.online);
+                })
+                .catch(err => {
+                    logger.error('Error in getUserDetails');
+                    reject(err);
                 });
-            
-            }).catch(err => {
-                logger.error('Error in getUserDetails');
-                logger.error(err);
-            });
-             
-         });
-    }
+        });
+    };
     
     // Check if bot is already running on another Davis instance
-    getDavisBotStatus().then( (isOnline) => {
-        
-        if (!isOnline) {
-            
-            bot = controller.spawn({
-                token: config.slack.key
-            });
-            
-            bot.startRTM( (err, bot, payload) => {
-                if (err) {
-                    throw new Error('Could not connect to Slack');
-                }
-            });
-            
-        } else {
-            logger.warn('Failed to start Slack bot. A Slack bot may already be running on another instance of Davis using the same API key');
-        }
-        
-    }).catch(err => {
-        logger.error('Error in getDavidBotStatus');
-        logger.error(err);
-    });
+    getDavisBotStatus()
+        .then(isOnline => {
+            if (!isOnline) {
+                bot = controller.spawn({
+                    token: config.slack.key
+                });
+
+                bot.startRTM(err => {
+                    if (err) {
+                        throw new Error('Could not connect to Slack');
+                    }
+                    updateBotChannels();
+                });
+            } else {
+                logger.warn('Failed to start Slack bot. A Slack bot may already be running on another instance of Davis using the same API key');
+            }
+        }).catch(err => {
+            logger.error('Error in getDavidBotStatus');
+            logger.error(err);
+        });
     
     /**
      * Makes Slack display that Davis is typing a message (similar to processing in web UI)
      */ 
-    let showTypingNotification = function (channel) {
-        
+    const showTypingNotification = function (channel) {
         bot.say({
-            type: "typing",
-            channel: channel // a valid slack channel, group, mpim, or im ID
+            type: 'typing',
+            channel: channel
         });
-        
-    }
-    
+    };
+
+    const updateBotChannels = function () {
+        davisChannels.splice(0, davisChannels.length);
+        bot.api.channels.list({}, function (err, response) {
+            if (response.hasOwnProperty('channels') && response.ok) {
+                var total = response.channels.length;
+                for (var i = 0; i < total; i++) {
+                    var channel = response.channels[i];
+                    // Lets update the list with the channels davis is currently a member of
+                    if (channel.is_member) davisChannels.push({name: channel.name, id: channel.id});
+                }
+            }
+        });
+    };
+
     controller.hears(['(.*)'], 'direct_message', (bot, message) => {
-        
-        logger.info('Slack: Starting public conversation (direct_message)');
-        bot.startConversation(message, (err, convo) => {
-            let slackConvo = new SlackConversation(message, true);
-            slackConvo.initConvo(err, convo);
-        });
-        
+        // Slack sends a direct message to a bot when they're removed from a channel
+        if(message.text.startsWith('You have been removed from')) {
+            logger.info('Oh no!  Davis was removed a channel!');
+            updateBotChannels();
+        } else {
+            logger.info('Slack: Starting public conversation (direct_message)');
+            bot.startConversation(message, (err, convo) => {
+                let slackConvo = new SlackConversation(message, true);
+                slackConvo.initConvo(err, convo);
+            });
+        }
     });
     
     controller.hears(['(.*)'], 'direct_mention', (bot, message) => {
-        
         logger.info('Slack: Starting public conversation (direct_mention)');
         bot.startConversation(message, (err, convo) => {
             let slackConvo = new SlackConversation(message, false);
@@ -159,6 +160,79 @@ module.exports = function (config) {
         });
         
     });
+
+    controller.on('bot_channel_join', (bot, message) => {
+        updateBotChannels();
+        bot.say(
+            {
+                text: 'Thanks for the invite!  Message me if you need anything.',
+                channel: message.channel
+            }
+        );
+    });
+
+    controller.on('rtm_close',function() {
+        // We could consider adding some retry logic here
+        logger.warn('The RTM connection was closed for some reason!');
+    });
+
+    if (_.get(config, 'slack.notifications.alerts.enabled', false)) {
+        logger.info('Problem notifications in Slack has been enabled');
+        problemService.on('event.problem.*', problem => {
+            logger.debug(`A problem notification for ${problem.PID} has been received.`);
+            _.each(davisChannels, channel => {
+                let foundMatch = false;
+                _.some(_.get(config, 'slack.notifications.alerts.channels', []), subscribedChannel => {
+                    //Making sure the friendly channel names match
+                    if (subscribedChannel.name.toLowerCase() === channel.name.toLowerCase()) {
+                        // Making sure the channel is interested in this state
+                        if (_.includes(subscribedChannel.state, problem.State.toLowerCase())) {
+                            //making sure the channel is interested in this impact
+                            if (_.includes(subscribedChannel.impact, problem.ProblemImpact.toLowerCase())) {
+                                // Making sure at least one tag matches if tags were defined
+                                if (subscribedChannel.tags.includes.length === 0 || _.intersection(problem.Tags, subscribedChannel.tags.includes).length > 0) {
+                                    // Making sure no tags match on the exclude list
+                                    if (_.intersection(problem.Tags, subscribedChannel.tags.excludes).length === 0) {
+                                        foundMatch = true;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+
+                if (foundMatch) {
+                    logger.info(`Push an alert to ${channel.name}`);
+                    let user = {
+                        'id': 'davis-system',
+                        'nlp': config.nlp,
+                        'dynatrace': config.slack.dynatrace
+                    };
+
+                    ConversationService.getConversation(user)
+                        .then(conversation => {
+                            logger.info('conversation started');
+                            let davis = new Davis(user, conversation, config);
+                            return davis.process('problemDetails', {problemId: problem.PID});
+                        })
+                        .then(davis => {
+                            logger.info('Finished processing request');
+                            let response;
+                            if (davis.exchange.response.visual.card) {
+                                response = davis.exchange.response.visual.card;
+                            } else {
+                                response = davis.exchange.response.visual.text;
+                            }
+                            response.channel = channel.id;
+                            bot.say(response);
+                        })
+                        .catch(err => {
+                            logger.error(`Unable to push alert.  ${err.message}`);
+                        });
+                }
+            });
+        });
+    }
     
     /**
      * Slack conversation
@@ -210,21 +284,15 @@ module.exports = function (config) {
                             
                     if (this.initialInteraction.text.toLowerCase().includes(phrase)) {
                         
-                        if (phrase.length == this.initialInteraction.text.trim().length) {
-                            
+                        if (phrase.length === this.initialInteraction.text.trim().length) {
                             // Only a launch phrase detected, use launch intent compatible phrase
                             this.initialInteraction.text = 'Start davis';
-                            
                         } else {
-                            
                             // Strip launch phrase
                             this.initialInteraction.text = this.initialInteraction.text.toLowerCase().replace(phrase, ''); // Remove phrase
                             this.initialInteraction.text = this.initialInteraction.text.replace(/(^\s*,)|(,\s*$)/g, ''); // Remove leading/trailing white-space and commas
-                            
                         }
-                        
                     }
-                    
                 });
                     
                     
@@ -232,10 +300,13 @@ module.exports = function (config) {
                 .then(resp => {
                     
                     logger.info('Sending a response back to the Slack service');
-                    if (this.directPrefix) {
+                    if (this.directPrefix && resp.response.outputSpeech.card) {
                         resp.response.outputSpeech.card.text = this.directPrefix + resp.response.outputSpeech.card.text;
+                        this.initialResponse = resp.response.outputSpeech.card;
+                    } else if (this.directPrefix) {
+                        resp.response.outputSpeech.text = this.directPrefix + resp.response.outputSpeech.text;
+                        this.initialResponse = resp.response.outputSpeech.text;
                     }
-                    this.initialResponse = resp.response.outputSpeech.card;
                     
                     this.shouldEndSession = resp.response.shouldEndSession;
                     
@@ -261,7 +332,7 @@ module.exports = function (config) {
                             });
                             
                         } else {
-                            convo.say("Sorry about that, I'm having issues responding to your request at this time.");
+                            convo.say(ERROR_MESSAGE);
                         }
                         
                         convo.next();
@@ -269,7 +340,6 @@ module.exports = function (config) {
                     } catch (err) {
                         logger.warn(err);
                     }
-                    
                 })
                 .catch(err => {
                     logger.error('Unable to respond to the request received from Slack');
@@ -279,17 +349,16 @@ module.exports = function (config) {
             });
             
         }
-        
+
         /**
          * Recursive method that responds to a request and tells Slack when 
          * the conversation should continue (convo.ask) or end (convo.say, convo.stop)
          * 
          * @param {String} response - text to be sent to user in response to request
          * @param {Object) convo - conversation object created by botkit
-         */ 
+         */
         addToConvo(response, convo) {
-    
-            // Timeout of 60 seconds
+
             let isTimedOut = moment().subtract(inactivityTimeoutTime, 'seconds').isAfter(this.lastInteractionTime);
             
             // Reset last interaction timestamp
@@ -331,41 +400,32 @@ module.exports = function (config) {
                     
                     // if no followup question
                     if (this.shouldEndSession) {
-                        
                         convo.say(output);
                         convo.next();
                         clearTimeout(this.inactivityTimeout);
-                        
                     } else {
-    
                         try{
-                            
                             // Send response and listen for request
                             convo.ask(output, (response, convo) => {
                             
                                 if (output) {
                                     this.addToConvo(response, convo);
                                 } else {
-                                    convo.say("Sorry about that, I'm having issues responding to your request at this time.");
+                                    convo.say(ERROR_MESSAGE);
                                     convo.next();
                                 }
-                                
                             });
                             convo.next();
-                        
                         } catch (err) {
                             logger.warn(err);
                         }
-                        
                         clearTimeout(this.inactivityTimeout);
-                        
                     }
-        
                 })
                 .catch(err => {
                     logger.error('Unable to respond to the request received from Slack');
                     logger.error(err);
-                    convo.say("Sorry about that, I'm having issues responding to your request at this time.");
+                    convo.say(ERROR_MESSAGE);
                     convo.next();
                 });
                 
@@ -387,13 +447,13 @@ module.exports = function (config) {
                 // if not a direct message, let the user know they need to wake Davis
                 if(!this.isDirectMessage && !this.resetTimeout && !this.shouldEndSession) {
                     
-                    convo.say(this.directPrefix + ":ZZZ: I've fallen asleep");
+                    convo.say(this.directPrefix + _.sample(DAVIS_SLEEP_MESSAGE));
                     convo.next();
                     clearTimeout(this.inactivityTimeout);
                     
                     // Allows convo.say to execute beforehand
                     setTimeout( () => {
-                        convo.stop()
+                        convo.stop();
                     }, 1000);
                     
                 } else {
@@ -401,13 +461,8 @@ module.exports = function (config) {
                     this.resetTimeout = false;
                     clearTimeout(this.inactivityTimeout);
                     this.inactivityTimeout = this.setInactivityTimeout(convo);
-                    
                 }
-                
             }, inactivityTimeoutTime * 1000);
-            
         }
-    
     }
-    
 };

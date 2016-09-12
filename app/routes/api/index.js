@@ -2,6 +2,7 @@
 
 const router = require('express').Router(),
     watson = require('./watson'),
+    events = require('./events'),
     logger = require('../../utils/logger'),
     version = require('../../utils/version');
 
@@ -17,5 +18,6 @@ router.get('/git', function(req, res) {
 });
 
 router.use('/watson', watson);
+router.use('/events', events);
 
 module.exports = router;

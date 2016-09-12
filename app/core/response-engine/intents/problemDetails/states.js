@@ -29,6 +29,10 @@ const state = {
         };
         davis.exchange.response.finished = false;
         return _.sample(['Would you like for me to open this for you?']);
+    },
+
+    notification: () => {
+        return;
     }
 };
 

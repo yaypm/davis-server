@@ -9,7 +9,8 @@ const tagger = {
             lang: common.getLanguage(davis.user),
             tense: common.getTense(davis.exchange),
             containsRootCause: containsRootCause(davis.intentData),
-            eligibleToShow: eligibleToShow(davis.exchange)
+            eligibleToShow: eligibleToShow(davis.exchange),
+            notification: notification(davis.exchange)
         };
     }
 };
@@ -19,7 +20,12 @@ function containsRootCause(intentData) {
 }
 
 function eligibleToShow(exchange) {
-    return (exchange.source === 'web');
+    // Only the WebUI is eligible for the show command.
+    return (_.get(exchange, 'source') === 'web');
+}
+
+function notification(exchange) {
+    return (_.get(exchange, 'source') === 'system');
 }
 
 module.exports = tagger;

@@ -3,7 +3,7 @@
 require('../../setup.js');
 const chai = require('chai'),
     expect = chai.expect,
-    ConversationModel = require('../../../app/core/models/Conversation');
+    ConversationModel = require('../../../app/models/Conversation');
 
 describe('The Conversation model', function() {
     it('should validate and throw if empty object is saved', function(done) {

@@ -41,13 +41,12 @@ module.exports = {
                     try {
                         show = (show) ? JSON.parse(show) : createSlackCard(text);
                     } catch(err) {
+                        console.log('The show response wasn\'t valid JSON.  Processing as text.');
                         show = createSlackCard(text);
-                        logger.warn(err);
                     }
                     davis.exchange.response.audible.ssml = combinedResponse(greeting, say, followUp);
                     davis.exchange.response.visual.text = combinedResponse(greeting, text, followUp);
                     davis.exchange.response.visual.card = combinedResponseCard(greeting, show, followUp);
-                    davis.exchange.response.visual.hyperlink = '';
                     return resolve(davis);
                 })
                 .catch(err => {
@@ -103,28 +102,25 @@ function combinedResponse(greet, body, followUp) {
 }
 
 function combinedResponseCard(greet, body, followUp) {
-    
-    let card = {};
-    card.attachments = [];
+    const card = {
+        attachments: []
+    };
 
-    if (!_.isNil(greet)) {
-        card.text = (!_.isNil(body.text)) ? `${greet} ${body.text}` : greet;
-    } else {
-        card.text = _.get(body, 'text');
+    card.text = (greet) ? `${greet}  ` : '';
+    card.text = (body.text) ? `${card.text}${body.text}` : '';
+
+    if (!_.isNil(followUp)) {
+        if (body.attachments && body.attachments.length > 0) {
+            body.attachments.push({pretext: followUp});
+        } else {
+            card.text = `${card.text}  ${followUp}`;
+        }
     }
-    
-    if (!_.isNil(followUp) && !_.isNil(body.attachments)) {
-        body.attachments.push({pretext: followUp});
-    } else if (!_.isNil(followUp)){
-        card.text = (!_.isNil(card.text)) ? `${card.text}\n${followUp}` : followUp;
-    }
-    
-    if (!_.isNil(body.attachments)) {
+    if (body.attachments && body.attachments.length > 0) {
         card.attachments = body.attachments;
     }
-    
+
     return card;
-    
 }
 
 function getFullPath(relativeTemplatePath) {

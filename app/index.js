@@ -31,7 +31,7 @@ module.exports = function setupApp(config) {
     app.use(bodyParser.json());
     app.use(bodyParser.urlencoded({extended: false}));
     app.use('/', routes);
-    
+
     /**
      * Getting Git version
      */
@@ -46,7 +46,6 @@ module.exports = function setupApp(config) {
     if (config.slack.enabled && config.slack.key) {
         require('./integrations/slack')(config);
     }
-
 
     // catch 404 and forward to error handler
     app.use(function (req, res, next) {

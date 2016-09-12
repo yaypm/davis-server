@@ -24,6 +24,11 @@ const events = [
         friendly: ['an availability issue affecting a user defined process']
     },
     {
+        name: 'OPENSTACK_KEYSTONE_UNHEALTHY',
+        type: EVENT_TYPES.availability,
+        friendly: ['Open Stack Keystone is unhealthy']
+    },
+    {
         name: 'HOST_LOG_AVAILABILITY',
         type: EVENT_TYPES.availability,
         friendly: ['a host availability issue was discovered in the logs']
@@ -162,6 +167,11 @@ const events = [
         name: 'USER_ACTION_DURATION_DEGRADATION',
         type: EVENT_TYPES.performance,
         friendly: ['a degradation in user action response time']
+    },
+    {
+        name: 'OPENSTACK_KEYSTONE_SLOW',
+        type: EVENT_TYPES.performance,
+        friendly: ['Open Stack Keystone is performing poorly']
     },
     {
         name: 'MOBILE_APP_HTTP_SLOWDOWN',

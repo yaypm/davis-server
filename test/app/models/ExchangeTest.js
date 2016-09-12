@@ -3,7 +3,7 @@
 require('../../setup.js');
 const chai = require('chai'),
     expect = chai.expect,
-    ExchangeModel = require('../../../app/core/models/Exchange');
+    ExchangeModel = require('../../../app/models/Exchange');
 
 describe('The Exchange model', function() {
     it('should validate and throw if empty object is saved', function(done) {

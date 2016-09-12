@@ -62,6 +62,46 @@ class Davis {
                 });
         });
     }
+
+    /**
+     * Processes requests for internal systems.
+     * @param {string} intent - The intent that should be used to generate a response.
+     * @param {Object} [data] - Additional data that the intent can use for response generation.
+     * @returns {promise}
+     */
+    process(intent, data) {
+        return new BbPromise((resolve, reject) => {
+
+            conversationService.startExchange(this.conversation, intent, 'system')
+                .then(exchange => {
+                    this.exchange = exchange;
+
+                    this.exchange.request = {
+                        text: `Davis service running '${intent}`,
+                        analysed: {
+                            intent: intent
+                        }
+                    };
+                    this.exchange.intent = [intent];
+                    //Allows us to pass additional information directly to the intent handler.
+                    if(data) this.data = data;
+                    return responseEngine.generate(this);
+                })
+                .then(() => {
+                    logger.debug('The response has been successfully generated');
+                    return [this.exchange.save(),
+                        this.conversation.save()];
+                })
+                .spread(() => {
+                    logger.debug('Davis has finished processing the request');
+                    resolve(this);
+                })
+                .catch(err => {
+                    logger.error(err.message);
+                    reject(err);
+                });
+        });
+    }
 }
 
 module.exports = Davis;

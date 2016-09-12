@@ -1,0 +1,2 @@
+{%- set problem = intentData.problemDetails.result -%}
+{% if problem.status == 'OPEN' %}A problem was detected.{% else %}A problem was closed.{% endif %}
