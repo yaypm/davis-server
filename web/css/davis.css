@@ -8,7 +8,7 @@
 
 body {
 	background-color: #007ee6;
-	font-family: BerninaSans, Arial;
+	font-family: BerninaSans, 'Open Sans', sans-serif;
 	margin: 0;
 }
 
@@ -262,7 +262,7 @@ table.debug, th.debug, td.debug {
 #listeningState {
 	position: relative;
 	float: right;
-	font-family: BerninaSans, Arial;
+	font-family: BerninaSans, 'Open Sans', sans-serif;
 	font-size: 12px;
 	color: white;
 	margin-right: 110px;
@@ -275,7 +275,7 @@ table.debug, th.debug, td.debug {
     margin: auto 0;
     text-align: center;
     width: 600px;
-    font-family: BerninaSans, Arial;
+    font-family: BerninaSans, 'Open Sans', sans-serif;
     font-size: 12px;
     color: white;
 }
@@ -300,7 +300,7 @@ table.debug, th.debug, td.debug {
 	background-color: white;
 	border-radius: 3px;
 	border: 1px solid white;
-	font-family: BerninaSans, Arial;
+	font-family: BerninaSans, 'Open Sans', sans-serif;
 	font-size: 20px;
 	color: black;
 }
