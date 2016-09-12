@@ -75,12 +75,14 @@ const filters = function(env, aliases) {
     
     env.addFilter('friendlyTimeRange', function(timeRange, user, isCompact) {
         let sentence = (isCompact) ? moment.tz(timeRange.startTime, user.timezone).calendar(null , startFormat.normal) : moment.tz(timeRange.startTime, user.timezone).calendar(null , startFormat.between);
-        if (moment.duration(moment.tz(timeRange.stopTime, user.timezone).diff(moment.tz(timeRange.startTime, user.timezone), 'hours')) < 24 && isCompact) {
-            sentence += (isCompact) ? ' - ' : ' and ';
-            sentence += moment.tz(timeRange.stopTime, user.timezone).calendar(null , stopFormat.sameday);
-        } else {
-            sentence += (isCompact) ? ' - \\n' : ' and ';
-            sentence += moment.tz(timeRange.stopTime, user.timezone).calendar(null , stopFormat.normal); 
+        if (timeRange.stopTime > timeRange.startTime) {
+            if (moment.duration(moment.tz(timeRange.stopTime, user.timezone).diff(moment.tz(timeRange.startTime, user.timezone), 'hours')) < 24 && isCompact) {
+                sentence += (isCompact) ? ' - ' : ' and ';
+                sentence += moment.tz(timeRange.stopTime, user.timezone).calendar(null , stopFormat.sameday);
+            } else {
+                sentence += (isCompact) ? ' - \\n' : ' and ';
+                sentence += moment.tz(timeRange.stopTime, user.timezone).calendar(null , stopFormat.normal); 
+            }
         }
         
         return sentence;

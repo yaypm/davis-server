@@ -1,280 +1,466 @@
-	body {
-		background-color: #007ee6;
-		font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-		margin: 0;
-	}
+@font-face{ 
+	font-family: 'BerninaSans';
+	src: url('./webfonts/BerninaSans-Web-Regular.eot');
+	src: url('./webfonts/BerninaSans-Web-Regular.eot?#iefix') format('embedded-opentype'),
+	     url('./webfonts/BerninaSans-Web-Regular.woff') format('woff'),
+	     url('./webfonts/BerninaSans-Web-Regular.woff2') format('woff2');
+}
 
-	body.micOff {
-	    -webkit-animation-name: micOff; /* Chrome, Safari, Opera */
-	    -webkit-animation-duration: 1s; /* Chrome, Safari, Opera */
-	    animation-name: micOff;
-	    animation-duration: 1s;
-	    background-color: #007ee6;
-	}
+body {
+	background-color: #007ee6;
+	font-family: BerninaSans, 'Open Sans', sans-serif;
+	margin: 0;
+}
 
-	body.micOn {
-	    -webkit-animation-name: micOn; /* Chrome, Safari, Opera */
-	    -webkit-animation-duration: 1s; /* Chrome, Safari, Opera */
-	    animation-name: micOn;
-	    animation-duration: 1s;
-	    background-color: #33a3ff;
-	}
+body.micOff {
+    -webkit-animation-name: micOff; /* Chrome, Safari, Opera */
+    -webkit-animation-duration: 1s; /* Chrome, Safari, Opera */
+    animation-name: micOff;
+    animation-duration: 1s;
+    background-color: #007ee6;
+}
 
-	a:link {
-	    color: white;
-	    text-decoration: none;
-	    opacity: 0.4;
-	}
+body.micOn {
+    -webkit-animation-name: micOn; /* Chrome, Safari, Opera */
+    -webkit-animation-duration: 1s; /* Chrome, Safari, Opera */
+    animation-name: micOn;
+    animation-duration: 1s;
+    background-color: #33a3ff;
+}
 
-	a:visited {
-	    color: white;
-	}
+::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
 
-	a:hover {
-	    color: white;
-	    opacity: 1.0;
-	    text-decoration: underline;
-	}
+::-webkit-scrollbar-button {
+  width: 0px;
+  height: 0px;
+}
 
-	a:active {
-	    color: white;
-	}
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.3);
+  border: 0px none #ffffff;
+  border-radius: 50px;
+}
 
-	/* Chrome, Safari, Opera */
-	@-webkit-keyframes micOff {
-	    from {background-color: #33a3ff;}
-	    to {background-color: #007ee6;}
-	}
+::-webkit-scrollbar-thumb:hover {
+  background: #ffffff;
+}
 
-	/* Standard syntax */
-	@keyframes micOff {
-	    from {background-color: #33a3ff;}
-	    to {background-color: #007ee6;}
-	}
+::-webkit-scrollbar-thumb:active {
+  background: #ffffff;
+}
 
-	/* Chrome, Safari, Opera */
-	@-webkit-keyframes micOn {
-	    from {background-color: #007ee6;}
-	    to {background-color: #33a3ff;}
-	}
+::-webkit-scrollbar-track {
+  border: 0px none #ffffff;
+  border-radius: 50px;
+}
 
-	/* Standard syntax */
-	@keyframes micOn {
-	    from {background-color: #007ee6;}
-	    to {background-color: #33a3ff;}
-	}
+::-webkit-scrollbar-track:hover {
+}
 
-	#davis-logo-wrapper {
-		width: 150px;
-		height: 30px;
-		position: absolute;
-		right: 25px;
-		top: 0;
-		background-color: #ffffff;
-		border-bottom-left-radius: 9px;
-		border-bottom-right-radius: 9px;
-		z-index: 1001;
-	}
+::-webkit-scrollbar-track:active {
+}
 
-	#davis-logo-wrapper:hover {
-		background-color: #f2f2f2;
-		cursor: pointer;
-	}
+::-webkit-scrollbar-corner {
+  background: transparent;
+}
 
-	#davis-logo {
-		margin: 8px 6px 6px 13px;
-		background: url(../images/dynatrace-davis-logo.png);
-		background-repeat: no-repeat;
-		background-size: contain;
-		height: 15px;
-	}
+#interactionLogGradientTop {
+	position: absolute;
+	top: calc(25% - 5px);
+	width: 99%;
+	height: 10px;
+	z-index: 999;
+	/* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#007ee6+0,000000+100&1+0,0+100 */
+	background: -moz-linear-gradient(top,  rgba(0,126,230,1) 0%, rgba(0,0,0,0) 100%); /* FF3.6-15 */
+	background: -webkit-linear-gradient(top,  rgba(0,126,230,1) 0%,rgba(0,0,0,0) 100%); /* Chrome10-25,Safari5.1-6 */
+	background: linear-gradient(to bottom,  rgba(0,126,230,1) 0%,rgba(0,0,0,0) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#007ee6', endColorstr='#00000000',GradientType=0 ); /* IE6-9 */
+}
 
-	#logo {
-		position: relative;
-		margin: 0 auto;
-		margin-top: 150px;
-		background: url(../images/logo.png);
-		background-repeat: no-repeat;
-		background-size: contain;
-		opacity: 0;
-		width: 500px;
-		height: 500px;
-	}
+#interactionLogGradientBottom {
+	position: absolute;
+	top: calc(81% - 5px);
+	width: 99%;
+	height: 10px;
+	z-index: 999;
+	/* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#000000+0,007ee6+100&0+0,1+100 */
+	background: -moz-linear-gradient(top,  rgba(0,0,0,0) 0%, rgba(0,126,230,1) 100%); /* FF3.6-15 */
+	background: -webkit-linear-gradient(top,  rgba(0,0,0,0) 0%,rgba(0,126,230,1) 100%); /* Chrome10-25,Safari5.1-6 */
+	background: linear-gradient(to bottom,  rgba(0,0,0,0) 0%,rgba(0,126,230,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00000000', endColorstr='#007ee6',GradientType=0 ); /* IE6-9 */
+}
 
-	#logo.logoOff {
-		-webkit-animation-name: micOn; /* Chrome, Safari, Opera */
-	    -webkit-animation-duration: 1s; /* Chrome, Safari, Opera */
-	    animation-name: logoOff;
-	    animation-duration: 1s;
-		opacity: 0;
-	}
+a.links:link {
+    color: white;
+    text-decoration: none;
+    opacity: 0.4;
+}
 
-	#logo.logoOn {
-		-webkit-animation-name: micOn; /* Chrome, Safari, Opera */
-	    -webkit-animation-duration: 3s; /* Chrome, Safari, Opera */
-	    animation-name: logoOn;
-	    animation-duration: 3s;
-		opacity: 0.1;
-	}
+a.links:visited {
+    color: white;
+}
 
-	/* Chrome, Safari, Opera */
-	@-webkit-keyframes logoOff {
-	    from {opacity: 0.1;}
-	    to {opacity: 0;}
-	}
+a.links:hover {
+    color: white;
+    opacity: 1.0;
+    text-decoration: underline;
+}
 
-	/* Standard syntax */
-	@keyframes logoOff {
-	    from {opacity: 0.1;}
-	    to {opacity: 0;}
-	}
+a.links:active {
+    color: white;
+}
 
-	/* Chrome, Safari, Opera */
-	@-webkit-keyframes logoOn {
-	    from {opacity: 0;}
-	    to {opacity: 0.1;}
-	}
+/* Chrome, Safari, Opera */
+@-webkit-keyframes micOff {
+    from {background-color: #33a3ff;}
+    to {background-color: #007ee6;}
+}
 
-	/* Standard syntax */
-	@keyframes logoOn {
-	    from {opacity: 0;}
-	    to {opacity: 0.1;}
-	}
+/* Standard syntax */
+@keyframes micOff {
+    from {background-color: #33a3ff;}
+    to {background-color: #007ee6;}
+}
 
-	table.debug {
-	    border-collapse: collapse;
-	    margin: auto 0;
-	}
+/* Chrome, Safari, Opera */
+@-webkit-keyframes micOn {
+    from {background-color: #007ee6;}
+    to {background-color: #33a3ff;}
+}
 
-	table.debug, th.debug, td.debug {
-		color: white;
-	    border: 1px solid white;
-	    padding: 10px;
-	    position: relative;
-	    margin: auto;
-	}
+/* Standard syntax */
+@keyframes micOn {
+    from {background-color: #007ee6;}
+    to {background-color: #33a3ff;}
+}
 
-	#interactionlog {
-		position: absolute;
-		top: 50px;
-		text-align: center;
-		width: 100%;
-		z-index: 2;
-	}
+#davis-logo-wrapper {
+	width: 150px;
+	height: 30px;
+	position: absolute;
+	right: 25px;
+	top: 0;
+	background-color: #ffffff;
+	border-bottom-left-radius: 3px;
+	border-bottom-right-radius: 3px;
+	z-index: 1001;
+}
 
-	#interactionlog p {
-		position: relative;
-		color: #BDBDEA;
-		margin-top:10px;
-		font-size: 20px;
-		padding-left: 50px;
-		padding-right: 50px;
-	}
+#davis-logo-wrapper:hover {
+	background-color: #f2f2f2;
+	cursor: pointer;
+}
 
-	#interactionlog p:last-of-type {
-		color: #fcf8e3;
-		font-size: 28px;
-	}
+#davis-logo {
+	margin: 8px 6px 6px 13px;
+	background: url(../images/dynatrace-davis-logo.png);
+	background-repeat: no-repeat;
+	background-size: contain;
+	height: 15px;
+}
 
-	.inputWrapper {
-		position: absolute;
-		z-index: 1001;
-		left: calc(50% - 300px);
-		bottom: 20px;
-	}
+#logo {
+	position: relative;
+	margin: 0 auto;
+	margin-top: 150px;
+	background: url(../images/logo.png);
+	background-repeat: no-repeat;
+	background-size: contain;
+	opacity: 0;
+	width: 500px;
+	height: 500px;
+}
 
-	#listeningState {
-		position: relative;
-		float: right;
-		font-family: BerninaSans, Arial;
-		font-size: 12px;
-		color: white;
-		margin-right: 110px;
-		margin-bottom: 3px;
-	}
+#logo.logoOff {
+	-webkit-animation-name: micOn; /* Chrome, Safari, Opera */
+    -webkit-animation-duration: 1s; /* Chrome, Safari, Opera */
+    animation-name: logoOff;
+    animation-duration: 1s;
+	opacity: 0;
+}
 
-	#connectedUrl {
-		position: relative;
-	    clear: both;
-	    margin: auto 0;
-	    text-align: center;
-	    width: 600px;
-	    font-family: BerninaSans, Arial;
-	    font-size: 12px;
-	    color: white;
-	}
+#logo.logoOn {
+	-webkit-animation-name: micOn; /* Chrome, Safari, Opera */
+    -webkit-animation-duration: 3s; /* Chrome, Safari, Opera */
+    animation-name: logoOn;
+    animation-duration: 3s;
+	opacity: 0.1;
+}
+
+/* Chrome, Safari, Opera */
+@-webkit-keyframes logoOff {
+    from {opacity: 0.1;}
+    to {opacity: 0;}
+}
+
+/* Standard syntax */
+@keyframes logoOff {
+    from {opacity: 0.1;}
+    to {opacity: 0;}
+}
+
+/* Chrome, Safari, Opera */
+@-webkit-keyframes logoOn {
+    from {opacity: 0;}
+    to {opacity: 0.1;}
+}
+
+/* Standard syntax */
+@keyframes logoOn {
+    from {opacity: 0;}
+    to {opacity: 0.1;}
+}
+
+table.debug {
+    border-collapse: collapse;
+    margin: auto 0;
+}
+
+table.debug, th.debug, td.debug {
+	color: white;
+    border: 1px solid white;
+    padding: 10px;
+    position: relative;
+    margin: auto;
+}
+
+#interactionlog {
+	position: absolute;
+	top: 25%;
+	text-align: center;
+	width: 99%;
+	height: 56%;
+    overflow-y: scroll;
+	z-index: 2;
+}
+
+#interactionlog p {
+	position: relative;
+	clear: both;
+	color: #fcf8e3;
+	margin-top:10px;
+	font-size: 20px;
+	padding-left: 50px;
+	padding-right: 50px;
+}
+
+#interactionlog p:last-of-type {
+	color: #fcf8e3;
+	font-size: 28px;
+}
+
+.inputWrapper {
+	position: absolute;
+	z-index: 1001;
+	left: calc(50% - 300px);
+	bottom: 20px;
+}
+
+#listeningState {
+	position: relative;
+	float: right;
+	font-family: BerninaSans, 'Open Sans', sans-serif;
+	font-size: 12px;
+	color: white;
+	margin-right: 110px;
+	margin-bottom: 3px;
+}
+
+#connectedUrl {
+	position: relative;
+    clear: both;
+    margin: auto 0;
+    text-align: center;
+    width: 600px;
+    font-family: BerninaSans, 'Open Sans', sans-serif;
+    font-size: 12px;
+    color: white;
+}
+
+#git {
+	position: absolute;
+	right: 30px;
+	bottom: 20px;
+	font-size: 12px;
+	text-align: right;
+	color: white;
+}
+
+#textInput {
+	position: relative;
+	clear: both;
+	float: left;
+	width: 600px;
+	height: 51px;
+	margin-bottom: 20px;
+	padding: 6px 0px 6px 16px;
+	background-color: white;
+	border-radius: 3px;
+	border: 1px solid white;
+	font-family: BerninaSans, 'Open Sans', sans-serif;
+	font-size: 20px;
+	color: black;
+}
+
+#textInput:focus {
+	outline: none;
+}
+
+#muteWrapper {
+	position: relative;
+	float: left;
+	width: 80px;
+	height: 51px;
+	padding: 5px 10px 0px 10px;
+	cursor: pointer;
+}
+
+#muteSVG {
+	position: relative;
+	float: left;
+	width: 40px;
+	height: 40px;
+	opacity: 1.0;
+}
+
+#muteSVG.muteOff {
+    opacity: 0.3;
+}
+
+.userStyle {
+	color: rgba(0, 0, 0, 0.2) !important;
+}
+
+.botStyle {
+	color: white;
+}
+
+.davisvisual__container {
+	margin-top: 400px;
+	position: relative;
+	min-height: 150px;
+}
+
+.davisvisual__davis {
+	position: fixed;
+    left: 50%;
+    top: 14%;
+    z-index: 1001;
+}
+
+.davisvisual__davis:first-child canvas {
+	width: 130px !important;
+	height: 130px !important;
+}
+
+.card-wrapper {
+	display: none;
+	width: 500px;
+	margin: 0 auto;
+	color:  #666666;
+	text-align: left;
+	font-size: 15px;
+}
+
+.card-pretext {
+	margin-left: 5px;
+}
+
+.card-attachments {
+	float: left;
+	padding: 5px;
+	margin-bottom: 20px;
+	border: 1px solid white;
+	background-color: white;
+	border-radius: 3px;
+}
+
+.card-attachment {
+	float: left;
+	padding: 0px 5px 0px 0px;
+	margin: 5px;
+}
+
+.card-bar {
+	display: table-cell;
+	border: 2px solid white;
+	border-radius: 2px;
+}
+
+.card-content {
+	display: table-cell;
+	padding-left: 10px;
+}
+
+.card-title {
+	float: left;
+	font-weight: bold;
+}
+
+.card-link-text {
+	color: white;
+	text-decoration: none;
+	font-weight: bold;
+}
+
+a.card-link-text:link {
+	color: white;
+}
+
+a.card-link-text:visited {
+	color: white;
+}
+
+a.card-link-text:hover {
+	text-decoration: underline;
+	color: white;
+}
+
+a.card-link-text:active {
+	color: white;
+}
+
+.card-link-attachment {
+	color: #0099e6;
+	text-decoration: none;
+}
+
+a.card-link-attachment:link {
+	color: #0099e6;
+}
+
+a.card-link-attachment:visited {
+	color: #0099e6;
+}
+
+a.card-link-attachment:hover {
+	text-decoration: underline;
+	color: #0099e6;
+}
+
+a.card-link-attachment:active {
+	color: #0099e6;
+}
+
+.card-text {
 	
-	#git {
-		position: absolute;
-		right: 30px;
-		bottom: 20px;
-		font-size: 12px;
-		text-align: right;
-		color: white;
-	}
+}
 
-	#textInput {
-		position: relative;
-		clear: both;
-		float: left;
-		width: 600px;
-		height: 51px;
-		margin-bottom: 20px;
-		padding: 6px 0px 6px 16px;
-		background-color: white;
-		border-radius: 9px;
-		border: 1px solid white;
-		font-family: BerninaSans, Arial;
-		font-size: 20px;
-		color: black;
-	}
+.card-fields {
+	clear: both;
+	float: left;
+	margin-top: 5px;
+}
 
-	#textInput:focus {
-    	outline: none;
-	}
+.card-field {
+	float: left;
+	min-width: 200px;
+	margin-bottom: 5px;
+}
 
-	#muteWrapper {
-		position: relative;
-		float: left;
-		width: 80px;
-		height: 51px;
-		padding: 5px 10px 0px 10px;
-		cursor: pointer;
-	}
-
-	#muteSVG {
-		position: relative;
-		float: left;
-		width: 40px;
-		height: 40px;
-		opacity: 1.0;
-	}
-
-	#muteSVG.muteOff {
-	    opacity: 0.3;
-	}
-
-	.userStyle {
-		color: rgba(0, 0, 0, 0.2) !important;
-	}
-
-	.botStyle {
-		color: white;
-	}
-
-	.davisvisual__container {
-		margin-top: 400px;
-		position: relative;
-		min-height: 150px;
-	}
-
-	.davisvisual__davis {
-		position: absolute;
-		left: 50%;
-		top: 50%;
-	}
-	
-	.davisvisual__davis:first-child canvas{
-		width: 150px !important;
-		height: 150px !important;
-	}
+.card-field-title {
+	font-weight: bold;
+}
