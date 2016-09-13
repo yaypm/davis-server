@@ -276,7 +276,6 @@ var davis = (function () {
             if (card.attachments !== undefined && card.attachments.length > 0) {
                 
                 var html = localResponses.card.wrapper;
-                
                 var attachments = '';
                 
                 $.each(card.attachments, function (index, atm) {
@@ -286,7 +285,7 @@ var davis = (function () {
                     // Title
                     if (atm.title !== undefined) {
                         
-                       atm.title = atm.title.replace(/\:key\:/g, '🔑');
+                        atm.title = atm.title.replace(/\:key\:/g, '🔑');
                         
                         if (atm.title_link !== undefined) {
                             
@@ -385,7 +384,9 @@ var davis = (function () {
                 var exploded = str.split('<http');
 
                 $.each(exploded, function (index, fragment) {
+                    
                     if (fragment.indexOf('|') > -1 && fragment.indexOf('>') > -1) {
+                        
                         var link = (isAttachment) ? localResponses.card.linkAttachment : localResponses.card.linkText;
                         var url = fragment.substring(0, fragment.indexOf('>'));
                         var text = url.substring(url.indexOf('|') + 1);
@@ -393,7 +394,9 @@ var davis = (function () {
                         link = link.replace('{{text}}', text);
                         link = link.replace('{{url}}', url);
                         exploded[index] = fragment.replace(fragment.substring(0, fragment.indexOf('>') + 1), link);
+                        
                     }
+                    
                 });
                 
                 str = exploded.join('');
@@ -491,20 +494,26 @@ var davis = (function () {
          * View's initializer (called via onload) 
          */
         function init() {
+            
             resetPlaceholder();
             setListeningState('sleeping');
             
             // Listen for keypress
             // if space-bar and textbox not focused, toggleMute
             $(function() {
+                
                 $(window).keypress(function(e) {
+                    
                     var key = e.which;
+                    
                     if (key == 32 && !$("#"+textInputElemId).is(":focus")) {
                         controller.toggleMute($('#'+listeningStateElemId).html() === localResponses.listeningStates.listening);
                     } else if (key != 32 && !$("#"+textInputElemId).is(":focus")) {
                         $("#"+textInputElemId).focus();
                     }
-                });   
+                    
+                }); 
+                
             });
             
             if (typeof window.chrome != 'object') {
@@ -513,19 +522,6 @@ var davis = (function () {
                addToInteractionLog({text: localResponses.errors.chrome.text}, true, false);
                addToInteractionLog({text: localResponses.errors.getChrome.text}, true, false); 
                 
-            } else {
-            
-                if (!localStorage.getItem("davis-user-token")) {
-                    
-                    addToInteractionLog({text: localResponses.greetings.micPermission.text}, true, false);
-                    setTimeout(function () {
-                       addToInteractionLog({text: localResponses.greetings.thenHelp.text}, true, false);
-                    }, 5000);
-                    
-                } else {
-                    addToInteractionLog({text: localResponses.greetings.help.text}, true, false);
-                }
-        
             }
         }
           
@@ -1414,6 +1410,17 @@ var davis = (function () {
                         document.dispatchEvent(listeningStateEvents.sleeping);
                         evt.targetStance = 'dynatrace';
                         document.getElementById('davisContainer').dispatchEvent(evt);
+                         
+                        if (!localStorage.getItem("davis-user-token")) {
+                    
+                            view.addToInteractionLog({text: localResponses.greetings.micPermission.text}, true, false);
+                            setTimeout(function () {
+                                view.addToInteractionLog({text: localResponses.greetings.thenHelp.text}, true, false);
+                            }, 5000);
+                            
+                        } else {
+                            view.addToInteractionLog({text: localResponses.greetings.help.text}, true, false);
+                        }
                         
                     } else {
                         noMic();
@@ -1422,7 +1429,6 @@ var davis = (function () {
                 })
                 .catch( function (err) {
                     console.log(err);
-                    noMic();
                 });
                 
             }
