@@ -8,12 +8,12 @@ class DavisServer {
         if (typeof config === 'undefined'){
             throw new Error('No config present!');
         }
-        this.app = express(config);
+        Object.assign(this, express(config));
     }
 
     run(cb) {
         const davisConfig = this.app.get('davisConfig');
-        this.app.listen(davisConfig.port, davisConfig.ip, () => {
+        this.server.listen(davisConfig.port, davisConfig.ip, () => {
             logger.info('Davis server listening at http://' + davisConfig.ip + ':'+ davisConfig.port );
             if(cb) return cb(this.app);
         });

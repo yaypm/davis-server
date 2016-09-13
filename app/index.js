@@ -2,6 +2,8 @@
 
 const express = require('express'),
     app = express(),
+    server = require('http').Server(app),
+    io = require('socket.io')(server),
     bodyParser = require('body-parser'),
     favicon = require('serve-favicon'),
     routes = require('./routes/index'),
@@ -19,6 +21,10 @@ module.exports = function setupApp(config) {
             return req.url.startsWith('/favicon.ico') || req.url.startsWith('/healthCheck.html');
         }
     }));
+
+    io.on('connection', function() {
+        logger.info('A new socket.io connection detected');
+    });
 
     mongoose.connect(config.database.dsn, function (err) {
         if (err) throw err;
@@ -78,7 +84,7 @@ module.exports = function setupApp(config) {
         });
     });
 
-    return app;
+    return { app, server };
 };
 
 
