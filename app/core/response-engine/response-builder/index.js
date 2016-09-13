@@ -7,12 +7,11 @@ const _ = require('lodash'),
     nunjucks = require('./nunjucks'),
     path = require('path'),
     greeter = require('./greeter'),
-    logger = require('../../../utils/logger'),
-    version = require('../../../utils/version');
+    logger = require('../../../utils/logger');
 
 const NUNJUCK_EXTENSION = '.nj',
     RESERVED_FOLDER_NAMES = {
-        say: ['audible', 'auditory', 'say'],
+        say: ['audible', 'say'],
         show: ['visual', 'show']
     };
 
