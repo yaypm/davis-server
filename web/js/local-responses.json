@@ -7,7 +7,7 @@
             "text": "If you'd like to fully experience Davis, please use the latest version of Chrome."
         },
         "getChrome": {
-            "text": "<a href='https://www.google.com/chrome/browser/desktop/' target='_blank'>Download Chrome</a>"
+            "text": "<a href='https://www.google.com/chrome/browser/desktop/' target='_blank' class='links'>Download Chrome</a>"
         },
         "noMic": {
             "text": "Unfortunately, there appears to be no microphone enabled on your device. That's okay, as an alternative, feel free to use the text-box below to chat with me."

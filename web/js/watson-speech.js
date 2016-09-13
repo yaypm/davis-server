@@ -6397,7 +6397,7 @@ FormatStream.prototype.period = function period(text) {
   const words = ['who', 'what', 'when', 'where', 'why', "how", "could", "can", 'is there', 'is the', 'did the', 'did any'];
   var result = '. ';
   words.forEach( function (word) {
-      if (text.toLowerCase().includes(word)) {
+      if (text.toLowerCase().indexOf(word) > -1) {
           result = '? ';
       }
   });
@@ -7093,7 +7093,7 @@ RecognizeStream.prototype.initialize = function() {
    * @param {Error} [err]
    */
   function emitError(msg, frame, err) {
-    if(msg.includes('No speech detected for')) {
+    if(msg.indexOf('No speech detected for') > -1) {
       davis.getController().process();
     } else {
       if (err) {

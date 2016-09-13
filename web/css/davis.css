@@ -62,7 +62,8 @@ body.micOn {
 #interactionLogGradientTop {
 	position: absolute;
 	top: calc(25% - 5px);
-	width: 99%;
+	margin-left: 20px;
+	width: calc(99% - 40px);
 	height: 10px;
 	z-index: 999;
 	/* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#007ee6+0,000000+100&1+0,0+100 */
@@ -75,7 +76,8 @@ body.micOn {
 #interactionLogGradientBottom {
 	position: absolute;
 	top: calc(81% - 5px);
-	width: 99%;
+	margin-left: 20px;
+	width: calc(99% - 40px);
 	height: 10px;
 	z-index: 999;
 	/* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#000000+0,007ee6+100&0+0,1+100 */
@@ -102,6 +104,28 @@ a.links:hover {
 }
 
 a.links:active {
+    color: white;
+}
+
+p > a.links:link {
+    color: white;
+    text-decoration: none;
+    opacity: 1.0;
+    text-decoration: underline;
+}
+
+p > a.links:visited {
+    color: white;
+}
+
+P > a.links:hover {
+    color: white;
+    opacity: 1.0;
+    font-weight: bold;
+    text-decoration: underline;
+}
+
+P > a.links:active {
     color: white;
 }
 
@@ -219,7 +243,7 @@ table.debug, th.debug, td.debug {
     margin: auto;
 }
 
-#interactionlog {
+#interactionLog {
 	position: absolute;
 	top: 25%;
 	text-align: center;
@@ -229,7 +253,7 @@ table.debug, th.debug, td.debug {
 	z-index: 2;
 }
 
-#interactionlog p {
+#interactionLog p {
 	position: relative;
 	clear: both;
 	color: #fcf8e3;
@@ -247,7 +271,7 @@ table.debug, th.debug, td.debug {
 .inputWrapper {
 	position: absolute;
 	z-index: 1001;
-	left: calc(50% - 300px);
+	left: calc(50% - 325px);
 	bottom: 20px;
 }
 
@@ -299,6 +323,14 @@ table.debug, th.debug, td.debug {
 
 #textInput:focus {
 	outline: none;
+}
+
+#textInput::-ms-clear {
+    display: none;
+}
+
+#textInput:-ms-input-placeholder {
+	color: #d3d3d3;
 }
 
 #muteWrapper {

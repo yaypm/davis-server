@@ -22,6 +22,7 @@ module.exports = function WebService(config) {
         
         if (davis.exchange.response.audible.ssml) {
             davis.exchange.response.visual.text = davis.exchange.response.audible.ssml.replace(/(<([^>]+)>)/ig, "").trim();
+            davis.exchange.response.audible.ssml = '<speak>' + davis.exchange.response.audible.ssml + '</speak>';
         }
 
         return {
@@ -30,7 +31,7 @@ module.exports = function WebService(config) {
                 text: davis.exchange.response.visual.text,
                 card: davis.exchange.response.visual.card,
                 hyperlink: davis.exchange.response.visual.hyperlink,
-                ssml: '<speak>' + davis.exchange.response.audible.ssml + '</speak>'
+                ssml: davis.exchange.response.audible.ssml
             }
         };
     }
