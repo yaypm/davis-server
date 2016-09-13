@@ -17,11 +17,11 @@ module.exports = function WebService(config) {
      * @returns {Object} response - The response formatted how web expects.
      */
     function formatResponse(davis) {
-        //ToDo Add support for cards.
         logger.info('Generating the response for web');
         
         if (davis.exchange.response.audible.ssml) {
-            davis.exchange.response.visual.text = davis.exchange.response.audible.ssml.replace(/(<([^>]+)>)/ig, "").trim();
+            // Added so SSML response will match the text shown to the user.
+            davis.exchange.response.visual.text = davis.exchange.response.audible.ssml.replace(/(<([^>]+)>)/ig, '').trim();
             davis.exchange.response.audible.ssml = '<speak>' + davis.exchange.response.audible.ssml + '</speak>';
         }
 

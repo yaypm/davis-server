@@ -54,7 +54,6 @@ module.exports = function AlexaService(config) {
      * @returns {Object} response - The response formatted how Alexa expects.
      */
     function formatResponse(davis) {
-        //ToDo Add support for cards.
         logger.info('Generating the response for Alexa');
 
         let response;

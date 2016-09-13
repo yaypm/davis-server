@@ -19,8 +19,8 @@ const filters = function(env, aliases) {
     
     const startFormat = {
         normal: {
-            sameDay: '[Today] h:mm A',
-            lastDay: '[Yesterday] h:mm A',
+            sameDay: '[today] h:mm A',
+            lastDay: '[yesterday] h:mm A',
             lastWeek: 'dddd [at] h:mm A'
         },
         between: {
@@ -32,8 +32,8 @@ const filters = function(env, aliases) {
     
     const stopFormat = {
         normal: {
-            sameDay: '[Today] h:mm A',
-            lastDay: '[Yesterday] h:mm A',
+            sameDay: '[today] h:mm A',
+            lastDay: '[yesterday] h:mm A',
             lastWeek: 'dddd [at] h:mm A'
         },
         sameday: {
@@ -81,12 +81,12 @@ const filters = function(env, aliases) {
                 sentence += moment.tz(timeRange.stopTime, user.timezone).calendar(null , stopFormat.sameday);
             } else {
                 sentence += (isCompact) ? ' - \\n' : ' and ';
-                sentence += moment.tz(timeRange.stopTime, user.timezone).calendar(null , stopFormat.normal); 
+                sentence += moment.tz(timeRange.stopTime, user.timezone).calendar(null , stopFormat.normal);
             }
         }
         
         return sentence;
-    })
+    });
 
     env.addFilter('friendlyEvent', function(eventName) {
         let event = _.find(events.events, e => e.name === eventName);

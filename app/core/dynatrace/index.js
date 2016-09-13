@@ -89,10 +89,19 @@ class Dynatrace {
                     logger.error('Passed in an unknown granularity: ' + datetime.grain);
                 }
             } else if (datetime.type === 'interval') {
-                timeRange = {
-                    startTime: datetime.from.value,
-                    stopTime: datetime.to.value
-                };
+                // Checks if this is an open ended interval
+                if (datetime.to) {
+                    timeRange = {
+                        startTime: datetime.from.value,
+                        stopTime: datetime.to.value
+                    };
+                } else {
+                    timeRange = {
+                        startTime: datetime.from.value,
+                        stopTime: moment().format()
+                    };
+                }
+
             }
         } catch (e) {
             throw new Error('Unable to extract a time range!');
