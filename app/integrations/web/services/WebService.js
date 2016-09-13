@@ -18,7 +18,7 @@ module.exports = function WebService(config) {
      */
     function formatResponse(davis) {
         logger.info('Generating the response for web');
-
+        
         if (davis.exchange.response.audible.ssml) {
             // Added so SSML response will match the text shown to the user.
             davis.exchange.response.visual.text = davis.exchange.response.audible.ssml.replace(/(<([^>]+)>)/ig, '').trim();

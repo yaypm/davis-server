@@ -26,6 +26,7 @@ var davis = (function () {
     var view;
     var controller;
     var localResponses;
+    var isIE = false;
     
     /**
      * Initializes Davis library
@@ -38,6 +39,29 @@ var davis = (function () {
      * @param {String} connectedUrlElemId
      */
     var init = function (interactionLogElemId, textInputElemId, muteWrapperElemId, muteSVGElemId, listeningStateElemId, connectedUrlElemId, gitElemId) {
+        
+        // IE CustomEvent polyfill
+        // http://stackoverflow.com/questions/14358599/object-doesnt-support-this-action-ie9-with-customevent-initialization
+        if (navigator.appName == 'Microsoft Internet Explorer' ||  !!(navigator.userAgent.match(/Trident/) || navigator.userAgent.match(/rv 11/))) {
+            
+            (function () {
+                
+                function CustomEvent ( event, params ) {
+                  
+                    params = params || { bubbles: false, cancelable: false, detail: undefined };
+                    var evt = document.createEvent('CustomEvent');
+                    evt.initCustomEvent(event, params.bubbles, params.cancelable, params.detail);
+                    return evt;
+                
+                };
+        
+                CustomEvent.prototype = window.Event.prototype;
+                window.CustomEvent = CustomEvent;
+              
+            })();
+            
+            isIE = true;
+        }
         
         $.getJSON('./js/local-responses.json', function (data){
             localResponses = data;
@@ -255,7 +279,7 @@ var davis = (function () {
                 
                 var attachments = '';
                 
-                card.attachments.forEach( (atm, index) => {
+                $.each(card.attachments, function (index, atm) {
                     
                     var attachment = '';
                     
@@ -286,7 +310,7 @@ var davis = (function () {
                         
                         var fields = '';
                         
-                        atm.fields.forEach( (fd) => {
+                        $.each(atm.fields, function (index, fd) {
                            
                             var field = localResponses.card.field.replace('{{title}}', fd.title);
                             fields += field.replace('{{value}}', fd.value.replace(/\n/g, '<br>'));
@@ -356,12 +380,12 @@ var davis = (function () {
          */
          function reformatLinks(str, isAttachment) {
              
-            if (str.includes('<http')) {
+            if (str.indexOf('<http') > -1) {
                 
                 var exploded = str.split('<http');
 
-                exploded.forEach( (fragment, index) => {
-                    if (fragment.includes('|') && fragment.includes('>')) {
+                $.each(exploded, function (index, fragment) {
+                    if (fragment.indexOf('|') > -1 && fragment.indexOf('>') > -1) {
                         var link = (isAttachment) ? localResponses.card.linkAttachment : localResponses.card.linkText;
                         var url = fragment.substring(0, fragment.indexOf('>'));
                         var text = url.substring(url.indexOf('|') + 1);
@@ -401,10 +425,10 @@ var davis = (function () {
                 showCursor: false
             });
             
-            setTimeout( () => {
+            setTimeout( function () {
                 $('#'+interactionLogElemId).scrollTop($('#'+interactionLogElemId).prop('scrollHeight'));
             }, 200);
-            setTimeout( () => {
+            setTimeout( function () {
                 $('#'+interactionLogElemId).scrollTop($('#'+interactionLogElemId).prop('scrollHeight'));
             }, 1000);
             
@@ -622,7 +646,8 @@ var davis = (function () {
         var inactivityTimeout = 1;                // Seconds of silence before Watson STT API stops listening
         var momentsOfSilence = 0;                 // Used for polling number of moments of silence 60 ms apart (avoid cutting off TTS playback) 
         var player = new Audio();                 // Audio element used to play TTS audio
-        var micOn = new Audio('./audio/pop.wav'); // Mic on sound effect
+        var playerReady = false;
+        var micOn; // Mic on sound effect
         var stream;                               // IBM STT stream
         var outputQueue = [];                  // Counter for keeping track of queued outputTextAndSpeech() calls
         var timezone;                             // User's timezone
@@ -630,6 +655,11 @@ var davis = (function () {
         var debug = false;                        // Debug mode
         var isSpeaking = false;
         var currentTtsToken;
+        
+        // IE doesn't support WAV
+        if (!isIE) {
+            micOn = new Audio('./audio/pop.wav');
+        }
         
         if (localStorage.getItem('davis-debug-mode')) {
             debug = localStorage.getItem('davis-debug-mode');
@@ -646,21 +676,25 @@ var davis = (function () {
             'expiration': new Date()
         };
         
+        player.addEventListener('canplaythrough', function() {
+            playerReady = true;
+        }, false);
+        
         
         // Listening state events and handlers
         var listeningState;
         
         var listeningStateEvents = {
-            sleeping: new Event('sleeping'),
-            enablingMic: new Event('enablingMic'),
-            listening: new Event('listening'),
-            processing: new Event('processing'),
-            responding: new Event('responding'),
-            chatMode: new Event('chatMode'),
-            offlineMode: new Event('offlineMode')
-        }
+            sleeping: new CustomEvent('sleeping'),
+            enablingMic: new CustomEvent('enablingMic'),
+            listening: new CustomEvent('listening'),
+            processing: new CustomEvent('processing'),
+            responding: new CustomEvent('responding'),
+            chatMode: new CustomEvent('chatMode'),
+            offlineMode: new CustomEvent('offlineMode')
+        };
         
-        var evt = new Event('change-stance', {bubbles: false});
+        var evt = new CustomEvent('change-stance', {bubbles: false});
         
         document.addEventListener('sleeping', function (event) {
             listeningState = 'sleeping';
@@ -712,8 +746,10 @@ var davis = (function () {
             }
         
             // Stop typewriter and any audio that's playing
-            player.pause();
-            player.currentTime = 0;
+            if (playerReady) {
+                player.pause();
+                player.currentTime = 0;
+            }
             
             if (!isMuted && isSpeaking) {
                 view.stopTypewriter();
@@ -768,14 +804,14 @@ var davis = (function () {
             view.hideLogo();
             
             // Debug mode
-            if ((request.includes('debug') && request.includes('true')) || (request.includes('debug') && !request.includes('false'))) {
+            if ((request.indexOf('debug') > -1 && request.indexOf('true') > -1) || (request.indexOf('debug') > -1 && !(request.indexOf('false') > -1))) {
                 
                 debug = true;
                 localStorage.setItem('davis-debug-mode', 'true');
                 view.addToInteractionLog({text: 'Debug mode enabled'}, true, false);
                 
                 // Output missed phrases option flag
-                if (request.includes(' -m') && localStorage.getItem('davis-missed-phrases')) {
+                if (request.indexOf(' -m') > -1 && localStorage.getItem('davis-missed-phrases')) {
                     
                     var missedPhrases = JSON.parse(localStorage.getItem('davis-missed-phrases'));
                     var html = "<table class='debug'>";
@@ -793,15 +829,15 @@ var davis = (function () {
                 }
                 
                 // Toggle enable cards
-                if (request.includes(' -c') && localStorage.getItem('davis-cards-enabled') === 'true') {
+                if (request.indexOf(' -c') > -1 && localStorage.getItem('davis-cards-enabled') === 'true') {
                     localStorage.setItem('davis-cards-enabled', 'false');
                     view.enableCards(false);
-                } else if (request.includes(' -c')) {
+                } else if (request.indexOf(' -c') > -1) {
                     localStorage.setItem('davis-cards-enabled', 'true');
                     view.enableCards(true);
                 }
                 
-            } else if (request.includes('debug') && request.includes('false')) {
+            } else if (request.indexOf('debug') > -1 && request.indexOf('false') > -1) {
                 
                 debug = false;
                 localStorage.setItem('davis-debug-mode', 'false');
@@ -1139,14 +1175,14 @@ var davis = (function () {
                     listenOrSpeak(listen);
                 };
                 
-                getTtsToken().then( token => {
+                getTtsToken().then( function (token) {
                     WatsonSpeech.TextToSpeech.synthesize({
                         text: watsonText,
                         token: token,
                         voice: voice,
                         element: player
                     });
-                }).catch(err => {
+                }).catch(function (err) {
                    console.log(err);
                    noMic();
                 });
@@ -1213,8 +1249,8 @@ var davis = (function () {
                     
                     var launch = false;
                     
-                    view.getLocalResponses().phrases.forEach(function (phrase) {
-                       if (phrases[0].toLowerCase().trim().includes(phrase)) {
+                    $.each(view.getLocalResponses().phrases, function (index, phrase) {
+                       if (phrases[0].toLowerCase().trim().indexOf(phrase) > -1) {
                            launch = true;
                        } 
                     });
@@ -1274,7 +1310,9 @@ var davis = (function () {
          * Note: Used when toggling between the annyang STT library and IBM Watson STT API
          */
         function enableListenForKeyword(listen) {
-            listen ? annyang.start({ 'autoRestart': true, 'continuous': false }) : annyang.abort();
+            if (annyang) {
+                listen ? annyang.start({ 'autoRestart': true, 'continuous': false }) : annyang.abort();
+            }
         }
         
         /**
@@ -1344,6 +1382,17 @@ var davis = (function () {
          */
         function init() {
             
+            timezone = jstz.determine().name();
+            getDavisUserToken();
+            
+            getConnectedServerUrl().then( function (url) {
+                view.setConnectedUrl(url);
+            });
+            
+            getGit().then( function (git) {
+               view.setGit(git);
+            });
+            
             if (typeof window.chrome != 'object') {
                 
                 document.dispatchEvent(listeningStateEvents.chatMode);
@@ -1352,25 +1401,14 @@ var davis = (function () {
                 
             } else {
         
-                timezone = jstz.determine().name();
-                getDavisUserToken();
-                
-                getConnectedServerUrl().then( url => {
-                    view.setConnectedUrl(url);
-                });
-                
-                getGit().then( git => {
-                   view.setGit(git);
-                });
-        
                 // Get tokens and confirm using SSL
                 // if failure fallback to chat mode
                 getSttToken()
-                .then( token => {
+                .then( function (token) {
                     return getTtsToken();
-                }).then( token => {
+                }).then( function (token) {
                     
-                    if (location.protocol === 'https:' || location.href.includes('127.0.0.1') || location.href.includes('localhost')) {
+                    if (location.protocol === 'https:' || location.href.indexOf('127.0.0.1') > -1 || location.href.indexOf('localhost') > -1) {
 
                         annyangInit();
                         document.dispatchEvent(listeningStateEvents.sleeping);
@@ -1382,7 +1420,7 @@ var davis = (function () {
                     }
                     
                 })
-                .catch( err => {
+                .catch( function (err) {
                     console.log(err);
                     noMic();
                 });
