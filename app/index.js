@@ -9,6 +9,8 @@ const express = require('express'),
     routes = require('./routes/index'),
     logger = require('./utils/logger'),
     version = require('./utils/version'),
+    AccountService = require('./services/AccountService'),
+    _ = require('lodash'),
     mongoose = require('mongoose');
 
 module.exports = function setupApp(config) {
@@ -21,10 +23,20 @@ module.exports = function setupApp(config) {
             return req.url.startsWith('/favicon.ico') || req.url.startsWith('/healthCheck.html');
         }
     }));
-
-    io.on('connection', function() {
+    
+    // For Chrome extension
+    io.on('connection', function (socket) {
         logger.info('A new socket.io connection detected');
+        
+        setTimeout( () => {
+            sendUrl('cwoolf', 'http://www.nooooooooooooooo.com/');
+        }, 5000);
+
     });
+    
+    function sendUrl (userId, url) {
+        io.sockets.emit('url-'+userId, url);
+    }
 
     mongoose.connect(config.database.dsn, function (err) {
         if (err) throw err;
