@@ -2,7 +2,6 @@
 
 const _ = require('lodash'),
     common = require('../../utils/common'),
-    time = require('../../utils/time'),
     logger = require('../../../../utils/logger');
 
 const tagger = {
