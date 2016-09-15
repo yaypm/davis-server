@@ -16,11 +16,16 @@ const tagger = {
 
         return {
             lang: common.getLanguage(davis.user),
+            internal: isInternalUser(davis.user),
             lastInteraction: lastInteraction(currentInteractionTime, lastInteractionTime, davis.user.timezone),
             timeOfDay: timeOfDay(currentInteractionTime, davis.user.timezone)
         };
     }
 };
+
+function isInternalUser(user) {
+    return user.id === 'davis-system';
+}
 
 function lastInteraction(currentInteractionTime, lastInteractionTime, timezone) {
     if(_.isNil(lastInteractionTime)) {

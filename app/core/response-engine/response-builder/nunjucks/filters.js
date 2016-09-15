@@ -59,8 +59,8 @@ const filters = function(env, aliases) {
     
     env.addFilter('time', function(time, user) {
         return moment.tz(time, user.timezone).calendar(null , {
-            sameDay: '[Today at] h:mm A',
-            lastDay: '[Yesterday at] h:mm A',
+            sameDay: '[today at] h:mm A',
+            lastDay: '[yesterday at] h:mm A',
             lastWeek: 'dddd [at] h:mm A'
         });
     });

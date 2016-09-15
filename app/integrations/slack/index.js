@@ -208,9 +208,10 @@ module.exports = function (config) {
                 if (foundMatch) {
                     logger.info(`Push an alert to ${channel.name}`);
                     let user = {
-                        'id': 'davis-system',
-                        'nlp': config.nlp,
-                        'dynatrace': config.slack.dynatrace
+                        id: 'davis-system',
+                        nlp: config.nlp,
+                        dynatrace: config.slack.dynatrace,
+                        timezone: 'UTC'
                     };
 
                     ConversationService.getConversation(user)
