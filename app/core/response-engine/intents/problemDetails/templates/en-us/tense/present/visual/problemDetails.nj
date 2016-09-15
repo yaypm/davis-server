@@ -4,6 +4,7 @@
 {%- set eventsDisplayed = 0 -%}
 {%- set rootCauseCount = 0 -%}
 {
+    "text": "Below are the problem details you requested.",
     "attachments": [
         {
             "fallback": "{{ currentEvent.eventType | friendlyEventFirstAlias | makeTitle }}\nImpacted: {{ currentEvent |  friendlyEntityName | makeTitle }} \n{{ problem.impactLevel | capitalize }}\nInitial Event: {{ startingEvent.eventType | friendlyEventFirstAlias | makeTitle }}\nStatus: {% if problem.status == 'OPEN' %}Unresolved{% else %}Resolved{% endif %}",
