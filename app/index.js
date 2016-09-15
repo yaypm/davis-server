@@ -9,95 +9,103 @@ const express = require('express'),
     routes = require('./routes/index'),
     logger = require('./utils/logger'),
     version = require('./utils/version'),
-    AccountService = require('./services/AccountService'),
-    _ = require('lodash'),
     mongoose = require('mongoose');
 
-module.exports = function setupApp(config) {
+module.exports = {
+    setupApp: function(config) {
 
-    app.set('davisConfig', config);
-    logger.debug('Overriding Express logger');
-    app.use(require('morgan')('tiny', {
-        stream: logger.stream,
-        skip: req => {
-            return req.url.startsWith('/favicon.ico') || req.url.startsWith('/healthCheck.html');
-        }
-    }));
-    
-    // For Chrome extension
-    io.on('connection', function (socket) {
-        logger.info('A new socket.io connection detected');
-        
-        setTimeout( () => {
-            sendUrl('cwoolf', 'http://www.nooooooooooooooo.com/');
-        }, 5000);
+        app.set('davisConfig', config);
+        logger.debug('Overriding Express logger');
+        app.use(require('morgan')('tiny', {
+            stream: logger.stream,
+            skip: req => {
+                return req.url.startsWith('/favicon.ico') || req.url.startsWith('/healthCheck.html');
+            }
+        }));
 
-    });
-    
-    function sendUrl (userId, url) {
-        io.sockets.emit('url-'+userId, url);
-    }
+        // For Chrome extension
+        io.on('connection', function () {
+            logger.info('A new socket.io connection detected');
 
-    mongoose.connect(config.database.dsn, function (err) {
-        if (err) throw err;
-        logger.info('Successfully connected to mongodb');
-    });
+            /*setTimeout( () => {
+             sendUrl('cwoolf', 'http://www.nooooooooooooooo.com/');
+             }, 5000);*/
 
-    app.use(favicon(`${__dirname}/../web/favicon.ico`));
-    app.use(express.static(`${__dirname}/../web`));
-
-    app.use(bodyParser.json());
-    app.use(bodyParser.urlencoded({extended: false}));
-    app.use('/', routes);
-
-    /**
-     * Getting Git version
-     */
-    version.init()
-        .then( () => {
-            logger.info('Successfully got Git version');
         });
 
-    /**
-     * Starting slackbot
-     */
-    if (config.slack.enabled && config.slack.key) {
-        require('./integrations/slack')(config);
-    }
+        /*function sendUrl (userId, url) {
+         io.sockets.emit('url-'+userId, url);
+         }*/
 
-    // catch 404 and forward to error handler
-    app.use(function (req, res, next) {
-        var err = new Error('Not Found');
-        err.status = 404;
-        next(err);
-    });
+        mongoose.connect(config.database.dsn, function (err) {
+            if (err) throw err;
+            logger.info('Successfully connected to mongodb');
+        });
 
-    // error handlers
+        app.use(favicon(`${__dirname}/../web/favicon.ico`));
+        app.use(express.static(`${__dirname}/../web`));
 
-    // development error handler
-    // will print stacktrace
-    if (app.get('env') === 'development') {
+        app.use(bodyParser.json());
+        app.use(bodyParser.urlencoded({extended: false}));
+        app.use('/', routes);
+
+        /**
+         * Getting Git version
+         */
+        version.init()
+            .then( () => {
+                logger.info('Successfully got Git version');
+            });
+
+        /**
+         * Starting slackbot
+         */
+        if (config.slack.enabled && config.slack.key) {
+            require('./integrations/slack')(config);
+        }
+
+        // catch 404 and forward to error handler
+        app.use(function (req, res, next) {
+            var err = new Error('Not Found');
+            err.status = 404;
+            next(err);
+        });
+
+        // error handlers
+
+        // development error handler
+        // will print stacktrace
+        if (app.get('env') === 'development') {
+            app.use(function (err, req, res) {
+                res.status(err.status || 500);
+                res.json({
+                    message: err.message,
+                    error: err
+                });
+            });
+        }
+
+        // production error handler
+        // no stacktraces leaked to user
         app.use(function (err, req, res) {
             res.status(err.status || 500);
             res.json({
                 message: err.message,
-                error: err
+                error: {}
             });
         });
+
+        return { app, server };
+    },
+
+    push: function(davis) {
+        logger.info('Pushing link');
+        io.sockets.emit(`url-${davis.user.id}`, davis.exchange.response.visual.hyperlink);
     }
-
-    // production error handler
-	// no stacktraces leaked to user
-    app.use(function (err, req, res) {
-        res.status(err.status || 500);
-        res.json({
-            message: err.message,
-            error: {}
-        });
-    });
-
-    return { app, server };
 };
 
+/*module.exports = function push(davis) {
+    io.sockets.emit(davis.user.id, davis.exchange.response.visual.hyperlink);
+};*/
 
 

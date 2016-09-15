@@ -21,7 +21,7 @@ function containsRootCause(intentData) {
 
 function eligibleToShow(exchange) {
     // Only the WebUI is eligible for the show command.
-    return (_.get(exchange, 'source') === 'web');
+    return (_.get(exchange, 'source') !== 'slack');
 }
 
 function notification(exchange) {

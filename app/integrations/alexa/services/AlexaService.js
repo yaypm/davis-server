@@ -84,6 +84,15 @@ module.exports = function AlexaService(config) {
         };
     }
 
+    function pushLinkToBrowser(davis) {
+        logger.debug('Checking if we have a link to send');
+        if (davis.exchange.response.visual.hyperlink) {
+            //io.sockets.emit(davis.user.id, davis.exchange.response.visual.hyperlink);
+            const express =  require('../../../index');
+            express.push(davis);
+        }
+    }
+
     return {
         /**
          * Interacts with Davis via Alexa
@@ -124,11 +133,12 @@ module.exports = function AlexaService(config) {
                     })
                     .then(davis => {
                         logger.info('Finished processing request');
+                        pushLinkToBrowser(davis);
                         resolve(formatResponse(davis));
                     })
                     .catch(err => {
                         logger.error(`Unfortunately, something went wrong.  ${err.message}`);
-                        reject(alexaResponse(`Unfortunately, something went wrong.  ${err.message}`, true));
+                        resolve(alexaResponse(`Unfortunately, something went wrong.  ${err.message}`, true));
                     });
             });
         }
