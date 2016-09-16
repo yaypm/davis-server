@@ -9,6 +9,7 @@ const process = function process(davis) {
     return new BbPromise((resolve, reject) => {
         davis.conversation.getHistory(2)
             .then(result => {
+                const response = ['OK, here you go!', 'Done!', 'Absolutely, here it is.'];
                 const url = _.get(result, '[1].state.url');
 
                 if (_.isNil(url)) {
@@ -20,7 +21,7 @@ const process = function process(davis) {
                     //Ending the session so the user can focus on the dashboard
                     davis.exchange.response.finished = true;
                     davis.exchange.response.visual.hyperlink = url;
-                    common.addTextResponse(davis.exchange, 'OK, here you go!');
+                    common.addTextResponse(davis.exchange, _.sample(response));
                 }
                 resolve(davis);
             })

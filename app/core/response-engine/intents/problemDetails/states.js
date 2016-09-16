@@ -1,6 +1,7 @@
 'use strict';
 
 const _ = require('lodash'),
+    url = require('../../utils/url'),
     logger = require('../../../../utils/logger');
 
 const state = {
@@ -18,9 +19,10 @@ const state = {
     },
 
     openLink: (davis) => {
+        logger.debug('Offering to open the link for the user.');
         davis.exchange.state = {
             type: 'problemDetails',
-            url:  `${davis.user.dynatrace.url}#problems;filter=watched/problemdetails;pid=${davis.intentData.problemDetails.result.id}`,
+            url:  url.topImpactURL(davis.user, davis.intentData.problemDetails.result),
             next: {
                 send: null,
                 yes: 'send',
@@ -32,7 +34,7 @@ const state = {
     },
 
     notification: () => {
-        return;
+        logger.debug('This is a push notification so we don\'t need a follow up');
     }
 };
 
