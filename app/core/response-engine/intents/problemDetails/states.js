@@ -5,7 +5,7 @@ const _ = require('lodash'),
     logger = require('../../../../utils/logger');
 
 const state = {
-    default: (davis) => {
+    general: (davis) => {
         logger.debug('We aren\'t able to push the URL anywhere');
         davis.exchange.state = {
             type: 'problemDetails',

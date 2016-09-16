@@ -5,8 +5,7 @@ const DecisionTree = require('decision-tree'),
     logger = require('../../../utils/logger');
 
 const RESERVED_COLUMN_NAMES = {
-    template: 'template',
-    state: 'state'
+    output: 'output'
 };
 
 class Decide {
@@ -14,12 +13,8 @@ class Decide {
         this.model = model;
     }
 
-    template(tags) {
-        return predict(this.model, RESERVED_COLUMN_NAMES.template, tags);
-    }
-
-    state(tags) {
-        return predict(this.model, RESERVED_COLUMN_NAMES.state, tags);
+    predict(tags) {
+        return predict(this.model, RESERVED_COLUMN_NAMES.output, tags);
     }
 
     getReservedColumnNames() {

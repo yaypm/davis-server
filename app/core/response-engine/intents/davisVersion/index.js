@@ -16,10 +16,10 @@ const process = function process(davis) {
             davis.version = version;
             let tags = tagger.tag(davis);
             const decide = new Decide(decision_model);
-            let template = decide.template(tags);
-            logger.debug(`The template path ${template}`);
-            let stateSetter = decide.state(tags);
-            responseBuilder.build(davis, `intents/davisVersion/templates/${template}`, false, stateSetter(davis))
+            const decision = decide.predict(tags);
+
+            logger.debug(`The template path ${decision.template}`);
+            responseBuilder.build(davis, `intents/davisVersion/templates/${decision.template}`, false, decision.state(davis))
                 .then(response => {
                     resolve(response);
                 })

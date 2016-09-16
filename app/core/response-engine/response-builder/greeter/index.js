@@ -16,11 +16,11 @@ module.exports = {
                     let tags = tagger.tag(davis, result);
                     logger.debug(`Dumping the greetings tag: ${JSON.stringify(tags)}`);
                     const decide = new Decide(decision_model);
-                    let template = decide.template(tags);
-                    if (_.isNil(template)) return resolve('');
+                    const decision = decide.predict(tags);
+                    if (_.isNil(decision.template)) return resolve('');
 
-                    logger.debug(`Using the ${template} for greeting.`);
-                    return resolve(`response-builder/greeter/templates/${template}`);
+                    logger.debug(`Using the ${decision.template} for greeting.`);
+                    return resolve(`response-builder/greeter/templates/${decision.template}`);
                 })
                 .catch(err => {
                     logger.error('Ran into an issue creating the greeting.');

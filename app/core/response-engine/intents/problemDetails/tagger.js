@@ -3,6 +3,9 @@
 const _ = require('lodash'),
     common = require('../../utils/common');
 
+const ELIGIBLE_TO_SHOW = ['web', 'alexa'],
+    ELIGIBLE_FOR_NOTIFICATIONS = ['system'];
+
 const tagger = {
     tag: davis => {
         return {
@@ -21,11 +24,11 @@ function containsRootCause(intentData) {
 
 function eligibleToShow(exchange) {
     // Only the WebUI is eligible for the show command.
-    return (_.get(exchange, 'source') !== 'slack');
+    return _.includes(ELIGIBLE_TO_SHOW, _.get(exchange, 'source'));
 }
 
 function notification(exchange) {
-    return (_.get(exchange, 'source') === 'system');
+    return _.includes(ELIGIBLE_FOR_NOTIFICATIONS, _.get(exchange, 'source'));
 }
 
 module.exports = tagger;

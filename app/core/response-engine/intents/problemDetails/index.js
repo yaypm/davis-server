@@ -15,12 +15,14 @@ const process = function process(davis, data) {
         dynatrace.problemDetails(data.problemId)
             .then(response => {
                 common.saveIntentData(davis, 'problemDetails', response);
-                let tags = tagger.tag(davis);
+                const tags = tagger.tag(davis);
                 const decide = new Decide(decision_model);
-                let template = decide.template(tags);
-                logger.debug(`The template path ${template}`);
-                let stateSetter = decide.state(tags);
-                return responseBuilder.build(davis, `intents/problemDetails/templates/${template}`, true, stateSetter(davis));
+                const decision = decide.predict(tags);
+                logger.debug(`The template path ${decision.template}`);
+
+                // We only want to greet if it's a real user.
+                let greetUser = !tags['notification'];
+                return responseBuilder.build(davis, `intents/problemDetails/templates/${decision.template}`, greetUser, decision.state(davis));
             })
             .then(response => {
                 return resolve(response);
