@@ -9,6 +9,7 @@ const express = require('express'),
     routes = require('./routes/index'),
     logger = require('./utils/logger'),
     version = require('./utils/version'),
+    BbPromise = require('bluebird'),
     mongoose = require('mongoose');
 
 module.exports = {
@@ -26,16 +27,7 @@ module.exports = {
         // For Chrome extension
         io.on('connection', function () {
             logger.info('A new socket.io connection detected');
-
-            /*setTimeout( () => {
-             sendUrl('cwoolf', 'http://www.nooooooooooooooo.com/');
-             }, 5000);*/
-
         });
-
-        /*function sendUrl (userId, url) {
-         io.sockets.emit('url-'+userId, url);
-         }*/
 
         mongoose.connect(config.database.dsn, function (err) {
             if (err) throw err;
@@ -97,15 +89,26 @@ module.exports = {
 
         return { app, server };
     },
+    
+    // // Not working at the moment
+    // isChromeExtensionConnected: function (userId) {
+    //     return new BbPromise((resolve, reject) => {
+    //         let isConnected = false;
+    //         io.sockets.emit(`connection-check-${userId}`);
+            
+    //         io.sockets.on(`connected-${userId}`, () => {
+    //             isConnected = true;
+    //         });
+            
+    //         setTimeout( () => {
+    //             logger.info(`${userId} socket.io connection: ${isConnected}`);
+    //             resolve(isConnected);
+    //         }, 100);
+    //     });
+    // },
 
-    push: function(davis) {
+    push: function (davis) {
         logger.info('Pushing link');
         io.sockets.emit(`url-${davis.user.id}`, davis.exchange.response.visual.hyperlink);
     }
 };
-
-/*module.exports = function push(davis) {
-    io.sockets.emit(davis.user.id, davis.exchange.response.visual.hyperlink);
-};*/
-
-

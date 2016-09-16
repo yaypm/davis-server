@@ -1,25 +1,25 @@
-var davisUrl;
-var userId;
-var sharedSocket;
+var socket;
+var debugMode = false;
 
 function getOptions() {
 	chrome.storage.sync.get({
 		davisUrl: '',
-		userId : ''
-	  }, function(options) {
+		userId : '',
+		debugMode: ''
+	  }, (options) => {
+		  
+		debugMode = (options.debugMode == 'true');
 		
 		if (options.davisUrl.length > 0) {
-			
-			davisUrl = options.davisUrl;
-			userId = options.userId;						
-			sharedSocket = io(davisUrl);
+								
+			socket = io(options.davisUrl);
 			
 			// Navigate to URL in current tab
-			sharedSocket.on('url-'+userId, function (url) {
+			socket.on(`url-${options.userId}`, url => {
 				
-				console.log("Request to navigate to page " + url);
+				if(debugMode) console.log("Request to navigate to page " + url);
 				
-				chrome.tabs.query({ currentWindow: true, active: true }, function (tabs) {
+				chrome.tabs.query({ currentWindow: true, active: true }, tabs => {
 			
 					// if current tab includes 'dynatrace' use current tab, else open new tab 
 					if (url !== tabs[0].url && tabs[0].url.includes('dynatrace')) {
@@ -30,10 +30,15 @@ function getOptions() {
 				});
 			});
 			
+			// Connection check
+			/* socket.on(`connection-check-${options.userId}`, () => {
+				if(debugMode) console.log("Connection check detected");
+				socket.emit(`connected-${options.userId}`);
+			}); */
+			
 			// Shared socket connection established
-			sharedSocket.on('connect', function () {
-				// Make sure to only emit userOptions once if others connect to sharedSocket
-				sharedSocket.emit('userOptions', {davisUrl: davisUrl, userId: userId});
+			socket.on('connect', () => {
+				if(debugMode) console.log("Connected to server via socket.io");
 			});
 		}
 	});
