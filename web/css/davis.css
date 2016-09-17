@@ -273,7 +273,6 @@ table.debug, th.debug, td.debug {
 	z-index: 1001;
 	left: calc(50% - 325px);
 	bottom: 20px;
-	background-color: #007ee6;
 }
 
 #listeningState {
