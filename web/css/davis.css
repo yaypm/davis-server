@@ -153,81 +153,24 @@ P > a.links:active {
     to {background-color: #33a3ff;}
 }
 
-#davis-logo-wrapper {
-	width: 150px;
-	height: 30px;
+#nav-bar {
+	width: 100%;
+	height: 44px;
 	position: absolute;
-	right: 25px;
 	top: 0;
-	background-color: #ffffff;
-	border-bottom-left-radius: 3px;
-	border-bottom-right-radius: 3px;
-	z-index: 1001;
-}
-
-#davis-logo-wrapper:hover {
-	background-color: #f2f2f2;
-	cursor: pointer;
+	background-color: #191919;
+	z-index: 9999;
 }
 
 #davis-logo {
-	margin: 8px 6px 6px 13px;
-	background: url(../images/dynatrace-davis-logo.png);
-	background-repeat: no-repeat;
-	background-size: contain;
-	height: 15px;
+	width: 104px;
+	height: 26px;
+	margin-top: 9px;
+	margin-left: 16px;
 }
 
-#logo {
-	position: relative;
-	margin: 0 auto;
-	margin-top: 150px;
-	background: url(../images/logo.png);
-	background-repeat: no-repeat;
-	background-size: contain;
-	opacity: 0;
-	width: 500px;
-	height: 500px;
-}
-
-#logo.logoOff {
-	-webkit-animation-name: micOn; /* Chrome, Safari, Opera */
-    -webkit-animation-duration: 1s; /* Chrome, Safari, Opera */
-    animation-name: logoOff;
-    animation-duration: 1s;
-	opacity: 0;
-}
-
-#logo.logoOn {
-	-webkit-animation-name: micOn; /* Chrome, Safari, Opera */
-    -webkit-animation-duration: 3s; /* Chrome, Safari, Opera */
-    animation-name: logoOn;
-    animation-duration: 3s;
-	opacity: 0.1;
-}
-
-/* Chrome, Safari, Opera */
-@-webkit-keyframes logoOff {
-    from {opacity: 0.1;}
-    to {opacity: 0;}
-}
-
-/* Standard syntax */
-@keyframes logoOff {
-    from {opacity: 0.1;}
-    to {opacity: 0;}
-}
-
-/* Chrome, Safari, Opera */
-@-webkit-keyframes logoOn {
-    from {opacity: 0;}
-    to {opacity: 0.1;}
-}
-
-/* Standard syntax */
-@keyframes logoOn {
-    from {opacity: 0;}
-    to {opacity: 0.1;}
+#davis-logo:hover {
+	cursor: pointer;
 }
 
 table.debug {
@@ -245,7 +188,7 @@ table.debug, th.debug, td.debug {
 
 #interactionLog {
 	position: absolute;
-	top: 25%;
+	top: 30%;
 	text-align: center;
 	width: 99%;
 	height: 56%;
@@ -273,7 +216,6 @@ table.debug, th.debug, td.debug {
 	z-index: 1001;
 	left: calc(50% - 325px);
 	bottom: 20px;
-	background-color: #007ee6;
 }
 
 #listeningState {
@@ -373,7 +315,7 @@ table.debug, th.debug, td.debug {
 .davisvisual__davis {
 	position: fixed;
     left: 50%;
-    top: 14%;
+    top: 19%;
     z-index: 1001;
 }
 
