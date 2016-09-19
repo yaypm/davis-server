@@ -14,12 +14,11 @@ const process = function process(davis) {
         
         let tags = tagger.tag(davis);
         const decide = new Decide(decision_model);
-        let template = decide.template(tags);
-        logger.debug(`The template path ${template}`);
-        let stateSetter = decide.state(tags);
+        const decision = decide.predict(tags);
+        logger.debug(`The template path ${decision.template}`);
         davis.exchange.response.finished = true;
         
-        responseBuilder.build(davis, `intents/help/templates/${template}`, true, stateSetter(davis))
+        responseBuilder.build(davis, `intents/help/templates/${decision.template}`, true, decision.state(davis))
             .then(response => {
                 return resolve(response);
             })

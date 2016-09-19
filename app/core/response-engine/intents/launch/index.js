@@ -7,15 +7,14 @@ const BbPromise = require('bluebird'),
     tagger = require('./tagger'),
     logger = require('../../../../utils/logger');
 
-
 const process = function process(davis) {
     return new BbPromise((resolve, reject) => {
         let tags = tagger.tag(davis);
         const decide = new Decide(decision_model);
-        let template = decide.template(tags);
-        logger.debug(`The template path ${template}`);
-        let stateSetter = decide.state(tags);
-        responseBuilder.build(davis, `intents/launch/templates/${template}`, false, stateSetter(davis))
+        const decision = decide.predict(tags);
+        logger.debug(`The template path ${decision.template}`);
+
+        responseBuilder.build(davis, `intents/launch/templates/${decision.template}`, false, decision.state(davis))
             .then(response => {
                 return resolve(response);
             })

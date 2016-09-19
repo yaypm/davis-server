@@ -3,5 +3,5 @@
 const states = require('./states');
 
 module.exports = [
-    {'lang': 'en-us', 'template': 'en-us',    'state': states.launch}
+    {lang: 'en-us', output: {template: 'en-us', 'state': states.launch }}
 ];

@@ -9,83 +9,106 @@ const express = require('express'),
     routes = require('./routes/index'),
     logger = require('./utils/logger'),
     version = require('./utils/version'),
+    BbPromise = require('bluebird'),
     mongoose = require('mongoose');
 
-module.exports = function setupApp(config) {
+module.exports = {
+    setupApp: function(config) {
 
-    app.set('davisConfig', config);
-    logger.debug('Overriding Express logger');
-    app.use(require('morgan')('tiny', {
-        stream: logger.stream,
-        skip: req => {
-            return req.url.startsWith('/favicon.ico') || req.url.startsWith('/healthCheck.html');
-        }
-    }));
+        app.set('davisConfig', config);
+        logger.debug('Overriding Express logger');
+        app.use(require('morgan')('tiny', {
+            stream: logger.stream,
+            skip: req => {
+                return req.url.startsWith('/favicon.ico') || req.url.startsWith('/healthCheck.html');
+            }
+        }));
 
-    io.on('connection', function() {
-        logger.info('A new socket.io connection detected');
-    });
-
-    mongoose.connect(config.database.dsn, function (err) {
-        if (err) throw err;
-        logger.info('Successfully connected to mongodb');
-    });
-
-    app.use(favicon(`${__dirname}/../web/favicon.ico`));
-    app.use(express.static(`${__dirname}/../web`));
-
-    app.use(bodyParser.json());
-    app.use(bodyParser.urlencoded({extended: false}));
-    app.use('/', routes);
-
-    /**
-     * Getting Git version
-     */
-    version.init()
-        .then( () => {
-            logger.info('Successfully got Git version');
+        // For Chrome extension
+        io.on('connection', function () {
+            logger.info('A new socket.io connection detected');
         });
 
-    /**
-     * Starting slackbot
-     */
-    if (config.slack.enabled && config.slack.key) {
-        require('./integrations/slack')(config);
-    }
+        mongoose.connect(config.database.dsn, function (err) {
+            if (err) throw err;
+            logger.info('Successfully connected to mongodb');
+        });
 
-    // catch 404 and forward to error handler
-    app.use(function (req, res, next) {
-        var err = new Error('Not Found');
-        err.status = 404;
-        next(err);
-    });
+        app.use(favicon(`${__dirname}/../web/favicon.ico`));
+        app.use(express.static(`${__dirname}/../web`));
 
-    // error handlers
+        app.use(bodyParser.json());
+        app.use(bodyParser.urlencoded({extended: false}));
+        app.use('/', routes);
 
-    // development error handler
-    // will print stacktrace
-    if (app.get('env') === 'development') {
+        /**
+         * Getting Git version
+         */
+        version.init()
+            .then( () => {
+                logger.info('Successfully got Git version');
+            });
+
+        /**
+         * Starting slackbot
+         */
+        if (config.slack.enabled && config.slack.key) {
+            require('./integrations/slack')(config);
+        }
+
+        // catch 404 and forward to error handler
+        app.use(function (req, res, next) {
+            var err = new Error('Not Found');
+            err.status = 404;
+            next(err);
+        });
+
+        // error handlers
+
+        // development error handler
+        // will print stacktrace
+        if (app.get('env') === 'development') {
+            app.use(function (err, req, res) {
+                res.status(err.status || 500);
+                res.json({
+                    message: err.message,
+                    error: err
+                });
+            });
+        }
+
+        // production error handler
+        // no stacktraces leaked to user
         app.use(function (err, req, res) {
             res.status(err.status || 500);
             res.json({
                 message: err.message,
-                error: err
+                error: {}
             });
         });
+
+        return { app, server };
+    },
+    
+    // // Not working at the moment
+    // isChromeExtensionConnected: function (userId) {
+    //     return new BbPromise((resolve, reject) => {
+    //         let isConnected = false;
+    //         io.sockets.emit(`connection-check-${userId}`);
+            
+    //         io.sockets.on(`connected-${userId}`, () => {
+    //             isConnected = true;
+    //         });
+            
+    //         setTimeout( () => {
+    //             logger.info(`${userId} socket.io connection: ${isConnected}`);
+    //             resolve(isConnected);
+    //         }, 100);
+    //     });
+    // },
+
+    push: function (davis) {
+        logger.info('Pushing link');
+        io.sockets.emit(`url-${davis.user.id}`, davis.exchange.response.visual.hyperlink);
     }
-
-    // production error handler
-	// no stacktraces leaked to user
-    app.use(function (err, req, res) {
-        res.status(err.status || 500);
-        res.json({
-            message: err.message,
-            error: {}
-        });
-    });
-
-    return { app, server };
 };
-
-
-

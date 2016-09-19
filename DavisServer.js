@@ -8,7 +8,7 @@ class DavisServer {
         if (typeof config === 'undefined'){
             throw new Error('No config present!');
         }
-        Object.assign(this, express(config));
+        Object.assign(this, express.setupApp(config));
     }
 
     run(cb) {

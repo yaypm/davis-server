@@ -18,7 +18,8 @@ const NUNJUCK_EXTENSION = '.nj',
 module.exports = {
     build: (davis, relativeTemplatePath, shouldGreet, followUp) => {
         relativeTemplatePath = path.join(relativeTemplatePath);
-        shouldGreet = shouldGreet || true;
+        if (_.isNil(shouldGreet))
+            shouldGreet = true;
         return new BbPromise((resolve, reject) => {
             getFiles(relativeTemplatePath)
                 .then(files => {

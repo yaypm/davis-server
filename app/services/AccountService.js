@@ -26,6 +26,26 @@ module.exports = function AccountService(users) {
             }
 
             return user;
+        },
+        
+         /**
+         * Validates a user based on their user id
+         * @param {string} userId - The ID that uniquely represents a user.
+         * @returns {Object} [user=null] - The user object contains user specific configuration settings.
+         */
+        getUserById(userId)  {
+            let user = _.find(users, function (o) {
+                return _.includes(o['id'], userId);
+            }) || null;
+
+            if (!_.isNull(user)) {
+                logger.info('Found a valid user');
+                logger.debug(`The merged user object is ${JSON.stringify(user)}`);
+            } else {
+                logger.warn(`Unable to find a valid user: ${userId}`);
+            }
+
+            return user;
         }
     };
 };

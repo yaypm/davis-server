@@ -85,6 +85,12 @@ class Dynatrace {
                         stopTime: moment.parseZone(datetime.value).endOf('month')
                     };
                     break;
+                case 'year':
+                    timeRange = {
+                        startTime: moment.parseZone(datetime.value).startOf('year'),
+                        stopTime: moment.parseZone(datetime.value).endOf('year')
+                    };
+                    break;
                 default:
                     logger.error('Passed in an unknown granularity: ' + datetime.grain);
                 }

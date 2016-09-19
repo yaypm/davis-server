@@ -19,10 +19,10 @@ const process = function process(davis) {
                 common.saveIntentData(davis, 'problem', response);
                 let tags = tagger.tag(davis);
                 const decide = new Decide(decision_model);
-                let template = decide.template(tags);
-                logger.debug(`The template path ${template}`);
-                let stateSetter = decide.state(tags);
-                return responseBuilder.build(davis, `intents/problem/templates/${template}`, true, stateSetter(davis));
+                const decision = decide.predict(tags);
+                logger.debug(`The template path ${decision.template}`);
+
+                return responseBuilder.build(davis, `intents/problem/templates/${decision.template}`, true, decision.state(davis));
             })
             .then(response => {
                 return resolve(response);

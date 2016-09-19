@@ -1,0 +1,26 @@
+{
+  "manifest_version": 2,
+  "name": "Dynatrace Davis - Remote Navigation Receiver",
+  "description": "This extension allows Davis to remotely navigate the Dynatrace Platform",
+  "version": "1.0",
+  "options_ui" : {
+    "page": "options.html",
+    "chrome_style": true
+    },
+  "icons": {"128": "icon.png"},
+  "browser_action": {
+    "default_icon": "icon.png",
+    "default_title" : "Remove browser control for Ruxit"
+  },
+  "permissions": [
+    "activeTab",
+    "tabs",
+    "storage",
+    "https://ajax.googleapis.com/", 
+    "background"
+  ],
+  "background": {
+    "scripts": ["socket.io.js","background.js"],
+    "persistent" : true
+  }
+}

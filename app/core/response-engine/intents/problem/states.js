@@ -1,6 +1,7 @@
 'use strict';
 
 const _ = require('lodash'),
+    url = require('../../utils/url'),
     logger = require('../../../../utils/logger');
 
 const state = {
@@ -21,7 +22,7 @@ const state = {
         davis.exchange.state = {
             type: 'oneProblem',
             problemId:  _.get(davis, 'intentData.problem.result.problems[0].id'),
-            url:  `${davis.user.dynatrace.url}#problems;filter=watched/problemdetails;pid=${_.get(davis, 'intentData.problem.result.problems[0].id')}`,
+            url:  url.topImpactURL(davis.user, davis.intentData.problem.result.problems[0]),
             next: {
                 send: null,
                 yes: 'problemDetails',
