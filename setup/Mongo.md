@@ -1,4 +1,6 @@
 
+**//TODO:** Add some more context around launching an EC2 instance, and EC2 AMI. Make these optional and tell user that they can use any hosting platform. Heroku, Azure, etc.
+
 **Create Mongo DB Instance**
 
 1. Launch Instance

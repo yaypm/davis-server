@@ -29,6 +29,11 @@ class Nlp {
             let wit = new Wit(this.user.nlp.wit);
             wit.ask(this.exchange.request.text, {timezone: this.user.timezone})
             .then(response => {
+                
+                // Temporary until new intents are added to wit
+                // response.entities.intent[0].value = 'userActivity';
+                // response.entities.intent[0].value = 'scalability';
+                
                 this.exchange.request.analysed = analyseEntities(this, response.entities);
                 resolve(this.exchange);
             })
