@@ -4,7 +4,7 @@ body {
 	margin: 0;
 }
 
-body.micOff {
+body.micOff, .inputWrapper.micOff{
     -webkit-animation-name: micOff; /* Chrome, Safari, Opera */
     -webkit-animation-duration: 1s; /* Chrome, Safari, Opera */
     animation-name: micOff;
@@ -12,7 +12,7 @@ body.micOff {
     background-color: #007ee6;
 }
 
-body.micOn {
+body.micOn, .inputWrapper.micOn{
     -webkit-animation-name: micOn; /* Chrome, Safari, Opera */
     -webkit-animation-duration: 1s; /* Chrome, Safari, Opera */
     animation-name: micOn;
@@ -61,7 +61,7 @@ body.micOn {
 
 #interactionLogGradientTop {
 	position: absolute;
-	top: calc(25% - 5px);
+	top: calc(30% - 5px);
 	margin-left: 20px;
 	width: calc(99% - 40px);
 	height: 10px;
@@ -75,7 +75,7 @@ body.micOn {
 
 #interactionLogGradientBottom {
 	position: absolute;
-	top: calc(81% - 5px);
+	bottom: 137px;
 	margin-left: 20px;
 	width: calc(99% - 40px);
 	height: 10px;
@@ -216,6 +216,7 @@ table.debug, th.debug, td.debug {
 	z-index: 1001;
 	left: calc(50% - 325px);
 	bottom: 20px;
+	background-color: #007ee6;
 }
 
 #listeningState {
