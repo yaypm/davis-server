@@ -6394,7 +6394,7 @@ FormatStream.prototype.capitalize = function capitalize(text) {
  */
 FormatStream.prototype.period = function period(text) {
   // Detect if a question mark should be used instead
-  const words = ['who', 'what', 'when', 'where', 'why', "how", "could", "can", 'is there', 'is the', 'did the', 'did any'];
+  const words = ['who', 'what', 'when', 'where', 'why', "how", "could", "can", 'is there', 'is the', 'did the', 'did any', 'are there'];
   var result = '. ';
   words.forEach( function (word) {
       if (text.toLowerCase().indexOf(word) > -1) {
