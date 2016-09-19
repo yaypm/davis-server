@@ -154,24 +154,6 @@ var davis = (function () {
             }
         };
         
-         /**
-         * Displays the logo
-         */
-        function showLogo() {
-            $('#logo').addClass('logoOn');
-            $('#logo').removeClass('logoOff');
-        }
-        
-        /**
-         * Hides the logo
-         */
-        function hideLogo() {
-            if ($('#logo').hasClass('logoOn')) {
-                $('#logo').addClass('logoOff');
-                $('#logo').removeClass('logoOn');
-            }
-        }
-        
         /**
          * Brightens the body's background-color
          */
@@ -180,6 +162,8 @@ var davis = (function () {
             $('#interactionLogGradientBottom').hide();
             $('body').addClass('micOn');
             $('body').removeClass('micOff');
+            $('.inputWrapper').addClass('micOn');
+            $('.inputWrapper').removeClass('micOff');
         }
         
         /**
@@ -189,6 +173,8 @@ var davis = (function () {
             if ($('body').hasClass('micOn')) {
                 $('body').addClass('micOff');
                 $('body').removeClass('micOn');
+                $('.inputWrapper').addClass('micOff');
+                $('.inputWrapper').removeClass('micOn');
                 $('#interactionLogGradientTop').fadeIn(3000);
                 $('#interactionLogGradientBottom').fadeIn(3000);
             }
@@ -597,14 +583,6 @@ var davis = (function () {
                 attachEventListeners();
             },
             
-            hideLogo: function () {
-                hideLogo();
-            },
-            
-            showLogo: function () {
-                showLogo();
-            },
-            
             getTextBeingTyped: function () {
                 return textBeingTyped;  
             },
@@ -796,8 +774,6 @@ var davis = (function () {
          * @param {String} request
          */
         function interactWithRuxit(request) {
-            
-            view.hideLogo();
             
             // Debug mode
             if ((request.indexOf('debug') > -1 && request.indexOf('true') > -1) || (request.indexOf('debug') > -1 && !(request.indexOf('false') > -1))) {

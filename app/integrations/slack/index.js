@@ -14,7 +14,7 @@ const Botkit = require('botkit'),
 const davisChannels = [];
 const inactivityTimeoutTime = 30; // Seconds of inactivity until Davis goes to sleep
 const ERROR_MESSAGE = 'Sorry about that, I\'m having issues responding to your request at this time.';
-const DAVIS_SLEEP_MESSAGE = ['Wake me up if need something!  :sleeping:', 'I\'ve gone to sleep. :ZZZ:', 'Until next time :spock-hand:'];
+const DAVIS_SLEEP_MESSAGE = ['Wake me up if you need something!  :sleeping:', 'I\'ve gone to sleep. :ZZZ:', 'Until next time :spock-hand:'];
 
 // Launch phrases
 const phrases = [
