@@ -162,8 +162,8 @@ var davis = (function () {
             $('#interactionLogGradientBottom').hide();
             $('body').addClass('micOn');
             $('body').removeClass('micOff');
-            $('.inputWrapper').addClass('micOn');
-            $('.inputWrapper').removeClass('micOff');
+            $('#inputWrapper').addClass('micOn');
+            $('#inputWrapper').removeClass('micOff');
         }
         
         /**
@@ -173,8 +173,8 @@ var davis = (function () {
             if ($('body').hasClass('micOn')) {
                 $('body').addClass('micOff');
                 $('body').removeClass('micOn');
-                $('.inputWrapper').addClass('micOff');
-                $('.inputWrapper').removeClass('micOn');
+                $('#inputWrapper').addClass('micOff');
+                $('#inputWrapper').removeClass('micOn');
                 $('#interactionLogGradientTop').fadeIn(3000);
                 $('#interactionLogGradientBottom').fadeIn(3000);
             }
@@ -481,6 +481,7 @@ var davis = (function () {
          */
         function init() {
             
+            var inputHistoryIndex = -1;
             resetPlaceholder();
             setListeningState('sleeping');
             
@@ -488,13 +489,29 @@ var davis = (function () {
             // if space-bar and textbox not focused, toggleMute
             $(function() {
                 
-                $(window).keypress(function(e) {
+                $(window).keydown(function(e) {
                     
                     var key = e.which;
                     
                     if (key == 32 && !$("#"+textInputElemId).is(":focus")) {
                         controller.toggleMute($('#'+listeningStateElemId).html() === localResponses.listeningStates.listening);
-                    } else if (key != 32 && !$("#"+textInputElemId).is(":focus")) {
+                    } else if (key == 38 && controller.getInputHistory().length > 0) {
+                        if (inputHistoryIndex <= controller.getInputHistory().length - 1) {
+                            inputHistoryIndex++;
+                            $("#"+textInputElemId).val(controller.getInputHistory()[inputHistoryIndex]);
+                        } else {
+                            inputHistoryIndex = 0;
+                            $("#"+textInputElemId).val(controller.getInputHistory()[inputHistoryIndex]);
+                        }
+                    } else if (key == 40 && controller.getInputHistory().length > 0) {
+                        if (inputHistoryIndex > 0) {
+                            inputHistoryIndex--;
+                            $("#"+textInputElemId).val(controller.getInputHistory()[inputHistoryIndex]);
+                        } else {
+                            inputHistoryIndex = 0;
+                            $("#"+textInputElemId).val(controller.getInputHistory()[inputHistoryIndex]);
+                        }
+                    } else if (!$("#"+textInputElemId).is(":focus")) {
                         $("#"+textInputElemId).focus();
                     }
                     
@@ -623,7 +640,8 @@ var davis = (function () {
         var playerReady = false;
         var micOn; // Mic on sound effect
         var stream;                               // IBM STT stream
-        var outputQueue = [];                  // Counter for keeping track of queued outputTextAndSpeech() calls
+        var inputHistory = [];                    // History of user input, use up key to cycle through previous inputs
+        var outputQueue = [];                     // Counter for keeping track of queued outputTextAndSpeech() calls
         var timezone;                             // User's timezone
         var userToken;                            // Random token used in place of a user ID to store/retrieve conversations in web version
         var debug = false;                        // Debug mode
@@ -774,6 +792,8 @@ var davis = (function () {
          * @param {String} request
          */
         function interactWithRuxit(request) {
+            
+            inputHistory.push(request);
             
             // Debug mode
             if ((request.indexOf('debug') > -1 && request.indexOf('true') > -1) || (request.indexOf('debug') > -1 && !(request.indexOf('false') > -1))) {
@@ -1436,9 +1456,10 @@ var davis = (function () {
                 toggleMute(mute);    
             },
             process: function () {
-                
                 interactWithRuxit($('#'+view.getTextInputElemId()).val());
-                
+            },
+            getInputHistory: function () {
+                return inputHistory;
             }
             
         };
