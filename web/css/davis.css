@@ -191,7 +191,7 @@ table.debug, th.debug, td.debug {
 	top: 30%;
 	text-align: center;
 	width: 99%;
-	height: 56%;
+	height: calc(70% - 144px);
     overflow-y: scroll;
 	z-index: 2;
 }
@@ -206,7 +206,7 @@ table.debug, th.debug, td.debug {
 	padding-right: 50px;
 }
 
-#interactionlog p:last-of-type {
+#interactionLog p:last-of-type {
 	color: #fcf8e3;
 	font-size: 28px;
 }
