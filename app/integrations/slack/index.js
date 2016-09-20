@@ -300,58 +300,61 @@ module.exports = function (config) {
                     }
                 });
                     
+                if (!SlackService(config).isOtherUserMentioned(this.initialInteraction.text)) {
                     
-                SlackService(config).askDavis(this.initialInteraction, this.user)
-                .then(resp => {
-                    
-                    logger.info('Sending a response back to the Slack service');
-                    if (this.directPrefix && resp.response.outputSpeech.card) {
-                        resp.response.outputSpeech.card.text = this.directPrefix + resp.response.outputSpeech.card.text;
-                        this.initialResponse = resp.response.outputSpeech.card;
-                    } else if (this.directPrefix) {
-                        resp.response.outputSpeech.text = this.directPrefix + resp.response.outputSpeech.text;
-                        this.initialResponse = resp.response.outputSpeech.text;
-                    } else {
-                        this.initialResponse = (resp.response.outputSpeech.card) ? resp.response.outputSpeech.card : resp.response.outputSpeech.text;
-                    }
-                    
-                    this.shouldEndSession = resp.response.shouldEndSession;
-                    
-                    // Listen for typing event
-                    controller.on('user_typing', (bot,message) => {
-                
-                        if (message.user === this.user.id && this.inactivityTimeout && !this.shouldEndSession) {
-                            this.lastInteractionTime = moment();
-                            this.resetTimeout = true;
-                        } else {
-                            this.resetTimeout = false;
-                        }  
+                    SlackService(config).askDavis(this.initialInteraction, this.user)
+                    .then(resp => {
                         
-                    });
-        
-                    try{
-                        
-                        if (this.initialResponse) {
-                            
-                            convo.ask(this.initialResponse, (response, convo) => {
-                                clearTimeout(this.inactivityTimeout);
-                                this.addToConvo(response, convo);
-                            });
-                            
+                        logger.info('Sending a response back to the Slack service');
+                        if (this.directPrefix && resp.response.outputSpeech.card) {
+                            resp.response.outputSpeech.card.text = this.directPrefix + resp.response.outputSpeech.card.text;
+                            this.initialResponse = resp.response.outputSpeech.card;
+                        } else if (this.directPrefix) {
+                            resp.response.outputSpeech.text = this.directPrefix + resp.response.outputSpeech.text;
+                            this.initialResponse = resp.response.outputSpeech.text;
                         } else {
-                            convo.say(ERROR_MESSAGE);
+                            this.initialResponse = (resp.response.outputSpeech.card) ? resp.response.outputSpeech.card : resp.response.outputSpeech.text;
                         }
                         
-                        convo.next();
+                        this.shouldEndSession = resp.response.shouldEndSession;
+                        
+                        // Listen for typing event
+                        controller.on('user_typing', (bot,message) => {
                     
-                    } catch (err) {
-                        logger.warn(err);
-                    }
-                })
-                .catch(err => {
-                    logger.error('Unable to respond to the request received from Slack');
-                    logger.error(err);
-                });
+                            if (message.user === this.user.id && this.inactivityTimeout && !this.shouldEndSession) {
+                                this.lastInteractionTime = moment();
+                                this.resetTimeout = true;
+                            } else {
+                                this.resetTimeout = false;
+                            }  
+                            
+                        });
+            
+                        try{
+                            
+                            if (this.initialResponse) {
+                                
+                                convo.ask(this.initialResponse, (response, convo) => {
+                                    clearTimeout(this.inactivityTimeout);
+                                    this.addToConvo(response, convo);
+                                });
+                                
+                            } else {
+                                convo.say(ERROR_MESSAGE);
+                            }
+                            
+                            convo.next();
+                        
+                        } catch (err) {
+                            logger.warn(err);
+                        }
+                    })
+                    .catch(err => {
+                        logger.error('Unable to respond to the request received from Slack');
+                        logger.error(err);
+                    });
+                
+                }
             
             });
             
@@ -377,8 +380,9 @@ module.exports = function (config) {
                 clearTimeout(this.inactivityTimeout);
             }
             
-            // if lastInteractionTime is more than 30 seconds ago, end conversation
-            if (!this.isDirectMessage && (this.shouldEndSession || isTimedOut)) {
+            // if lastInteractionTime is more than 30 seconds ago or other user is mentioned, end conversation
+            if ((!this.isDirectMessage && (this.shouldEndSession || isTimedOut)) || 
+                SlackService(config).isOtherUserMentioned(response.text)) {
                 
                 logger.info('Slack: Conversation stopped');
                 convo.stop();
