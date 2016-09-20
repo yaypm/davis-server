@@ -1,6 +1,6 @@
 {%- set problems = intentData.scalability.result.problems %}
 {
-    "text": "There was one infrastructure problem during that time frame.",
+    "text": "There was one infrastructure problem during the past week.",
     "attachments": [
         {% for problem in problems %}
            {% include "intents/scalability/templates/en-us/shared/visual/problemSummary.nj" %}{%- if not loop.last %},{% endif %}

@@ -22,8 +22,8 @@ const state = {
         logger.debug('Processing state one');
         davis.exchange.state = {
             type: 'oneProblem',
-            problemId:  _.get(davis, 'intentData.problem.result.problems[0].id'),
-            url:  url.topImpactURL(davis.user, davis.intentData.problem.result.problems[0]),
+            problemId:  _.get(davis, 'intentData.scalability.result.problems[0].id'),
+            url:  url.topImpactURL(davis.user, davis.intentData.scalability.result.problems[0]),
             next: {
                 send: null,
                 yes: 'problemDetails',
@@ -38,7 +38,7 @@ const state = {
         logger.debug('Processing state two');
         davis.exchange.state = {
             type: 'twoProblems',
-            problemIds:  [_.get(davis, 'intentData.problem.result.problems[0].id'), _.get(davis, 'intentData.problem.result.problems[1].id')],
+            problemIds:  [_.get(davis, 'intentData.scalability.result.problems[0].id'), _.get(davis, 'intentData.scalability.result.problems[1].id')],
             next: {
                 multipleChoice: 'problemDetails',
                 send: null,
@@ -54,7 +54,7 @@ const state = {
         logger.debug('Processing state many');
         davis.exchange.state = {
             type: 'multipleProblems',
-            problemIds:  [_.get(davis, 'intentData.problem.result.problems[0].id'), _.get(davis, 'intentData.problem.result.problems[1].id'), _.get(davis, 'intentData.problem.result.problems[2].id')],
+            problemIds:  [_.get(davis, 'intentData.scalability.result.problems[0].id'), _.get(davis, 'intentData.scalability.result.problems[1].id'), _.get(davis, 'intentData.scalability.result.problems[2].id')],
             next: {
                 multipleChoice: 'problemDetails',
                 send: null,

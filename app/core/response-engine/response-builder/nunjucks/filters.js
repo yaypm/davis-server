@@ -17,32 +17,6 @@ require('moment-round');
  ***********************************************************/
 const filters = function(env, aliases) {
     
-    const startFormat = {
-        normal: {
-            sameDay: '[today] h:mm A',
-            lastDay: '[yesterday] h:mm A',
-            lastWeek: 'dddd [at] h:mm A'
-        },
-        between: {
-            sameDay: '[today between] h:mm A',
-            lastDay: '[yesterday between] h:mm A',
-            lastWeek: '[between] dddd [at] h:mm A'
-        }
-    };
-    
-    const stopFormat = {
-        normal: {
-            sameDay: '[today] h:mm A',
-            lastDay: '[yesterday] h:mm A',
-            lastWeek: 'dddd [at] h:mm A'
-        },
-        sameday: {
-            sameDay: 'h:mm A',
-            lastDay: 'h:mm A',
-            lastWeek: 'dddd [at] h:mm A'
-        }
-    };
-    
     /**
      * @param {Object} entity
      * @param {string} displayName - undefined, 'audible' or 'visual'
@@ -83,18 +57,7 @@ const filters = function(env, aliases) {
     });
     
     env.addFilter('friendlyTimeRange', function(timeRange, user, isCompact) {
-        let sentence = (isCompact) ? moment.tz(timeRange.startTime, user.timezone).calendar(null , startFormat.normal) : moment.tz(timeRange.startTime, user.timezone).calendar(null , startFormat.between);
-        if (timeRange.stopTime > timeRange.startTime) {
-            if (moment.duration(moment.tz(timeRange.stopTime, user.timezone).diff(moment.tz(timeRange.startTime, user.timezone), 'hours')) < 24 && isCompact) {
-                sentence += (isCompact) ? ' - ' : ' and ';
-                sentence += moment.tz(timeRange.stopTime, user.timezone).calendar(null , stopFormat.sameday);
-            } else {
-                sentence += (isCompact) ? ' - \\n' : ' and ';
-                sentence += moment.tz(timeRange.stopTime, user.timezone).calendar(null , stopFormat.normal);
-            }
-        }
-        
-        return sentence;
+        return getFriendlyTimeRange(timeRange, user, isCompact);
     });
 
     env.addFilter('friendlyEvent', function(eventName) {
@@ -137,6 +100,33 @@ const filters = function(env, aliases) {
     
 };
 
+// Date formatting
+ const startFormat = {
+    normal: {
+        sameDay: '[today] h:mm A',
+        lastDay: '[yesterday] h:mm A',
+        lastWeek: 'dddd [at] h:mm A'
+    },
+    between: {
+        sameDay: '[today between] h:mm A',
+        lastDay: '[yesterday between] h:mm A',
+        lastWeek: '[between] dddd [at] h:mm A'
+    }
+};
+
+const stopFormat = {
+    normal: {
+        sameDay: '[today] h:mm A',
+        lastDay: '[yesterday] h:mm A',
+        lastWeek: 'dddd [at] h:mm A'
+    },
+    sameday: {
+        sameDay: 'h:mm A',
+        lastDay: 'h:mm A',
+        lastWeek: 'dddd [at] h:mm A'
+    }
+};
+
 function getEntityType(entity) {
     if (entity.impactLevel === 'APPLICATION') {
         return 'applications';
@@ -168,6 +158,20 @@ function getFriendlyEntityName(aliases, type, name, displayType) {
         logger.warn(`Unable to find a user defined ${type} alias for '${name}'!  Please consider adding one.`);
         return S(name).humanize().s.toLowerCase();
     }
+}
+
+function getFriendlyTimeRange(timeRange, user, isCompact) {
+    let sentence = (isCompact) ? capitalizeFirstCharacter(moment.tz(timeRange.startTime, user.timezone).calendar(null , startFormat.normal)) : moment.tz(timeRange.startTime, user.timezone).calendar(null , startFormat.between);
+    if (timeRange.stopTime > timeRange.startTime) {
+        if (moment.duration(moment.tz(timeRange.stopTime, user.timezone).diff(moment.tz(timeRange.startTime, user.timezone), 'hours')) < 24) {
+            sentence += (isCompact) ? ' - ' : ' and ';
+            sentence += (isCompact) ? capitalizeFirstCharacter(moment.tz(timeRange.stopTime, user.timezone).calendar(null , stopFormat.sameday)) : moment.tz(timeRange.stopTime, user.timezone).calendar(null , stopFormat.sameday);
+        } else {
+            sentence += (isCompact) ? ' - \\n' : ' and ';
+            sentence += (isCompact) ? capitalizeFirstCharacter(moment.tz(timeRange.stopTime, user.timezone).calendar(null , stopFormat.normal)) : moment.tz(timeRange.stopTime, user.timezone).calendar(null , stopFormat.normal);
+        }
+    }
+    return sentence;
 }
 
 function makeTitle(title) {

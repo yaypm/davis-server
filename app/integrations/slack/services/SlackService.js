@@ -66,25 +66,6 @@ module.exports = function SlackService(config) {
         return result;
         
     }
-    
-    /**
-     * Detects User Mentions
-     * 
-     * @param {String} str
-     * @returns {String} result
-     */
-    function isOtherUserMentioned(str) {
-        
-        let result = (str.includes('@') && !str.includes('davis')) ? str.match(/(?:^|\W)@(\w+)(?!\w)/g) : str;
-        
-        if (result !== str) {
-            logger.warn('Ending conversation, since this other user was mentioned in the request: ');
-            logger.warn('"' + result + '"');
-        }
-        
-        return result !== str;
-        
-    }
 
     return {
         /**
@@ -122,11 +103,7 @@ module.exports = function SlackService(config) {
                 ConversationService.getConversation(user)
                     .then(conversation => {
                         let davis = new Davis(user, conversation, config);
-                        if (isOtherUserMentioned(req.text)) {
-                            return davis.interact('bye', REQUEST_SOURCE);
-                        } else {
-                            return davis.interact(req.text, REQUEST_SOURCE);
-                        }
+                        return davis.interact(req.text, REQUEST_SOURCE);
                     })
                     .then(davis => {
                         logger.info('Finished processing request');
@@ -139,6 +116,18 @@ module.exports = function SlackService(config) {
                     });
             });
             
+        },
+        
+        isOtherUserMentioned: (str) => {
+            
+            let result = (str.includes('@') && !str.includes('davis')) ? str.match(/(?:^|\W)@(\w+)(?!\w)/g) : str;
+        
+            if (result !== str) {
+                logger.warn('Ending conversation, since this other user was mentioned in the request: ');
+                logger.warn('"' + result + '"');
+            }
+            
+            return result !== str;
         }
     };
 };
