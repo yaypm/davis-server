@@ -102,6 +102,7 @@ var davis = (function () {
         var textBeingTyped;
         var elementBeingTyped;
         var cards = localStorage.getItem('davis-cards-enabled') || 'true';
+        var scrollInterval;
         
         /**
          * Initializes event listeners
@@ -406,20 +407,20 @@ var davis = (function () {
             elementBeingTyped = $('<p></p>').addClass('botStyle');
         
             $('#'+interactionLogElemId).append(elementBeingTyped);
+            
+            scrollInterval = setInterval( function () {
+                $('#'+interactionLogElemId).scrollTop($('#'+interactionLogElemId).prop('scrollHeight'));
+            }, 200);
         
             elementBeingTyped.typed({
                 strings: [text],
                 typeSpeed: 10,
                 startDelay: 600,
-                showCursor: false
+                showCursor: false,
+                callback: function () {
+                    clearInterval(scrollInterval);
+                }
             });
-            
-            setTimeout( function () {
-                $('#'+interactionLogElemId).scrollTop($('#'+interactionLogElemId).prop('scrollHeight'));
-            }, 200);
-            setTimeout( function () {
-                $('#'+interactionLogElemId).scrollTop($('#'+interactionLogElemId).prop('scrollHeight'));
-            }, 1000);
             
         }
         
@@ -433,6 +434,8 @@ var davis = (function () {
                 
                 // Stop typing
                 elementBeingTyped.data('typed').stop();
+                clearInterval(scrollInterval);
+                $('#'+interactionLogElemId).scrollTop($('#'+interactionLogElemId).prop('scrollHeight'));
                 
                 // Display text
                 $(elementBeingTyped).css('display', 'none');
@@ -518,6 +521,14 @@ var davis = (function () {
                     }
                     
                 }); 
+                
+                $('#'+interactionLogElemId).bind('mousewheel', function(e){
+                    clearInterval(scrollInterval);
+                });
+                
+                $('#'+interactionLogElemId).bind('click', function(e){
+                    clearInterval(scrollInterval);
+                });
                 
             });
             
