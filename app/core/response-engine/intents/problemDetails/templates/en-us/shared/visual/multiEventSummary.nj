@@ -4,7 +4,8 @@
         {"name": "HOST", "location": "#hosts/hostdetails;id"},
         {"name": "APPLICATION", "location": "#uemapplications/uemappoverview;uemapplicationId"},
         {"name": "SERVICE", "location": "#services/servicedetails;id"},
-        {"name": "PROCESS", "location": "#processdetails;id"}
+        {"name": "PROCESS", "location": "#processdetails;id"},
+        {"name": "HYPERVISOR", "location": "#hypervisordetails;id"}
     ] 
 -%}
 {%- set location = "" -%}
@@ -12,6 +13,8 @@
 {% for page in pages %}
     {% if event.entityId.includes(page.name) %}
         {%- set location = page.location -%}
+    {% else %}
+        {%- set location = '#problems' -%}
     {% endif %}
 {% endfor %}
 {
