@@ -9,43 +9,43 @@ describe('Tests the decision tree', function() {
     describe('Tests the problem decision tree', function() {
         let decide = new Decide(problemTrainingData);
         it('should find the past zero template', function() {
-            let template = decide.template({lang: 'en-us',tense: 'past',problems: 'zero'});
-            expect(template).to.equal('en-us/tense/past/zero');
+            let decision = decide.predict({lang: 'en-us',tense: 'past',problems: 'zero'});
+            expect(decision.template).to.equal('en-us/tense/past/zero');
         });
 
         it('should find the past one template', function() {
-            let template = decide.template({lang: 'en-us',tense: 'past',problems: 'one'});
-            expect(template).to.equal('en-us/tense/past/one');
+            let decision = decide.predict({lang: 'en-us',tense: 'past',problems: 'one'});
+            expect(decision.template).to.equal('en-us/tense/past/one');
         });
 
         it('should find the past two template', function() {
-            let template = decide.template({lang: 'en-us',tense: 'past',problems: 'two'});
-            expect(template).to.equal('en-us/tense/past/two');
+            let decision = decide.predict({lang: 'en-us',tense: 'past',problems: 'two'});
+            expect(decision.template).to.equal('en-us/tense/past/two');
         });
 
         it('should find the past many template', function() {
-            let template = decide.template({lang: 'en-us',tense: 'past',problems: 'many'});
-            expect(template).to.equal('en-us/tense/past/many');
+            let decision = decide.predict({lang: 'en-us',tense: 'past',problems: 'many'});
+            expect(decision.template).to.equal('en-us/tense/past/many');
         });
 
         it('should find the present zero template', function() {
-            let template = decide.template({lang: 'en-us',tense: 'present',problems: 'zero'});
-            expect(template).to.equal('en-us/tense/present/zero');
+            let decision = decide.predict({lang: 'en-us',tense: 'present',problems: 'zero'});
+            expect(decision.template).to.equal('en-us/tense/present/zero');
         });
 
         it('should find the present one template', function() {
-            let template = decide.template({lang: 'en-us',tense: 'present',problems: 'one'});
-            expect(template).to.equal('en-us/tense/present/one');
+            let decision = decide.predict({lang: 'en-us',tense: 'present',problems: 'one'});
+            expect(decision.template).to.equal('en-us/tense/present/one');
         });
 
         it('should find the present two template', function() {
-            let template = decide.template({lang: 'en-us',tense: 'present',problems: 'two'});
-            expect(template).to.equal('en-us/tense/present/two');
+            let decision = decide.predict({lang: 'en-us',tense: 'present',problems: 'two'});
+            expect(decision.template).to.equal('en-us/tense/present/two');
         });
 
         it('should find the present many template', function() {
-            let template = decide.template({lang: 'en-us',tense: 'present',problems: 'many'});
-            expect(template).to.equal('en-us/tense/present/many');
+            let decision = decide.predict({lang: 'en-us',tense: 'present',problems: 'many'});
+            expect(decision.template).to.equal('en-us/tense/present/many');
         });
     });
 });

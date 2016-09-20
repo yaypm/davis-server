@@ -9,6 +9,7 @@ const state = {
         davis.exchange.state = {
             type: 'userActivity',
             next: {
+                yes: null,
                 no: 'stop'
             }
         };

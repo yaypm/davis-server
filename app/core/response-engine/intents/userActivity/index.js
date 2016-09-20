@@ -5,9 +5,10 @@ const BbPromise = require('bluebird'),
     Dynatrace = require('../../../dynatrace'),
     Decide = require('../../utils/decide'),
     decision_model = require('./model'),
+    analyze = require('./analyze'),
+    tagger = require('./tagger'),
     common = require('../../utils/common'),
     responseBuilder = require('../../response-builder'),
-    tagger = require('./tagger'),
     logger = require('../../../../utils/logger');
 
 
@@ -21,7 +22,7 @@ const process = function process(davis) {
             stopTime: moment().format()
         };
 
-        // Defining timeseries data
+        // Defining time series data
         const timeseriesOptions = {
             user_actions_per_minute_count: {
                 timeseriesId: 'com.ruxit.builtin:app.useractionsperminute',
@@ -31,7 +32,7 @@ const process = function process(davis) {
         
         dynatrace.getFilteredTimeseries(timeRange, davis.exchange.request.analysed.appName, timeseriesOptions.user_actions_per_minute_count)
             .then(response => {
-                common.saveIntentData(davis, 'userActivity', response);
+                common.saveIntentData(davis, 'userActivity', analyze.userActionData(response.result));
                 const decide = new Decide(decision_model);
                 const decision = decide.predict(tagger.tag(davis));
                 logger.debug(`The template path ${decision.template}`);

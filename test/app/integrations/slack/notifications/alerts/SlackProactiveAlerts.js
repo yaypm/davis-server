@@ -1,6 +1,6 @@
 'use strict';
 
-require('../../../../setup.js');
+/*require('../../../../../setup.js');
 const chai = require('chai'),
     expect = chai.expect;
 
@@ -19,4 +19,4 @@ describe('Slack proactive alerts', function () {
                 done(err);
             });
     });
-});
+});*/

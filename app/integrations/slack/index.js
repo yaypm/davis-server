@@ -18,13 +18,13 @@ const DAVIS_SLEEP_MESSAGE = ['Wake me up if you need something!  :sleeping:', 'I
 
 // Launch phrases
 const phrases = [
-    'hey davis',
-    'hey, davis',
-    'okay davis',
-    'okay, davis',
-    'ok davis',
-    'ok, davis',
-    'davis'
+    '^hey davis',
+    '^hey, davis',
+    '^okay davis',
+    '^okay, davis',
+    '^ok davis',
+    '^ok, davis',
+    '^davis'
 ];
 
 module.exports = function (config) {
@@ -135,7 +135,7 @@ module.exports = function (config) {
     controller.hears(['(.*)'], 'direct_message', (bot, message) => {
         // Slack sends a direct message to a bot when they're removed from a channel
         if(message.text.startsWith('You have been removed from')) {
-            logger.info('Oh no!  Davis was removed a channel!');
+            logger.info('Oh no!  Davis was removed from a channel!');
             updateBotChannels();
         } else {
             logger.info('Slack: Starting public conversation (direct_message)');

@@ -10,6 +10,7 @@ const state = {
         davis.exchange.state = {
             type: 'zeroProblems',
             next: {
+                yes: null,
                 no: 'stop'
             }
         };

@@ -52,6 +52,15 @@ const filters = function(env, aliases) {
         displayType = displayType || 'audible';
         return getFriendlyEntityName(aliases, getEntityType(entity), entity.entityName, displayType);
     });
+
+    /**
+     * @param {Object} name
+     * @param {string} displayName - undefined, 'audible' or 'visual'
+     */
+    env.addFilter('friendlyApplicationName', function(name, displayType) {
+        displayType = displayType || 'audible';
+        return getFriendlyEntityName(aliases, 'applications', name, displayType);
+    });
     
     env.addFilter('friendlyStatus', function(status) {
         return (status == 'OPEN') ? 'ongoing' : 'closed';

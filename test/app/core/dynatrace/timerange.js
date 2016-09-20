@@ -78,7 +78,7 @@ describe('Tests the time range generator', function() {
             'grain': 'year',
             'values': []
         });
-
-        expect(timeRange).to.be.undefined;
+        expect(timeRange.startTime.unix()).to.equal(1451620800);
+        expect(timeRange.stopTime.unix()).to.equal(1483243199);
     });
 });
