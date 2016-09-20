@@ -32,9 +32,8 @@ const process = function process(davis) {
                 });
 
                 common.saveIntentData(davis, 'scalability', response);
-                let tags = tagger.tag(davis);
                 const decide = new Decide(decision_model);
-                const decision = decide.predict(tags);
+                const decision = decide.predict(tagger.tag(davis));
                 logger.debug(`The template path ${decision.template}`);
                 return responseBuilder.build(davis, `intents/scalability/templates/${decision.template}`, true, decision.state(davis));
             })
