@@ -23,8 +23,7 @@ const phrases = [
     '^okay davis',
     '^okay, davis',
     '^ok davis',
-    '^ok, davis',
-    '^davis'
+    '^ok, davis'
 ];
 
 module.exports = function (config) {
