@@ -162,8 +162,8 @@ var davis = (function () {
             $('#interactionLogGradientBottom').hide();
             $('body').addClass('micOn');
             $('body').removeClass('micOff');
-            $('#inputWrapper').addClass('micOn');
-            $('#inputWrapper').removeClass('micOff');
+            $('#background').addClass('micOn');
+            $('#background').removeClass('micOff');
         }
         
         /**
@@ -173,8 +173,8 @@ var davis = (function () {
             if ($('body').hasClass('micOn')) {
                 $('body').addClass('micOff');
                 $('body').removeClass('micOn');
-                $('#inputWrapper').addClass('micOff');
-                $('#inputWrapper').removeClass('micOn');
+                $('#background').addClass('micOff');
+                $('#background').removeClass('micOn');
                 $('#interactionLogGradientTop').fadeIn(3000);
                 $('#interactionLogGradientBottom').fadeIn(3000);
             }

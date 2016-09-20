@@ -4,7 +4,7 @@ body {
 	margin: 0;
 }
 
-body.micOff, .inputWrapper.micOff{
+body.micOff, #background.micOff{
     -webkit-animation-name: micOff; /* Chrome, Safari, Opera */
     -webkit-animation-duration: 1s; /* Chrome, Safari, Opera */
     animation-name: micOff;
@@ -12,7 +12,7 @@ body.micOff, .inputWrapper.micOff{
     background-color: #007ee6;
 }
 
-body.micOn, .inputWrapper.micOn{
+body.micOn, #background.micOn{
     -webkit-animation-name: micOn; /* Chrome, Safari, Opera */
     -webkit-animation-duration: 1s; /* Chrome, Safari, Opera */
     animation-name: micOn;
