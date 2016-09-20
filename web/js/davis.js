@@ -484,7 +484,7 @@ var davis = (function () {
          */
         function init() {
             
-            var inputHistoryIndex = controller.getInputHistory().length;
+            var inputHistoryIndex = -1;
             resetPlaceholder();
             setListeningState('sleeping');
             
@@ -500,7 +500,7 @@ var davis = (function () {
                         controller.toggleMute($('#'+listeningStateElemId).html() === localResponses.listeningStates.listening);
                     // Down arrow
                     } else if (key == 40 && controller.getInputHistory().length > 0) {
-                        if (inputHistoryIndex < controller.getInputHistory().length - 1) {
+                        if (inputHistoryIndex < controller.getInputHistory().length - 1 && inputHistoryIndex !== -1) {
                             inputHistoryIndex++;
                             $("#"+textInputElemId).val(controller.getInputHistory()[inputHistoryIndex]);
                         } else {
