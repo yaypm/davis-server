@@ -30,7 +30,7 @@ const process = function process(davis) {
                         return  _.includes(['MEMORY_SATURATED', 'MEMORY_RESOURCES_EXHAUSTED', 'CPU_SATURATED'], impact.eventType);
                     }));
                 });
-
+                
                 common.saveIntentData(davis, 'scalability', response);
                 let tags = tagger.tag(davis);
                 const decide = new Decide(decision_model);

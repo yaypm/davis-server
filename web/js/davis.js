@@ -481,7 +481,7 @@ var davis = (function () {
          */
         function init() {
             
-            var inputHistoryIndex = -1;
+            var inputHistoryIndex = controller.getInputHistory().length;
             resetPlaceholder();
             setListeningState('sleeping');
             
@@ -492,23 +492,25 @@ var davis = (function () {
                 $(window).keydown(function(e) {
                     
                     var key = e.which;
-                    
+                    // Space bar
                     if (key == 32 && !$("#"+textInputElemId).is(":focus")) {
                         controller.toggleMute($('#'+listeningStateElemId).html() === localResponses.listeningStates.listening);
-                    } else if (key == 38 && controller.getInputHistory().length > 0) {
-                        if (inputHistoryIndex <= controller.getInputHistory().length - 1) {
+                    // Down arrow
+                    } else if (key == 40 && controller.getInputHistory().length > 0) {
+                        if (inputHistoryIndex < controller.getInputHistory().length - 1) {
                             inputHistoryIndex++;
                             $("#"+textInputElemId).val(controller.getInputHistory()[inputHistoryIndex]);
                         } else {
                             inputHistoryIndex = 0;
                             $("#"+textInputElemId).val(controller.getInputHistory()[inputHistoryIndex]);
                         }
-                    } else if (key == 40 && controller.getInputHistory().length > 0) {
+                    // Up arrow
+                    } else if (key == 38 && controller.getInputHistory().length > 0) {
                         if (inputHistoryIndex > 0) {
                             inputHistoryIndex--;
                             $("#"+textInputElemId).val(controller.getInputHistory()[inputHistoryIndex]);
                         } else {
-                            inputHistoryIndex = 0;
+                            inputHistoryIndex = controller.getInputHistory().length - 1;
                             $("#"+textInputElemId).val(controller.getInputHistory()[inputHistoryIndex]);
                         }
                     } else if (!$("#"+textInputElemId).is(":focus")) {
@@ -653,9 +655,15 @@ var davis = (function () {
             micOn = new Audio('./audio/pop.wav');
         }
         
+        // Debug mode
         if (localStorage.getItem('davis-debug-mode')) {
             debug = localStorage.getItem('davis-debug-mode');
             console.log('Davis: debug = ' + debug);
+        }
+        
+        // Input history
+        if (debug && localStorage.getItem('davis-input-history')) {
+            inputHistory = JSON.parse(localStorage.getItem('davis-input-history')).history;
         }
         
         // Speech-To-Text (STT) & Text-To-Speech (TTS) token objects
@@ -793,7 +801,14 @@ var davis = (function () {
          */
         function interactWithRuxit(request) {
             
-            inputHistory.push(request);
+            if (debug) {
+                // Limit to last 50 inputs
+                if (inputHistory.length > 50) {
+                    inputHistory = inputHistory.slice(1, 49);
+                }
+                inputHistory.push(request);
+                localStorage.setItem('davis-input-history', JSON.stringify({history: inputHistory}));
+            }
             
             // Debug mode
             if ((request.indexOf('debug') > -1 && request.indexOf('true') > -1) || (request.indexOf('debug') > -1 && !(request.indexOf('false') > -1))) {
