@@ -4,7 +4,7 @@ body {
 	margin: 0;
 }
 
-body.micOff, .inputWrapper.micOff{
+body.micOff, #background.micOff{
     -webkit-animation-name: micOff; /* Chrome, Safari, Opera */
     -webkit-animation-duration: 1s; /* Chrome, Safari, Opera */
     animation-name: micOff;
@@ -12,7 +12,7 @@ body.micOff, .inputWrapper.micOff{
     background-color: #007ee6;
 }
 
-body.micOn, .inputWrapper.micOn{
+body.micOn, #background.micOn{
     -webkit-animation-name: micOn; /* Chrome, Safari, Opera */
     -webkit-animation-duration: 1s; /* Chrome, Safari, Opera */
     animation-name: micOn;
@@ -159,7 +159,7 @@ P > a.links:active {
 	position: absolute;
 	top: 0;
 	background-color: #191919;
-	z-index: 9999;
+	z-index: 1999;
 }
 
 #davis-logo {
@@ -211,11 +211,19 @@ table.debug, th.debug, td.debug {
 	font-size: 28px;
 }
 
-.inputWrapper {
+#inputWrapper {
 	position: absolute;
 	z-index: 1001;
 	left: calc(50% - 325px);
 	bottom: 20px;
+}
+
+#background {
+	position: absolute;
+	z-index: 1000;
+	width: 100%;
+	height: 142px;
+	bottom: 0;
 	background-color: #007ee6;
 }
 
