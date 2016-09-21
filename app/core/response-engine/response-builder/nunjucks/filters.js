@@ -105,12 +105,14 @@ const startFormat = {
     normal: {
         sameDay: '[today] h:mm A',
         lastDay: '[yesterday] h:mm A',
-        lastWeek: 'dddd [at] h:mm A'
+        lastWeek: 'dddd [at] h:mm A',
+        sameElse: 'dddd [at] h:mm A'
     },
     between: {
         sameDay: '[today between] h:mm A',
         lastDay: '[yesterday between] h:mm A',
-        lastWeek: '[between] dddd [at] h:mm A'
+        lastWeek: '[between] dddd [at] h:mm A',
+        sameElse: '[between] dddd [at] h:mm A'
     }
 };
 
@@ -118,12 +120,14 @@ const stopFormat = {
     normal: {
         sameDay: '[today] h:mm A',
         lastDay: '[yesterday] h:mm A',
-        lastWeek: 'dddd [at] h:mm A'
+        lastWeek: 'dddd [at] h:mm A',
+        sameElse: 'dddd [at] h:mm A'
     },
     sameday: {
         sameDay: 'h:mm A',
         lastDay: 'h:mm A',
-        lastWeek: 'dddd [at] h:mm A'
+        lastWeek: 'dddd [at] h:mm A',
+        sameElse: 'dddd [at] h:mm A'
     }
 };
 
