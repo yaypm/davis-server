@@ -106,13 +106,13 @@ const filters = function(env, aliases) {
         sameDay: '[today] h:mm A',
         lastDay: '[yesterday] h:mm A',
         lastWeek: 'dddd [at] h:mm A',
-        sameElse: 'dddd [at] h:mm A'
+        sameElse: 'MM/DD/YYYY [at] h:mm A'
     },
     between: {
         sameDay: '[today between] h:mm A',
         lastDay: '[yesterday between] h:mm A',
         lastWeek: '[between] dddd [at] h:mm A',
-        sameElse: '[between] dddd [at] h:mm A'
+        sameElse: '[between] MM/DD/YYYY [at] h:mm A'
     }
 };
 
@@ -121,13 +121,13 @@ const stopFormat = {
         sameDay: '[today] h:mm A',
         lastDay: '[yesterday] h:mm A',
         lastWeek: 'dddd [at] h:mm A',
-        sameElse: 'dddd [at] h:mm A'
+        sameElse: 'MM/DD/YYYY [at] h:mm A'
     },
     sameday: {
         sameDay: 'h:mm A',
         lastDay: 'h:mm A',
         lastWeek: 'dddd [at] h:mm A',
-        sameElse: 'dddd [at] h:mm A'
+        sameElse: 'MM/DD/YYYY [at] h:mm A'
     }
 };
 
@@ -165,17 +165,17 @@ function getFriendlyEntityName(aliases, type, name, displayType) {
 }
 
 function getFriendlyTimeRange(timeRange, user, isCompact) {
-    let sentence = (isCompact) ? capitalizeFirstCharacter(moment.tz(timeRange.startTime, user.timezone).calendar(null , startFormat.normal)) : moment.tz(timeRange.startTime, user.timezone).calendar(null , startFormat.between);
+    let sentence = (isCompact) ? capitalizeFirstCharacter(moment.tz(timeRange.startTime, user.timezone).calendar(null , startFormat.normal)).trim() : moment.tz(timeRange.startTime, user.timezone).calendar(null , startFormat.between).trim();
     if (timeRange.stopTime > timeRange.startTime) {
         if (moment.duration(moment.tz(timeRange.stopTime, user.timezone).diff(moment.tz(timeRange.startTime, user.timezone), 'hours')) < 24) {
             sentence += (isCompact) ? ' - ' : ' and ';
-            sentence += (isCompact) ? capitalizeFirstCharacter(moment.tz(timeRange.stopTime, user.timezone).calendar(null , stopFormat.sameday)) : moment.tz(timeRange.stopTime, user.timezone).calendar(null , stopFormat.sameday);
+            sentence += (isCompact) ? capitalizeFirstCharacter(moment.tz(timeRange.stopTime, user.timezone).calendar(null , stopFormat.sameday)).trim() : moment.tz(timeRange.stopTime, user.timezone).calendar(null , stopFormat.sameday).trim();
         } else {
             sentence += (isCompact) ? ' - \\n' : ' and ';
-            sentence += (isCompact) ? capitalizeFirstCharacter(moment.tz(timeRange.stopTime, user.timezone).calendar(null , stopFormat.normal)) : moment.tz(timeRange.stopTime, user.timezone).calendar(null , stopFormat.normal);
+            sentence += (isCompact) ? capitalizeFirstCharacter(moment.tz(timeRange.stopTime, user.timezone).calendar(null , stopFormat.normal)).trim() : moment.tz(timeRange.stopTime, user.timezone).calendar(null , stopFormat.normal).trim();
         }
     }
-    return sentence;
+    return sentence
 }
 
 function makeTitle(title) {

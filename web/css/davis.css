@@ -208,7 +208,8 @@ table.debug, th.debug, td.debug {
 
 #interactionLog p:last-of-type {
 	color: #fcf8e3;
-	font-size: 28px;
+	/* Commented out for now, makes responses with cards not fit in scroll view */
+	/*font-size: 28px;*/
 }
 
 #inputWrapper {
