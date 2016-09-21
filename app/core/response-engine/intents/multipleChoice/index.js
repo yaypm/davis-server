@@ -24,13 +24,13 @@ const process = function process(davis) {
                     if (sentenceContain(request, ['last', 'bottom'])) {
                         logger.debug('The user asked for the last one in the list');
                         state.problemId = _.last(result[0].state.problemIds);
-                    } else if (sentenceContain(request, ['third', 'three', '3'])) {
+                    } else if (sentenceContain(request, ['third', 'three', '3', '3rd'])) {
                         logger.debug('The user asked for the third choice');
                         state.problemId = result[0].state.problemIds[2];
-                    } else if (sentenceContain(request, ['second', 'two', '2', 'middle'])) {
+                    } else if (sentenceContain(request, ['second', 'two', '2', 'middle', '2nd'])) {
                         logger.debug('The user asked for the second choice');
                         state.problemId = result[0].state.problemIds[1];
-                    } else if (sentenceContain(request, ['first', 'one', '1', 'top'])) {
+                    } else if (sentenceContain(request, ['first', 'one', '1', 'top', '1st'])) {
                         logger.debug('The user asked for the first choice');
                         state.problemId = result[0].state.problemIds[0];
                     } else if (sentenceContain(request, ['neither', 'none', 'zero', '0'])) {

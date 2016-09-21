@@ -23,7 +23,7 @@
                     "short": "true"
                 },
                 {
-                    "title": "Time frame",
+                    "title": "Time Frame",
                     "value": "{{ {startTime: problem.startTime, stopTime: problem.endTime} | friendlyTimeRange(user, true) }}",
                     "short": "true"
                 },

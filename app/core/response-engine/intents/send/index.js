@@ -9,7 +9,7 @@ const process = function process(davis) {
     return new BbPromise((resolve, reject) => {
         davis.conversation.getHistory(2)
             .then(result => {
-                const response = ['OK, here you go!', 'Done!', 'Absolutely, here it is.'];
+                const response = ['OK, here you go!', 'You should now see this in your browser.', 'Absolutely, I\'m sending the link to you now.'];
                 const url = _.get(result, '[1].state.url');
 
                 if (_.isNil(url)) {

@@ -101,7 +101,7 @@ const filters = function(env, aliases) {
 };
 
 // Date formatting
- const startFormat = {
+const startFormat = {
     normal: {
         sameDay: '[today] h:mm A',
         lastDay: '[yesterday] h:mm A',
@@ -145,13 +145,12 @@ function getEntityType(entity) {
 
 function getFriendlyEntityName(aliases, type, name, displayType) {
     // Strips off any port numbers if they exist
-    let modifiedName = name.toLowerCase().split(':')[0];
+    const modifiedName = name.split(':')[0];
 
-    let alias = _.find(aliases[type], function(o) {
-        // ToDo Add a case insensitive include
+    const alias = _.find(aliases[type], function(o) {
         return o.name.toLowerCase() === name.toLowerCase() ||
-            o.name.toLowerCase() === modifiedName || 
-            _.includes(o.aliases, name);
+            o.name.toLowerCase() === modifiedName.toLowerCase() ||
+            _.some(o.aliases, i => i.toLowerCase() === name.toLowerCase());
     }) || null;
 
     if (!_.isNull(alias)) {
@@ -159,8 +158,8 @@ function getFriendlyEntityName(aliases, type, name, displayType) {
         // Returning the alias display type if defined otherwise returning the name
         return _.get(alias, `display.${displayType}`, alias.name);
     } else {
-        logger.warn(`Unable to find a user defined ${type} alias for '${name}'!  Please consider adding one.`);
-        return S(name).humanize().s.toLowerCase();
+        logger.warn(`Unable to find a user defined ${type} alias for '${modifiedName}'!  Please consider adding one.`);
+        return S(modifiedName).humanize().s.toLowerCase();
     }
 }
 
