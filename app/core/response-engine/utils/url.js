@@ -20,7 +20,7 @@ const url = {
         } else if (entityId.startsWith('HOST')) {
             url = `${url}/#hosts/hostdetails;id=${entityId};pid=${problem.id}`;
         } else if (entityId.startsWith('APPLICATION')) {
-            url = `${url}/#uemappmetrics;uemapplicationId==${entityId};pid=${problem.id}`;
+            url = `${url}/#uemappmetrics;uemapplicationId=${entityId};pid=${problem.id}`;
         } else if (entityId.startsWith('SERVICE')) {
             url = `${url}/#services/servicedetails;id=${entityId};pid=${problem.id}`;
         } else if (entityId.startsWith('PROCESS')) {

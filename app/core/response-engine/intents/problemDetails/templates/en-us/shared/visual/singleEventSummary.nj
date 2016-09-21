@@ -2,7 +2,7 @@
     set pages = [
         {"name": "SYNTHETIC", "location": "#monitors/webcheckdetail;webcheckId"},
         {"name": "HOST", "location": "#hosts/hostdetails;id"},
-        {"name": "APPLICATION", "location": "#uemapplications/uemappoverview;uemapplicationId"},
+        {"name": "APPLICATION", "location": "#uemappmetrics;uemapplicationId"},
         {"name": "SERVICE", "location": "#services/servicedetails;id"},
         {"name": "PROCESS", "location": "#processdetails;id"},
         {"name": "HYPERVISOR", "location": "#hypervisordetails;id"}

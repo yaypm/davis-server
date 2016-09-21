@@ -17,13 +17,19 @@ const ERROR_MESSAGE = 'Sorry about that, I\'m having issues responding to your r
 const DAVIS_SLEEP_MESSAGE = ['Wake me up if you need something!  :sleeping:', 'I\'ve gone to sleep. :ZZZ:', 'Until next time :spock-hand:'];
 
 // Launch phrases
-const phrases = [
+const PHRASES = [
     '^hey davis',
     '^hey, davis',
     '^okay davis',
     '^okay, davis',
     '^ok davis',
-    '^ok, davis'
+    '^ok, davis',
+    '^hi davis',
+    '^hi, davis',
+    '^yo davis',
+    '^yo, davis',
+    '^launch davis',
+    '^ask davis'
 ];
 
 module.exports = function (config) {
@@ -154,7 +160,7 @@ module.exports = function (config) {
         
     });
     
-    controller.hears(phrases, 'mention,ambient', (bot, message) => {
+    controller.hears(PHRASES, 'mention,ambient', (bot, message) => {
 
         logger.info('Slack: Starting public conversation (mention,ambient)');
         bot.startConversation(message, (err, convo) => {
@@ -284,7 +290,7 @@ module.exports = function (config) {
                 }
             
                 // Strip launch phrase or set to a launch intent compatible phrase
-                phrases.forEach( (phrase) => {
+                PHRASES.forEach( (phrase) => {
                             
                     if (this.initialInteraction.text.toLowerCase().includes(phrase)) {
                         
