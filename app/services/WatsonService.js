@@ -11,21 +11,21 @@ const WATSON_API_VERSION = 'v1',
 
 module.exports = function WatsonService(config) {
 
-    let ttsConfig = _.assign({
+    const ttsConfig = _.assign({
         version: WATSON_API_VERSION,
         url: `${WATSON_STREAM_API_URL}/text-to-speech/api`,
         username: config.watson.tts.user,
         password: config.watson.tts.password
     }, vcapServices.getCredentials('text_to_speech'));
 
-    let sttConfig = _.assign({
+    const sttConfig = _.assign({
         version: WATSON_API_VERSION,
         url: `${WATSON_STREAM_API_URL}/speech-to-text/api`,
         username: config.watson.stt.user,
         password: config.watson.stt.password
     }, vcapServices.getCredentials('speech_to_text'));
 
-    let ttsAuthService = watson.authorization(ttsConfig),
+    const ttsAuthService = watson.authorization(ttsConfig),
         sttAuthService = watson.authorization(sttConfig);
 
 

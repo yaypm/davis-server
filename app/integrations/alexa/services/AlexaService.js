@@ -87,7 +87,6 @@ module.exports = function AlexaService(config) {
     function pushLinkToBrowser(davis) {
         logger.debug('Checking if we have a link to send');
         if (davis.exchange.response.visual.hyperlink) {
-            //io.sockets.emit(davis.user.id, davis.exchange.response.visual.hyperlink);
             const express =  require('../../../index');
             express.push(davis);
         }
