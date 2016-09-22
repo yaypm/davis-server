@@ -214,6 +214,11 @@ const events = [
         friendly: ['a lack of disk space']
     },
     {
+        name: 'PGI_RMQ_LOW_DISK_SPACE',
+        type: EVENT_TYPES.resources,
+        friendly: ['a lack of disk space']
+    },
+    {
         name: 'OSI_DOCKER_DEVICEMAPPER_LOW_DATA_SPACE',
         type: EVENT_TYPES.resources,
         friendly: ['a lack of data space affecting Docker']
@@ -244,6 +249,11 @@ const events = [
         friendly: ['a lack of memory']
     },
     {
+        name: 'PGI_RMQ_HIGH_MEM_USAGE',
+        type: EVENT_TYPES.resources,
+        friendly: ['an issue with Rabbit messaging queue using it\'s allocated memory']
+    },
+    {
         name: 'DOCKER_MEMORY_SATURATION',
         type: EVENT_TYPES.resources,
         friendly: ['an issue with Docker using all of it\'s allocated memory']
@@ -256,7 +266,12 @@ const events = [
     {
         name: 'SLOW_DISK',
         type: EVENT_TYPES.resources,
-        friendly: ['slow disk read and write throughput']
+        friendly: ['a slow disk read and write throughput']
+    },
+    {
+        name: 'PGI_RMQ_HIGH_FILE_DESC_USAGE',
+        type: EVENT_TYPES.resources,
+        friendly: ['a high file disc usage']
     },
     {
         name: 'EBS_VOLUME_HIGH_LATENCY',
@@ -277,6 +292,16 @@ const events = [
         name: 'HIGH_NETWORK_UTILIZATION',
         type: EVENT_TYPES.resources,
         friendly: ['higher than expect network utilization']
+    },
+    {
+        name: 'PGI_RMQ_HIGH_PROCESS_USAGE',
+        type: EVENT_TYPES.resources,
+        friendly: ['higher than expect process usage']
+    },
+    {
+        name: 'PGI_RMQ_HIGH_SOCKETS_USAGE',
+        type: EVENT_TYPES.resources,
+        friendly: ['higher than expect socket usage']
     },
     {
         name: 'PGI_HAPROXY_QUEUED_REQUESTS_HIGH',
