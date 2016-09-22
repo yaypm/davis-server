@@ -6,7 +6,7 @@
     "Michael Beemer <beeme1mr@gmail.com>"
   ],
   "license": "MIT",
-  "homepage": "https://github.com/ruxit/davis-server",
+  "homepage": "https://github.com/Dynatrace/davis-server",
   "private": true,
   "ignore": [
     "**/.*",
