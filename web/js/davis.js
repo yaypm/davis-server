@@ -103,6 +103,7 @@ var davis = (function () {
         var elementBeingTyped;
         var cards = localStorage.getItem('davis-cards-enabled') || 'true';
         var scrollInterval;
+        var inputHistoryIndex = -1;
         
         /**
          * Initializes event listeners
@@ -142,6 +143,7 @@ var davis = (function () {
          */
         function resetTextInput() {
             $('#'+textInputElemId).val('');
+            inputHistoryIndex = -1;
         }
         
         /**
@@ -484,7 +486,6 @@ var davis = (function () {
          */
         function init() {
             
-            var inputHistoryIndex = -1;
             resetPlaceholder();
             setListeningState('sleeping');
             

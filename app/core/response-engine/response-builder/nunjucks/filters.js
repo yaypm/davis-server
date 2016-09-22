@@ -4,6 +4,7 @@ const moment = require('moment-timezone'),
     _ = require('lodash'),
     S = require('string'),
     nlp = require('nlp_compromise'),
+    urlUtil = require('../../utils/url'),
     logger = require('../../../../utils/logger'),
     events = require('../../../../config/internal-aliases');
 
@@ -157,6 +158,18 @@ const filters = function(env, aliases) {
     */
     env.addFilter('friendlyVersion', function(version) {
         return version.replace('v', '');
+    });
+    
+    env.addFilter('buildProblemUrl', function(problem, user) {
+        return urlUtil.problem(problem, user);
+    });
+    
+    env.addFilter('buildProblemsUrl', function(problems, user) {
+        return urlUtil.problems(user);
+    });
+    
+    env.addFilter('buildEventUrl', function(events, user) {
+        return urlUtil.event(events, user);
     });
     
 };

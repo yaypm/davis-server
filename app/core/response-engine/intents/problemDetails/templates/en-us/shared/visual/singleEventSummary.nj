@@ -1,27 +1,8 @@
-{%-
-    set pages = [
-        {"name": "SYNTHETIC", "location": "#monitors/webcheckdetail;webcheckId"},
-        {"name": "HOST", "location": "#hosts/hostdetails;id"},
-        {"name": "APPLICATION", "location": "#uemappmetrics;uemapplicationId"},
-        {"name": "SERVICE", "location": "#services/servicedetails;id"},
-        {"name": "PROCESS", "location": "#processdetails;id"},
-        {"name": "HYPERVISOR", "location": "#hypervisordetails;id"}
-    ]
--%}
-{%- set location = "" -%}
-
-{% for page in pages %}
-    {% if event.entityId.includes(page.name) %}
-        {%- set location = page.location -%}
-    {% else %}
-        {%- set location = '#problems' -%}
-    {% endif %}
-{% endfor %}
 {
     "fallback": "{{ event.eventType | friendlyEventFirstAlias | makeTitle(false) }}\nImpacted: {{ event | friendlyEntityName | makeTitle(false) }}\n{% if event.status == 'OPEN' %}Unresolved{% else %}Resolved - {{ event.endTime | time(user) }}{% endif %}",
     "color": "{% if event.status == 'OPEN' %}#dc172a{% else %}#7dc540{% endif %}",
     "title": "{{ event.eventType | friendlyEventFirstAlias | makeTitle(false) }}",
-    "title_link": "{{user.dynatrace.url}}{{location}}={{event.entityId}}",
+    "title_link": "{{event | buildEventUrl(user)}}",
     "fields": [
         {
             "title": "Impacted",

@@ -1,6 +1,6 @@
 {%- set problems = intentData.problem.result.problems %}
 {
-    "text": "It looks like <{{user.dynatrace.url}}#problems|{{ intentData.problem.result.problems.length }} problems> occurred {{ exchange.request.analysed.timeRange | friendlyTimeRange(user) }}.  After giving it some thought, here are my top three problems.",
+    "text": "It looks like <{{intentData.problem.result.problems | buildProblemsUrl(user)}}|{{ intentData.problem.result.problems.length }} problems> occurred {{ exchange.request.analysed.timeRange | friendlyTimeRange(user) }}.  After giving it some thought, here are my top three problems.",
     "attachments": [
         {% for i in range(0, 3) %}
            {% include "intents/problem/templates/en-us/shared/visual/problemSummary.nj" %}{%- if not loop.last %},{% endif %}
