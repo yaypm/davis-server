@@ -18,8 +18,10 @@ require('moment-round');
 const filters = function(env, aliases) {
     
     /**
+     * Entity's alias if one exists under demo/aliases/
      * @param {Object} entity
-     * @param {string} displayName - undefined, 'audible' or 'visual'
+     * @param {String} displayName - undefined, 'audible' or 'visual'
+     * @return {String} getFriendlyEntityName()
      */
     env.addFilter('friendlyEntityName', function(entity, displayType) {
         //ToDo overhaul this logic
@@ -28,18 +30,30 @@ const filters = function(env, aliases) {
     });
 
     /**
+     * Entity's alias if one exists under demo/aliases/applications.js 
      * @param {Object} name
-     * @param {string} displayName - undefined, 'audible' or 'visual'
+     * @param {String} displayName - undefined, 'audible' or 'visual'
+     * @return {String} 
      */
     env.addFilter('friendlyApplicationName', function(name, displayType) {
         displayType = displayType || 'audible';
         return getFriendlyEntityName(aliases, 'applications', name, displayType);
     });
     
+    /**
+     * Friendly problem status  
+     * @param {String} status - OPEN or CLOSED
+     */
     env.addFilter('friendlyStatus', function(status) {
         return (status == 'OPEN') ? 'ongoing' : 'closed';
     });
     
+    /**
+     * Formatted version of a date, taking into account the user's timezone 
+     * @param {String} time
+     * @param {Object} user
+     * @return {String} moment.tz().cal() - Moment JS timezone and calendar format
+     */
     env.addFilter('time', function(time, user) {
         return moment.tz(time, user.timezone).calendar(null , {
             sameDay: '[today at] h:mm A',
@@ -48,6 +62,13 @@ const filters = function(env, aliases) {
         });
     });
 
+    /**
+     * Formatted version of a date with time rounded down to nearest multiple of 5, 
+     * taking into account the user's timezone
+     * @param {String} time
+     * @param {Object} user
+     * @return {String} moment.tz().floor().cal() - Moment JS timezone, floor, and calendar format
+     */
     env.addFilter('friendlyTime', function(time, user) {
         return moment.tz(time, user.timezone).floor(5, 'minutes').calendar(null , {
             sameDay: '[around] h:mm A',
@@ -56,10 +77,24 @@ const filters = function(env, aliases) {
         });
     });
     
+    /**
+     * Formatted version of a time range (object with start and stop dates), 
+     * taking into account the user's timezone,
+     * along with the option to output a compact version for use in cards
+     * @param {String} time
+     * @param {Object} user
+     * @param {Boolean} isCompact
+     * @return {String} moment.tz().cal() - Moment JS timezone
+     */
     env.addFilter('friendlyTimeRange', function(timeRange, user, isCompact) {
         return getFriendlyTimeRange(timeRange, user, isCompact);
     });
 
+    /**
+     * Event's alias if one exists under config/internal-aliases/events.js 
+     * @param {String} eventName
+     * @return {String} event.friendly (if multiple, randomly selected) or eventName (if no alias exists)
+     */
     env.addFilter('friendlyEvent', function(eventName) {
         let event = _.find(events.events, e => e.name === eventName);
 
@@ -71,6 +106,11 @@ const filters = function(env, aliases) {
         }
     });
     
+    /**
+    * Event's alias if one exists under config/internal-aliases/events.js 
+    * @param {String} eventName
+    * @return {String} event.friendly[0] (if multiple, select first one) or eventName (if no alias exists)
+    */
     env.addFilter('friendlyEventFirstAlias', function(eventName) {
         let event = _.find(events.events, e => e.name === eventName);
 
@@ -82,18 +122,39 @@ const filters = function(env, aliases) {
         }
     });
     
+    /**
+    * Plural version of string
+    * @param {String} str - item (single word)
+    * @param {Integer} count - amount of item
+    * @return {String} pluralizeNoun()
+    */
     env.addFilter('pluralizeNoun', function(str, count) {
-        return count === 1 ? str : nlp.noun(str).pluralize();
+        return pluralizeNoun(str, count);
     });
     
+    /**
+    * Capitalize the first letter of each word in string
+    * @param {String} str
+    * @return {String} makeTitle()
+    */
     env.addFilter('makeTitle', function(str) {
         return makeTitle(str); 
     });
     
+    /**
+    * Capitalize the first letter of string
+    * @param {String} str - single word
+    * @return {String} capitalizeFirstCharacter()
+    */
     env.addFilter('capitalizeFirstChar', function(str) {
         return capitalizeFirstCharacter(str); 
     });
     
+    /**
+    * Remove "v" from Git version
+    * @param {String} version
+    * @return {String} version.replace()
+    */
     env.addFilter('friendlyVersion', function(version) {
         return version.replace('v', '');
     });
@@ -186,13 +247,17 @@ function makeTitle(title) {
     }
     title = '';
     titleArray.forEach( (word) => {
-        title += capitalizeFirstCharacter(word);
+        title += capitalizeFirstCharacter(word) + ' ';
     });
-    return title;
+    return title.trim();
 }
 
 function capitalizeFirstCharacter(str) {
-    return str.charAt(0).toUpperCase() + str.slice(1) + ' ';
+    return str.charAt(0).toUpperCase() + str.slice(1);
+}
+
+function pluralizeNoun(str, count) {
+    return count === 1 ? str : nlp.noun(str).pluralize();
 }
 
 module.exports = filters;
