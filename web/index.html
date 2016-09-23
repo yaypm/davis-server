@@ -19,7 +19,7 @@
 			// Initialize davis view and controller
 			// Define UI element ids
 			window.onload = function () {
-				davis.init('interactionLog', 'textInput', 'muteWrapper', 'muteSVG', 'listeningState', 'connectedUrl', 'git');
+				davis.init('interactionLog', 'textInput', 'muteWrapper', 'mic-icon', 'listeningState', 'connectedUrl', 'git');
 			}
 		</script>
 		<script src="./js/third-party/p5.js/lib/p5.min.js"></script>
@@ -30,7 +30,8 @@
 	    <div class="site-wrapper">
 	    	<div class="site-wrapper-inner">
 	    		<div id="nav-bar">
- 					<img id="davis-logo" src="./images/dynatrace.svg" onclick="window.open('https://www.dynatrace.com/platform/')">
+ 					<img id="dynatrace-logo" src="./images/dynatrace.svg" onclick="window.open('https://www.dynatrace.com/meet-davis')">
+ 					<img id="config-icon" src="./images/options-menu.png" onclick="window.location = 'config.html'">
  				</div>
 		    	<div id="interactionLogGradientTop"></div>
 		    	<div id="interactionLogGradientBottom"></div>
@@ -43,7 +44,7 @@
 						<div id="listeningState"></div>
 						<input id="textInput" type="text" />
 						<div id="muteWrapper">
-							<img src="images/microphone.svg" id="muteSVG" />
+							<img src="images/microphone.png" id="mic-icon" />
 						</div>
 						<div id="connectedUrl">Connecting ...</div>
 		 			</div>

@@ -1,0 +1,97 @@
+body {
+	background-color: white;
+	font-family: 'Open Sans', sans-serif;
+	-webkit-font-smoothing: antialiased;
+	margin: 0;
+}
+
+a.links:link {
+    color: white;
+    text-decoration: none;
+    opacity: 0.4;
+}
+
+a.links:visited {
+    color: white;
+}
+
+a.links:hover {
+    color: white;
+    opacity: 1.0;
+    text-decoration: underline;
+}
+
+a.links:active {
+    color: white;
+}
+
+#sidebar {
+	position: absolute;
+    left: 0;
+	width: 284px;
+	height: 100%;
+	padding-top: 44px;
+	background-color: #f8f8f8;
+}
+
+.sidebar-button {
+	clear: both;
+	float: left;
+	width: 100%;
+	height: 60px;
+	border-bottom: 1px solid rgb(0, 185, 204); 
+}
+
+.sidebar-button-text {
+	padding-left: 20px;
+	vertical-align: baseline;
+	font-size: 16px;
+	line-height: 60px;
+	justify-content: center;
+}
+
+#content {
+	position: absolute;
+    right: 0;
+	width: calc(100% - 284px);
+	height: 100%;
+	padding-top: 44px;
+}
+
+.content-section {
+	position: relative;
+	clear:both;
+	float: left;
+	margin: 30px;
+}
+
+#nav-bar {
+	width: 100%;
+	height: 44px;
+	position: absolute;
+	top: 0;
+	background-color: #191919;
+	z-index: 1999;
+}
+
+#dynatrace-logo {
+	width: 104px;
+	height: 26px;
+	margin-top: 9px;
+	margin-left: 16px;
+}
+
+#dynatrace-logo:hover {
+	cursor: pointer;
+}
+
+#config-icon {
+	height: 26px;
+    margin-top: 9px;
+    margin-right: 16px;
+    float: right;
+}
+
+#config-icon:hover {
+	cursor: pointer;
+}

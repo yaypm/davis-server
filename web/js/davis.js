@@ -34,11 +34,11 @@ var davis = (function () {
      * @param {String} interactionLogElemId
      * @param {String} textInputElemId
      * @param {String} muteWrapperElemId
-     * @param {String} muteSVGElemId
+     * @param {String} micIconElemId
      * @param {String} listeningStateElemId
      * @param {String} connectedUrlElemId
      */
-    var init = function (interactionLogElemId, textInputElemId, muteWrapperElemId, muteSVGElemId, listeningStateElemId, connectedUrlElemId, gitElemId) {
+    var init = function (interactionLogElemId, textInputElemId, muteWrapperElemId, micIconElemId, listeningStateElemId, connectedUrlElemId, gitElemId) {
         
         // IE CustomEvent polyfill
         // http://stackoverflow.com/questions/14358599/object-doesnt-support-this-action-ie9-with-customevent-initialization
@@ -66,7 +66,7 @@ var davis = (function () {
         $.getJSON('./js/local-responses.json', function (data){
             localResponses = data;
             $(document).ready(function() {
-                view = new davisView(interactionLogElemId, textInputElemId, muteWrapperElemId, muteSVGElemId, listeningStateElemId, connectedUrlElemId, gitElemId);
+                view = new davisView(interactionLogElemId, textInputElemId, muteWrapperElemId, micIconElemId, listeningStateElemId, connectedUrlElemId, gitElemId);
                 controller = new davisController(); 
                 view.init();
                 controller.init();
@@ -82,18 +82,18 @@ var davis = (function () {
      * @param {String} interactionLogElemId
      * @param {String} textInputElemId
      * @param {String} muteWrapperElemId
-     * @param {String} muteSVGElemId
+     * @param {String} micIconElemId
      * @param {String} listeningStateElemId
      * @param {String} connectedUrlElemId
      * 
      * @return {Object} global methods
      */
-    var davisView = function (interactionLogElemId, textInputElemId, muteWrapperElemId, muteSVGElemId, listeningStateElemId, connectedUrlElemId, gitElemId) {
+    var davisView = function (interactionLogElemId, textInputElemId, muteWrapperElemId, micIconElemId, listeningStateElemId, connectedUrlElemId, gitElemId) {
         
         this.interactionLogElemId = interactionLogElemId;
         this.textInputElemId = textInputElemId;
         this.muteWrapperElemId = muteWrapperElemId;
-        this.muteSVGElemId = muteSVGElemId;
+        this.micIconElemId = micIconElemId;
         this.listeningStateElemId = listeningStateElemId;
         this.connectedUrlElemId = connectedUrlElemId;
         this.gitElemId = gitElemId;
@@ -195,14 +195,14 @@ var davis = (function () {
          * Styles mic icon for on state
          */
         function muteOn() {
-            $('#'+muteSVGElemId).removeClass('muteOff');
+            $('#'+micIconElemId).removeClass('muteOff');
         }
         
         /**
          * Styles mic icon for off state
          */
         function muteOff() {
-            $('#'+muteSVGElemId).addClass('muteOff');
+            $('#'+micIconElemId).addClass('muteOff');
         }
         
         /**
