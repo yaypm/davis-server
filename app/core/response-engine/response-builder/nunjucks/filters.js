@@ -152,24 +152,33 @@ const filters = function(env, aliases) {
     });
     
     /**
-    * Remove "v" from Git version
-    * @param {String} version
-    * @return {String} version.replace()
-    */
-    env.addFilter('friendlyVersion', function(version) {
-        return version.replace('v', '');
-    });
-    
+     * Build the url for viewing a problem in the platform 
+     * @param {Object} problem
+     * @param {Object} user
+     * @return {String} urlUtil.problem()
+     */
     env.addFilter('buildProblemUrl', function(problem, user) {
-        return urlUtil.problem(problem, user);
+        return buildProblemUrl(problem, user);
     });
     
+    /**
+     * Build the url for viewing a tenant's problems in the platform 
+     * @param {Object} problems - not used, passed in to keep url filter parameters consistant
+     * @param {Object} user
+     * @return {String} urlUtil.problem()
+     */
     env.addFilter('buildProblemsUrl', function(problems, user) {
-        return urlUtil.problems(user);
+        return buildProblemsUrl(problems, user);
     });
     
-    env.addFilter('buildEventUrl', function(events, user) {
-        return urlUtil.event(events, user);
+    /**
+     * Build the url for viewing an event in the platform 
+     * @param {Object} event
+     * @param {Object} user
+     * @return {String} urlUtil.event()
+     */
+    env.addFilter('buildEventUrl', function(event, user) {
+        return buildEventUrl(event, user);
     });
     
 };
@@ -271,6 +280,18 @@ function capitalizeFirstCharacter(str) {
 
 function pluralizeNoun(str, count) {
     return count === 1 ? str : nlp.noun(str).pluralize();
+}
+
+function buildProblemUrl(problem, user) {
+    return urlUtil.problem(problem, user);
+}
+
+function buildProblemsUrl(problems, user) {
+    return urlUtil.problems(user);
+}
+
+function buildEventUrl(event, user) {
+    return urlUtil.event(event, user);
 }
 
 module.exports = filters;

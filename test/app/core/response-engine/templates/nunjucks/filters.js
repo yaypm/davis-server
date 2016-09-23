@@ -90,4 +90,53 @@ describe('Tests the filters available in the response engine', function() {
             expect(str).to.equal('foxes');
         });
     });
+    
+    // buildProblemsUrl
+    describe('Tests the building of problems url', function() {
+        let buildProblemsUrl = filters.__get__('buildProblemsUrl');
+        it('should add the #problems page to end of tenant url', function() {
+            let problems = [];
+            let user = {
+                dynatrace: {
+                    url: 'https://cdojfgmpzd.live.dynatrace.com'
+                }
+            }
+            let str = buildProblemsUrl(problems, user);
+            expect(str).to.equal('https://cdojfgmpzd.live.dynatrace.com/#problems');
+        });
+    });
+    
+    // buildProblemUrl
+    describe('Tests the building of a problem url', function() {
+        let buildProblemUrl = filters.__get__('buildProblemUrl');
+        it('should have the problem id in the tenant url', function() {
+            let problem = {
+                id: '-2968663214739407461'
+            }
+            let user = {
+                dynatrace: {
+                    url: 'https://cdojfgmpzd.live.dynatrace.com'
+                }
+            }
+            let str = buildProblemUrl(problem, user);
+            expect(str).to.equal('https://cdojfgmpzd.live.dynatrace.com/#problems;filter=watched/problemdetails;pid=-2968663214739407461');
+        });
+    });
+    
+     // buildEventUrl
+    describe('Tests the building of an event url', function() {
+        let buildEventUrl = filters.__get__('buildEventUrl');
+        it('should have the event entityId in the tenant url', function() {
+            let event = {
+                entityId: 'PROCESS_GROUP_INSTANCE-3ABDB501EFC8C4A4'
+            }
+            let user = {
+                dynatrace: {
+                    url: 'https://cdojfgmpzd.live.dynatrace.com'
+                }
+            }
+            let str = buildEventUrl(event, user);
+            expect(str).to.equal('https://cdojfgmpzd.live.dynatrace.com/#processdetails;id=PROCESS_GROUP_INSTANCE-3ABDB501EFC8C4A4');
+        });
+    });
 });
