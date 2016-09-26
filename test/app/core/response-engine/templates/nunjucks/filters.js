@@ -63,4 +63,80 @@ describe('Tests the filters available in the response engine', function() {
             expect(str).to.equal('08/01/2016 at 6:00 AM - \\n09/01/2016 at 5:59 AM');
         });
     });
+    
+    // makeTitle
+    describe('Tests the title-case string converter', function() {
+        let makeTitle = filters.__get__('makeTitle');
+        it('should have the first letter of each word capitalized, with the rest in their original case', function() {
+            let str = makeTitle('the quick bROWN Fox jumps over the lazy doG');
+            expect(str).to.equal('The Quick BROWN Fox Jumps Over The Lazy DoG');
+        });
+    });
+    
+    // capitalizeFirstCharacter
+    describe('Tests the capitalization of the first character in a string', function() {
+        let capitalizeFirstCharacter = filters.__get__('capitalizeFirstCharacter');
+        it('should have the first letter of the string capitalized, with the rest in their original case', function() {
+            let str = capitalizeFirstCharacter('the quick bROWN Fox jumps over the lazy doG');
+            expect(str).to.equal('The quick bROWN Fox jumps over the lazy doG');
+        });
+    });
+    
+    // pluralizeNoun
+    describe('Tests the pluralization of a string', function() {
+        let pluralizeNoun = filters.__get__('pluralizeNoun');
+        it('should have the first letter of the string capitalized, with the rest in their original case', function() {
+            let str = pluralizeNoun('fox', 2);
+            expect(str).to.equal('foxes');
+        });
+    });
+    
+    // buildProblemsUrl
+    describe('Tests the building of problems url', function() {
+        let buildProblemsUrl = filters.__get__('buildProblemsUrl');
+        it('should add the #problems page to end of tenant url', function() {
+            let problems = [];
+            let user = {
+                dynatrace: {
+                    url: 'https://cdojfgmpzd.live.dynatrace.com'
+                }
+            }
+            let str = buildProblemsUrl(problems, user);
+            expect(str).to.equal('https://cdojfgmpzd.live.dynatrace.com/#problems');
+        });
+    });
+    
+    // buildProblemUrl
+    describe('Tests the building of a problem url', function() {
+        let buildProblemUrl = filters.__get__('buildProblemUrl');
+        it('should have the problem id in the tenant url', function() {
+            let problem = {
+                id: '-2968663214739407461'
+            }
+            let user = {
+                dynatrace: {
+                    url: 'https://cdojfgmpzd.live.dynatrace.com'
+                }
+            }
+            let str = buildProblemUrl(problem, user);
+            expect(str).to.equal('https://cdojfgmpzd.live.dynatrace.com/#problems;filter=watched/problemdetails;pid=-2968663214739407461');
+        });
+    });
+    
+     // buildEventUrl
+    describe('Tests the building of an event url', function() {
+        let buildEventUrl = filters.__get__('buildEventUrl');
+        it('should have the event entityId in the tenant url', function() {
+            let event = {
+                entityId: 'PROCESS_GROUP_INSTANCE-3ABDB501EFC8C4A4'
+            }
+            let user = {
+                dynatrace: {
+                    url: 'https://cdojfgmpzd.live.dynatrace.com'
+                }
+            }
+            let str = buildEventUrl(event, user);
+            expect(str).to.equal('https://cdojfgmpzd.live.dynatrace.com/#processdetails;id=PROCESS_GROUP_INSTANCE-3ABDB501EFC8C4A4');
+        });
+    });
 });

@@ -34,14 +34,13 @@ module.exports = {
                         sayResponse = (!_.isNil(say)) ? nunjucks(davis.config.aliases).renderAsync(say, davis) : null,
                         textResponse = (!_.isNil(text)) ? nunjucks(davis.config.aliases).renderAsync(text, davis): null,
                         showResponse = (!_.isNil(show)) ? nunjucks(davis.config.aliases).renderAsync(show, davis) : null;
-                        
                     return [greetingResponse, sayResponse, textResponse, showResponse];
                 })
                 .spread((greeting, say, text, show) => {
                     try {
                         show = (show) ? JSON.parse(show) : createSlackCard(text);
                     } catch(err) {
-                        console.log('The show response wasn\'t valid JSON.  Processing as text.');
+                        logger.warn('The show response wasn\'t valid JSON.  Processing as text.');
                         show = createSlackCard(text);
                     }
                     davis.exchange.response.audible.ssml = combinedResponse(greeting, say, followUp);
@@ -88,7 +87,6 @@ function getGreeting(davis) {
             }
         });
     });
-
 }
 
 function combinedResponse(greet, body, followUp) {
@@ -142,7 +140,12 @@ function findAdditionalTemplates(relativeTemplatePath, files, reserved_folders) 
                 templatePath = path.join(fullPath, folder);
             fs.readdirAsync(templatePath)
                 .then(files => {
-                    return resolve(randomNunjuckTemplate(path.join(relativeTemplatePath, folder), files));
+                    if(files.length > 0) {
+                        return resolve(randomNunjuckTemplate(path.join(relativeTemplatePath, folder), files));
+                    } else {
+                        logger.warn(`Template directory exists, but is empty: ${relativeTemplatePath}/${matches[0]}`);
+                        return resolve(null);
+                    }
                 })
                 .catch(err => {
                     reject(err);

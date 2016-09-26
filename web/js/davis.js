@@ -103,6 +103,7 @@ var davis = (function () {
         var elementBeingTyped;
         var cards = localStorage.getItem('davis-cards-enabled') || 'true';
         var scrollInterval;
+        var inputHistoryIndex = -1;
         
         /**
          * Initializes event listeners
@@ -142,6 +143,7 @@ var davis = (function () {
          */
         function resetTextInput() {
             $('#'+textInputElemId).val('');
+            inputHistoryIndex = -1;
         }
         
         /**
@@ -484,7 +486,6 @@ var davis = (function () {
          */
         function init() {
             
-            var inputHistoryIndex = -1;
             resetPlaceholder();
             setListeningState('sleeping');
             
@@ -500,6 +501,7 @@ var davis = (function () {
                         controller.toggleMute($('#'+listeningStateElemId).html() === localResponses.listeningStates.listening);
                     // Down arrow
                     } else if (key == 40 && controller.getInputHistory().length > 0) {
+                        controller.enableChatMode();
                         if (inputHistoryIndex < controller.getInputHistory().length - 1 && inputHistoryIndex !== -1) {
                             inputHistoryIndex++;
                             $("#"+textInputElemId).val(controller.getInputHistory()[inputHistoryIndex]);
@@ -509,6 +511,7 @@ var davis = (function () {
                         }
                     // Up arrow
                     } else if (key == 38 && controller.getInputHistory().length > 0) {
+                        controller.enableChatMode();
                         if (inputHistoryIndex > 0) {
                             inputHistoryIndex--;
                             $("#"+textInputElemId).val(controller.getInputHistory()[inputHistoryIndex]);
