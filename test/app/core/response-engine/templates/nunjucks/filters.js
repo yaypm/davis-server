@@ -85,7 +85,7 @@ describe('Tests the filters available in the response engine', function() {
     // pluralizeNoun
     describe('Tests the pluralization of a string', function() {
         let pluralizeNoun = filters.__get__('pluralizeNoun');
-        it('should have the first letter of the string capitalized, with the rest in their original case', function() {
+        it('should return the plural of fox', function() {
             let str = pluralizeNoun('fox', 2);
             expect(str).to.equal('foxes');
         });
@@ -98,11 +98,11 @@ describe('Tests the filters available in the response engine', function() {
             let problems = [];
             let user = {
                 dynatrace: {
-                    url: 'https://cdojfgmpzd.live.dynatrace.com'
+                    url: 'https://demo.live.dynatrace.com'
                 }
             }
             let str = buildProblemsUrl(problems, user);
-            expect(str).to.equal('https://cdojfgmpzd.live.dynatrace.com/#problems');
+            expect(str).to.equal('https://demo.live.dynatrace.com/#problems');
         });
     });
     
@@ -115,11 +115,11 @@ describe('Tests the filters available in the response engine', function() {
             }
             let user = {
                 dynatrace: {
-                    url: 'https://cdojfgmpzd.live.dynatrace.com'
+                    url: 'https://demo.live.dynatrace.com'
                 }
             }
             let str = buildProblemUrl(problem, user);
-            expect(str).to.equal('https://cdojfgmpzd.live.dynatrace.com/#problems;filter=watched/problemdetails;pid=-2968663214739407461');
+            expect(str).to.equal('https://demo.live.dynatrace.com/#problems;filter=watched/problemdetails;pid=-2968663214739407461');
         });
     });
     
@@ -132,11 +132,11 @@ describe('Tests the filters available in the response engine', function() {
             }
             let user = {
                 dynatrace: {
-                    url: 'https://cdojfgmpzd.live.dynatrace.com'
+                    url: 'https://demo.live.dynatrace.com'
                 }
             }
             let str = buildEventUrl(event, user);
-            expect(str).to.equal('https://cdojfgmpzd.live.dynatrace.com/#processdetails;id=PROCESS_GROUP_INSTANCE-3ABDB501EFC8C4A4');
+            expect(str).to.equal('https://demo.live.dynatrace.com/#processdetails;id=PROCESS_GROUP_INSTANCE-3ABDB501EFC8C4A4');
         });
     });
 });
