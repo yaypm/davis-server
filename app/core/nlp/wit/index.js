@@ -40,7 +40,12 @@ class Wit {
                 Authorization: 'Bearer ' + this.token,
                 Accept: 'application/vnd.wit.' + this.version
             },
-            json: true
+            json: true,
+            transform: function(body, response) {
+                logger.info(`WIT.AI: ${response.req.path.split('?')[0]} ${response.statusCode} - ${response.elapsedTime} ms`);
+                return body;
+            },
+            time: true
         };
 
         return rp(options);

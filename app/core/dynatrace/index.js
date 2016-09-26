@@ -35,7 +35,12 @@ class Dynatrace {
                 headers: {
                     Authorization: 'Api-Token ' + this.key
                 },
-                json: true
+                json: true,
+                transform: function(body, response) {
+                    logger.info(`DYNATRACE API: ${response.req.path.split('?')[0]} ${response.statusCode} - ${response.elapsedTime} ms`);
+                    return body;
+                },
+                time: true
             };
         };
     }
