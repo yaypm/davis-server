@@ -13,6 +13,7 @@
 		<script src="./js/config.js"></script>
 		<script>
 			window.onload = function () {
+				getAliases();
 			}
 		</script>
 	</head>
@@ -22,24 +23,42 @@
  			<img id="config-icon" src="./images/checkmark.png" onclick="window.location = 'index.html'">
  		</div>
     	<div id="sidebar">
-    		<div class="sidebar-button">
+    		<div id="entity-aliases" class="sidebar-button sidebar-button-active" onclick="changePage(this.id)">
  				<div class="sidebar-button-text">
-    				Basic
+    				Entity Aliases
     			</div>
     		</div>
-    		<div class="sidebar-button">
+    		<div id="users" class="sidebar-button" onclick="changePage(this.id)">
     			<div class="sidebar-button-text">
-    				Advanced
+    				Users
     			</div>
     		</div>
     	</div>
     	<div id="content">
-    		<div class="content-section">
+    		<div class="global-title">
     			<h1>Davis Configuration</h1>
     		</div>
-    		<div class="content-section">
-    			<label>My input</label>
-    			<input type="text">
+    		<div id="entity-aliases-page" class="page page-active">
+	    		<div class="local-title">
+	    			<h2>Entity Aliases</h2>
+	    		</div>
+	    		<div class="content-section">
+	    			<div id="applications-aliases" class="radio-button radio-button-selected" onclick="changeSection(this.id)">Applications</div>
+	    			<div id="infrastructure-aliases" class="radio-button" onclick="changeSection(this.id)">Infrastructure</div>
+	    			<div id="services-aliases" class="radio-button" onclick="changeSection(this.id)">Services</div>
+	    			<ul id="applications-aliases-section" class="radio-button-section radio-button-section-selected"></ul>
+	    			<ul id="infrastructure-aliases-section" class="radio-button-section"></ul>
+	    			<ul id="services-aliases-section" class="radio-button-section"></ul>
+	    			<input type="button" value="Save">
+	    		</div>
+    		</div>
+    		<div id="users-page" class="page">
+	    		<div class="local-title">
+	    			<h2>Users</h2>
+	    		</div>
+	    		<div class="content-section">
+	    			
+	    		</div>
     		</div>
     	</div>
 	</body>
