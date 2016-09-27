@@ -19,8 +19,7 @@ module.exports = function AccountService(users) {
             }) || null;
 
             if (!_.isNull(user)) {
-                logger.info('Found a valid user');
-                logger.debug(`The merged user object is ${JSON.stringify(user)}`);
+                logger.debug('Found a valid user');
             } else {
                 logger.warn(`Unable to find a valid user: ${deviceId}`);
             }
@@ -40,7 +39,6 @@ module.exports = function AccountService(users) {
 
             if (!_.isNull(user)) {
                 logger.info('Found a valid user');
-                logger.debug(`The merged user object is ${JSON.stringify(user)}`);
             } else {
                 logger.warn(`Unable to find a valid user: ${userId}`);
             }

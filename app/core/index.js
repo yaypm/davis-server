@@ -54,25 +54,7 @@ class Davis {
                 })
                 .spread(() => {
                     logger.debug('Davis has finished processing the request');
-                    // // Temporary for testing isChromeExtensionConnected functionality. Not working at the moment
-                    // if (source == 'alexa' && this.exchange.response.visual.text.includes(' Would you like me to open this for you?')) {
-                    //     const express =  require('../index');
-                    //     express.isChromeExtensionConnected(this.user.id).then( isConnected => {
-                    //         if (!isConnected) {
-                    //             logger.debug('Chrome extension not connected, URL was not sent');
-                    //             this.exchange.response.visual.text = this.exchange.response.visual.text.replace(' Would you like me to open this for you?', '');
-                    //             this.exchange.response.finished = 'true';
-                    //         }
-                    //         resolve(this);
-                    //     })
-                    //     .catch(err => {
-                    //         logger.error(err.message);
-                    //         reject(err);
-                    //     });
-                       
-                    // } else {
-                        resolve(this);
-                    // }
+                    resolve(this);
                 })
                 .catch(err => {
                     logger.error(err.message);

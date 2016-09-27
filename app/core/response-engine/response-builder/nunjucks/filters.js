@@ -257,7 +257,7 @@ function getFriendlyTimeRange(timeRange, user, isCompact) {
             sentence += (isCompact) ? capitalizeFirstCharacter(moment.tz(timeRange.stopTime, user.timezone).calendar(null , stopFormat.normal)).trim() : moment.tz(timeRange.stopTime, user.timezone).calendar(null , stopFormat.normal).trim();
         }
     }
-    return sentence
+    return sentence;
 }
 
 function makeTitle(title) {

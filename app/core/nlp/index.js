@@ -29,7 +29,6 @@ class Nlp {
             let wit = new Wit(this.user.nlp.wit);
             wit.ask(this.exchange.request.text, {timezone: this.user.timezone})
             .then(response => {
-
                 this.exchange.request.analysed = analyseEntities(this, response.entities);
                 resolve(this.exchange);
             })

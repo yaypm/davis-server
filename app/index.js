@@ -9,7 +9,6 @@ const express = require('express'),
     routes = require('./routes/index'),
     logger = require('./utils/logger'),
     version = require('./utils/version'),
-    BbPromise = require('bluebird'),
     mongoose = require('mongoose');
 
 module.exports = {
@@ -89,23 +88,6 @@ module.exports = {
 
         return { app, server };
     },
-    
-    // // Not working at the moment
-    // isChromeExtensionConnected: function (userId) {
-    //     return new BbPromise((resolve, reject) => {
-    //         let isConnected = false;
-    //         io.sockets.emit(`connection-check-${userId}`);
-            
-    //         io.sockets.on(`connected-${userId}`, () => {
-    //             isConnected = true;
-    //         });
-            
-    //         setTimeout( () => {
-    //             logger.info(`${userId} socket.io connection: ${isConnected}`);
-    //             resolve(isConnected);
-    //         }, 100);
-    //     });
-    // },
 
     push: function (davis) {
         logger.info('Pushing link');
