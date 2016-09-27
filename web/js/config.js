@@ -134,6 +134,10 @@ function changeSection(id) {
     $(`#${id}-section`).addClass('radio-button-section-selected');
 }
 
+function addNewAliasTextInput(name, category) {
+   // $(`#${name}-table`)
+}
+
 function addAlias(alias, category) {
     aliases[category].push(alias);
 }
@@ -154,17 +158,16 @@ function editAlias(alias, category) {
 function getAliases() {
     for (category in aliases) {
         aliases[category].forEach( function (als) {
-            var template = `<table class="alias"><tr><td class="property" style="font-weight: bold;">Name</td><td class="value"><input type="text" class="textInput" value="${als.name}"></td></tr>
+            var template = `<table id="${als.name}-table" class="alias"><tr><td class="property" style="font-weight: bold;">Name</td><td class="value"><input type="text" class="textInput" value="${als.name}"></td></tr>
             <tr><td class="property">Visual</td><td class="value"><input type="text" class="textInput" value="${als.display.visual}"></td></tr>
             <tr><td class="property">Audible</td><td class="value"><input type="text" class="textInput" value="${als.display.audible}"></td></tr>
             <tr><td class="property">Aliases</td></tr><tr><td class="aliases" colspan="2">`;
             als.aliases.forEach( function (alias, index) {
                 template += `<div class="wrapper"><input type="text" class="textInput" value="${alias}">`;
-                if (index < als.aliases.length - 1) {
                     template += '<div class="comma">,</div>';
-                }
                 template += '</div>';
             });
+            template += `<div class="${category}-new-aliases-section"><div class="wrapper"><input type="text" class="textInput addNew" value="" placeholder="Add new alias"></div></div>`;
             $(`#${category}-aliases-section`).append(`${template}</td></tr></table>`);
         });
     }
