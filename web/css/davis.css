@@ -454,3 +454,7 @@ a.card-link-attachment:active {
 .card-field-title {
 	font-weight: bold;
 }
+
+.hidden-feature {
+	display: none;
+}

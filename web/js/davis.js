@@ -635,6 +635,10 @@ var davis = (function () {
             
             init: function () {
                 init();
+            },
+            
+            showHiddenFeatures: function(isVisible) {
+                (isVisible) ? $('.hidden-feature').show() : $('.hidden-feature').hide();
             }
             
         };
@@ -828,6 +832,7 @@ var davis = (function () {
             if ((request.indexOf('debug') > -1 && request.indexOf('true') > -1) || (request.indexOf('debug') > -1 && !(request.indexOf('false') > -1))) {
                 
                 debug = true;
+                view.showHiddenFeatures(true);
                 localStorage.setItem('davis-debug-mode', 'true');
                 view.addToInteractionLog({text: 'Debug mode enabled'}, true, false);
                 
@@ -861,6 +866,7 @@ var davis = (function () {
             } else if (request.indexOf('debug') > -1 && request.indexOf('false') > -1) {
                 
                 debug = false;
+                view.showHiddenFeatures(false);
                 localStorage.setItem('davis-debug-mode', 'false');
                 view.addToInteractionLog({text: 'Debug mode disabled'}, true, false);
                 

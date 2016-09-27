@@ -26,12 +26,12 @@ a.links:active {
 }
 
 .alias {
+	position: relative;
 	margin: 15px 0 15px 0;
 	padding: 10px;
 	border: 1px solid #e6e6e6;
 	border-radius: 3px;
 	width: 100%;
-	
 }
 
 .value {
@@ -61,6 +61,11 @@ a.links:active {
 	border: 1px solid #00a1b2;
 }
 
+#filter {
+	float: left;
+	margin-bottom: 15px;
+}
+
 .comma {
 	float: left;
 	width: 20px;
@@ -78,10 +83,50 @@ a.links:active {
     column-span: all;
 }
 
+.no-aliases-wrapper {
+	position: relative;
+	margin-top: -24px;
+	margin-right: -38px;
+	display: none;
+}
+
+.no-aliases-triangle {
+	position: absolute;
+	top: 0;
+ 	right: 0;
+	width: 0; 
+	height: 0; 
+	border-left: 40px solid transparent;
+	border-right: 40px solid transparent;
+	border-bottom: 40px solid #00a1b2;
+	-ms-transform: rotate(45deg); /* IE 9 */
+    -webkit-transform: rotate(45deg); /* Chrome, Safari, Opera */
+    transform: rotate(45deg);
+    z-index: 99;
+}
+
+.no-aliases-text {
+	position: absolute;
+	top: 7px;
+	right: 27px;
+	width: 40px; 
+	height: 40px; 
+	font-size: 10px;
+	color: white;
+	text-align: center;
+	-ms-transform: rotate(45deg); /* IE 9 */
+    -webkit-transform: rotate(45deg); /* Chrome, Safari, Opera */
+    transform: rotate(45deg);
+    z-index: 100;
+}
+
+.no-aliases-wrapper.no-aliases {
+	display: block;
+}
+
 input[type=button] {
 	clear: both;
-	float: left;
-	margin-bottom: 30px;
+	float: right;
 	font-size: 18px;
 	width: 80px;
 	height: 30px;
@@ -131,6 +176,10 @@ input[type=button] {
 	float: left;
 	padding: 0px 20px 0px 0px;
 	font-size: 18px;
+}
+
+div.radio-button:first-of-type {
+	clear:both;	
 }
 
 .radio-button:hover {

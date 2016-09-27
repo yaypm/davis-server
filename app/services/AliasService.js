@@ -23,15 +23,15 @@ const AliasService = {
     },
 
     getApplications: () => {
-        return AliasesModel.find({ type: 'application'}).exec();
+        return AliasesModel.find({ category: 'application'}).exec();
     },
 
     getServices: () => {
-        return AliasesModel.find({ type: 'service'}).exec();
+        return AliasesModel.find({ category: 'service'}).exec();
     },
 
     getInfrastructure: () => {
-        return AliasesModel.find({ type: 'infrastructure'}).exec();
+        return AliasesModel.find({ category: 'infrastructure'}).exec();
     },
 
     putApplication: (app) => {
