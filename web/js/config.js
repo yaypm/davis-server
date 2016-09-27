@@ -154,48 +154,21 @@ function editAlias(alias, category) {
 function getAliases() {
     for (category in aliases) {
         aliases[category].forEach( function (als) {
-            $(`#${category}-aliases-section`).append(`<li><label style='font-weight: bold;'>Name</label> <input type="text" class="textInput" value="${als.name}"></li>`);
-            $(`#${category}-aliases-section`).append(`<li><label>Visual</label> <input type="text" class="textInput" value="${als.display.visual}"></li>`);
-            $(`#${category}-aliases-section`).append(`<li><label>Audible</label> <input type="text" class="textInput" value="${als.display.audible}"></li>`);
-            $(`#${category}-aliases-section`).append(`<li><label>Aliases</label></li>`);
-            var combined = '<li>';
+            var template = `<table class="alias"><tr><td class="property" style="font-weight: bold;">Name</td><td class="value"><input type="text" class="textInput" value="${als.name}"></td></tr>
+            <tr><td class="property">Visual</td><td class="value"><input type="text" class="textInput" value="${als.display.visual}"></td></tr>
+            <tr><td class="property">Audible</td><td class="value"><input type="text" class="textInput" value="${als.display.audible}"></td></tr>
+            <tr><td class="property">Aliases</td></tr><tr><td class="aliases" colspan="2">`;
             als.aliases.forEach( function (alias, index) {
-                combined += `<input type="text" class="textInput" value="${alias}">`;
+                template += `<div class="wrapper"><input type="text" class="textInput" value="${alias}">`;
                 if (index < als.aliases.length - 1) {
-                    combined += ' ,  ';
+                    template += '<div class="comma">,</div>';
                 }
+                template += '</div>';
             });
-            combined += '</li>';
-            $(`#${category}-aliases-section`).append(combined);
-            $(`#${category}-aliases-section`).append('<li><br></li>');
+            $(`#${category}-aliases-section`).append(`${template}</td></tr></table>`);
         });
     }
 }
-
-var input = {
-    aliases: {
-        
-        applications: [
-            {
-                name: 'foobar',
-                display: {
-                    audible: 'Foo bar',
-                    visual: 'Foo bar'
-                },
-                aliases: ['foobar']
-            }
-        ],
-        
-        infrastructure: [
-            
-        ],
-        
-        services: [
-            
-        ]
-        
-    }  
-};
 
 function saveAliases() {
     

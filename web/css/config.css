@@ -25,21 +25,28 @@ a.links:active {
     color: white;
 }
 
-ul {
-	padding: 0;
+.alias {
+	margin: 15px 0 15px 0;
+	padding: 5px;
+	box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.19);
 }
 
-li {
-	padding: 5px 0 5px 0;
-	list-style-type: none;
-}
-
-label {
-	padding-right: 20px;
+.value {
 	font-size: 14px;
 }
 
-input[type=text] {
+.property {
+	padding: 5px 0 5px 0;
+	padding-right: 10px;
+	font-size: 14px;
+}
+
+.value {
+	
+}
+
+.textInput {
+	float: left;
 	height: 20px;
 	width: 200px;
 	margin-bottom: 5px;
@@ -47,6 +54,22 @@ input[type=text] {
 	font-size: 14px;
 	border-radius: 3px;
 	border: 1px solid lightGrey;
+}
+
+.comma {
+	float: left;
+	width: 20px;
+	text-align: center;
+	margin-top: 10px;
+}
+
+.wrapper {
+	float: left;
+}
+
+.aliases {
+	-webkit-column-span: all;
+    column-span: all;
 }
 
 input[type=button] {
