@@ -24,6 +24,6 @@ const aliases = new Schema({
 });
 
 // Makes sure aliases names are unique per type
-aliases.index({name: 1, type: 1}, {unique: true});
+aliases.index({name: 1, category: 1}, {unique: true});
 
 module.exports = mongoose.model('Aliases', aliases);
