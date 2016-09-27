@@ -95,7 +95,7 @@ module.exports = function SlackService(config) {
                     },
                     email: member.profile.email,
                     nlp: config.nlp,
-                    dynatrace: config.slack.dynatrace,
+                    dynatrace: config.dynatrace,
                     timezone: member.tz
                 };
     

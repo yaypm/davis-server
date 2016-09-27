@@ -13,7 +13,7 @@ const type = {
 
 const aliases = new Schema({
     name: { type: String, required: true, unique: false},
-    type: { type: String, required: true, enum: type },
+    category: { type: String, required: true, enum: type },
     display: {
         audible: { type: String, required: false, unique: false, index: false},
         visual: { type: String, required: false, unique: false, index: false}
