@@ -215,7 +215,7 @@ module.exports = function (config) {
                     let user = {
                         id: 'davis-system',
                         nlp: config.nlp,
-                        dynatrace: config.slack.dynatrace,
+                        dynatrace: config.dynatrace,
                         timezone: 'UTC'
                     };
 

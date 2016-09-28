@@ -1,7 +1,6 @@
 'use strict';
 
 const ConversationService = require('../../../services/ConversationService'),
-    AccountService = require('../../../services/AccountService'),
     logger = require('../../../utils/logger'),
     Davis = require('../../../core'),
     BbPromise = require('bluebird'),
@@ -23,9 +22,23 @@ module.exports = function AlexaService(config) {
      */
     function getUser(req) {
         logger.info('Attempting to get a user');
-        const user =  AccountService(config.users).getUser(_.get(req, 'session.user.userId', null), REQUEST_SOURCE);
-        user.nlp = config.nlp;
-        return user;
+        const requestingUser = _.get(req, 'session.user.userId')
+        const user = _.find(config.alexa, _.matchesProperty('id', requestingUser));
+        if (user) {
+            return {
+                id: user.id,
+                name: {
+                    first: user.name.first,
+                    last: user.name.last
+                },
+                nlp: config.nlp,
+                dynatrace: config.dynatrace,
+                timezone: user.timezone
+            };
+        } else {
+            logger.warn(`Rejecting request from Alexa using the id '${requestingUser}'.`);
+            return;
+        }
     }
 
     /**

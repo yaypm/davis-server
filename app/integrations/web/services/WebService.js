@@ -51,7 +51,7 @@ module.exports = function WebService(config) {
                 let user = {
                     'id': `web-user-${req.body.use}`,
                     'nlp': config.nlp,
-                    'dynatrace': config.web.dynatrace,
+                    'dynatrace': config.dynatrace,
                     'timezone': req.body.timezone
                 };
                 

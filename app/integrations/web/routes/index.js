@@ -28,7 +28,7 @@ router.get('/token', function(req, res) {
 
 router.get('/server', function(req, res) {
     logger.info('Received a request for the current server!');
-    res.send(req.app.get('davisConfig').web.dynatrace.url);
+    res.send(req.app.get('davisConfig').dynatrace.url);
 });
 
 module.exports  = router;
