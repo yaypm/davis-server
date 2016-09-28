@@ -1,7 +1,12 @@
 'use strict';
 
-const DavisServer = require('../DavisServer'),
-    config = require('./config'),
-    davisServer = new DavisServer(config);
+const DavisServer = require('../DavisServer');
 
-davisServer.run();
+try {
+    const davisServer = new DavisServer(require('./config'));
+
+    davisServer.run();
+} catch(err) {
+    console.log(err);
+    process.exit(1);
+}

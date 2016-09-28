@@ -28,7 +28,7 @@ const config = {
 
     // Watson STT and TTS is only needed for the WebUI
     watson: {
-        enabled: true,
+        enabled: false,
         stt: {
             user: '<watson_stt_user_name>',
             password: '<watson_stt_password>'
@@ -41,7 +41,7 @@ const config = {
 
     // The Slack bot token can be created on the apps and integrations page
     slack: {
-        enabled: true,
+        enabled: false,
         key: '<slack_token>',
         notifications: {
             alerts: {
@@ -69,9 +69,42 @@ const config = {
             last: '<last_name>'
         },
         timezone: 'America/Detroit'
-    }]
-};
+    }],
 
-config.aliases = require('./aliases');
+    /**
+     * User defined aliases
+     *      name - The name found in Dynatrace
+     *      display:
+     *          audible - How Davis will audibly respond
+     *          visual - How Davis will visual respond
+     *      aliases - An array of alternate ways someone might refer to this entity
+     */
+    aliases: {
+        applications: [{
+            name: 'easyTravel',
+            display: {
+                audible: 'Easy Travel',
+                visual: 'easyTravel'
+            },
+            aliases: ['easy travel']
+        }],
+        services: [{
+            name: 'easyTravelDB',
+            display: {
+                audible: 'easy travel database',
+                visual: 'easyTravel DB'
+            },
+            aliases: ['db', 'database']
+        }],
+        infrastructure: [{
+            name: 'easyTravel host 1',
+            display: {
+                audible: 'easy travel host 1',
+                visual: 'easyTravel host 1'
+            },
+            aliases: []
+        }]
+    }
+};
 
 module.exports = config;
