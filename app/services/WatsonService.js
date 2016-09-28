@@ -32,23 +32,29 @@ module.exports = function WatsonService(config) {
     return {
         getTtsToken() {
             return new BbPromise((resolve, reject) => {
-                if (!config.watson.enabled) return reject(new Error('Watons TTS is disabled.'));
-                ttsAuthService.getToken({url: ttsConfig.url}, (err, token) => {
-                    if(err) return reject(err);
+                if (config.watson.enabled) {
+                    ttsAuthService.getToken({url: ttsConfig.url}, (err, token) => {
+                        if(err) return reject(err);
 
-                    return resolve(token);
-                });
+                        return resolve(token);
+                    });
+                } else {
+                    reject(new Error('Watson disabled in demo/config.js'));
+                }
             });
         },
 
         getSttToken() {
             return new BbPromise((resolve, reject) => {
-                if (!config.watson.enabled) return reject(new Error('Watons STT is disabled.'));
-                sttAuthService.getToken({url: sttConfig.url}, (err, token) => {
-                    if(err) return reject(err);
+                if (config.watson.enabled) {
+                    sttAuthService.getToken({url: sttConfig.url}, (err, token) => {
+                        if(err) return reject(err);
 
-                    return resolve(token);
-                });
+                        return resolve(token);
+                    });
+                } else {
+                    reject(new Error('Watson disabled in demo/config.js'));
+                }
             });
         }
     };

@@ -7,7 +7,7 @@ const mongoose = require('mongoose'),
 mongoose.Promise = require('bluebird');
 
 const type = {
-    values: 'application service infrastructure'.split(' '),
+    values: 'applications services infrastructure'.split(' '),
     message: '`{VALUE}` is an invalid `{PATH}`.'
 };
 

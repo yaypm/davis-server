@@ -10,8 +10,8 @@ const AliasService = {
         logger.debug('Getting the list of Aliases');
         return new BbPromise((resolve, reject) => {
             BbPromise.all([
-                AliasService.getAliasesByCategory('application'),
-                AliasService.getAliasesByCategory('service'),
+                AliasService.getAliasesByCategory('applications'),
+                AliasService.getAliasesByCategory('services'),
                 AliasService.getAliasesByCategory('infrastructure')
             ]).spread((applications, services, infrastructure) => {
                 resolve({applications, services, infrastructure});
@@ -34,8 +34,10 @@ const AliasService = {
         return new BbPromise((resolve, reject) => {
             AliasesModel.findById({ _id: aliasId })
                 .then(alias => {
-                    alias.display.audible = audible;
-                    alias.display.visual = visual;
+                    alias.display = {
+                        audible: audible,
+                        visual: visual
+                    };
                     alias.aliases = aliases;
                     return alias.save();
                 })

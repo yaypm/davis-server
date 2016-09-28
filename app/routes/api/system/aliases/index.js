@@ -16,7 +16,7 @@ router.get('/', (req, res) => {
         });
 });
 
-router.route('/:category(application|service|infrastructure)')
+router.route('/:category(applications|services|infrastructure)')
     .get((req, res) => {
         logger.info(`Listing all ${req.params.category} alias.`);
         aliasService.getAliasesByCategory(req.params.category)
@@ -43,7 +43,7 @@ router.route('/:category(application|service|infrastructure)')
             });
     });
 
-router.route('/:category(application|service|infrastructure)/:alias_id')
+router.route('/:category(applications|services|infrastructure)/:alias_id')
     .put((req, res) => {
         logger.info(`Attempting to update ${req.params.alias_id}`);
         aliasService.updateAlias(req.params.alias_id, req.body.audible, req.body.visual, req.body.aliases)
