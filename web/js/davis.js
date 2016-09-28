@@ -573,6 +573,10 @@ var davis = (function () {
                 resetTextInput();  
             },
             
+            focusTextInput: function() {
+                $('#'+textInputElemId).focus();    
+            },
+            
             addToInteractionLog: function (response, isDavisSpeaking, typeText) {
                 addToInteractionLog(response, isDavisSpeaking, typeText);
             },
@@ -637,8 +641,12 @@ var davis = (function () {
                 init();
             },
             
-            showHiddenFeatures: function(isVisible) {
+            showDebugFeatures: function(isVisible) {
                 (isVisible) ? $('.hidden-feature').show() : $('.hidden-feature').hide();
+            },
+            
+            clearInteractionLog: function() {
+                $('#'+interactionLogElemId).html('');
             }
             
         };
@@ -658,7 +666,7 @@ var davis = (function () {
         var momentsOfSilence = 0;                 // Used for polling number of moments of silence 60 ms apart (avoid cutting off TTS playback) 
         var player = new Audio();                 // Audio element used to play TTS audio
         var playerReady = false;
-        var micOn; // Mic on sound effect
+        var micOn;                                // Mic on sound effect
         var stream;                               // IBM STT stream
         var inputHistory = [];                    // History of user input, use up key to cycle through previous inputs
         var outputQueue = [];                     // Counter for keeping track of queued outputTextAndSpeech() calls
@@ -675,8 +683,9 @@ var davis = (function () {
         
         // Debug mode
         if (localStorage.getItem('davis-debug-mode')) {
-            debug = localStorage.getItem('davis-debug-mode');
+            debug = localStorage.getItem('davis-debug-mode') === 'true';
             console.log('Davis: debug = ' + debug);
+            view.showDebugFeatures(debug);
         }
         
         // Input history
@@ -832,7 +841,7 @@ var davis = (function () {
             if ((request.indexOf('debug') > -1 && request.indexOf('true') > -1) || (request.indexOf('debug') > -1 && !(request.indexOf('false') > -1))) {
                 
                 debug = true;
-                view.showHiddenFeatures(true);
+                view.showDebugFeatures(true);
                 localStorage.setItem('davis-debug-mode', 'true');
                 view.addToInteractionLog({text: 'Debug mode enabled'}, true, false);
                 
@@ -866,7 +875,7 @@ var davis = (function () {
             } else if (request.indexOf('debug') > -1 && request.indexOf('false') > -1) {
                 
                 debug = false;
-                view.showHiddenFeatures(false);
+                view.showDebugFeatures(false);
                 localStorage.setItem('davis-debug-mode', 'false');
                 view.addToInteractionLog({text: 'Debug mode disabled'}, true, false);
                 
@@ -1075,14 +1084,15 @@ var davis = (function () {
             } else {
                 
                 return fetch('/api/v1/watson/tts/token', options)
+                .then(handleErrors)
                 .then(function (response) {
-                
+                      
                     // Save new token
                     savedTtsTokenObj.expiration = new Date();
                     savedTtsTokenObj.token = response.text();
                 
                     return savedTtsTokenObj.token;
-                  
+
                 });
               
             }
@@ -1113,6 +1123,7 @@ var davis = (function () {
                 } else {
         
                     fetch('/api/v1/watson/stt/token', options)
+                    .then(handleErrors)
                     .then(function (response) {
             
                         // Save new token
@@ -1131,6 +1142,26 @@ var davis = (function () {
                 }
                 
             });
+            
+        }
+        
+        /**
+         * Handles Fetch HTTP errors
+         */
+        function handleErrors(response) {
+            
+            // if error, disable voice UI
+            if (!response.ok) {
+                setTimeout( function () {
+                    document.dispatchEvent(listeningStateEvents.chatMode);
+                    view.noMic();
+                    view.muted();
+                    view.focusTextInput();
+                    view.clearInteractionLog();
+                }, 400);
+            }
+            
+            return response;
             
         }
         
@@ -1203,12 +1234,16 @@ var davis = (function () {
                 };
                 
                 getTtsToken().then( function (token) {
-                    WatsonSpeech.TextToSpeech.synthesize({
-                        text: watsonText,
-                        token: token,
-                        voice: voice,
-                        element: player
-                    });
+                    if (token) {
+                        WatsonSpeech.TextToSpeech.synthesize({
+                            text: watsonText,
+                            token: token,
+                            voice: voice,
+                            element: player
+                        });
+                    } else {
+                        noMic();
+                    }
                 }).catch(function (err) {
                    console.log(err);
                    noMic();
@@ -1434,7 +1469,6 @@ var davis = (function () {
                 .then( function (token) {
                     return getTtsToken();
                 }).then( function (token) {
-                    
                     if (location.protocol === 'https:' || location.href.indexOf('127.0.0.1') > -1 || location.href.indexOf('localhost') > -1) {
 
                         annyangInit();
