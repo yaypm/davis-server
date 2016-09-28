@@ -21,7 +21,7 @@ const config = {
         strictSSL: true
     },
 
-    //
+    // A public WIT key can be found on the GitHub page.
     nlp: {
         wit: '<wit_token>'
     },
