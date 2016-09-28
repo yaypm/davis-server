@@ -155,7 +155,7 @@ function findAdditionalTemplates(relativeTemplatePath, files, reserved_folders) 
 }
 
 /**
- * Filters a list of of files by looking for a specific Nunjuck extention
+ * Filters a list of of files by looking for a specific Nunjuck extension
  * @param {string} templatePath - The relative path to the templates
  * @param {Object} files - The list of files and folders returned from fs.
  * @returns {Object} - The filtered list of Nunjuck templates.
