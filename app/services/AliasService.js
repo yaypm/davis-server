@@ -1,7 +1,6 @@
 'use strict';
 
 const AliasesModel = require('../models/Aliases'),
-    _ = require('lodash'),
     logger = require('../utils/logger'),
     BbPromise = require('bluebird');
 
@@ -11,9 +10,9 @@ const AliasService = {
         logger.debug('Getting the list of Aliases');
         return new BbPromise((resolve, reject) => {
             BbPromise.all([
-                AliasService.getApplications(),
-                AliasService.getServices(),
-                AliasService.getInfrastructure()
+                AliasService.getAliasesByCategory('applications'),
+                AliasService.getAliasesByCategory('services'),
+                AliasService.getAliasesByCategory('infrastructure')
             ]).spread((applications, services, infrastructure) => {
                 resolve({applications, services, infrastructure});
             }).catch(err => {
@@ -22,21 +21,37 @@ const AliasService = {
         });
     },
 
-    getApplications: () => {
-        return AliasesModel.find({ category: 'application'}).exec();
+    getAliasesByCategory: (category) => {
+        return AliasesModel.find({ category: category}).exec();
     },
 
-    getServices: () => {
-        return AliasesModel.find({ category: 'service'}).exec();
+    createAlias: (name, category, audible, visual, aliases) => {
+        const newAlias = new AliasesModel({name, category, display: {audible, visual}, aliases});
+        return newAlias.save();
     },
 
-    getInfrastructure: () => {
-        return AliasesModel.find({ category: 'infrastructure'}).exec();
+    updateAlias: (aliasId, audible, visual, aliases) => {
+        return new BbPromise((resolve, reject) => {
+            AliasesModel.findById({ _id: aliasId })
+                .then(alias => {
+                    alias.display = {
+                        audible: audible,
+                        visual: visual
+                    };
+                    alias.aliases = aliases;
+                    return alias.save();
+                })
+                .then(() => {
+                    resolve();
+                })
+                .catch(err => {
+                    reject(err);
+                });
+        });
     },
 
-    putApplication: (app) => {
-        const newApp = new AliasesModel(app);
-        return newApp.save();
+    deleteAlias: (aliasId, category) => {
+        return AliasesModel.remove({ _id: aliasId, category: category });
     }
 
 };
