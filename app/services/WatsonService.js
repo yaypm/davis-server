@@ -32,6 +32,7 @@ module.exports = function WatsonService(config) {
     return {
         getTtsToken() {
             return new BbPromise((resolve, reject) => {
+                if (!config.watson.enabled) return reject(new Error('Watons TTS is disabled.'));
                 ttsAuthService.getToken({url: ttsConfig.url}, (err, token) => {
                     if(err) return reject(err);
 
@@ -42,6 +43,7 @@ module.exports = function WatsonService(config) {
 
         getSttToken() {
             return new BbPromise((resolve, reject) => {
+                if (!config.watson.enabled) return reject(new Error('Watons STT is disabled.'));
                 sttAuthService.getToken({url: sttConfig.url}, (err, token) => {
                     if(err) return reject(err);
 
