@@ -3,7 +3,7 @@
   "description": "Davis Server",
   "main": "./bin/run",
   "authors": [
-    "Michael Beemer <beeme1mr@gmail.com>"
+    "Michael Beemer <michael.beemer@dynatrace.com>"
   ],
   "license": "MIT",
   "homepage": "https://github.com/ruxit/davis-server",
