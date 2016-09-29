@@ -1,7 +1,7 @@
 
 ![](https://s3.amazonaws.com/davis-project/dynatrace-davis-logo.png)
 
-Welcome to Davis! Providing several new mediums for interacting with Dynatrace, Davis offers integration with Slack and Amazon Alexa, as well as it's own web UI that supports both speech and text interactions. Creating Davis has been fun, as we continue to perfect the current functionality and add new functionality, we invite you to enjoy the magic of Davis powered by the artificial intelligence of Dynatrace. Below you'll find our step by step guide to help you get Davis up and running as quickly as possible. Let's get started!
+Welcome to Davis! Providing several new mediums for interacting with Dynatrace, Davis offers integration with Slack and Amazon Alexa, as well as its own web UI that supports both speech and text interactions. Creating Davis has been fun, as we continue to perfect the current functionality and add new functionality, we invite you to enjoy the magic of Davis powered by the artificial intelligence of Dynatrace. Below you'll find our step by step guide to help you get Davis up and running as quickly as possible. Let's get started!
 
 ---
 ####Prerequisites:
@@ -21,7 +21,7 @@ Welcome to Davis! Providing several new mediums for interacting with Dynatrace, 
 2. Run ````npm init ```` from the command line and give your project a unique name
 3. *(Optional)* Version
 4. *(Optional)* Description
-5. Entry Point: `index.js`, will create this file later
+5. Entry Point: `index.js`, we will create this file later
 6. Git Repository: `https://<username>@github.com/Dynatrace/davis-server.git#master`, replace `<username>` with your GitHub username
 
 Before you initialize Davis you need to configure a few custom parameters for your environments. Download a sample configuration from [here](https://github.com/Dynatrace/davis-server/blob/master/demo/config.sample.js) to the root of your project then rename the config file from 'config.sample.js' to 'config.js'.
@@ -31,7 +31,7 @@ Please use the following sections as guidance and direction on how to get your D
 **Table of Contents**
 - [Accessing Davis](#default-davis-port--3000)
 - [NGINX Proxy](#optional-nginx-proxy)
-- [Mongo DSN](#mongo-db-dsn-entry)
+- [Mongo DSN](#mongodb-dsn-entry)
 - [Dynatrace API](#dynatrace-api)
 - [Watson Setup](#optional-watson-setup-more)
 - [Slack Setup](#optional-slack-setup-more)
@@ -100,7 +100,7 @@ Your other option is to download our Wit archive file (Zip) and import the file 
 ####(Optional) Watson Setup [More..](https://github.com/Dynatrace/davis-server/blob/master/setup/watson.md)
 ---
 
-*The IBM Watson Speech to Text service can be used anywhere there is a need to bridge the gap between the spoken word and its written form. This easy-to-use service uses machine intelligence to combine information about grammar and language structure with knowledge of the composition of an audio signal to generate an accurate transcription. The transcription of incoming audio is continuously sent back to the client with minimal delay, and it is corrected as more speech is heard.*
+The IBM Watson Speech to Text service can be used anywhere there is a need to bridge the gap between the spoken word and its written form. This easy-to-use service uses machine intelligence to combine information about grammar and language structure with knowledge of the composition of an audio signal to generate an accurate transcription. The transcription of incoming audio is continuously sent back to the client with minimal delay, and it is corrected as more speech is heard.
 
 You will need to obtain a Bluemix username, password, and token to be able to interact with the IBM Watson service that is powering the Speech To Text in the Web UI version of Davis. Navigate to [IBM Bluemix](https://console.ng.bluemix.net/) and create a free IBM Bluemix account. Click [here](https://github.com/Dynatrace/davis-server/blob/master/setup/watson.md) for further instructions.
 
@@ -123,7 +123,7 @@ Simply keep `enabled: false` if you don't plan on using voice within the web UI.
 ---
 ####(Optional) Slack Setup [More...](https://github.com/Dynatrace/davis-server/blob/master/setup/slack.md)
 ---
-*Slack brings all your communication together in one place. It's real-time messaging, archiving and search for modern teams. Bot users have many of the same qualities as their human counterparts: they have profile photos, names, and bios, they exist in the team directory, they can be direct messaged or mentioned, they can post messages and upload files, and they can be invited to and kicked out of channels and private groups.*
+Slack brings all your communication together in one place. It's real-time messaging, archiving and search for modern teams. Bot users have many of the same qualities as their human counterparts: they have profile photos, names, and bios, they exist in the team directory, they can be direct messaged or mentioned, they can post messages and upload files, and they can be invited to and kicked out of channels and private groups.
 
 We packed a lot of useful features into our Slack bot, but if you don't want to setup a Slack custom bot user this moment, please keep `enabled: false`. Click [here](https://github.com/Dynatrace/davis-server/blob/master/setup/slack.md) for further instructions on setting up a custom bot user.
 
@@ -156,7 +156,7 @@ We packed a lot of useful features into our Slack bot, but if you don't want to 
 ---
 ####(Optional) Echo Setup [More...](https://github.com/Dynatrace/davis-server/blob/master/setup/echo.md)
 ---
-*Amazon Echo is a hands-free speaker you control with your voice. Echo connects to the Alexa Voice Service to play music, provide information, news, sports scores, weather, and more—instantly. Wouldn't it be great to have your Echo provide you application and digital performance problems and updates? Assist you in finding the root cause of an Application problem? Wait no more! First, jump over to [Amazon.com](https://www.amazon.com/dp/B00X4WHP5E) and order yourself an Echo, Echo Tap, Echo DOT, or even a FireTV and follow the instructions [here](https://github.com/Dynatrace/davis-server/blob/master/setup/echo.md).*
+Amazon Echo is a hands-free speaker you control with your voice. Echo connects to the Alexa Voice Service to play music, provide information, news, sports scores, weather, and more—instantly. Wouldn't it be great to have your Echo provide you application and digital performance problems and updates? Assist you in finding the root cause of an Application problem? Wait no more! First, jump over to [Amazon.com](https://www.amazon.com/dp/B00X4WHP5E) and order yourself an Echo, Echo Tap, Echo DOT, or even a FireTV and follow the instructions [here](https://github.com/Dynatrace/davis-server/blob/master/setup/echo.md).
 
 
 ````javascript
