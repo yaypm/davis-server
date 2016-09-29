@@ -16,5 +16,3 @@ slack: {
         key: '<slack_token>'
     },
 ````
-**//TODO** Show some examples...
-
