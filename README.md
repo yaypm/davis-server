@@ -28,6 +28,7 @@ Please use the following sections as guidance and direction on how to get your D
 - [Accessing DAVIS](https://github.com/Dynatrace/davis-server#default-davis-port--3000)
 - [NGINX Proxy](https://github.com/Dynatrace/davis-server#optional-nginx-proxy)
 - [Mongo DSN](https://github.com/Dynatrace/davis-server#mongo-db-dsn-entry)
+- [Dynatrace API](https://github.com/Dynatrace/davis-server#dynatrace-api)
 - [Watson Setup](https://github.com/Dynatrace/davis-server#watson-setup-more)
 - [Slack Setup](https://github.com/Dynatrace/davis-server#slack-setup-more)
 - [Echo Setup](https://github.com/Dynatrace/davis-server#echo-setup-more)
@@ -65,7 +66,7 @@ Please use the following sections as guidance and direction on how to get your D
 ####Dynatrace API
 ---
 
-*Enter your Dynatrace URL and access token.*  The Dynatrace URL should look similar to 'https://qwerqwe.live.dynatrace.com' and the key can be created by logging into your environment and navigating to the following page <URL>/#settings/integration/apikeys.  The strict SSL option should be set to true in more instances.
+*Enter your Dynatrace URL and access token.*  The Dynatrace URL should look similar to 'https://davis-demo.live.dynatrace.com' and the key can be created by logging into your environment and navigating to the following page <URL>/#settings/integration/apikeys.  The strict SSL option should be set to true in more instances.
 
 ````javascript
     // The dynatrace URL and token
