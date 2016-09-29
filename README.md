@@ -29,9 +29,9 @@ Please use the following sections as guidance and direction on how to get your D
 - [NGINX Proxy](https://github.com/Dynatrace/davis-server#optional-nginx-proxy)
 - [Mongo DSN](https://github.com/Dynatrace/davis-server#mongo-db-dsn-entry)
 - [Dynatrace API](https://github.com/Dynatrace/davis-server#dynatrace-api)
-- [Watson Setup](https://github.com/Dynatrace/davis-server#watson-setup-more)
-- [Slack Setup](https://github.com/Dynatrace/davis-server#slack-setup-more)
-- [Echo Setup](https://github.com/Dynatrace/davis-server#echo-setup-more)
+- [Watson Setup](https://github.com/Dynatrace/davis-server#optional-watson-setup-more)
+- [Slack Setup](https://github.com/Dynatrace/davis-server#optional-slack-setup-more)
+- [Echo Setup](https://github.com/Dynatrace/davis-server#optional-echo-setup-more)
 - [Defining Users](https://github.com/Dynatrace/davis-server#users)
 
 ---
@@ -66,7 +66,7 @@ Please use the following sections as guidance and direction on how to get your D
 ####Dynatrace API
 ---
 
-*Enter your Dynatrace URL and access token.*  The Dynatrace URL should look similar to 'https://davis-demo.live.dynatrace.com' and the key can be created by logging into your environment and navigating to the following page <URL>/#settings/integration/apikeys.  The strict SSL option should be set to true in more instances.
+*Enter your Dynatrace URL and access token.*  The Dynatrace URL should look similar to 'https://davis-demo.live.dynatrace.com' and the key can be created by logging into your environment and navigating to the following page https&#58;//{Your Dynatrace Domain Name}/#settings/integration/apikeys.  The strict SSL option should be set to true in more instances.
 
 ````javascript
     // The dynatrace URL and token
@@ -113,7 +113,7 @@ Simply keep watson set to false if you don't plan on using voice with the WebUI.
     }
 ````
 ---
-####Slack Setup [More...](https://github.com/Dynatrace/davis-server/blob/master/setup/slack.md)
+####(Optional) Slack Setup [More...](https://github.com/Dynatrace/davis-server/blob/master/setup/slack.md)
 ---
 **Slack**: Be Less Busy; Brings all your communication together in one place. It's real-time messaging, archiving and search for modern teams. Bot users have many of the same qualities as their human counterparts: they have profile photos, names, and bios, they exist in the team directory, they can be direct messaged or mentioned, they can post messages and upload files, and they can be invited to and kicked out of channels and private groups.
 
@@ -146,7 +146,7 @@ DAVIS isn't just voice, it's an ecosystem. Follow the steps below to integrate D
 ![](https://s3.amazonaws.com/davis-project/docs/davis-slack-examples.png)
 
 ---
-####Echo Setup [More...](https://github.com/Dynatrace/davis-server/blob/master/setup/echo.md)
+####(Optional) Echo Setup [More...](https://github.com/Dynatrace/davis-server/blob/master/setup/echo.md)
 
 Amazon Echo is a hands-free speaker you control with your voice. Echo connects to the Alexa Voice Service to play music, provide information, news, sports scores, weather, and more—instantly. Wouldn't it be great to have your Echo provide you application and digital performance problems and updates? Assist you in finding the root cause of an Application problem? Wait no more! First, jump over to [Amazon.com](https://www.amazon.com/dp/B00X4WHP5E) and order yourself an Echo, Echo Tap, Echo DOT, or even a FireTV and follow the instructions [here](https://github.com/Dynatrace/davis-server/blob/master/setup/echo.md).
 
@@ -166,7 +166,7 @@ Amazon Echo is a hands-free speaker you control with your voice. Echo connects t
 When configuring an Echo user you will need to manually set the Canonical time zone of the Echo device being used.  You can find a list of valid Canonical IDs [here](http://joda-time.sourceforge.net/timezones.html).
 
 ---
-####Aliases and Friendly Names
+####(Optional) Aliases and Friendly Names
 
 Dynatrace is really good at understanding the architecture of your application right out of the box. It automatically names applications, services and instances based on a number of factors. While this is great, it doesn't always look or sound that nice when DAVIS uses the raw value in it's response.  However, you can assist DAVIS’s pronunciation of these assets with configurable aliases.
 
@@ -174,7 +174,7 @@ For example:
 
 Application Server - 0000001 can be renamed Application Server One.
 
-You will find a placeholder configuration near the bottom of the [config.js](https://github.com/Dynatrace/davis-server/blob/master/demo/config.sample.js) you downloaded in a previous set.  The name should be the same as what you see in Dynatrace.  Audible and visual as used automatically when creating the response.  The aliases array is used to help match a received input.  Typically this would be useful when attempting to match a spoken phrase with an entity found in Dynatrace.  For example, you may have an application named easyTravel.  However, Alexa and Watson will hear that as easy travel.  Having easy travel in the alias array would help match that phrase with the appropriate entity.
+You will find a placeholder configuration near the bottom of the [config.js](https://github.com/Dynatrace/davis-server/blob/master/demo/config.sample.js) you downloaded in a previous set.  The name should be the same as what you see in Dynatrace.  Audible and visual are used automatically when creating the response.  The aliases array is used to help match a received input.  Typically this would be useful when attempting to match a spoken phrase with an entity found in Dynatrace.  For example, you may have an application named easyTravel.  However, Alexa and Watson will hear that as easy travel.  Having easy travel in the alias array would help match that phrase with the appropriate entity.
 
 ````javascript
 
@@ -213,7 +213,8 @@ You will find a placeholder configuration near the bottom of the [config.js](htt
 OK, now that you've made it this far, it's time for the fun part.  Create or open index.js at the root of your project.  Now paste in the following code:
 
 ````javascript
-
+    "use strict"
+    
     const DavisServer = require('davis-server'),
 
     try {
