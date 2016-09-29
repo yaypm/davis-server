@@ -1,5 +1,0 @@
-Custom Integration
-
-Webhook URL: {Davis URL}/api/v1/events/problems
-
-Payload: {"PID":"{PID}","ProblemID":"{ProblemID}","State":"{State}","ProblemImpact":"{ProblemImpact}","ProblemURL":"{ProblemURL}","ImpactedEntity":"{ImpactedEntity}","Tags":"{Tags}"}

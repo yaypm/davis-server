@@ -16,3 +16,6 @@ slack: {
         key: '<slack_token>'
     },
 ````
+
+
+Click Click [here](https://github.com/Dynatrace/davis-server/blob/master/setup/slack-push.md)  to learn how you can configure Push notifications in Slack.
