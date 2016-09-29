@@ -5,9 +5,6 @@ Welcome to Davis! Providing several new mediums for interacting with Dynatrace, 
 
 ---
 ####Prerequisites:
----
-
- 
 
 **Node.js** (4.x or newer) installed
 
@@ -15,7 +12,6 @@ Welcome to Davis! Providing several new mediums for interacting with Dynatrace, 
 
 ---
 #####Initialize Davis
----
 
 1. Make a new directory ````mkdir dynatrace-davis```` on your server for Davis to reside within
 2. Run ````npm init ```` from the command line and give your project a unique name
@@ -42,7 +38,6 @@ Please use the following sections as guidance and direction on how to get your D
 
 ---
 ####Accessing Davis
----
 
 `3000` is the default port that Davis will be available on. Set this to a desired port (Default Node.js is `3000`). Davis needs to be a secure endpoint so you will need to determine how you would like to do this. We prefer an AWS Elastic Load balancer that can handle both a listening port, redirection, and HTTPS. We have chosen AWS's Elastic Beanstalk service to host Davis where ELB is a native and out of the box configuration.
 
@@ -52,13 +47,11 @@ Please use the following sections as guidance and direction on how to get your D
 ````
 ---
 ####(Optional) NGINX Proxy
----
 
 You can install a NGINX reverse proxy and a self signed certificate for advanced routing, e.g. you could have more than one Davis instance on the same server.
 
 ---
 ####MongoDB DSN Entry
----
 
 Once you have your Mongo Database configured and have either an IP or FQDN available, replace the `<mongodb_database_dsn>` parameter with the one you obtained.
 
@@ -70,7 +63,6 @@ Once you have your Mongo Database configured and have either an IP or FQDN avail
 ````
 ---
 ####Dynatrace API
----
 
 Enter your Dynatrace URL and access token in `config.js`. The URL should look similar to `https://qwerqwe.live.dynatrace.com` and the key can be created by logging into your environment and navigating to the following page `https://<Your-Dynatrace-Domain-Name>/#settings/integration/apikeys`.  The strict SSL option should be set to true in most instances.
 
@@ -87,7 +79,7 @@ Enter your Dynatrace URL and access token in `config.js`. The URL should look si
 
 ---
 ####Wit Token
----
+
 Currently, you have two options when it comes to using Wit for [NLP](https://en.wikipedia.org/wiki/Natural_language_processing) intent recognition.  The first one is simply using our client token **`6XTDF735VR2KUDVYTEOZZLIWHYOTDJXX`**, which can be added to the configuration and used immediately. 
 
 Your other option is to download our Wit archive file (Zip) and import the file into a new Wit application, which allows full control over the phrases that trigger each intent. Once your app is created, you can find your client token on the Settings page.
@@ -97,8 +89,9 @@ Your other option is to download our Wit archive file (Zip) and import the file 
         wit: '<wit_token>'
     }
 ````
-####(Optional) Watson Setup [More..](https://github.com/Dynatrace/davis-server/blob/master/setup/watson.md)
 ---
+####(Optional) Watson Setup [More..](https://github.com/Dynatrace/davis-server/blob/master/setup/watson.md)
+
 
 The IBM Watson Speech to Text service can be used anywhere there is a need to bridge the gap between the spoken word and its written form. This easy-to-use service uses machine intelligence to combine information about grammar and language structure with knowledge of the composition of an audio signal to generate an accurate transcription. The transcription of incoming audio is continuously sent back to the client with minimal delay, and it is corrected as more speech is heard.
 
@@ -122,7 +115,7 @@ Simply keep `enabled: false` if you don't plan on using voice within the web UI.
 ````
 ---
 ####(Optional) Slack Setup [More...](https://github.com/Dynatrace/davis-server/blob/master/setup/slack.md)
----
+
 Slack brings all your communication together in one place. It's real-time messaging, archiving and search for modern teams. Bot users have many of the same qualities as their human counterparts: they have profile photos, names, and bios, they exist in the team directory, they can be direct messaged or mentioned, they can post messages and upload files, and they can be invited to and kicked out of channels and private groups.
 
 We packed a lot of useful features into our Slack bot, but if you don't want to setup a Slack custom bot user this moment, please keep `enabled: false`. Click [here](https://github.com/Dynatrace/davis-server/blob/master/setup/slack.md) for further instructions on setting up a custom bot user.
@@ -155,7 +148,7 @@ We packed a lot of useful features into our Slack bot, but if you don't want to 
 
 ---
 ####(Optional) Echo Setup [More...](https://github.com/Dynatrace/davis-server/blob/master/setup/echo.md)
----
+
 Amazon Echo is a hands-free speaker you control with your voice. Echo connects to the Alexa Voice Service to play music, provide information, news, sports scores, weather, and more—instantly. Wouldn't it be great to have your Echo provide you application and digital performance problems and updates? Assist you in finding the root cause of an Application problem? Wait no more! First, jump over to [Amazon.com](https://www.amazon.com/dp/B00X4WHP5E) and order yourself an Echo, Echo Tap, Echo DOT, or even a FireTV and follow the instructions [here](https://github.com/Dynatrace/davis-server/blob/master/setup/echo.md).
 
 
@@ -176,7 +169,7 @@ When configuring an Echo user you will need to manually set the Canonical time z
 
 ---
 ####(Optional) Aliases and Friendly Names
----
+
 Dynatrace is really good at understanding the architecture of your application right out of the box. It automatically names applications, services and instances based on a number of factors. While this is great, it doesn't always look or sound that nice when Davis uses the raw value in it's response.  However, you can assist Davis’s pronunciation of these assets with configurable aliases.
 
 
@@ -213,10 +206,9 @@ You will find a placeholder configuration near the bottom of the [config.js](htt
         }]
     }
 ````
-
 ---
 ####Install and Start Davis Server
----
+
 OK, now that you've made it this far, it's time for the fun part! Create a file named index.js at the root of your project and paste in the following:
 
 ````javascript
@@ -238,4 +230,3 @@ You should simply be able to run:
 ````bash
     node ./index.js
 ````
----
