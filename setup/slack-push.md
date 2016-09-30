@@ -16,17 +16,16 @@ l. login to https://signin.dynatrace.com
 5. Name your new integration
 6. Define the Webhook URL.  For example, https&#58;//{Your Davis URL}/api/v1/events/problems
 7. Replace the custom JSON payload section with:
-<code>
-{
-    "PID":"{PID}",
-    "ProblemID":"{ProblemID}",
-    "State":"{State}",
-    "ProblemImpact":"{ProblemImpact}",
-    "ProblemURL":"{ProblemURL}",
-    "ImpactedEntity":"{ImpactedEntity}",
-    "Tags":"{Tags}"
-}
-</code>
+    ```
+    {
+        "PID":"{PID}",
+        "ProblemID":"{ProblemID}",
+        "State":"{State}",
+        "ProblemImpact":"{ProblemImpact}",
+        "ProblemURL":"{ProblemURL}",
+        "ImpactedEntity":"{ImpactedEntity}",
+        "Tags":"{Tags}"
+    }```
 8. Enable all notification levels
 9. Click "Test"
 10. Click "Save"

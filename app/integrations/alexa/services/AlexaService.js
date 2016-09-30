@@ -22,7 +22,7 @@ module.exports = function AlexaService(config) {
      */
     function getUser(req) {
         logger.info('Attempting to get a user');
-        const requestingUser = _.get(req, 'session.user.userId')
+        const requestingUser = _.get(req, 'session.user.userId');
         const user = _.find(config.alexa, _.matchesProperty('id', requestingUser));
         if (user) {
             return {
@@ -37,7 +37,6 @@ module.exports = function AlexaService(config) {
             };
         } else {
             logger.warn(`Rejecting request from Alexa using the id '${requestingUser}'.`);
-            return;
         }
     }
 
