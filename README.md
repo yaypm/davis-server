@@ -49,7 +49,7 @@ You can install a NGINX reverse proxy and a self signed certificate for advanced
 
 ##MongoDB DSN Entry
 
-Once you have your Mongo Database configured and have either an IP or FQDN available, replace the `<mongodb_database_dsn>` parameter with the one you obtained.
+Once you have your Mongo database configured and have either an IP or FQDN available, replace the `<mongodb_database_dsn>` parameter with the one you obtained.
 
 ````javascript
     // MongoDB connection string. For example, '127.0.0.1:27017/davis'

@@ -7,7 +7,7 @@ Go to **[#Slack](https://api.slack.com/bot-users)** and start to create your dav
 
 *Note the warning from Slack
 
-Once you have obtained a token apply it in your configuration file.
+Once you have obtained a token, apply it in your configuration file.
 
 ````javascript
 
