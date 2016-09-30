@@ -8,7 +8,7 @@ const express = require('express'),
     favicon = require('serve-favicon'),
     routes = require('./routes/index'),
     logger = require('./utils/logger'),
-    version = require('./utils/version'),
+    // version = require('./utils/version'),
     mongoose = require('mongoose');
 
 module.exports = {
@@ -43,10 +43,10 @@ module.exports = {
         /**
          * Getting Git version
          */
-        version.init()
-            .then( () => {
-                logger.info('Successfully got Git version');
-            });
+        // version.init()
+        //     .then( () => {
+        //         logger.info('Successfully got Git version');
+        //     });
 
         /**
          * Starting slackbot

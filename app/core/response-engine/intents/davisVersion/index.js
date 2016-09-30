@@ -6,14 +6,15 @@ const BbPromise = require('bluebird'),
     intents = require('../'),
     responseBuilder = require('../../response-builder'),
     tagger = require('./tagger'),
-    logger = require('../../../../utils/logger'),
-    version = require('../../../../utils/version');
+    logger = require('../../../../utils/logger');
+    // version = require('../../../../utils/version');
 
 
 const process = function process(davis) {
     return new BbPromise((resolve, reject) => {
-        if (version.initialized) {
-            davis.version = version;
+        if (false) {
+        // if (version.initialized) {
+        //    davis.version = version;
             let tags = tagger.tag(davis);
             const decide = new Decide(decision_model);
             const decision = decide.predict(tags);
