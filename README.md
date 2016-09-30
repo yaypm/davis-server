@@ -19,8 +19,8 @@ Welcome to Davis! Providing several new mediums for interacting with Dynatrace, 
     2. Navigate to the settings page
     3. Select "Personal access tokens" under Developer settings
     4. Create a Davis token with "repo - Full control of private repositories"
-    5. Security write down your token
-5. Add The following to your package.json, right above the license section
+    5. Securely write down your token
+5. Add The following to your package.json, right above the license section.
     ```
       "dependencies": {
         "dynatrace-davis": "git+https://{REPLACE WITH OAUTH TOKEN FROM STEP 4}:x-oauth-basic@github.com/Dynatrace/davis-server.git"
