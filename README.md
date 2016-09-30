@@ -19,13 +19,15 @@ Welcome to Davis! Providing several new mediums for interacting with Dynatrace, 
     2. Navigate to the settings page
     3. Select "Personal access tokens" under Developer settings
     4. Create a Davis token with "repo - Full control of private repositories"
-    5. Security write down your token
+    5. Securely write down your token
 5. Add The following to your package.json, right above the license section
+
     ```
       "dependencies": {
         "dynatrace-davis": "git+https://{REPLACE WITH OAUTH TOKEN FROM STEP 4}:x-oauth-basic@github.com/Dynatrace/davis-server.git"
       },
     ```
+
 6. Run ````npm install````
 
 Before you initialize Davis you need to configure a few custom parameters for your environments. Download a sample configuration from [here](https://github.com/Dynatrace/davis-server/blob/master/demo/config.sample.js) to the root of your project then rename the config file from 'config.sample.js' to 'config.js'.
@@ -59,7 +61,7 @@ You can install a NGINX reverse proxy and a self signed certificate for advanced
 
 ##MongoDB DSN Entry
 
-Once you have your Mongo Database configured and have either an IP or FQDN available, replace the `<mongodb_database_dsn>` parameter with the one you obtained.
+Once you have your Mongo database configured and have either an IP or FQDN available, replace the `<mongodb_database_dsn>` parameter with the one you obtained.
 
 ````javascript
     // MongoDB connection string. For example, '127.0.0.1:27017/davis'
@@ -211,9 +213,9 @@ You will find a placeholder configuration near the bottom of the [config.js](htt
 OK, now that you've made it this far, it's time for the fun part! Create a file named index.js at the root of your project and paste in the following:
 
 ````javascript
-    "use strict"
+    "use strict";
     
-    const DavisServer = require('dynatrace-davis'),
+    const DavisServer = require('dynatrace-davis');
 
     try {
         const davisServer = new DavisServer(require('./config'));
