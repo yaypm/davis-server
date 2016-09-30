@@ -16,9 +16,9 @@ const process = function process(davis) {
     return new BbPromise((resolve, reject) => {
         const dynatrace = new Dynatrace(davis.user.dynatrace.url, davis.user.dynatrace.token, davis.config, davis.user.dynatrace.strictSSL);
 
-        // Creating a one week time range
+        // Creating a time range that covers the last few days.
         const timeRange = {
-            startTime: moment().subtract(1, 'weeks'),
+            startTime: moment().subtract(3, 'days'),
             stopTime: moment().format()
         };
 

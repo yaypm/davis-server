@@ -11,12 +11,22 @@ Welcome to Davis! Providing several new mediums for interacting with Dynatrace, 
 
 ##Initialize Davis
 
-1. Make a new directory ````mkdir dynatrace-davis```` on your server for Davis to reside within
-2. Run ````npm init ```` from the command line and give your project a unique name
-3. *(Optional)* Version
-4. *(Optional)* Description
-5. Entry Point: `index.js`, we will create this file later
-6. Git Repository: `https://<username>@github.com/Dynatrace/davis-server.git#master`, replace `<username>` with your GitHub username
+1. Make a new directory ````mkdir davis```` on your server for Davis to reside within
+2. Navigate into the new directory ````cd davis````
+3. Run ````npm init ```` and accept the defaults
+4. Configure OAuth for your GitHub user
+    1. Login to GitHub
+    2. Navigate to the settings page
+    3. Select "Personal access tokens" under Developer settings
+    4. Create a Davis token with "repo - Full control of private repositories"
+    5. Security write down your token
+5. Add The following to your package.json, right above the license section
+    ```
+      "dependencies": {
+        "dynatrace-davis": "git+https://{REPLACE WITH OAUTH TOKEN FROM STEP 4}:x-oauth-basic@github.com/Dynatrace/davis-server.git"
+      },
+    ```
+6. Run ````npm install````
 
 Before you initialize Davis you need to configure a few custom parameters for your environments. Download a sample configuration from [here](https://github.com/Dynatrace/davis-server/blob/master/demo/config.sample.js) to the root of your project then rename the config file from 'config.sample.js' to 'config.js'.
 
@@ -203,7 +213,7 @@ OK, now that you've made it this far, it's time for the fun part! Create a file 
 ````javascript
     "use strict"
     
-    const DavisServer = require('davis-server'),
+    const DavisServer = require('dynatrace-davis'),
 
     try {
         const davisServer = new DavisServer(require('./config'));
