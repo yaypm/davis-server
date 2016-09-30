@@ -9,11 +9,11 @@
 7. Create a new security group and keep the default SSH rule
 8. Click `New Rule` and set the new row to `Custom TCP Rule` with a port range of `27017` (default for MongoDB) and source set to your security group ID
 9. Use an existing PEM key or create a new one
-10. Create Elastic IP for Mongo EC2 instance
-11. Associate Elastic IP to Mongo EC2 instance
-12. Create Route53 Entry for Mongo EC2 instance for your domain, e.g. `davis-mongo.<hosted-zone>.<domain-register>`
+10. Create Elastic IP for MongoDB EC2 instance
+11. Associate Elastic IP to MongoDB EC2 instance
+12. Create Route53 Entry for MongoDB EC2 instance for your domain, e.g. `davis-mongo.<hosted-zone>.<domain-register>`
 
-For the latest stable release of MongoDB Do the following:
+To install the latest stable release of MongoDB, enter the following in the Linux terminal:
 
 **Shell**
 
@@ -24,7 +24,7 @@ baseurl=http://downloads-distro.mongodb.org/repo/redhat/os/x86_64
 gpgcheck=0" | sudo tee -a /etc/yum.repos.d/10gen.repo
 ```
 
-> First, add an entry to the local yum repository for MondoDB
+> First, add an entry to the local yum repository for MongoDB
 
 **Shell**
 
