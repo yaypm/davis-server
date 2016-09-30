@@ -1,6 +1,6 @@
-**Push notification in Slack**
+**Push Notifications in Slack**
 
-It's possible to route Dynatrace problem notifications through Davis.  This is handy because it allows you to easily define what channels receive what notifications.
+It's possible to route Dynatrace problem notifications through Davis. The `notification` configuration options allow you to easily define what channels receive notifications and what types of notifications they receive.
 
 *Prerequisites*
 - Your Dynatrace environment must be able to communicate with your Davis server.
@@ -32,9 +32,9 @@ l. login to https://signin.dynatrace.com
 
 *Configuring Davis to route problems to Slack*
 
-Take a look at the config.js file at the root of your project.  There is a slack section with some skeleton notification configurations.
+Take a look at the `config.js` file at the root of your project.  There is a `slack` section with some skeleton notification configurations.
 
-It should looke similar to this:
+It should look similar to this:
 ````javascript
     // The Slack bot token can be created on the apps and integrations page
     slack: {
@@ -61,7 +61,7 @@ It should looke similar to this:
 
 Notice that channels is an array.  You can add a number of different channels to this list and filter them in any way you like.
 
-The slack channel name can be any channel that Davis has been invited to.  Please to not include the pound # symbol when defining a channel name. 
+The Slack channel name can be any channel that Davis has been invited to.  Please to not include the pound # symbol when defining a channel name. 
 
 Now all you need to do remove values from the state and impact arrays if you aren't interested in problems that fall under those categories.
 
