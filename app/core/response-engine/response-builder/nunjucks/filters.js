@@ -174,11 +174,12 @@ const filters = function(env, aliases) {
     /**
      * Build the url for viewing an event in the platform 
      * @param {Object} event
+     * @param {Object} problem
      * @param {Object} user
      * @return {String} urlUtil.event()
      */
-    env.addFilter('buildEventUrl', function(event, user) {
-        return buildEventUrl(event, user);
+    env.addFilter('buildEventUrl', function(event, problem, user) {
+        return buildEventUrl(event, problem, user);
     });
     
 };
@@ -290,8 +291,8 @@ function buildProblemsUrl(problems, user) {
     return urlUtil.problems(user);
 }
 
-function buildEventUrl(event, user) {
-    return urlUtil.event(event, user);
+function buildEventUrl(event, problem, user) {
+    return urlUtil.event(event, problem, user);
 }
 
 module.exports = filters;

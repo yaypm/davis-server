@@ -100,7 +100,7 @@ describe('Tests the filters available in the response engine', function() {
                 dynatrace: {
                     url: 'https://demo.live.dynatrace.com'
                 }
-            }
+            };
             let str = buildProblemsUrl(problems, user);
             expect(str).to.equal('https://demo.live.dynatrace.com/#problems');
         });
@@ -112,12 +112,12 @@ describe('Tests the filters available in the response engine', function() {
         it('should have the problem id in the tenant url', function() {
             let problem = {
                 id: '-2968663214739407461'
-            }
+            };
             let user = {
                 dynatrace: {
                     url: 'https://demo.live.dynatrace.com'
                 }
-            }
+            };
             let str = buildProblemUrl(problem, user);
             expect(str).to.equal('https://demo.live.dynatrace.com/#problems;filter=watched/problemdetails;pid=-2968663214739407461');
         });
@@ -129,14 +129,17 @@ describe('Tests the filters available in the response engine', function() {
         it('should have the event entityId in the tenant url', function() {
             let event = {
                 entityId: 'PROCESS_GROUP_INSTANCE-3ABDB501EFC8C4A4'
-            }
+            };
+            let problem = {
+                id: '-2968663214739407461'
+            };
             let user = {
                 dynatrace: {
                     url: 'https://demo.live.dynatrace.com'
                 }
-            }
-            let str = buildEventUrl(event, user);
-            expect(str).to.equal('https://demo.live.dynatrace.com/#processdetails;id=PROCESS_GROUP_INSTANCE-3ABDB501EFC8C4A4');
+            };
+            let str = buildEventUrl(event, problem, user);
+            expect(str).to.equal('https://demo.live.dynatrace.com/#processdetails;id=PROCESS_GROUP_INSTANCE-3ABDB501EFC8C4A4;pid=-2968663214739407461');
         });
     });
 });

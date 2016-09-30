@@ -2,7 +2,7 @@
     "fallback": "{{ loop.index }}. {{ event.eventType | friendlyEventFirstAlias | makeTitle(false) }}\nImpacted: {{ event | friendlyEntityName | makeTitle(false) }}\n{% if event.status == 'OPEN' %}Unresolved{% else %}Resolved - {{ event.endTime | time(user) }}{% endif %}",
     "color": "{% if event.status == 'OPEN' %}#dc172a{% else %}#7dc540{% endif %}",
     "title": "{{ loop.index }}. {{ event.eventType | friendlyEventFirstAlias | makeTitle(false) }}",
-    "title_link": "{{event | buildEventUrl(user)}}",
+    "title_link": "{{event | buildEventUrl(problem, user)}}",
     "fields": [
         {
             "title": "Impacted",

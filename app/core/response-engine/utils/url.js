@@ -19,10 +19,17 @@ const url = {
      * @returns {string} - URL
      */
     topImpactURL: (user, problem) => {
+        
         // Problem details have rankedEvents and problem summaries have rankedImpacts
         let event = (problem.rankedEvents) ? problem.rankedEvents[0] : problem.rankedImpacts[0];
-        return (locations[event.entityId.split('_')[0]]) ? `${user.dynatrace.url}/${locations[event.entityId.split('_')[0]]}=${event.entityId};pid=${problem.id}` 
-                                           : `${user.dynatrace.url}/#problems;filter=watched/problemdetails;pid=${problem.id}`;
+                                           
+        for (var location in locations) {
+            if (event.entityId.includes(location)) {
+                return `${user.dynatrace.url}/${locations[location]}=${event.entityId};pid=${problem.id}`;
+            }   
+        }
+         
+        return `${user.dynatrace.url}/#problems;filter=watched/problemdetails;pid=${problem.id}`;
     },
     
     problems: (user) => {
@@ -33,9 +40,15 @@ const url = {
         return `${user.dynatrace.url}/#problems;filter=watched/problemdetails;pid=${problem.id}`;
     },
     
-    event: (event, user) => {
-        return (locations[event.entityId.split('_')[0]]) ? `${user.dynatrace.url}/${locations[event.entityId.split('_')[0]]}=${event.entityId}` 
-                                           : `${user.dynatrace.url}/#problems`;
+    event: (event, problem, user) => {
+        
+        for (var location in locations) {
+            if (event.entityId.includes(location)) {
+                return `${user.dynatrace.url}/${locations[location]}=${event.entityId};pid=${problem.id}`;
+            }   
+        }
+         
+        return `${user.dynatrace.url}/#problems`;
     }
 
 };
