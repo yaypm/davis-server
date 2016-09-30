@@ -39,7 +39,7 @@ module.exports = function WatsonService(config) {
                         return resolve(token);
                     });
                 } else {
-                    reject(new Error('Watson disabled in demo/config.js'));
+                    reject(new Error('Watson disabled in config.js'));
                 }
             });
         },
@@ -53,7 +53,7 @@ module.exports = function WatsonService(config) {
                         return resolve(token);
                     });
                 } else {
-                    reject(new Error('Watson disabled in demo/config.js'));
+                    reject(new Error('Watson disabled in config.js'));
                 }
             });
         }
