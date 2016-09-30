@@ -213,9 +213,9 @@ You will find a placeholder configuration near the bottom of the [config.js](htt
 OK, now that you've made it this far, it's time for the fun part! Create a file named index.js at the root of your project and paste in the following:
 
 ````javascript
-    "use strict"
+    "use strict";
     
-    const DavisServer = require('dynatrace-davis'),
+    const DavisServer = require('dynatrace-davis');
 
     try {
         const davisServer = new DavisServer(require('./config'));
