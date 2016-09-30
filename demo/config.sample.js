@@ -76,7 +76,7 @@ const config = {
      *      name - The name found in Dynatrace
      *      display:
      *          audible - How Davis will audibly respond
-     *          visual - How Davis will visual respond
+     *          visual - How Davis will visually respond
      *      aliases - An array of alternate ways someone might refer to this entity
      */
     aliases: {
