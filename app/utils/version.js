@@ -14,8 +14,8 @@ const version = {
         return new BbPromise( (resolve, reject) => {
             git.getBranch()
                 .then( result => {
-                   version.branch = result; 
-                   return git.getTag();
+                    version.branch = result;
+                    return git.getTag();
                 })
                 .then( result => {
                     version.tag = result;
