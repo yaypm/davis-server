@@ -19,13 +19,15 @@ Welcome to Davis! Providing several new mediums for interacting with Dynatrace, 
     2. Navigate to the settings page
     3. Select "Personal access tokens" under Developer settings
     4. Create a Davis token with "repo - Full control of private repositories"
-    5. Security write down your token
+    5. Securely write down your token
 5. Add The following to your package.json, right above the license section
+
     ```
       "dependencies": {
         "dynatrace-davis": "git+https://{REPLACE WITH OAUTH TOKEN FROM STEP 4}:x-oauth-basic@github.com/Dynatrace/davis-server.git"
       },
     ```
+
 6. Run ````npm install````
 
 Before you initialize Davis you need to configure a few custom parameters for your environments. Download a sample configuration from [here](https://github.com/Dynatrace/davis-server/blob/master/demo/config.sample.js) to the root of your project then rename the config file from 'config.sample.js' to 'config.js'.
