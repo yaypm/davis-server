@@ -24,7 +24,7 @@ baseurl=http://downloads-distro.mongodb.org/repo/redhat/os/x86_64
 gpgcheck=0" | sudo tee -a /etc/yum.repos.d/10gen.repo
 ```
 
-> First add an entry to the local yum repository for MondoDB
+> First, add an entry to the local yum repository for MondoDB
 
 **Shell**
 
@@ -32,7 +32,7 @@ gpgcheck=0" | sudo tee -a /etc/yum.repos.d/10gen.repo
 sudo yum -y install mongo-10gen-server mongodb-org-shell
 ```
 
-> You must respect jump of lines in the previous code Next, install
+> You must respect the jump of lines in the previous code. Next, install
 > MongoDB and the sysstat diagnostic tools:
 
 **Shell**
@@ -61,8 +61,7 @@ sudo chown mongod:mongod /var/lib/mongo/davis
 > Set the MongoDB service to start at boot and activate it:
 > 
 > When starting for the first time, it will take a couple of seconds for
-> MongoDB to start, setup it’s storage and become available. Once it is,
-> you should be able to connect to it from within your instance:
+> MongoDB to start.
 
 **Shell**
 
