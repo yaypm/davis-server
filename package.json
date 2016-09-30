@@ -1,17 +1,29 @@
 {
-  "name": "davis-server",
+  "name": "dynatrace-davis",
   "version": "0.1.0",
   "description": "Davis Server",
   "main": "./DavisServer",
-  "repository": "https://github.com/ruxit/davis-server",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Dynatrace/davis-server"
+  } ,
   "author": "",
   "engines": {
-    "node": "6.2.2"
+    "node": ">= 4.0.0"
   },
   "scripts": {
     "start": "node ./demo/index.js",
     "test": "mocha --recursive ./test/"
   },
+  "keywords": [
+    "dynatrace",
+    "davis",
+    "slack",
+    "alexa",
+    "bot",
+    "witai"
+  ],
+  "license": "MIT",
   "dependencies": {
     "bluebird": "^3.4.0",
     "body-parser": "^1.15.1",
