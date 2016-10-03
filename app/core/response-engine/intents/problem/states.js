@@ -42,7 +42,7 @@ const state = {
             next: {
                 multipleChoice: 'problemDetails',
                 send: null,
-                yes: 'problemDetails',
+                yes: 'multipleChoice',
                 no: null
             }
         };
@@ -58,7 +58,7 @@ const state = {
             next: {
                 multipleChoice: 'problemDetails',
                 send: null,
-                yes: 'problemDetails',
+                yes: 'multipleChoice',
                 no: null
             }
         };

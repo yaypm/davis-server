@@ -112,7 +112,7 @@ module.exports = function SlackService(config) {
                     .catch(err => {
                         logger.error(`Unfortunately, something went wrong.  ${err.message}`);
                         //ToDo Add failure response
-                        return reject(err.message);
+                        return reject(err);
                     });
             });
             
