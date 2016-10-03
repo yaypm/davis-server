@@ -4,7 +4,7 @@ const logger = require('../../../utils/logger');
 
 const locations = {
         SYNTHETIC: '#monitors/webcheckdetail;webcheckId',
-        HOST: '#hosts/hostdetails;id',
+        HOST: '#hostdetails;id',
         APPLICATION: '#uemappmetrics;uemapplicationId',
         SERVICE: '#services/servicedetails;id',
         PROCESS: '#processdetails;id',
@@ -44,7 +44,7 @@ const url = {
         
         for (var location in locations) {
             if (event.entityId.includes(location)) {
-                return `${user.dynatrace.url}/${locations[location]}=${event.entityId};pid=${problem.id}`;
+                return `${user.dynatrace.url}/${locations[location]}=${event.entityId};gtf=p_${problem.id};pid=${problem.id}`;
             }   
         }
          

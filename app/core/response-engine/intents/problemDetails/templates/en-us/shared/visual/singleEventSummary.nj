@@ -1,17 +1,17 @@
 {
-    "fallback": "{{ event.eventType | friendlyEventFirstAlias | makeTitle(false) }}\nImpacted: {{ event | friendlyEntityName | makeTitle(false) }}\n{% if event.status == 'OPEN' %}Unresolved{% else %}Resolved - {{ event.endTime | time(user) }}{% endif %}",
+    "fallback": "{{ event.eventType | friendlyEventFirstAlias | toTitleCase | replace("A ", "") | friendlyPronunciations("visual") }}\nImpacted: {{ event | friendlyEntityName("visual") }}\n{% if event.status == 'OPEN' %}Unresolved{% else %}Resolved - {{ event.endTime | time(user, "visual") }}{% endif %}",
     "color": "{% if event.status == 'OPEN' %}#dc172a{% else %}#7dc540{% endif %}",
-    "title": "{{ event.eventType | friendlyEventFirstAlias | makeTitle(false) }}",
+    "title": "{{ event.eventType | friendlyEventFirstAlias | toTitleCase | replace("A ", "") | friendlyPronunciations("visual") }}",
     "title_link": "{{event | buildEventUrl(problem, user)}}",
     "fields": [
         {
             "title": "Impacted",
-            "value": "{{ event | friendlyEntityName | makeTitle(false) }}",
+            "value": "{{ event | friendlyEntityName("visual") }}",
             "short": "true"
         },
         {
             "title": "Status",
-            "value": "{% if event.status == 'OPEN' %}Unresolved{% else %}Resolved - {{ event.endTime | time(user) | capitalizeFirstChar }}{% endif %}",
+            "value": "{% if event.status == 'OPEN' %}Unresolved{% else %}Resolved - {{ event.endTime | time(user, "visual") | capitalize }}{% endif %}",
             "short": "true"
         }
     ]

@@ -4,7 +4,9 @@ const moment = require('moment-timezone'),
     _ = require('lodash'),
     S = require('string'),
     nlp = require('nlp_compromise'),
+    toTitleCase = require('to-title-case'),
     urlUtil = require('../../utils/url'),
+    pronunciation = require('../../utils/pronunciation'),
     logger = require('../../../../utils/logger'),
     events = require('../../../../config/internal-aliases');
 
@@ -21,11 +23,10 @@ const filters = function(env, aliases) {
     /**
      * Entity's alias if one exists under demo/aliases/
      * @param {Object} entity
-     * @param {String} displayName - undefined, 'audible' or 'visual'
+     * @param {String} displayType - undefined, 'audible' or 'visual'
      * @return {String} getFriendlyEntityName()
      */
     env.addFilter('friendlyEntityName', function(entity, displayType) {
-        //ToDo overhaul this logic
         displayType = displayType || 'audible';
         return getFriendlyEntityName(aliases, getEntityType(entity), entity.entityName, displayType);
     });
@@ -33,7 +34,7 @@ const filters = function(env, aliases) {
     /**
      * Entity's alias if one exists under demo/aliases/applications.js 
      * @param {Object} name
-     * @param {String} displayName - undefined, 'audible' or 'visual'
+     * @param {String} displayType - undefined, 'audible' or 'visual'
      * @return {String} 
      */
     env.addFilter('friendlyApplicationName', function(name, displayType) {
@@ -53,14 +54,23 @@ const filters = function(env, aliases) {
      * Formatted version of a date, taking into account the user's timezone 
      * @param {String} time
      * @param {Object} user
+     * @param {String} displayType - undefined, 'audible' or 'visual'
      * @return {String} moment.tz().cal() - Moment JS timezone and calendar format
      */
-    env.addFilter('time', function(time, user) {
-        return moment.tz(time, user.timezone).calendar(null , {
-            sameDay: '[today at] h:mm A',
-            lastDay: '[yesterday at] h:mm A',
-            lastWeek: 'dddd [at] h:mm A'
-        });
+    env.addFilter('time', function(time, user, displayType) {
+        if (displayType === 'visual') {
+            return moment.tz(time, user.timezone).calendar(null , {
+                sameDay: '[today at] h:mm A z',
+                lastDay: '[yesterday at] h:mm A z',
+                lastWeek: 'dddd [at] h:mm A z'
+            });
+        } else {
+            return moment.tz(time, user.timezone).calendar(null , {
+                sameDay: '[today at] h:mm A',
+                lastDay: '[yesterday at] h:mm A',
+                lastWeek: 'dddd [at] h:mm A'
+            });
+        }
     });
 
     /**
@@ -68,14 +78,23 @@ const filters = function(env, aliases) {
      * taking into account the user's timezone
      * @param {String} time
      * @param {Object} user
+     * @param {String} displayType - undefined, 'audible' or 'visual'
      * @return {String} moment.tz().floor().cal() - Moment JS timezone, floor, and calendar format
      */
-    env.addFilter('friendlyTime', function(time, user) {
-        return moment.tz(time, user.timezone).floor(5, 'minutes').calendar(null , {
-            sameDay: '[around] h:mm A',
-            lastDay: '[yesterday around] h:mm A',
-            lastWeek: 'dddd [around] h:mm A'
-        });
+    env.addFilter('friendlyTime', function(time, user, displayType) {
+        if (displayType === 'visual') {
+            return moment.tz(time, user.timezone).floor(5, 'minutes').calendar(null , {
+                sameDay: '[around] h:mm A z',
+                lastDay: '[yesterday around] h:mm A z',
+                lastWeek: 'dddd [around] h:mm A z'
+            });
+        } else {
+            return moment.tz(time, user.timezone).floor(5, 'minutes').calendar(null , {
+                sameDay: '[around] h:mm A',
+                lastDay: '[yesterday around] h:mm A',
+                lastWeek: 'dddd [around] h:mm A'
+            });
+        }
     });
     
     /**
@@ -85,10 +104,12 @@ const filters = function(env, aliases) {
      * @param {String} time
      * @param {Object} user
      * @param {Boolean} isCompact
+     * @param {String} displayType - undefined, 'audible' or 'visual'
      * @return {String} moment.tz().cal() - Moment JS timezone
      */
-    env.addFilter('friendlyTimeRange', function(timeRange, user, isCompact) {
-        return getFriendlyTimeRange(timeRange, user, isCompact);
+    env.addFilter('friendlyTimeRange', function(timeRange, user, isCompact, displayType) {
+        displayType = displayType || 'audible';
+        return getFriendlyTimeRange(timeRange, user, isCompact, displayType);
     });
 
     /**
@@ -123,6 +144,10 @@ const filters = function(env, aliases) {
         }
     });
     
+    env.addFilter('friendlyPronunciations', function(str, displayType) {
+        return pronunciation.replaceAll(str, displayType);
+    });
+    
     /**
     * Plural version of string
     * @param {String} str - item (single word)
@@ -134,21 +159,30 @@ const filters = function(env, aliases) {
     });
     
     /**
-    * Capitalize the first letter of each word in string
+    * Convert string to title case
     * @param {String} str
-    * @return {String} makeTitle()
+    * @return {String} toTitleCase()
     */
-    env.addFilter('makeTitle', function(str) {
-        return makeTitle(str); 
+    env.addFilter('toTitleCase', function(str) {
+        return toTitleCase(str); 
     });
     
     /**
-    * Capitalize the first letter of string
-    * @param {String} str - single word
+    * Capitalize the first letter of each word in string, no conversion to lowercase
+    * @param {String} str
+    * @return {String} capitalizeFirstCharacters()
+    */
+    env.addFilter('capitalizeFirstCharacters', function(str) {
+        return capitalizeFirstCharacters(str);
+    });
+    
+    /**
+    * Capitalize the first letter of the first word in string, no conversion to lowercase
+    * @param {String} str
     * @return {String} capitalizeFirstCharacter()
     */
-    env.addFilter('capitalizeFirstChar', function(str) {
-        return capitalizeFirstCharacter(str); 
+    env.addFilter('capitalizeFirstCharacter', function(str) {
+        return capitalizeFirstCharacter(str);
     });
     
     /**
@@ -243,27 +277,33 @@ function getFriendlyEntityName(aliases, type, name, displayType) {
         return _.get(alias, `display.${displayType}`, alias.name);
     } else {
         logger.warn(`Unable to find a user defined ${type} alias for '${modifiedName}'!  Please consider adding one.`);
-        return S(modifiedName).humanize().s.toLowerCase();
+        if (displayType !== 'visual') {
+            return S(modifiedName).humanize().s.toLowerCase();
+        } else {
+            return name;
+        }
     }
 }
 
-function getFriendlyTimeRange(timeRange, user, isCompact) {
-    let sentence = (isCompact) ? capitalizeFirstCharacter(moment.tz(timeRange.startTime, user.timezone).calendar(null , startFormat.normal)).trim() : moment.tz(timeRange.startTime, user.timezone).calendar(null , startFormat.between).trim();
+function getFriendlyTimeRange(timeRange, user, isCompact, displayType) {
+    let timezone = '';
+    if (displayType === 'visual') {
+        timezone = ` ${moment.tz(user.timezone).format('z')}`;
+    }
+    let sentence = (isCompact) ? capitalizeFirstCharacter(moment.tz(timeRange.startTime, user.timezone).calendar(null , startFormat.normal)).trim() + timezone : moment.tz(timeRange.startTime, user.timezone).calendar(null , startFormat.between).trim()  + timezone;
     if (timeRange.stopTime > timeRange.startTime) {
         if (moment.duration(moment.tz(timeRange.stopTime, user.timezone).diff(moment.tz(timeRange.startTime, user.timezone), 'hours')) < 24) {
             sentence += (isCompact) ? ' - ' : ' and ';
-            sentence += (isCompact) ? capitalizeFirstCharacter(moment.tz(timeRange.stopTime, user.timezone).calendar(null , stopFormat.sameday)).trim() : moment.tz(timeRange.stopTime, user.timezone).calendar(null , stopFormat.sameday).trim();
+            sentence += (isCompact) ? capitalizeFirstCharacter(moment.tz(timeRange.stopTime, user.timezone).calendar(null , stopFormat.sameday)).trim() + timezone : moment.tz(timeRange.stopTime, user.timezone).calendar(null , stopFormat.sameday).trim() + timezone;
         } else {
             sentence += (isCompact) ? ' - \\n' : ' and ';
-            sentence += (isCompact) ? capitalizeFirstCharacter(moment.tz(timeRange.stopTime, user.timezone).calendar(null , stopFormat.normal)).trim() : moment.tz(timeRange.stopTime, user.timezone).calendar(null , stopFormat.normal).trim();
+            sentence += (isCompact) ? capitalizeFirstCharacter(moment.tz(timeRange.stopTime, user.timezone).calendar(null , stopFormat.normal)).trim() + timezone : moment.tz(timeRange.stopTime, user.timezone).calendar(null , stopFormat.normal).trim() + timezone;
         }
     }
     return sentence;
 }
 
-function makeTitle(title) {
-    
-    // Strip off any leading "a "
+function capitalizeFirstCharacters(title) {
     let titleArray = title.split(' ');
     if (titleArray[0] == 'a') {
         titleArray[0] = '';
