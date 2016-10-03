@@ -67,7 +67,7 @@ module.exports = function WebService(config) {
                     })
                     .catch(err => {
                         logger.error(`Unfortunately, something went wrong.  ${err.message}`);
-                        return reject(err.message);
+                        return reject(err);
                     });
             });
         }
