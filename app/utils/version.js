@@ -14,7 +14,7 @@ const version = {
             // // Removed git-rev node module 9/30/16
             // git.getBranch()
             //     .then( result => {
-            //       version.branch = result; 
+            //       version.branch = result;
             //       return git.getTag();
             //     })
             //     .then( result => {
