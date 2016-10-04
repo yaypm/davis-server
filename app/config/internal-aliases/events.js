@@ -79,6 +79,11 @@ const events = [
         friendly: ['a local outage for synthetic based web checks']
     },
     {
+        name: 'CUSTOM_ALERT',
+        type: EVENT_TYPES.errors,
+        friendly: ['a user defined alert']
+    },
+    {
         name: 'PROCESS_CUSTOM_ERROR',
         type: EVENT_TYPES.errors,
         friendly: ['a user defined process error']
