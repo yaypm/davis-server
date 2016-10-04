@@ -161,7 +161,6 @@ module.exports = function (config) {
     });
     
     controller.hears(PHRASES, 'mention,ambient', (bot, message) => {
-
         logger.info('Slack: Starting public conversation (mention,ambient)');
         bot.startConversation(message, (err, convo) => {
             let slackConvo = new SlackConversation(message, false);
@@ -180,9 +179,16 @@ module.exports = function (config) {
         );
     });
 
-    controller.on('rtm_close',function() {
+    controller.on('rtm_close', () => {
         // We could consider adding some retry logic here
         logger.warn('The RTM connection was closed for some reason!');
+        bot.startRTM(function(err, bot, payload) {
+            if (err) {
+                throw new Error('Could not reconnect to Slack after rtm_close event');
+            } else {
+                logger.warn('A Slack custom bot experienced a rtm_close event, but RTM successfully restarted');
+            }
+        });
     });
 
     if (_.get(config, 'slack.notifications.alerts.enabled', false)) {
