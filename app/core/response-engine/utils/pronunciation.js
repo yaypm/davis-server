@@ -59,8 +59,12 @@ const pronunciation = {
                     
                     term.spellings.forEach( spelling => {
                         
-                        if (word.toLowerCase() === spelling.toLowerCase()) {
-                            word = term[displayType];
+                        if (word.replace(/[^\w\s]/gi, '').toLowerCase() === spelling.replace(/[^\w\s]/gi, '').toLowerCase()) {
+                            
+                            // Escape special characters as RegExp safeguard
+                            spelling = spelling.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
+                            let reg = new RegExp(spelling, 'gi');
+                            word = word.replace(reg, term[displayType]);
                         }
                         
                     })

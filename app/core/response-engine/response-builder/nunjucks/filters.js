@@ -144,8 +144,13 @@ const filters = function(env, aliases) {
         }
     });
     
+    /**
+     * Replace words in string with their friendly pronunciations
+     * @param {String} str - word or multiple words
+     * @return {String} friendlyPronunciations()
+     */
     env.addFilter('friendlyPronunciations', function(str, displayType) {
-        return pronunciation.replaceAll(str, displayType);
+        return friendlyPronunciations(str, displayType);
     });
     
     /**
@@ -317,6 +322,10 @@ function capitalizeFirstCharacters(title) {
 
 function capitalizeFirstCharacter(str) {
     return str.charAt(0).toUpperCase() + str.slice(1);
+}
+
+function friendlyPronunciations(str, displayType) {
+    return pronunciation.replaceAll(str, displayType);
 }
 
 function pluralizeNoun(str, count) {
