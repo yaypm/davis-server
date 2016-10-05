@@ -19,6 +19,11 @@ const terms = [
         visual: 'IIS'
     },
     {
+        spellings: ['mongodb'],
+        audible: 'mongo<say-as interpret-as="spell-out">db</say-as>',
+        visual: 'MongoDB'
+    },
+    {
         spellings: ['nginx'],
         audible: 'engine<say-as interpret-as="spell-out">x</say-as>',
         visual: 'Nginx'
@@ -27,6 +32,11 @@ const terms = [
         spellings: ['nodejs', 'node.js'],
         audible: 'node<say-as interpret-as="spell-out">js</say-as>',
         visual: 'Node.js'
+    },
+    {
+        spellings: ['pgi'],
+        audible: '<say-as interpret-as="spell-out">pgi</say-as>',
+        visual: 'Pgi'
     },
     {
         spellings: ['vmware'],

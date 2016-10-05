@@ -12,7 +12,7 @@ const Botkit = require('botkit'),
     moment = require('moment');
 
 const davisChannels = [];
-const inactivityTimeoutTime = 30; // Seconds of inactivity until Davis goes to sleep
+const inactivityIntervalTime = 30; // Seconds of inactivity until Davis goes to sleep
 const ERROR_MESSAGE = 'Sorry about that, I\'m having issues responding to your request at this time.';
 const DAVIS_SLEEP_MESSAGE = ['Wake me up if you need something!  :sleeping:', 'I\'ve gone to sleep. :ZZZ:', 'Until next time :spock-hand:'];
 
@@ -261,8 +261,7 @@ module.exports = function (config) {
             this.isDirectMessage = isDirectMessage;
             this.initialResponse;
             this.lastInteractionTime;
-            this.inactivityTimeout;
-            this.resetTimeout = false;
+            this.resetInterval = false;
             this.shouldEndSession;
             this.user;
             this.directPrefix = '';
@@ -280,10 +279,8 @@ module.exports = function (config) {
             
             this.lastInteractionTime = moment();
 
-            if (this.shouldEndSession != true) {
-                this.inactivityTimeout = this.setInactivityTimeout(convo);
-            } else {
-                clearTimeout(this.inactivityTimeout);
+            if (!this.isDirectMessage && this.shouldEndSession != true) {
+                this.setInactivityInterval(convo);
             }
             
             getUserDetails(this.initialInteraction.user).then( (details) => {
@@ -332,11 +329,11 @@ module.exports = function (config) {
                         // Listen for typing event
                         controller.on('user_typing', (bot,message) => {
                     
-                            if (message.user === this.user.id && this.inactivityTimeout && !this.shouldEndSession) {
+                            if (message.user === this.user.id && !this.shouldEndSession) {
                                 this.lastInteractionTime = moment();
-                                this.resetTimeout = true;
+                                this.resetInterval = true;
                             } else {
-                                this.resetTimeout = false;
+                                this.resetInterval = false;
                             }  
                             
                         });
@@ -346,7 +343,6 @@ module.exports = function (config) {
                             if (this.initialResponse) {
                                 
                                 convo.ask(this.initialResponse, (response, convo) => {
-                                    clearTimeout(this.inactivityTimeout);
                                     this.addToConvo(response, convo);
                                 });
                                 
@@ -380,15 +376,13 @@ module.exports = function (config) {
          */
         addToConvo(response, convo) {
 
-            let isTimedOut = moment().subtract(inactivityTimeoutTime, 'seconds').isAfter(this.lastInteractionTime);
+            let isTimedOut = moment().subtract(inactivityIntervalTime, 'seconds').isAfter(this.lastInteractionTime);
             
             // Reset last interaction timestamp
             this.lastInteractionTime = moment();
             
-            if (this.shouldEndSession != true) {
-                this.inactivityTimeout = this.setInactivityTimeout(convo);
-            } else {
-                clearTimeout(this.inactivityTimeout);
+            if (!this.isDirectMessage && this.shouldEndSession != true) {
+                this.setInactivityInterval(convo);
             }
             
             // if lastInteractionTime is more than 30 seconds ago or other user is mentioned, end conversation
@@ -397,7 +391,6 @@ module.exports = function (config) {
                 
                 logger.info('Slack: Conversation stopped');
                 convo.stop();
-                clearTimeout(this.inactivityTimeout);
                 
             } else {
                 
@@ -424,8 +417,8 @@ module.exports = function (config) {
                     if (this.shouldEndSession) {
                         convo.say(output);
                         convo.next();
-                        clearTimeout(this.inactivityTimeout);
                     } else {
+                        
                         try{
                             // Send response and listen for request
                             convo.ask(output, (response, convo) => {
@@ -441,8 +434,9 @@ module.exports = function (config) {
                         } catch (err) {
                             logger.warn(err);
                         }
-                        clearTimeout(this.inactivityTimeout);
+
                     }
+                    //clearInterval(this.inactivityInterval);
                 })
                 .catch(err => {
                     logger.error('Unable to respond to the request received from Slack');
@@ -456,35 +450,35 @@ module.exports = function (config) {
         }
         
         /**
-         * Recursive method that alerts the user when they've been inactive 
+         * Alerts the user when they've been inactive 
          * for 30 seconds if they're not in direct message mode
          * 
          * @param {Object} convo - conversation object created by botkit
          */
-        setInactivityTimeout(convo) {
+        setInactivityInterval(convo) {
             
-            // Inactivity timeout message sender
-            return setTimeout( () => {
+            // Inactivity interval message sender
+            let inactivityInterval = setInterval( () => {
                 
                 // if not a direct message, let the user know they need to wake Davis
-                if(!this.isDirectMessage && !this.resetTimeout && !this.shouldEndSession) {
+                if(!this.isDirectMessage && !this.resetInterval && !this.shouldEndSession) {
                     
                     convo.say(this.directPrefix + _.sample(DAVIS_SLEEP_MESSAGE));
                     convo.next();
-                    clearTimeout(this.inactivityTimeout);
+                    clearInterval(inactivityInterval);
                     
                     // Allows convo.say to execute beforehand
                     setTimeout( () => {
                         convo.stop();
                     }, 1000);
                     
+                } else if(this.shouldEndSession) {
+                    clearInterval(inactivityInterval);
+                    convo.stop();
                 } else {
-                    
-                    this.resetTimeout = false;
-                    clearTimeout(this.inactivityTimeout);
-                    this.inactivityTimeout = this.setInactivityTimeout(convo);
+                    this.resetInterval = false;
                 }
-            }, inactivityTimeoutTime * 1000);
+            }, inactivityIntervalTime * 1000);
         }
     }
 };
