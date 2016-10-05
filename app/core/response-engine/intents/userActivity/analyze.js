@@ -8,6 +8,7 @@ const DAY_IN_MILLISECONDS = 86400000;
 const analyze = {
     userActionData: (data) => {
         logger.debug('Analyzing user action data');
+        data = (data.result) ? data.result : data;
         let ranking = [];
 
         // Calculates the average user action count by application name

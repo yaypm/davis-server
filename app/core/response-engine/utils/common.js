@@ -34,6 +34,7 @@ module.exports = {
     },
 
     saveIntentData: function(davis, property, data) {
+        data = (data.result) ? data.result : data;
         _.set(davis, `intentData.${property}`, data);
     },
 
