@@ -46,10 +46,10 @@ module.exports = function WebService(config) {
             logger.info('Starting our interaction with Davis');
             
             return new BbPromise((resolve, reject) => {
-
+                
                 // Use web user token as id for Davis user 
                 let user = {
-                    'id': `web-user-${req.body.use}`,
+                    'id': `web-user-${req.body.user}`,
                     'nlp': config.nlp,
                     'dynatrace': config.dynatrace,
                     'timezone': req.body.timezone
