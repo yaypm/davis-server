@@ -36,7 +36,7 @@ const terms = [
     {
         spellings: ['pgi'],
         audible: '<say-as interpret-as="spell-out">pgi</say-as>',
-        visual: 'Pgi'
+        visual: 'PGI'
     },
     {
         spellings: ['vmware'],
