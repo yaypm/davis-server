@@ -20,7 +20,7 @@ describe('Tests the filters available in the response engine', function() {
 
         it('shouldnt find this server but still generate the best possible friendly name', function() {
             let entity = getFriendlyEntityName(aliases.aliases, 'services','  this_is-a_randomService', 'visual');
-            expect(entity).to.equal('this is a random service');
+            expect(entity).to.equal('  this_is-a_randomService');
         });
     });
     
@@ -64,11 +64,33 @@ describe('Tests the filters available in the response engine', function() {
         });
     });
     
-    // makeTitle
-    describe('Tests the title-case string converter', function() {
-        let makeTitle = filters.__get__('makeTitle');
+    // friendlyPronunciations
+    describe('Tests replacement of known terms with their friendly audible or visual representations', function() {
+        let friendlyPronunciations = filters.__get__('friendlyPronunciations');
+        it('should replace nginx, node.JS, and vmware with their audible respresentations', function() {
+            let str = friendlyPronunciations('the technology behind the cpu, nginx, node.JS, and vmware', 'audible');
+            expect(str).to.equal('the technology behind the cpu, engine<say-as interpret-as="spell-out">x</say-as>, node<say-as interpret-as="spell-out">js</say-as>, and <say-as interpret-as="spell-out">vm</say-as>ware');
+        });
+        it('should replace cpu, nginx, node.JS, and vmware with their visual respresentations', function() {
+            let str = friendlyPronunciations('the technology behind the cpu, nginx, node.JS, and vmware', 'visual');
+            expect(str).to.equal('the technology behind the CPU, Nginx, Node.js, and VMware');
+        });
+    });
+    
+    // toTitleCase
+    describe('Tests conversion of a string to title case', function() {
+        let toTitleCase = filters.__get__('toTitleCase');
+        it('should have the first letter of each non-minor word capitalized, with the rest in lowercase', function() {
+            let str = toTitleCase('the quick bROWN Fox jumps over the lazy doG');
+            expect(str).to.equal('The Quick Brown Fox Jumps Over the Lazy Dog');
+        });
+    });
+    
+    // capitalizeFirstCharacters
+    describe('Tests the capitalization of the first character of each word in a string', function() {
+        let capitalizeFirstCharacters = filters.__get__('capitalizeFirstCharacters');
         it('should have the first letter of each word capitalized, with the rest in their original case', function() {
-            let str = makeTitle('the quick bROWN Fox jumps over the lazy doG');
+            let str = capitalizeFirstCharacters('the quick bROWN Fox jumps over the lazy doG');
             expect(str).to.equal('The Quick BROWN Fox Jumps Over The Lazy DoG');
         });
     });
@@ -139,7 +161,7 @@ describe('Tests the filters available in the response engine', function() {
                 }
             };
             let str = buildEventUrl(event, problem, user);
-            expect(str).to.equal('https://demo.live.dynatrace.com/#processdetails;id=PROCESS_GROUP_INSTANCE-3ABDB501EFC8C4A4;pid=-2968663214739407461');
+            expect(str).to.equal('https://demo.live.dynatrace.com/#processdetails;id=PROCESS_GROUP_INSTANCE-3ABDB501EFC8C4A4;gtf=p_-2968663214739407461;pid=-2968663214739407461');
         });
     });
 });

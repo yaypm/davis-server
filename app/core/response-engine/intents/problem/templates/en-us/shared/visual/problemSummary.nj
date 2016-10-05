@@ -11,7 +11,7 @@
         },
         {
             "title": "Status",
-            "value": "{% if problems[loop.index0].status == 'OPEN' %}Unresolved{% else %}Resolved - {{ problems[loop.index0].endTime | time(user) | capitalizeFirstCharacter }}{% endif %}",
+            "value": "{% if problems[loop.index0].status == 'OPEN' %}Unresolved{% else %}Resolved - {{ problems[loop.index0].endTime | time(user, "visual") | capitalizeFirstCharacter }}{% endif %}",
             "short": "true"
         }
     ]

@@ -47,6 +47,7 @@
     "socket.io": "^1.4.8",
     "string": "^3.3.1",
     "thenby": "^1.2.1",
+    "title-case": "^2.1.0",
     "to-title-case": "^1.0.0",
     "vcap_services": "^0.2.0",
     "watson-developer-cloud": "^1.12.2",

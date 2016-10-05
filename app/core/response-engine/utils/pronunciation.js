@@ -2,31 +2,41 @@
 
 const logger = require('../../../utils/logger');
     
+// Terms with matching spellings that match words in a string get replaced 
+// with appropriate audible or visual representation     
 const terms = [
     {
-        lowercase: 'api',
-        audible: '<say-as interpret-as="spell-out">API</say-as>',
+        spellings: ['api'],
         visual: 'API'
     },
     {
-        lowercase: 'cpu',
-        audible: '<say-as interpret-as="spell-out">CPU</say-as>',
+        spellings: ['cpu'],
         visual: 'CPU'
     },
     {
-        lowercase: 'is',
-        audible: 'is',
-        visual: 'is'
+        spellings: ['iis'],
+        audible: '<say-as interpret-as="spell-out">IIS</say-as>',
+        visual: 'IIS'
     },
     {
-        lowercase: 'uri',
-        audible: '<say-as interpret-as="spell-out">URI</say-as>',
-        visual: 'URI'
+        spellings: ['nginx'],
+        audible: 'engine<say-as interpret-as="spell-out">x</say-as>',
+        visual: 'Nginx'
     },
     {
-        lowercase: 'url',
-        audible: '<say-as interpret-as="spell-out">URL</say-as>',
-        visual: 'URL'
+        spellings: ['nodejs', 'node.js'],
+        audible: 'node<say-as interpret-as="spell-out">js</say-as>',
+        visual: 'Node.js'
+    },
+    {
+        spellings: ['vmware'],
+        audible: '<say-as interpret-as="spell-out">vm</say-as>ware',
+        visual: 'VMware'
+    },
+    {
+        spellings: ['vsphere'],
+        audible: '<say-as interpret-as="spell-out">v</say-as>sphere',
+        visual: 'vSphere'
     }
 ];
     
@@ -40,15 +50,26 @@ const pronunciation = {
  
         let result = '';
         
-        words.forEach( (word, index) => {
+        words.forEach( word => {
             
             terms.forEach( term => {
+               
+                // Check if displayType exists for term               
+                if (term[displayType]) {
+                    
+                    term.spellings.forEach( spelling => {
+                        
+                        if (word.replace(/[^\w\s]/gi, '').toLowerCase() === spelling.replace(/[^\w\s]/gi, '').toLowerCase()) {
+                            
+                            // Escape special characters as RegExp safeguard
+                            spelling = spelling.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
+                            let reg = new RegExp(spelling, 'gi');
+                            word = word.replace(reg, term[displayType]);
+                        }
+                        
+                    })
                 
-                if (word.toLowerCase() === term.lowercase) {
-                    word = term[displayType];
-                    logger.info('Term replaced');
                 }
-                
             });
             
             result += word + ' ';
