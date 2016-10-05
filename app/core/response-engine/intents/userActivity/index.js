@@ -32,7 +32,7 @@ const process = function process(davis) {
         
         dynatrace.getFilteredTimeseries(timeRange, davis.exchange.request.analysed.appName, timeseriesOptions.user_actions_per_minute_count)
             .then(response => {
-                common.saveIntentData(davis, 'userActivity', analyze.userActionData(response.result));
+                common.saveIntentData(davis, 'userActivity', analyze.userActionData(response));
                 const decide = new Decide(decision_model);
                 const decision = decide.predict(tagger.tag(davis));
                 logger.debug(`The template path ${decision.template}`);
