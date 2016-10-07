@@ -34,7 +34,8 @@ module.exports = {
     },
 
     saveIntentData: function(davis, property, data) {
-        data = (data.result) ? data.result : data;
+        // Workaround for missing result property in the payload
+        if (!data.result) data = {result: data};
         _.set(davis, `intentData.${property}`, data);
     },
 
