@@ -4,8 +4,11 @@
 {%- set eventsDisplayed = 0 -%}
 {%- set rootCauseCount = 0 -%}
 {
-    "text": "Below are the problem details you requested.",
+    "text": "",
     "attachments": [
+        {
+            "text": "Below are the problem details you requested."  
+        },
         {
             "fallback": "{{ currentEvent.eventType | friendlyEventFirstAlias | toTitleCase | replace("A ", "") | friendlyPronunciations("visual") }}\nImpacted: {{ currentEvent | friendlyEntityName("visual") }} \n{{ problem.impactLevel | capitalize }}\nInitial Event: {{ startingEvent.eventType | friendlyEventFirstAlias | toTitleCase | replace("A ", "") | friendlyPronunciations("visual") }}\nStatus: {% if problem.status == 'OPEN' %}Unresolved{% else %}Resolved{% endif %}",
             "color": "{% if problem.status == 'OPEN' %}#dc172a{% else %}#7dc540{% endif %}",

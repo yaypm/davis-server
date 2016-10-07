@@ -11,10 +11,22 @@ const Botkit = require('botkit'),
     rp = require('request-promise'),
     moment = require('moment');
 
-const davisChannels = [];
-const inactivityIntervalTime = 30; // Seconds of inactivity until Davis goes to sleep
+const INACTIVITY_TIMEOUT = 10; // Seconds of inactivity until Davis goes to sleep
 const ERROR_MESSAGE = 'Sorry about that, I\'m having issues responding to your request at this time.';
-const DAVIS_SLEEP_MESSAGE = ['Wake me up if you need something!  :sleeping:', 'I\'ve gone to sleep. :ZZZ:', 'Until next time :spock-hand:'];
+const STATES = {
+    LISTENING: {
+        ICON: 'https://s3.amazonaws.com/dynatrace-davis/assets/images/green-dot.png',
+        TEXT: 'Listening'
+    },
+    SLEEPING: {
+        ICON: 'https://s3.amazonaws.com/dynatrace-davis/assets/images/grey-dot.png',
+        TEXT: 'Wake me by saying "Hey Davis"'
+    },
+    NONE: {
+        ICON: 'http://vignette2.wikia.nocookie.net/payday/images/5/59/Empty.png/revision/latest?cb=20131030195648',
+        TEXT: ' '
+    }
+};
 
 // Launch phrases
 const PHRASES = [
@@ -34,6 +46,8 @@ const PHRASES = [
 
 module.exports = function (config) {
     let bot;
+    let botInfo;
+    let davisChannels = [];
 
     const controller = Botkit.slackbot({
         debug: false,
@@ -71,13 +85,14 @@ module.exports = function (config) {
     /**
      * Get Davis bot online status
      * Important for making sure other another Davis instance isn't running a Slack bot already
+     * Note: Can't use Botkit API for this call since bot hasn't been spawned yet
      */
     let getDavisBotStatus = function () {
         return new BbPromise((resolve, reject) => {
             getUserDetails()
                 .then(() => {
                     return rp({
-                        uri: 'https://slack.com/api/users.getPresence?token=' + config.slack.key,
+                        uri: `https://slack.com/api/users.getPresence?token=${config.slack.key}`,
                         json: true
                     });
                 })
@@ -104,7 +119,15 @@ module.exports = function (config) {
                         throw new Error('Could not connect to Slack');
                     }
                     updateBotChannels();
+                    bot.identifyBot((err, response) => {
+                        botInfo = response;
+                        bot.api.users.info( {user: botInfo.id}, (err, response) => {
+                            botInfo.icon_url = response.user.profile.image_original;
+                        });
+                    });
+                   
                 });
+    
             } else {
                 logger.warn('Failed to start Slack bot. A Slack bot may already be running on another instance of Davis using the same API key');
             }
@@ -136,6 +159,62 @@ module.exports = function (config) {
             }
         });
     };
+    
+    /**
+     * Adds a listening state to the message's footer
+     * 
+     * @param {Object} message - Slack message to be edited
+     * @param {Boolean} isListening - Bot's listening state
+     * @return {Object} message - Edited message
+     */
+    const addListeningStateFooter = function (message, isListening) {
+                            
+        // Add footer to existing attachment
+        if (message.attachments.length > 0) {
+            message.attachments[message.attachments.length - 1].footer_icon = (isListening) ? STATES.LISTENING.ICON : STATES.SLEEPING.ICON;
+            message.attachments[message.attachments.length - 1].footer = (isListening) ? STATES.LISTENING.TEXT : STATES.SLEEPING.TEXT;
+        
+        // Add footer to new attachment    
+        } else {
+           message.attachments = [{
+                footer_icon: (isListening) ? STATES.LISTENING.ICON : STATES.SLEEPING.ICON,
+                footer: (isListening) ? STATES.LISTENING.TEXT : STATES.SLEEPING.TEXT
+            }];
+        }
+    
+        return message;
+    }
+    
+    /**
+     * Updates current message's listening state to sleeping or removes previous message's listening state in footer
+     * 
+     * @param {String} channel - Slack channel
+     * @param {Boolean} removePrevious - Remove previous message's listening state
+     */
+    const updateListeningStateFooter = function (channel, removePrevious) {
+        bot.api.channels.history( {channel: channel}, (err, response) => {
+             
+            let message =  (removePrevious) ? response.messages[1] : response.messages[0];
+            
+            // Inject footer with listening status of inactive
+            if (message.attachments) {
+                message.attachments[message.attachments.length - 1].footer_icon = (removePrevious) ? STATES.NONE.ICON : STATES.SLEEPING.ICON;
+                message.attachments[message.attachments.length - 1].footer = (removePrevious) ? STATES.NONE.TEXT : STATES.SLEEPING.TEXT;
+            }
+            
+            let editedMessage = {
+                ts: message.ts,
+                text: message.text,
+                attachments: JSON.stringify(message.attachments),
+                channel: channel,
+                as_user: false
+            }
+
+            bot.api.chat.update(editedMessage, (err, response) => { 
+                if (err) throw new Error('Could not update existing Slack message');
+            });
+        });
+    }
 
     controller.hears(['(.*)'], 'direct_message', (bot, message) => {
         // Slack sends a direct message to a bot when they're removed from a channel
@@ -260,6 +339,7 @@ module.exports = function (config) {
             this.initialInteraction = message;
             this.isDirectMessage = isDirectMessage;
             this.initialResponse;
+            this.lastMessage;
             this.lastInteractionTime;
             this.resetInterval = false;
             this.shouldEndSession;
@@ -283,13 +363,17 @@ module.exports = function (config) {
                 this.setInactivityInterval(convo);
             }
             
+            if (!this.isDirectMessage) {
+                updateListeningStateFooter(this.initialInteraction.channel, true);
+            }
+            
             getUserDetails(this.initialInteraction.user).then( (details) => {
                 
                 this.user = details;
                 
                 // if not a direct message, use @username as message prefix
                 if (!this.isDirectMessage) {
-                    this.directPrefix = '@' + this.user.name + ' ';
+                    this.directPrefix = `@${this.user.name} `;
                 }
             
                 // Strip launch phrase or set to a launch intent compatible phrase
@@ -313,18 +397,29 @@ module.exports = function (config) {
                     SlackService(config).askDavis(this.initialInteraction, this.user)
                     .then(resp => {
                         
-                        logger.info('Sending a response back to the Slack service');
-                        if (this.directPrefix && resp.response.outputSpeech.card) {
-                            resp.response.outputSpeech.card.text = this.directPrefix + resp.response.outputSpeech.card.text;
+                        this.shouldEndSession = resp.response.shouldEndSession;
+                        
+                        if (this.directPrefix && !this.isDirectMessage && resp.response.outputSpeech.card && resp.response.outputSpeech.card.attachments.length > 0) {
                             this.initialResponse = resp.response.outputSpeech.card;
-                        } else if (this.directPrefix) {
-                            resp.response.outputSpeech.text = this.directPrefix + resp.response.outputSpeech.text;
-                            this.initialResponse = resp.response.outputSpeech.text;
+                            this.initialResponse.attachments[0].author_name = this.directPrefix;
+                        } else if (this.directPrefix && !this.isDirectMessage) {
+                            this.initialResponse = {
+                                attachments: [
+                                    {
+                                        author_name: this.directPrefix, 
+                                        text: resp.response.outputSpeech.text || resp.response.outputSpeech.card.text
+                                    }
+                                ]
+                            };
                         } else {
-                            this.initialResponse = (resp.response.outputSpeech.card) ? resp.response.outputSpeech.card : resp.response.outputSpeech.text;
+                            this.initialResponse = (resp.response.outputSpeech.card) ? resp.response.outputSpeech.card : {text: resp.response.outputSpeech.text};
                         }
                         
-                        this.shouldEndSession = resp.response.shouldEndSession;
+                        if (!this.isDirectMessage) {
+                            this.initialResponse = addListeningStateFooter(this.initialResponse, true);
+                            this.initialResponse.username = botInfo.name;
+                            this.initialResponse.icon_url = botInfo.icon_url;
+                        }
                         
                         // Listen for typing event
                         controller.on('user_typing', (bot,message) => {
@@ -343,6 +438,7 @@ module.exports = function (config) {
                             if (this.initialResponse) {
                                 
                                 convo.ask(this.initialResponse, (response, convo) => {
+                                    this.lastMessage = response;
                                     this.addToConvo(response, convo);
                                 });
                                 
@@ -376,13 +472,17 @@ module.exports = function (config) {
          */
         addToConvo(response, convo) {
 
-            let isTimedOut = moment().subtract(inactivityIntervalTime, 'seconds').isAfter(this.lastInteractionTime);
+            let isTimedOut = moment().subtract(INACTIVITY_TIMEOUT, 'seconds').isAfter(this.lastInteractionTime);
             
             // Reset last interaction timestamp
             this.lastInteractionTime = moment();
             
             if (!this.isDirectMessage && this.shouldEndSession != true) {
                 this.setInactivityInterval(convo);
+            }
+            
+            if (!this.isDirectMessage) {
+                updateListeningStateFooter(this.initialInteraction.channel, true);
             }
             
             // if lastInteractionTime is more than 30 seconds ago or other user is mentioned, end conversation
@@ -400,30 +500,54 @@ module.exports = function (config) {
                 .then(resp => {
                     
                     logger.info('Slack: Sending a response');
-                    if (this.directPrefix && resp.response.outputSpeech.card) {
-                        resp.response.outputSpeech.card.text = this.directPrefix + resp.response.outputSpeech.card.text;
-                    } else if (this.directPrefix) {
-                        resp.response.outputSpeech.text = this.directPrefix + resp.response.outputSpeech.text;
+                    if (this.directPrefix && !this.isDirectMessage && resp.response.outputSpeech.card && resp.response.outputSpeech.card.attachments.length > 0) {
+                        resp.response.outputSpeech.card.attachments[0].author_name = this.directPrefix;
+                    } else if (this.directPrefix && !this.isDirectMessage) {
+                        resp.response.outputSpeech.card = {
+                            text: '',
+                            attachments: [
+                                {
+                                    author_name: this.directPrefix,
+                                    text: resp.response.outputSpeech.text || resp.response.outputSpeech.card.text
+                                }
+                            ]
+                        };
                     }
                     
                     this.shouldEndSession = resp.response.shouldEndSession;
-                    let output = (resp.response.outputSpeech.card) ? resp.response.outputSpeech.card : resp.response.outputSpeech.text;
+                    let output = (resp.response.outputSpeech.card) ? resp.response.outputSpeech.card : {text: resp.response.outputSpeech.text};
                     
                     if (!output) {
                         throw new Error('Unable to respond, probably a template error');
                     }
                     
                     // if no followup question
-                    if (this.shouldEndSession) {
+                    if (this.shouldEndSession && !this.isDirectMessage) {
+                        
+                        output = addListeningStateFooter(output, false);
+                        output.username = botInfo.name;
+                        output.icon_url = botInfo.icon_url;
+                        
                         convo.say(output);
                         convo.next();
                     } else {
                         
                         try{
+                            
+                            if (!this.isDirectMessage) {
+                                output = addListeningStateFooter(output, true);
+                            }
+                            
+                            // Add username and icon_url, 
+                            // since we don't want (edited) to appear when updating listening state
+                            output.username = botInfo.name;
+                            output.icon_url = botInfo.icon_url;
+                            
                             // Send response and listen for request
                             convo.ask(output, (response, convo) => {
-                            
+                                
                                 if (output) {
+                                    this.lastMessage = response;
                                     this.addToConvo(response, convo);
                                 } else {
                                     convo.say(ERROR_MESSAGE);
@@ -436,7 +560,6 @@ module.exports = function (config) {
                         }
 
                     }
-                    //clearInterval(this.inactivityInterval);
                 })
                 .catch(err => {
                     logger.error('Unable to respond to the request received from Slack');
@@ -462,9 +585,7 @@ module.exports = function (config) {
                 
                 // if not a direct message, let the user know they need to wake Davis
                 if(!this.isDirectMessage && !this.resetInterval && !this.shouldEndSession) {
-                    
-                    convo.say(this.directPrefix + _.sample(DAVIS_SLEEP_MESSAGE));
-                    convo.next();
+                    updateListeningStateFooter(this.initialInteraction.channel, false);
                     clearInterval(inactivityInterval);
                     
                     // Allows convo.say to execute beforehand
@@ -478,7 +599,7 @@ module.exports = function (config) {
                 } else {
                     this.resetInterval = false;
                 }
-            }, inactivityIntervalTime * 1000);
+            }, INACTIVITY_TIMEOUT * 1000);
         }
     }
 };
