@@ -12,6 +12,10 @@
         {
             "title": "Ask for problems in a specific application and time range",
             "text": "{% include "intents/help/templates/en-us/shared/filterByTimeRangeAndApplicationExample1.nj" %}"
+        },
+        {
+            "title": "Cloud Migration Full Stack",
+            "image_url": "https://www.dynatrace.com/assets/content/ruxit/screenshots/smartscape/cloudmigration-fullstack.png"  
         }
     ]
 }
