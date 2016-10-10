@@ -81,7 +81,7 @@
         "text": "<div class='card-text'>{{text}}</div>",
         "fields": "<div class='card-fields'>{{fields}}</div>",
         "field": "<div class='card-field'><div class='card-field-title'>{{title}}</div><div class='card-field-value'>{{value}}</div></div>",
-        "image_url": "<img src='{{src}}' class='card-image-url'>",
+        "image_url": "<img src='{{src}}' class='card-image-url' onclick='window.open(\"{{src}}\")'>",
         "thumb_url": "<img src='{{src}}' class='card-thumb-url'>"
     }
 }

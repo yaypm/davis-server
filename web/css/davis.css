@@ -461,6 +461,7 @@ a.card-link-attachment:active {
 	max-width: 400px;
 	max-height: 500px;
 	margin: 5px 10px 5px 0px;
+	cursor: pointer;
 }
 
 .card-thumb-url-wrapper {

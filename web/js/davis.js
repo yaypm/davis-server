@@ -311,7 +311,8 @@ var davis = (function () {
                     
                     // Image URL
                     if (atm.image_url !== undefined) {
-                        attachment += localResponses.card.image_url.replace('{{src}}', atm.image_url);
+                        var regExp = new RegExp('{{src}}', 'g');
+                        attachment += localResponses.card.image_url.replace(regExp, atm.image_url);
                     }
                     
                     // Add attachment elements into wrapper
@@ -326,7 +327,7 @@ var davis = (function () {
                         attachment = attachment.replace('{{color}}', atm.color);
                         
                         // Thumb URL
-                        let thumb_url = '';
+                        var thumb_url = '';
                         
                         if (atm.thumb_url !== undefined) {
                             thumb_url = localResponses.card.thumb_url.replace('{{src}}', atm.thumb_url);
