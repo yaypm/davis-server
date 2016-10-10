@@ -306,6 +306,13 @@ var davis = (function () {
                         });
                         
                         attachment += localResponses.card.fields.replace('{{fields}}', fields);
+
+                    }
+                    
+                    // Image URL
+                    if (atm.image_url !== undefined) {
+                        var regExp = new RegExp('{{src}}', 'g');
+                        attachment += localResponses.card.image_url.replace(regExp, atm.image_url);
                     }
                     
                     // Add attachment elements into wrapper
@@ -318,6 +325,14 @@ var davis = (function () {
                             atm.color = '#d3d3d3';
                         }
                         attachment = attachment.replace('{{color}}', atm.color);
+                        
+                        // Thumb URL
+                        var thumb_url = '';
+                        
+                        if (atm.thumb_url !== undefined) {
+                            thumb_url = localResponses.card.thumb_url.replace('{{src}}', atm.thumb_url);
+                        }
+                        attachment = attachment.replace('{{thumb_url}}', thumb_url);
                         
                     }
                     

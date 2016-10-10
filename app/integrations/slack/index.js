@@ -11,7 +11,7 @@ const Botkit = require('botkit'),
     rp = require('request-promise'),
     moment = require('moment');
 
-const INACTIVITY_TIMEOUT = 10; // Seconds of inactivity until Davis goes to sleep
+const INACTIVITY_TIMEOUT = 30; // Seconds of inactivity until Davis goes to sleep
 const ERROR_MESSAGE = 'Sorry about that, I\'m having issues responding to your request at this time.';
 const STATES = {
     LISTENING: {
@@ -161,6 +161,25 @@ module.exports = function (config) {
     };
     
     /**
+     * Adds the recipient's username to author_name property of message
+     * 
+     * @param {Object} message
+     * @param {String} username
+     * @return {Object} message
+     */
+    const addUsernameAsAuthor = function (message, username) {
+        
+        // Move message's text property into the first attachment
+        if (message.text) {
+            message.attachments.unshift({text: message.text});
+            delete message.text;
+        }
+        
+        message.attachments[0].author_name = `@${username}`;
+        return message;
+    };
+    
+    /**
      * Adds a listening state to the message's footer
      * 
      * @param {Object} message - Slack message to be edited
@@ -169,14 +188,23 @@ module.exports = function (config) {
      */
     const addListeningStateFooter = function (message, isListening) {
                             
-        // Add footer to existing attachment
-        if (message.attachments.length > 0) {
+        // Add footer to existing attachment if an image_url doesn't exist
+        if (message.attachments.length > 0 && !message.attachments[message.attachments.length - 1].image_url) {
             message.attachments[message.attachments.length - 1].footer_icon = (isListening) ? STATES.LISTENING.ICON : STATES.SLEEPING.ICON;
             message.attachments[message.attachments.length - 1].footer = (isListening) ? STATES.LISTENING.TEXT : STATES.SLEEPING.TEXT;
         
-        // Add footer to new attachment    
+        // Add footer to new attachment
+        } else if (message.attachments.length > 0) {
+            
+            message.attachments.push({
+                text: "",
+                footer_icon: (isListening) ? STATES.LISTENING.ICON : STATES.SLEEPING.ICON,
+                footer: (isListening) ? STATES.LISTENING.TEXT : STATES.SLEEPING.TEXT
+            });
+            
+        // Define attachments and add footer to new attachment    
         } else {
-           message.attachments = [{
+            message.attachments = [{
                 footer_icon: (isListening) ? STATES.LISTENING.ICON : STATES.SLEEPING.ICON,
                 footer: (isListening) ? STATES.LISTENING.TEXT : STATES.SLEEPING.TEXT
             }];
@@ -189,32 +217,50 @@ module.exports = function (config) {
      * Updates current message's listening state to sleeping or removes previous message's listening state in footer
      * 
      * @param {String} channel - Slack channel
+     * @param {String} botname - Slack bot's name
+     * @param {String} username - Slack user's name
      * @param {Boolean} removePrevious - Remove previous message's listening state
      */
-    const updateListeningStateFooter = function (channel, removePrevious) {
+    const updateListeningStateFooter = function (channel, botname, username, removePrevious) {
+        
+        // Get channel's message history
         bot.api.channels.history( {channel: channel}, (err, response) => {
              
-            let message =  (removePrevious) ? response.messages[1] : response.messages[0];
+            if (err) throw new Error('Could not get Slack channel history');
             
-            // Inject footer with listening status of inactive
-            if (message.attachments) {
+            let message;
+
+            // Find current and previous messages
+            response.messages.forEach( msg => {
+                
+                // Match bot and user
+                if (!message && msg.bot_id && msg.username === botname && msg.attachments && msg.attachments.length > 0 && msg.attachments[0].author_name === `@${username}`) {
+                    message = msg;
+                }
+            });
+            
+            if (message) {
+                
+                // Inject footer with listening status of inactive
                 message.attachments[message.attachments.length - 1].footer_icon = (removePrevious) ? STATES.NONE.ICON : STATES.SLEEPING.ICON;
                 message.attachments[message.attachments.length - 1].footer = (removePrevious) ? STATES.NONE.TEXT : STATES.SLEEPING.TEXT;
+                
+                let editedMessage = {
+                    ts: message.ts,
+                    text: message.text,
+                    attachments: JSON.stringify(message.attachments),
+                    channel: channel,
+                    as_user: false
+                };
+    
+                bot.api.chat.update(editedMessage, (err, response) => { 
+                    if (err) throw new Error('Could not update existing Slack message');
+                });
+            } else {
+                logger.warn('Failed to update Slack message footer');
             }
-            
-            let editedMessage = {
-                ts: message.ts,
-                text: message.text,
-                attachments: JSON.stringify(message.attachments),
-                channel: channel,
-                as_user: false
-            }
-
-            bot.api.chat.update(editedMessage, (err, response) => { 
-                if (err) throw new Error('Could not update existing Slack message');
-            });
         });
-    }
+    };
 
     controller.hears(['(.*)'], 'direct_message', (bot, message) => {
         // Slack sends a direct message to a bot when they're removed from a channel
@@ -344,7 +390,6 @@ module.exports = function (config) {
             this.resetInterval = false;
             this.shouldEndSession;
             this.user;
-            this.directPrefix = '';
         }
             
         /**
@@ -363,17 +408,12 @@ module.exports = function (config) {
                 this.setInactivityInterval(convo);
             }
             
-            if (!this.isDirectMessage) {
-                updateListeningStateFooter(this.initialInteraction.channel, true);
-            }
-            
             getUserDetails(this.initialInteraction.user).then( (details) => {
                 
                 this.user = details;
                 
-                // if not a direct message, use @username as message prefix
                 if (!this.isDirectMessage) {
-                    this.directPrefix = `@${this.user.name} `;
+                    updateListeningStateFooter(this.initialInteraction.channel,  botInfo.name, this.user.name, true);
                 }
             
                 // Strip launch phrase or set to a launch intent compatible phrase
@@ -398,24 +438,10 @@ module.exports = function (config) {
                     .then(resp => {
                         
                         this.shouldEndSession = resp.response.shouldEndSession;
-                        
-                        if (this.directPrefix && !this.isDirectMessage && resp.response.outputSpeech.card && resp.response.outputSpeech.card.attachments.length > 0) {
-                            this.initialResponse = resp.response.outputSpeech.card;
-                            this.initialResponse.attachments[0].author_name = this.directPrefix;
-                        } else if (this.directPrefix && !this.isDirectMessage) {
-                            this.initialResponse = {
-                                attachments: [
-                                    {
-                                        author_name: this.directPrefix, 
-                                        text: resp.response.outputSpeech.text || resp.response.outputSpeech.card.text
-                                    }
-                                ]
-                            };
-                        } else {
-                            this.initialResponse = (resp.response.outputSpeech.card) ? resp.response.outputSpeech.card : {text: resp.response.outputSpeech.text};
-                        }
+                        this.initialResponse = resp.response.outputSpeech.card || {text: resp.response.outputSpeech.text, attachments:[]};
                         
                         if (!this.isDirectMessage) {
+                            this.initialResponse = addUsernameAsAuthor(this.initialResponse, this.user.name);
                             this.initialResponse = addListeningStateFooter(this.initialResponse, true);
                             this.initialResponse.username = botInfo.name;
                             this.initialResponse.icon_url = botInfo.icon_url;
@@ -482,7 +508,7 @@ module.exports = function (config) {
             }
             
             if (!this.isDirectMessage) {
-                updateListeningStateFooter(this.initialInteraction.channel, true);
+                updateListeningStateFooter(this.initialInteraction.channel, botInfo.name, this.user.name, true);
             }
             
             // if lastInteractionTime is more than 30 seconds ago or other user is mentioned, end conversation
@@ -500,53 +526,29 @@ module.exports = function (config) {
                 .then(resp => {
                     
                     logger.info('Slack: Sending a response');
-                    if (this.directPrefix && !this.isDirectMessage && resp.response.outputSpeech.card && resp.response.outputSpeech.card.attachments.length > 0) {
-                        resp.response.outputSpeech.card.attachments[0].author_name = this.directPrefix;
-                    } else if (this.directPrefix && !this.isDirectMessage) {
-                        resp.response.outputSpeech.card = {
-                            text: '',
-                            attachments: [
-                                {
-                                    author_name: this.directPrefix,
-                                    text: resp.response.outputSpeech.text || resp.response.outputSpeech.card.text
-                                }
-                            ]
-                        };
-                    }
                     
                     this.shouldEndSession = resp.response.shouldEndSession;
-                    let output = (resp.response.outputSpeech.card) ? resp.response.outputSpeech.card : {text: resp.response.outputSpeech.text};
                     
-                    if (!output) {
-                        throw new Error('Unable to respond, probably a template error');
+                    let output = resp.response.outputSpeech.card || {text: resp.response.outputSpeech.text, attachments:[]};
+                    output.username = botInfo.name;
+                    output.icon_url = botInfo.icon_url;
+                        
+                    if (!this.isDirectMessage) {
+                        output = addUsernameAsAuthor(output, this.user.name);
+                        output = addListeningStateFooter(output, !this.shouldEndSession);
                     }
                     
                     // if no followup question
-                    if (this.shouldEndSession && !this.isDirectMessage) {
-                        
-                        output = addListeningStateFooter(output, false);
-                        output.username = botInfo.name;
-                        output.icon_url = botInfo.icon_url;
-                        
+                    if (this.shouldEndSession) {
                         convo.say(output);
                         convo.next();
                     } else {
                         
                         try{
-                            
-                            if (!this.isDirectMessage) {
-                                output = addListeningStateFooter(output, true);
-                            }
-                            
-                            // Add username and icon_url, 
-                            // since we don't want (edited) to appear when updating listening state
-                            output.username = botInfo.name;
-                            output.icon_url = botInfo.icon_url;
-                            
                             // Send response and listen for request
                             convo.ask(output, (response, convo) => {
                                 
-                                if (output) {
+                                if (response) {
                                     this.lastMessage = response;
                                     this.addToConvo(response, convo);
                                 } else {
@@ -585,7 +587,7 @@ module.exports = function (config) {
                 
                 // if not a direct message, let the user know they need to wake Davis
                 if(!this.isDirectMessage && !this.resetInterval && !this.shouldEndSession) {
-                    updateListeningStateFooter(this.initialInteraction.channel, false);
+                    updateListeningStateFooter(this.initialInteraction.channel,  botInfo.name, this.user.name, false);
                     clearInterval(inactivityInterval);
                     
                     // Allows convo.say to execute beforehand

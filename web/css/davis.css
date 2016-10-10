@@ -382,6 +382,7 @@ table.debug, th.debug, td.debug {
 .card-content {
 	display: table-cell;
 	padding-left: 10px;
+	vertical-align: top;
 }
 
 .card-title {
@@ -453,6 +454,27 @@ a.card-link-attachment:active {
 
 .card-field-title {
 	font-weight: bold;
+}
+
+.card-image-url {
+	float: left;
+	max-width: 400px;
+	max-height: 500px;
+	margin: 5px 10px 5px 0px;
+	cursor: pointer;
+}
+
+.card-thumb-url-wrapper {
+	display: table-cell;
+	height: 100%;
+	vertical-align: middle;
+	padding-left: 5px;
+}
+
+.card-thumb-url {
+	position: relative;
+	float: right;
+	height: 75px;
 }
 
 .hidden-feature {
