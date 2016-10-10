@@ -187,6 +187,14 @@ module.exports = function (config) {
      * @return {Object} message - Edited message
      */
     const addListeningStateFooter = function (message, isListening) {
+        
+        // Move all pretext property values to text property values if text property isn't already used
+        message.attachments.forEach( (atm, index) => {
+            if (atm.pretext && atm.pretext.length > 0 && (!atm.text || atm.text.trim().length == 0)) {
+                 message.attachments[index].text = atm.pretext;
+                 delete message.attachments[index].pretext;
+            } 
+        });
                             
         // Add footer to existing attachment if an image_url doesn't exist
         if (message.attachments.length > 0 && !message.attachments[message.attachments.length - 1].image_url) {
