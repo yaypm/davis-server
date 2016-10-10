@@ -4,6 +4,7 @@
 Welcome to Davis! Providing several new mediums for interacting with Dynatrace, Davis offers integration with Slack and Amazon Alexa, as well as its own web UI that supports both speech and text interactions. Creating Davis has been fun, as we continue to perfect the current functionality and add new functionality, we invite you to enjoy the magic of Davis powered by the artificial intelligence of Dynatrace. Below you'll find our step by step guide to help you get Davis up and running as quickly as possible. Let's get started!
 
 ##Prerequisites
+**git**
 
 **Node.js** (4.x or newer) installed
 
