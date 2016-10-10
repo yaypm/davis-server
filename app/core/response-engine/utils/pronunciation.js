@@ -39,9 +39,34 @@ const terms = [
         visual: 'PGI'
     },
     {
+        spellings: ['rds'],
+        audible: '<say-as interpret-as="spell-out">RDS</say-as>',
+        visual: 'RDS'
+    },
+    {
+        spellings: ['vpc'],
+        audible: '<say-as interpret-as="spell-out">VPC</say-as>',
+        visual: 'VPC'
+    },
+    {
+        spellings: ['vpn'],
+        audible: '<say-as interpret-as="spell-out">VPN</say-as>',
+        visual: 'VPN'
+    },
+    {
+        spellings: ['pgi'],
+        audible: '<say-as interpret-as="spell-out">pgi</say-as>',
+        visual: 'PGI'
+    },
+    {
         spellings: ['vmware'],
         audible: '<say-as interpret-as="spell-out">vm</say-as>ware',
         visual: 'VMware'
+    },
+    {
+        spellings: ['dynatrace'],
+        audible: 'dyna trace',
+        visual: 'Dynatrace'
     },
     {
         spellings: ['vsphere'],
@@ -72,13 +97,11 @@ const pronunciation = {
                         if (word.replace(/[^\w\s]/gi, '').toLowerCase() === spelling.replace(/[^\w\s]/gi, '').toLowerCase()) {
                             
                             // Escape special characters as RegExp safeguard
-                            spelling = spelling.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
+                            spelling = spelling.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');
                             let reg = new RegExp(spelling, 'gi');
                             word = word.replace(reg, term[displayType]);
                         }
-                        
-                    })
-                
+                    });
                 }
             });
             

@@ -26,7 +26,7 @@ const events = [
     {
         name: 'OPENSTACK_KEYSTONE_UNHEALTHY',
         type: EVENT_TYPES.availability,
-        friendly: ['Open Stack Keystone is unhealthy']
+        friendly: ['the Open Stack Keystone being unhealthy']
     },
     {
         name: 'HOST_LOG_AVAILABILITY',
@@ -46,7 +46,12 @@ const events = [
     {
         name: 'RDS_OF_SERVICE_UNAVAILABLE',
         type: EVENT_TYPES.availability,
-        friendly: ['a relational database service is unavailable']
+        friendly: ['the RDS being unavailable']
+    },
+    {
+        name: 'RDS_RESTART_SEQUENCE',
+        type: EVENT_TYPES.availability,
+        friendly: ['an RDS restart']
     },
     {
         name: 'PGI_OF_SERVICE_UNAVAILABLE',
