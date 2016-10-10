@@ -188,14 +188,23 @@ module.exports = function (config) {
      */
     const addListeningStateFooter = function (message, isListening) {
                             
-        // Add footer to existing attachment
-        if (message.attachments.length > 0) {
+        // Add footer to existing attachment if an image_url doesn't exist
+        if (message.attachments.length > 0 && !message.attachments[message.attachments.length - 1].image_url) {
             message.attachments[message.attachments.length - 1].footer_icon = (isListening) ? STATES.LISTENING.ICON : STATES.SLEEPING.ICON;
             message.attachments[message.attachments.length - 1].footer = (isListening) ? STATES.LISTENING.TEXT : STATES.SLEEPING.TEXT;
         
-        // Add footer to new attachment    
+        // Add footer to new attachment
+        } else if (message.attachments.length > 0) {
+            
+            message.attachments.push({
+                text: "",
+                footer_icon: (isListening) ? STATES.LISTENING.ICON : STATES.SLEEPING.ICON,
+                footer: (isListening) ? STATES.LISTENING.TEXT : STATES.SLEEPING.TEXT
+            });
+            
+        // Define attachments and add footer to new attachment    
         } else {
-           message.attachments = [{
+            message.attachments = [{
                 footer_icon: (isListening) ? STATES.LISTENING.ICON : STATES.SLEEPING.ICON,
                 footer: (isListening) ? STATES.LISTENING.TEXT : STATES.SLEEPING.TEXT
             }];
