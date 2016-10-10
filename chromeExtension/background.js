@@ -1,14 +1,27 @@
 var socket;
-var debugMode = false;
+var isConnected = false;
+chrome.browserAction.onClicked.addListener( tab => { 
+	if (isConnected) {
+		socket.disconnect();
+	} else {
+		getOptions();
+	}
+});
+
+function updateStatus(status) {
+		isConnected = (status === 'connected');	
+		chrome.browserAction.setIcon({
+			path: `${status}.png`
+		});
+}
 
 function getOptions() {
+	
 	chrome.storage.sync.get({
 		davisUrl: '',
 		userId : '',
 		debugMode: ''
 	  }, (options) => {
-		  
-		debugMode = (options.debugMode == 'true');
 		
 		if (options.davisUrl.length > 0) {
 								
@@ -17,7 +30,7 @@ function getOptions() {
 			// Navigate to URL in current tab
 			socket.on(`url-${options.userId}`, url => {
 				
-				if(debugMode) console.log("Request to navigate to page " + url);
+				if(options.debugMode) console.log("Request to navigate to page " + url);
 				
 				chrome.tabs.query({ currentWindow: true, active: true }, tabs => {
 			
@@ -30,15 +43,42 @@ function getOptions() {
 				});
 			});
 			
-			// Connection check
-			/* socket.on(`connection-check-${options.userId}`, () => {
-				if(debugMode) console.log("Connection check detected");
-				socket.emit(`connected-${options.userId}`);
-			}); */
-			
 			// Shared socket connection established
 			socket.on('connect', () => {
-				if(debugMode) console.log("Connected to server via socket.io");
+				if(options.debugMode) console.log("Connected to server via socket.io");
+				updateStatus('connected');
+			});
+			
+			// Shared socket connection established
+			socket.on('reconnect', () => {
+				if(options.debugMode) console.log("Reconnected to server via socket.io");
+				updateStatus('connected');
+			});
+			
+			// Shared socket disconnected
+			socket.on('disconnect', () => {
+				if(options.debugMode) console.log("Disconnected from server via socket.io");
+				updateStatus('disconnected');
+			});
+			
+			// Shared socket connection failed
+			socket.on('connect_error', (err) => {
+				if(options.debugMode) console.log("Connection to server via socket.io failed: connect_error");
+				if(options.debugMode) console.log(err);
+				updateStatus('error');
+			});
+			
+			// Shared socket connection failed
+			socket.on('connect_timeout', () => {
+				if(options.debugMode) console.log("Connection to server via socket.io failed: connect_timeout");
+				updateStatus('error');
+			});
+			
+			// Shared socket connection failed
+			socket.on('reconnect_error', (err) => {
+				if(options.debugMode) console.log("Connection to server via socket.io failed: reconnect_error");
+				if(options.debugMode) console.log(err);
+				updateStatus('error');
 			});
 		}
 	});

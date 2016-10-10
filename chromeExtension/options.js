@@ -33,8 +33,8 @@ function restore_options() {
 }
 
 function verifyFields(e){
-	if (document.getElementById('davisUrl').value.length > 0 
-		&& document.getElementById('userId').value.length > 0) {
+	if (document.getElementById('davisUrl').value.trim().length > 0 
+		&& document.getElementById('userId').value.trim().length > 0) {
 		document.getElementById('save').disabled = false;
 		if (e.keyCode == 13) {
 			save_options();
@@ -48,4 +48,4 @@ function verifyFields(e){
 document.addEventListener('DOMContentLoaded', restore_options, false);
 document.getElementById('save').addEventListener('click', save_options, false);
 document.getElementById('debugMode').addEventListener('click', verifyFields, false);
-window.addEventListener("keypress", verifyFields, false);
+window.addEventListener("keyup", verifyFields, false);
