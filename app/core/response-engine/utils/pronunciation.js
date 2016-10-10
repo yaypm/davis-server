@@ -7,10 +7,12 @@ const logger = require('../../../utils/logger');
 const terms = [
     {
         spellings: ['api'],
+        audible: '<say-as interpret-as="spell-out">API</say-as>',
         visual: 'API'
     },
     {
         spellings: ['cpu'],
+        audible: '<say-as interpret-as="spell-out">CPU</say-as>',
         visual: 'CPU'
     },
     {
@@ -55,7 +57,7 @@ const terms = [
     },
     {
         spellings: ['pgi'],
-        audible: '<say-as interpret-as="spell-out">pgi</say-as>',
+        audible: '<say-as interpret-as="spell-out">PGI</say-as>',
         visual: 'PGI'
     },
     {
