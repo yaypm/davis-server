@@ -42,7 +42,7 @@ function verifyFields(e){
 	} else {
 		document.getElementById('save').disabled = true;
 	}
-};
+}
 
 // Event listeners for options page
 document.addEventListener('DOMContentLoaded', restore_options, false);
