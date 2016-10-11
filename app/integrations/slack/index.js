@@ -191,8 +191,8 @@ module.exports = function (config) {
         // Move all pretext property values to text property values if text property isn't already used
         message.attachments.forEach( (atm, index) => {
             if (atm.pretext && atm.pretext.length > 0 && (!atm.text || atm.text.trim().length == 0)) {
-                 message.attachments[index].text = atm.pretext;
-                 delete message.attachments[index].pretext;
+                message.attachments[index].text = atm.pretext;
+                delete message.attachments[index].pretext;
             } 
         });
                             
@@ -205,7 +205,7 @@ module.exports = function (config) {
         } else if (message.attachments.length > 0) {
             
             message.attachments.push({
-                text: "",
+                text: '',
                 footer_icon: (isListening) ? STATES.LISTENING.ICON : STATES.SLEEPING.ICON,
                 footer: (isListening) ? STATES.LISTENING.TEXT : STATES.SLEEPING.TEXT
             });
@@ -219,7 +219,7 @@ module.exports = function (config) {
         }
     
         return message;
-    }
+    };
     
     /**
      * Updates current message's listening state to sleeping or removes previous message's listening state in footer
@@ -261,7 +261,7 @@ module.exports = function (config) {
                     as_user: false
                 };
     
-                bot.api.chat.update(editedMessage, (err, response) => { 
+                bot.api.chat.update(editedMessage, err => {
                     if (err) throw new Error('Could not update existing Slack message');
                 });
             } else {
@@ -315,7 +315,7 @@ module.exports = function (config) {
     controller.on('rtm_close', () => {
         // We could consider adding some retry logic here
         logger.warn('The RTM connection was closed for some reason!');
-        bot.startRTM(function(err, bot, payload) {
+        bot.startRTM(function(err) {
             if (err) {
                 throw new Error('Could not reconnect to Slack after rtm_close event');
             } else {
