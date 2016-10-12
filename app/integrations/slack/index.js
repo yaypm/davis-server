@@ -171,7 +171,7 @@ module.exports = function (config) {
         
         // Move message's text property into the first attachment
         if (message.text) {
-            message.attachments.unshift({text: message.text});
+            message.attachments.unshift({text: message.text, fallback: message.text});
             delete message.text;
         }
         
