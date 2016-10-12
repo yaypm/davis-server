@@ -1,19 +1,31 @@
 var isConnected = false;
 var debugMode = false;
-var userSocket;
+var sockets = [];
 
-// Extension's button clicked
+// Listen for extension button clicks
 chrome.browserAction.onClicked.addListener( tab => { 
 	
-	if (isConnected) {
-		if (userSocket) {
-			userSocket.disconnect();	
-		}
+	if (isConnected && sockets.length > 0) {
+		sockets[0].disconnect();
 	} else {
-		getOptions(true).then( (options) => {
-			if (options) userSocket = getSocket(options);
-		});
+		
+		getOptions(true)
+			.then( options => {
+				getSocket(options);
+			}).catch( err => {
+				console.log(err);
+			});
 	}
+});
+
+// Listen for changes to saved extension options
+chrome.storage.onChanged.addListener( function (changes, namespace) {
+	getOptions(true)
+		.then( options => {
+			getSocket(options);
+		}).catch( err => {
+			console.log(err);
+		});
 });
 
 function updateStatus(status, url) {
@@ -50,7 +62,7 @@ function getOptions(isClicked) {
 					title: 'Please enter missing values in this extension\'s options modal'
 				});
 				chrome.runtime.openOptionsPage();
-				resolve(null);
+				reject();
 			}
 			
 			resolve(options);
@@ -59,27 +71,40 @@ function getOptions(isClicked) {
 }
 
 function getSocket(options) {
+	return new Promise( (resolve, reject) => {
 		
 		var socket;
 		
 		if (options.davisUrl.length > 0) {
 								
-			socket = io(options.davisUrl);		
+			if (sockets.length == 0) {
+				socket = io(options.davisUrl);
+				sockets.push(socket);
+			} else {
+				sockets[0].disconnect();
+				sockets = [];
+				socket = io(options.davisUrl);
+				sockets.push(socket);	
+			}			
 			
 			// Navigate to URL in current tab
 			socket.on(`url-${options.userId}`, url => {
+				console.log('sockets.length: '+sockets.length);
+				// Ensure only one socket opens a URL
+				if (socket.id === sockets[0].id) {
+					
+					if(options.debugMode) console.log('Request to navigate to page ' + url);
+					
+					chrome.tabs.query({ currentWindow: true, active: true }, tabs => {
 				
-				if(options.debugMode) console.log('Request to navigate to page ' + url);
-				
-				chrome.tabs.query({ currentWindow: true, active: true }, tabs => {
-			
-					// if current tab includes 'dynatrace' use current tab, else open new tab 
-					if (url !== tabs[0].url && tabs[0].url.includes('dynatrace')) {
-						chrome.tabs.update(tabs[0].id, {url: url});
-					} else {
-						chrome.tabs.create({ url: url });
-					}
-				});
+						// if current tab includes 'dynatrace' use current tab, else open new tab 
+						if (url !== tabs[0].url && tabs[0].url.includes('dynatrace')) {
+							chrome.tabs.update(tabs[0].id, {url: url});
+						} else {
+							chrome.tabs.create({ url: url });
+						}
+					});
+				}
 			});
 			
 			// Shared socket connection established
@@ -87,6 +112,7 @@ function getSocket(options) {
 				if (debugMode) console.log('Connected to server via socket.io');
 				updateStatus('connected');
 				socket.emit('registerAlexa', {id: socket.id, alexa: options.userId});
+				resolve(socket);
 			});
 			
 			// Shared socket connection established
@@ -108,6 +134,7 @@ function getSocket(options) {
 					console.log(err);
 				}
 				updateStatus('error', options.davisUrl);
+				reject(err);
 			});
 			
 			// Shared socket connection failed
@@ -126,17 +153,13 @@ function getSocket(options) {
 			});
 			 
 		}
-		
-		return socket;
+	
+	});
 }
 
-getOptions(false).then( (options) => {
-	if (options) userSocket = getSocket(options);
-});
-
-// Listen for changes to saved extension options
-chrome.storage.onChanged.addListener( function (changes, namespace) {
-	getOptions(true).then( (options) => {
-		if (options) userSocket = getSocket(options);
+getOptions(false)
+	.then( options => {
+		getSocket(options);
+	}).catch( err => {
+		console.log(err);
 	});
-});
