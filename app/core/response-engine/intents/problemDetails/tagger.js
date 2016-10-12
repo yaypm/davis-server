@@ -3,8 +3,7 @@
 const _ = require('lodash'),
     common = require('../../utils/common');
 
-const ELIGIBLE_TO_SHOW = ['web', 'alexa'],
-    ELIGIBLE_FOR_NOTIFICATIONS = ['system'];
+const ELIGIBLE_FOR_NOTIFICATIONS = ['system'];
     
 const express = require('../../../../index');
 
@@ -25,8 +24,8 @@ function containsRootCause(intentData) {
 }
 
 function eligibleToShow(exchange, user) {
-    // Only the WebUI is eligible for the show command.
-    return _.includes(ELIGIBLE_TO_SHOW, _.get(exchange, 'source')) && express.isSocketConnected(user);
+    // WebUI and Alexa (with socket connection) is eligible for the show command.
+    return _.get(exchange, 'source') === 'web' || (_.get(exchange, 'source') === 'alexa' && express.isSocketConnected(user));
 }
 
 function notification(exchange) {
