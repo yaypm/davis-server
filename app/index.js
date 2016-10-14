@@ -10,6 +10,8 @@ const express = require('express'),
     logger = require('./utils/logger'),
     // version = require('./utils/version'),
     mongoose = require('mongoose');
+    
+var activeSocketConnections = [];
 
 module.exports = {
     setupApp: function(config) {
@@ -23,9 +25,30 @@ module.exports = {
             }
         }));
 
-        // For Chrome extension
-        io.on('connection', function () {
+        // Add new socket connection to array
+        io.sockets.on('connection', (socket) => {
             logger.info('A new socket.io connection detected');
+            activeSocketConnections.push({socket: socket, alexa: null});
+            
+            // Register Alexa user ID with socket ID
+            socket.on('registerAlexa', (data) => {
+                activeSocketConnections.forEach( (connection, index) => {
+                    if (connection.socket.id.replace('/#', '') === data.id) {
+                        logger.info('Registered Alexa user ID with socket ID');
+                        activeSocketConnections[index].alexa = data.alexa;
+                    }
+                });
+            });
+            
+            // Remove disconnected socket from array
+            socket.on('disconnect', () => {
+                activeSocketConnections.forEach( (connection, index) => {
+                    if (connection.socket.id === socket.id) {
+                        logger.info('Socket.io socket disconnected');
+                        activeSocketConnections.splice(index, 1);
+                    }
+                });
+            });
         });
 
         mongoose.connect(config.database.dsn, function (err) {
@@ -92,5 +115,16 @@ module.exports = {
     push: function (davis) {
         logger.info('Pushing link');
         io.sockets.emit(`url-${davis.user.id}`, davis.exchange.response.visual.hyperlink);
+    },
+    
+    isSocketConnected: function (user) {
+        logger.info('Verifying user has active socket connection to Chrome Extension');
+        let result = false;
+        activeSocketConnections.forEach( connection => {
+            if (connection.alexa === user.id) {
+                result = true;
+            }
+        });
+        return result;
     }
 };

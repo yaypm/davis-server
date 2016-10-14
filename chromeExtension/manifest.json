@@ -10,7 +10,7 @@
   "icons": {"128": "connected.png"},
   "browser_action": {
     "default_icon": "disconnected.png",
-    "default_title" : "Dynatrace Davis - Remote Navigation Receiver"
+    "default_title" : "Connect to Davis"
   },
   "permissions": [
     "activeTab",

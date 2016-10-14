@@ -22,9 +22,9 @@ const STATES = {
         ICON: 'https://s3.amazonaws.com/dynatrace-davis/assets/images/grey-dot.png',
         TEXT: 'Wake me by saying "Hey Davis"'
     },
-    NONE: {
-        ICON: 'http://vignette2.wikia.nocookie.net/payday/images/5/59/Empty.png/revision/latest?cb=20131030195648',
-        TEXT: ' '
+    RESPONDED: {
+        ICON: 'https://s3.amazonaws.com/dynatrace-davis/assets/images/grey-dot.png',
+        TEXT: 'Responded'
     }
 };
 
@@ -171,7 +171,7 @@ module.exports = function (config) {
         
         // Move message's text property into the first attachment
         if (message.text) {
-            message.attachments.unshift({text: message.text});
+            message.attachments.unshift({text: message.text, fallback: message.text});
             delete message.text;
         }
         
@@ -250,8 +250,8 @@ module.exports = function (config) {
             if (message) {
                 
                 // Inject footer with listening status of inactive
-                message.attachments[message.attachments.length - 1].footer_icon = (removePrevious) ? STATES.NONE.ICON : STATES.SLEEPING.ICON;
-                message.attachments[message.attachments.length - 1].footer = (removePrevious) ? STATES.NONE.TEXT : STATES.SLEEPING.TEXT;
+                message.attachments[message.attachments.length - 1].footer_icon = (removePrevious) ? STATES.RESPONDED.ICON : STATES.SLEEPING.ICON;
+                message.attachments[message.attachments.length - 1].footer = (removePrevious) ? STATES.RESPONDED.TEXT : STATES.SLEEPING.TEXT;
                 
                 let editedMessage = {
                     ts: message.ts,
