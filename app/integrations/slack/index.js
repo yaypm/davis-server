@@ -231,8 +231,7 @@ module.exports = function (config) {
      */
     const updateListeningStateFooter = function (channel, botname, username, removePrevious) {
         
-        // Get channel's message history
-        bot.api.channels.history( {channel: channel}, (err, response) => {
+        let cb = (err, response) => {
              
             if (err) throw new Error('Could not get Slack channel history');
             
@@ -267,7 +266,22 @@ module.exports = function (config) {
             } else {
                 logger.warn('Failed to update Slack message footer');
             }
+        };
+        
+        // Determine if channel is private
+        bot.api.groups.info({channel: channel}, (err, response) => {
+            
+            (err) ? logger.info('Slack channel is public') : logger.info('Slack channel is private');
+            
+            if (response.group && response.group.is_group) {
+                // Get private channel's message history
+                bot.api.groups.history({channel: channel}, cb);
+            } else {
+                // Get public channel's message history
+                bot.api.channels.history({channel: channel}, cb);
+            }
         });
+        
     };
 
     controller.hears(['(.*)'], 'direct_message', (bot, message) => {
