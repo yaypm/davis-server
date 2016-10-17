@@ -926,6 +926,7 @@ var davis = (function () {
                         method: 'post',
                         mode: 'cors',
                         body: JSON.stringify(input),
+                        credentials: 'same-origin',
                         headers: new Headers({
                             'Content-Type': 'application/json; charset=utf-8'
                         })
@@ -1019,9 +1020,10 @@ var davis = (function () {
                 
                 var options = {
                     method: 'get',
-                    headers: {
-                      accept: 'text/plain'
-                    }
+                    credentials: 'same-origin',
+                    headers: new Headers({
+                        'accept': 'text/plain'
+                    })
                 };
                 
                 fetch('/web/token', options)
@@ -1048,7 +1050,8 @@ var davis = (function () {
             
             var options = {
                 method: 'get',
-                mode: 'cors'
+                mode: 'cors',
+                credentials: 'same-origin'
             };
             
             return fetch('/web/server', options)
@@ -1067,7 +1070,8 @@ var davis = (function () {
             
             var options = {
                 method: 'get',
-                mode: 'cors'
+                mode: 'cors',
+                credentials: 'same-origin'
             };
             
             return fetch('/api/v1/git', options)
@@ -1089,7 +1093,8 @@ var davis = (function () {
             
             var options = {
                 method: 'get',
-                mode: 'cors'
+                mode: 'cors',
+                credentials: 'same-origin'
             };
         
             if (savedTtsTokenObj.token != '' && savedTtsTokenObj.expiration > new Date((new Date) * 1 - 1000 * 3500)) {
@@ -1128,7 +1133,8 @@ var davis = (function () {
         
                 var options = {
                     method: 'get',
-                    mode: 'cors'
+                    mode: 'cors',
+                    credentials: 'same-origin'
                 };
         
                 if (savedSttTokenObj.token != '' && savedSttTokenObj.expiration > new Date((new Date) * 1 - 1000 * 3500)) {

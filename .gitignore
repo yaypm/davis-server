@@ -27,3 +27,6 @@ test/config.js
 
 # webfonts
 web/css/webfonts
+
+# Password
+.htpasswd

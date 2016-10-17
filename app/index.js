@@ -9,6 +9,7 @@ const express = require('express'),
     routes = require('./routes/index'),
     logger = require('./utils/logger'),
     // version = require('./utils/version'),
+    auth = require('http-auth'),
     mongoose = require('mongoose');
     
 var activeSocketConnections = [];
@@ -56,9 +57,22 @@ module.exports = {
             logger.info('Successfully connected to mongodb');
         });
 
-        app.use(favicon(`${__dirname}/../web/favicon.ico`));
-        app.use(express.static(`${__dirname}/../web`));
+        if (config.web.enabled) {
 
+            // Web Authentication
+            if (config.web.auth_required) {
+                let basic = auth.basic({
+                    realm: 'Davis',
+                    file: `${__dirname}/app.htpasswd`
+                });
+                
+                app.use(auth.connect(basic));
+            }
+            
+            app.use(favicon(`${__dirname}/../web/favicon.ico`));
+            app.use(express.static(`${__dirname}/../web`));
+        }
+    
         app.use(bodyParser.json());
         app.use(bodyParser.urlencoded({extended: false}));
         app.use('/', routes);
