@@ -464,7 +464,7 @@ module.exports = function (config) {
                         
                         if (!this.isDirectMessage) {
                             this.initialResponse = addUsernameAsAuthor(this.initialResponse, this.user.name);
-                            this.initialResponse = addListeningStateFooter(this.initialResponse, true);
+                            this.initialResponse = addListeningStateFooter(this.initialResponse, !this.shouldEndSession);
                             this.initialResponse.username = botInfo.name;
                             this.initialResponse.icon_url = botInfo.icon_url;
                         }
