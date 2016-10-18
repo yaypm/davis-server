@@ -60,31 +60,27 @@ module.exports = {
         // The web UI will be available unless explicitly disabled.
         if (_.get(config, 'web.enabled', true)) {
 
+            app.use(favicon(`${__dirname}/../web/favicon.ico`));
+            
             // Web Authentication
             if (_.get(config, 'web.auth_required')) {
                 let basic = auth.basic({
                     realm: 'Davis',
-                    file: `${__dirname}/app.htpasswd`
+                    file: `${__dirname}/../web.htpasswd`
                 });
                 
-                app.use(auth.connect(basic));
+                app.use('/web',[auth.connect(basic), express.static(`${__dirname}/../web`)]);
+                app.get('/',function (req, res) {
+                    res.redirect('/web');
+                });
+            } else {
+                app.use(express.static(`${__dirname}/../web`));
             }
-            
-            app.use(favicon(`${__dirname}/../web/favicon.ico`));
-            app.use(express.static(`${__dirname}/../web`));
         }
     
         app.use(bodyParser.json());
         app.use(bodyParser.urlencoded({extended: false}));
         app.use('/', routes);
-
-        /**
-         * Getting Git version
-         */
-        // version.init()
-        //     .then( () => {
-        //         logger.info('Successfully got Git version');
-        //     });
 
         /**
          * Starting slackbot

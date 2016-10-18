@@ -1,0 +1,9 @@
+{%- set problems = [intentData.latestProblem.result.problems[0]] %}
+{
+    "text": "There was one problem during that time frame.",
+    "attachments": [
+        {% for problem in problems %}
+           {% include "intents/problem/templates/en-us/shared/visual/problemSummary.nj" %}{%- if not loop.last %},{% endif %}
+        {%- endfor %}
+    ]
+}

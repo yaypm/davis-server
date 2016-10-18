@@ -1,0 +1,2 @@
+{%- set problem1 = intentData.latestProblem.result.problems[0] -%}
+There {% if problem1.status == 'OPEN' %}is {{ problem1.rankedImpacts[0].eventType | friendlyEvent | friendlyPronunciations("audible") }}, which is actively impacting {{ problem1.rankedImpacts[0] | friendlyEntityName }}{% else %}was {{ problem1.rankedImpacts[0].eventType | friendlyEvent | friendlyPronunciations("audible") }}, which affected {{ problem1.rankedImpacts[0] | friendlyEntityName }}, but it closed {{ problem1.endTime | friendlyTime(user) }}{% endif %}.
