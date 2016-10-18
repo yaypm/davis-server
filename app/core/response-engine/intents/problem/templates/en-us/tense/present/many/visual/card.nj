@@ -2,8 +2,8 @@
 {
     "attachments": [
         {
-            "fallback": "It looks like there are {{ intentData.problem.result.problems.length }} problems active problems.  After giving it some thought, here are the top three problems.",
-            "text": "It looks like there are <{{user.dynatrace.url}}#problems|{{ intentData.problem.result.problems.length }} problems> active problems.  After giving it some thought, here are the top three problems."  
+            "fallback": "It looks like there are {{ problems.length }} problems active problems. After giving it some thought, here are the top three problems.",
+            "text": "It looks like there are <{{user.dynatrace.url}}#problems|{{ problems.length }} problems> active problems. After giving it some thought, here are the top three problems."  
         },
         {% for i in range(0, 3) %}
            {% include "intents/problem/templates/en-us/shared/visual/problemSummary.nj" %}{%- if not loop.last %},{% endif %}

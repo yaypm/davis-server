@@ -257,7 +257,7 @@ var davis = (function () {
         function addCard(card) {
             
             // Add text
-            if (card.text !== undefined) {
+            if (card.text !== undefined && card.text.length > 0) {
                 addToInteractionLog({text: reformatLinks(card.text.replace(/\n/g, '<br>'), false)}, true, false);
             }
 
@@ -290,7 +290,7 @@ var davis = (function () {
                     
                     // Text
                     if (atm.text !== undefined) {
-                        attachment += localResponses.card.text.replace('{{text}}', atm.text.replace(/\n/g, '<br>'));
+                        attachment += localResponses.card.text.replace('{{text}}', reformatLinks(atm.text.replace(/\n/g, '<br>'), true));
                     }
                     
                     // Fields
