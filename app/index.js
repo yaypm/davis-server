@@ -8,7 +8,7 @@ const express = require('express'),
     favicon = require('serve-favicon'),
     routes = require('./routes/index'),
     logger = require('./utils/logger'),
-    // version = require('./utils/version'),
+    _ = require('lodash'),
     auth = require('http-auth'),
     mongoose = require('mongoose');
     
@@ -57,10 +57,11 @@ module.exports = {
             logger.info('Successfully connected to mongodb');
         });
 
-        if (config.web.enabled) {
+        // The web UI will be available unless explicitly disabled.
+        if (_.get(config, 'web.enabled', true)) {
 
             // Web Authentication
-            if (config.web.auth_required) {
+            if (_.get(config, 'web.auth_required')) {
                 let basic = auth.basic({
                     realm: 'Davis',
                     file: `${__dirname}/app.htpasswd`
