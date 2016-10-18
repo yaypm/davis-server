@@ -19,7 +19,8 @@ const STATUS_TRANSLATIONS = {
     inactive: 'CLOSED',
     active: 'OPEN',
     closed: 'CLOSED',
-    open: 'OPEN'
+    open: 'OPEN',
+    any: null
 };
 
 class Dynatrace {
@@ -186,14 +187,18 @@ class Dynatrace {
             if (status) {
                 relativeTime = 'week';
                 status = STATUS_TRANSLATIONS[status];
+            } else if (_.isNil(timeRange)) {
+                status = 'OPEN';
             }
+            
+            let filters = {};
+            filters.relativeTime = (_.isNil(timeRange)) ? relativeTime : getTimeFilter(timeRange.startTime).relativeTime;
+            if (status) filters.status = status;
 
             if (_.isNil(timeRange)) {
                 logger.info('The user is interested in currently open problems');
-                
-                if (!status) status = 'OPEN';
-                
-                rp(this.options('problem/feed', { relativeTime: relativeTime, status: status }))
+
+                rp(this.options('problem/feed', filters))
                     .then( response => {
                         logger.debug(`The prefiltered list is ${response.result.problems.length}`);
                         
@@ -201,7 +206,7 @@ class Dynatrace {
                             return filterApplicationProblems(applications, problem, this.config.aliases);
                         });
                         
-                        if (!status) response.result.problems = sortProblemsByImportance(response.result.problems);
+                        if (relativeTime === 'hour') response.result.problems = sortProblemsByImportance(response.result.problems);
                         
                         logger.debug(`The post filtered list is ${response.result.problems.length}`);
 
@@ -213,7 +218,7 @@ class Dynatrace {
             } else {
                 logger.info('The user has requested problems from a specific timeframe');
 
-                rp(this.options('problem/feed', { relativeTime: getTimeFilter(timeRange.startTime).relativeTime, status: status }))
+                rp(this.options('problem/feed', filters))
                     .then( response => {
                         logger.debug(`The pre filtered list is ${response.result.problems.length}`);
                         response.result.problems = _.filter(response.result.problems, problem => {
@@ -221,7 +226,7 @@ class Dynatrace {
                                 filterApplicationProblems(applications, problem, this.config.aliases);
                         });
                         
-                        if (!status) response.result.problems = sortProblemsByImportance(response.result.problems);
+                        if (relativeTime === 'hour') response.result.problems = sortProblemsByImportance(response.result.problems);
                         
                         logger.debug(`The post filtered list is ${response.result.problems.length}`);
 

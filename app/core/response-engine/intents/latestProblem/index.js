@@ -13,6 +13,8 @@ const BbPromise = require('bluebird'),
 const process = function process(davis) {
     return new BbPromise((resolve, reject) => {
         const dynatrace = new Dynatrace(davis.user.dynatrace.url, davis.user.dynatrace.token, davis.config, davis.user.dynatrace.strictSSL);
+        
+        if (!davis.exchange.request.analysed.status) davis.exchange.request.analysed.status = 'any';
 
         dynatrace.getFilteredProblems(davis.exchange.request.analysed.timeRange, davis.exchange.request.analysed.appName, davis.exchange.request.analysed.status)
             .then(response => {
