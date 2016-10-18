@@ -3,7 +3,7 @@
     "text": "There were two infrastructure problems detected in the past week that I'd like to bring to your attention.",
     "attachments": [
         {% for problem in problems %}
-           {% include "intents/scalability/templates/en-us/shared/visual/problemSummary.nj" %}{%- if not loop.last %},{% endif %}
+           {% include "shared-templates/problem-summary/en-us/visual/problem-summary.nj" %}{%- if not loop.last %},{% endif %}
         {%- endfor %}
     ]
 }

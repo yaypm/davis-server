@@ -1,2 +1,2 @@
 Unfortunately there were {{ intentData.problem.result.problems.length }} problems detected {{ exchange.request.analysed.timeRange | friendlyTimeRange(user) }}.  
-After careful consideration, I would focus on one of the following problems first. <break time="1s" />{% include "intents/problem/templates/en-us/shared/top-three-problems.nj" %}
+After careful consideration, I would focus on one of the following problems first. <break time="1s" />{% include "shared-templates/top-three-problems/en-us/top-three-problems.nj" %}

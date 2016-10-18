@@ -12,14 +12,14 @@ const rp = require('request-promise'),
 
 const STRING_DISTANT_THRESHOLD = .75;
 const STATUS_TRANSLATIONS = {
-    resolved: 'resolved',
-    unresolved: 'open',
-    solved: 'resolved',
-    unsolved: 'open',
-    inactive: 'resolved',
-    active: 'open',
-    open: 'open',
-    closed: 'resolved'
+    resolved: 'CLOSED',
+    unresolved: 'OPEN',
+    solved: 'CLOSED',
+    unsolved: 'OPEN',
+    inactive: 'CLOSED',
+    active: 'OPEN',
+    closed: 'CLOSED',
+    open: 'OPEN'
 };
 
 class Dynatrace {
@@ -181,24 +181,28 @@ class Dynatrace {
 
         return new BbPromise((resolve, reject) => {
 
+            let relativeTime = 'hour';
+                
+            if (status) {
+                relativeTime = 'week';
+                status = STATUS_TRANSLATIONS[status];
+            }
+
             if (_.isNil(timeRange)) {
                 logger.info('The user is interested in currently open problems');
-
-                let relativeTime = 'hour';
                 
-                if (status) {
-                    relativeTime = 'month';
-                    status = STATUS_TRANSLATIONS[status];
-                } else {
-                    status = 'open';
-                }
+                if (!status) status = 'OPEN';
                 
                 rp(this.options('problem/feed', { relativeTime: relativeTime, status: status }))
                     .then( response => {
                         logger.debug(`The prefiltered list is ${response.result.problems.length}`);
-                        response.result.problems = sortProblemsByImportance(_.filter(response.result.problems, problem => {
+                        
+                        response.result.problems = _.filter(response.result.problems, problem => {
                             return filterApplicationProblems(applications, problem, this.config.aliases);
-                        }));
+                        });
+                        
+                        if (!status) response.result.problems = sortProblemsByImportance(response.result.problems);
+                        
                         logger.debug(`The post filtered list is ${response.result.problems.length}`);
 
                         resolve(response);
@@ -212,10 +216,13 @@ class Dynatrace {
                 rp(this.options('problem/feed', { relativeTime: getTimeFilter(timeRange.startTime).relativeTime, status: status }))
                     .then( response => {
                         logger.debug(`The pre filtered list is ${response.result.problems.length}`);
-                        response.result.problems = sortProblemsByImportance(_.filter(response.result.problems, problem => {
+                        response.result.problems = _.filter(response.result.problems, problem => {
                             return isProblemInRange(timeRange.startTime, timeRange.stopTime, problem.startTime, problem.endTime) &&
                                 filterApplicationProblems(applications, problem, this.config.aliases);
-                        }));
+                        });
+                        
+                        if (!status) response.result.problems = sortProblemsByImportance(response.result.problems);
+                        
                         logger.debug(`The post filtered list is ${response.result.problems.length}`);
 
                         resolve(response);

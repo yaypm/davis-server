@@ -3,7 +3,7 @@
     "text": "There are a couple of active problems at the moment.",
     "attachments": [
         {% for problem in problems %}
-           {% include "intents/problem/templates/en-us/shared/visual/problemSummary.nj" %}{%- if not loop.last %},{% endif %}
+           {% include "shared-templates/problem-summary/en-us/visual/problem-summary.nj" %}{%- if not loop.last %},{% endif %}
         {%- endfor %}
     ]
 }
