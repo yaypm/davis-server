@@ -1,2 +1,4 @@
-node_modules/*
-.vscode/*
+coverage
+node_modules
+tmp
+tmpdirs-davis

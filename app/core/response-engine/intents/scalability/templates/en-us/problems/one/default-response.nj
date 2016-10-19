@@ -1,3 +1,0 @@
-{%- set problem = intentData.scalability.result.problems[0] -%}
-There was one infrastructure problem during the past week,
-{% if problem.status == 'OPEN' %}caused by a  {{ problem.rankedImpacts[0].eventType | friendlyEvent() }} affecting {{ problem.rankedImpacts[0] | friendlyEntityName() }}, this problem started {{ problem.startTime | friendlyTime(user) }} and is unfortunately still on going.{% else %}caused by a  {{ problem.rankedImpacts[0].eventType | friendlyEvent() }} that affected {{ problem.rankedImpacts[0] | friendlyEntityName() }}, this problem started {{ problem.startTime | friendlyTime(user) }} but was resolved {{ problem.endTime | friendlyTime(user) }}.{% endif %}

@@ -1,26 +1,14 @@
 module.exports = {
-    "env": {
-        "browser": true,
-        "node": true,
-        "mocha": true
-    },
-    "extends": "eslint:recommended",
-    "parserOptions": {
-        "ecmaVersion": 6
-    },
-    "rules": {
-        "indent": [
-            "error",
-            4
-        ],
-        "quotes": [
-            "error",
-            "single"
-        ],
-        "semi": [
-            "error",
-            "always"
-        ],
-        "no-console": 0
-    }
+  "extends": "airbnb",
+  "plugins": [],
+  "rules": {
+    "func-names": "off",
+    "strict": "off",
+    "prefer-rest-params": "off",
+    "react/require-extension" : "off",
+    "import/no-extraneous-dependencies" : "off"
+  },
+  "env": {
+       "mocha": true
+   }
 };

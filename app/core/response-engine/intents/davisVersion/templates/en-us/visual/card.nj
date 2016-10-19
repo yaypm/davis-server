@@ -1,4 +1,0 @@
-{
-   {# "text": "Dynatrace Davis {{version.tag}} {% if version.branch != "master" %}({{version.branch}}) {% endif %}- Updated on {{version.lastUpdate}}" #}
-   "text": "Sorry, I'm unable to get version information at this time."
-}

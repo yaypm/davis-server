@@ -257,7 +257,7 @@ var davis = (function () {
         function addCard(card) {
             
             // Add text
-            if (card.text !== undefined && card.text.length > 0) {
+            if (card.text !== undefined) {
                 addToInteractionLog({text: reformatLinks(card.text.replace(/\n/g, '<br>'), false)}, true, false);
             }
 
@@ -290,7 +290,7 @@ var davis = (function () {
                     
                     // Text
                     if (atm.text !== undefined) {
-                        attachment += localResponses.card.text.replace('{{text}}', reformatLinks(atm.text.replace(/\n/g, '<br>'), true));
+                        attachment += localResponses.card.text.replace('{{text}}', atm.text.replace(/\n/g, '<br>'));
                     }
                     
                     // Fields
@@ -926,7 +926,6 @@ var davis = (function () {
                         method: 'post',
                         mode: 'cors',
                         body: JSON.stringify(input),
-                        credentials: 'same-origin',
                         headers: new Headers({
                             'Content-Type': 'application/json; charset=utf-8'
                         })
@@ -1020,10 +1019,9 @@ var davis = (function () {
                 
                 var options = {
                     method: 'get',
-                    credentials: 'same-origin',
-                    headers: new Headers({
-                        'accept': 'text/plain'
-                    })
+                    headers: {
+                      accept: 'text/plain'
+                    }
                 };
                 
                 fetch('/web/token', options)
@@ -1050,8 +1048,7 @@ var davis = (function () {
             
             var options = {
                 method: 'get',
-                mode: 'cors',
-                credentials: 'same-origin'
+                mode: 'cors'
             };
             
             return fetch('/web/server', options)
@@ -1070,8 +1067,7 @@ var davis = (function () {
             
             var options = {
                 method: 'get',
-                mode: 'cors',
-                credentials: 'same-origin'
+                mode: 'cors'
             };
             
             return fetch('/api/v1/git', options)
@@ -1093,8 +1089,7 @@ var davis = (function () {
             
             var options = {
                 method: 'get',
-                mode: 'cors',
-                credentials: 'same-origin'
+                mode: 'cors'
             };
         
             if (savedTtsTokenObj.token != '' && savedTtsTokenObj.expiration > new Date((new Date) * 1 - 1000 * 3500)) {
@@ -1133,8 +1128,7 @@ var davis = (function () {
         
                 var options = {
                     method: 'get',
-                    mode: 'cors',
-                    credentials: 'same-origin'
+                    mode: 'cors'
                 };
         
                 if (savedSttTokenObj.token != '' && savedSttTokenObj.expiration > new Date((new Date) * 1 - 1000 * 3500)) {

@@ -1,13 +1,8 @@
 {
-  "name": "davis-server",
-  "description": "Davis Server",
-  "main": "./bin/run",
-  "authors": [
-    "Michael Beemer <michael.beemer@dynatrace.com>"
-  ],
+  "name": "dynatrace-davis",
+  "main": "./lib/Davis.js",
   "license": "MIT",
   "homepage": "https://github.com/Dynatrace/davis-server",
-  "private": true,
   "ignore": [
     "**/.*",
     "node_modules",

@@ -1,9 +1,0 @@
-{%- set problems = intentData.scalability.result.problems %}
-{
-    "text": "There were two infrastructure problems detected in the past week that I'd like to bring to your attention.",
-    "attachments": [
-        {% for problem in problems %}
-           {% include "shared-templates/problem-summary/en-us/visual/problem-summary.nj" %}{%- if not loop.last %},{% endif %}
-        {%- endfor %}
-    ]
-}

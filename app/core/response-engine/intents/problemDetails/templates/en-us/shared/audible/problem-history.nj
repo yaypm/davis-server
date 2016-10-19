@@ -1,4 +1,0 @@
-{%- set problem = intentData.problemDetails.result -%}
-{%- set startingEvent = problem.rankedEvents | last -%}
-{%- set currentEvent = problem.rankedEvents | first -%}
-This problem started {{ problem.startTime | friendlyTime(user) }} when {{ startingEvent.eventType | friendlyEvent | friendlyPronunciations("audible") }} started {{ ['impacting', 'affecting']|random }} {{ startingEvent |  friendlyEntityName() }}.  {% if problem.rankedEvents.length > 1 %}Eventually, {{ currentEvent |  friendlyEntityName() }} experienced {{ startingEvent.eventType | friendlyEvent | friendlyPronunciations("audible") }} {{ currentEvent.startTime | friendlyTime(user) }}.{% endif %}  {% include "intents/problemDetails/templates/en-us/shared/recommendation.nj" %}

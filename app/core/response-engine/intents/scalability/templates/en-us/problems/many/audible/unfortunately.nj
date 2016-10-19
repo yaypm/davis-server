@@ -1,1 +1,0 @@
-In the past week, there were a number of infrastructure related problems detected.  I've gone ahead and ranked them based on impact for you.  <break time="1s" />{% include "shared-templates/top-three-problems/en-us/top-three-problems.nj" %}

@@ -1,3 +1,0 @@
-It looks like {{ intentData.problem.result.problems.length }} problems occurred {{ exchange.request.analysed.timeRange | friendlyTimeRange(user) }}.  
-<break time="1s" />After giving it some thought, here are my top three problems.  
-{% include "shared-templates/top-three-problems/en-us/top-three-problems.nj" %}
