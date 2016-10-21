@@ -1,5 +1,18 @@
 {
     "intents": [
-        "./problem/index.js"
+        "./problem/index.js",
+        "./multipleChoice/index.js",
+        "./help/index.js",
+        "./davisVersion/index.js",
+        "./launch/index.js",
+        "./message/index.js",
+        "./no/index.js",
+        "./problemDetails/index.js",
+        "./scalability/index.js",
+        "./send/index.js",
+        "./stop/index.js",
+        "./unknown/index.js",
+        "./userActivity/index.js",
+        "./yes/index.js"
     ]
 }
