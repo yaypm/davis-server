@@ -50,6 +50,7 @@ function analyseEntities(davis, entities) {
         intent: getIntent(davis, entities),
         timeRange: getDateTime(entities),
         appName: _.get(entities, 'app_name[0].value', null),
+        status:  _.get(entities, 'problemStatus[0].value', null),
         emoji: _.get(entities, 'emoji[0].value', null)
     };
     davis.exchange.intent.push(processed.intent);

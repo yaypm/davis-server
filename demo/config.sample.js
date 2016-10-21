@@ -38,6 +38,11 @@ const config = {
             password: '<watson_tts_password>'
         }
     },
+    
+    web: {
+        enabled: true,
+        auth_required: false
+    },
 
     // The Slack bot token can be created on the apps and integrations page
     slack: {

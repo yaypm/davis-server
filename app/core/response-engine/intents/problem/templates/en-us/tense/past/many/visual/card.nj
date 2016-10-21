@@ -2,11 +2,11 @@
 {
     "attachments": [
         {
-            "fallback": "It looks like {{ intentData.problem.result.problems.length }} problems occurred {{ exchange.request.analysed.timeRange | friendlyTimeRange(user, false, "visual") }}.  After giving it some thought, here are my top three problems.",
-            "text": "It looks like <{{intentData.problem.result.problems | buildProblemsUrl(user)}}|{{ intentData.problem.result.problems.length }} problems> occurred {{ exchange.request.analysed.timeRange | friendlyTimeRange(user, false, "visual") }}.  After giving it some thought, here are my top three problems."  
+            "fallback": "It looks like {{ problems.length }} problems occurred {{ exchange.request.analysed.timeRange | friendlyTimeRange(user, false, "visual") }}. After giving it some thought, here are my top three problems.",
+            "text": "It looks like <{{problems | buildProblemsUrl(user)}}|{{ problems.length }} problems> occurred {{ exchange.request.analysed.timeRange | friendlyTimeRange(user, false, "visual") }}. After giving it some thought, here are my top three problems."  
         },
         {% for i in range(0, 3) %}
-           {% include "intents/problem/templates/en-us/shared/visual/problemSummary.nj" %}{%- if not loop.last %},{% endif %}
+           {% include "shared-templates/problem-summary/en-us/visual/problem-summary.nj" %}{%- if not loop.last %},{% endif %}
         {%- endfor %}
     ]
 }

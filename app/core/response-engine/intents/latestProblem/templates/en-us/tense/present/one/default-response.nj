@@ -1,0 +1,2 @@
+{%- set problem = intentData.latestProblem.result.problems[0] -%}
+The most recent problem is {{ problem.rankedImpacts[0].eventType | friendlyEvent() }} affecting {{ problem.rankedImpacts[0] | friendlyEntityName() }}. This problem started {{ problem.startTime | friendlyTime(user) }} and {% if problem.status == 'OPEN' %}is unfortunately still on going.{% else %}was resolved {{ problem.endTime | friendlyTime(user) }}.{% endif %}

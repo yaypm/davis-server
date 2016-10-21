@@ -17,6 +17,12 @@ module.exports.runIntent = function runIntent(intentName, davis, data) {
     } catch (err) {
         logger.error(`There was an issue running ${intentName}.`);
         logger.error(`It failed with the following message: ${err.message}`);
-        return new Error(err.message);
+        
+        if (err.code === 'MODULE_NOT_FOUND') {
+            const missingIntent = require(`./missingIntent`);
+            return missingIntent.process(davis, intentName);
+        } else {
+            return new Error(err.message);
+        }
     }
 };

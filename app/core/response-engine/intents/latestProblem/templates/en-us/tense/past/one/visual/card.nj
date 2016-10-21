@@ -1,0 +1,9 @@
+{%- set problems = [intentData.latestProblem.result.problems[0]] %}
+{
+    "text": "Here's the most recent problem that matches your criteria.",
+    "attachments": [
+        {% for problem in problems %}
+           {% include "shared-templates/problem-summary/en-us/visual/problem-summary.nj" %}{%- if not loop.last %},{% endif %}
+        {%- endfor %}
+    ]
+}
