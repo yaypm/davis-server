@@ -1,5 +1,5 @@
 {
     "intents": [
-        "./problem/index.js",
+        "./problem/index.js"
     ]
 }
