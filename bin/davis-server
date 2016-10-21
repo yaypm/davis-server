@@ -13,7 +13,7 @@ process.noDeprecation = true;
   // it will be caught.
   const Davis = require('../lib/Davis');// eslint-disable-line global-require
 
-  const davis = new Davis();
+  const davis = new Davis({ logLevel: 'debug' });
 
-  return davis.init().then(() => davis.run());
+  return davis.run();
 }).catch(e => logError(e)))();
