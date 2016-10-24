@@ -5,7 +5,6 @@
         "./help/index.js",
         "./davisVersion/index.js",
         "./launch/index.js",
-        "./message/index.js",
         "./no/index.js",
         "./problemDetails/index.js",
         "./scalability/index.js",
