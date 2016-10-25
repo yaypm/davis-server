@@ -11,13 +11,16 @@ const Davis = require('../../lib/Davis');
 
 describe('Users', () => {
   const davis = new Davis();
-  const users = new davis.classes.Users(davis);
+  const Users = davis.classes.Users;
+  const users = new Users(davis);
 
   const email = 'testuser@dynatrace.com';
 
-  it('should not find a valid Alexa user', () => {
-    return users.validateAlexaUser('shouldNotExist').should.eventually.be.rejected;
-  });
+  it('should return a list of timezones',
+    () => Users.getValidTimezones().should.contain('america/detroit'));
+
+  it('should not find a valid Alexa user',
+    () => users.validateAlexaUser('shouldNotExist').should.eventually.be.rejected);
 
   it('should find a valid Alexa user', () => {
     const alexaID = 'shouldExist';
@@ -28,11 +31,9 @@ describe('Users', () => {
       .then(user => (user.email).should.equal(email));
   });
 
-  it('should fail to update the timezone', () => {
-    return users.updateUser(email, { timezone: 'invalid' }).should.eventually.be.rejected;
-  });
+  it('should fail to update the timezone',
+    () => users.updateUser(email, { timezone: 'invalid' }).should.eventually.be.rejected);
 
-  it('should successfully update the timezone', () => {
-    return users.updateUser(email, { timezone: 'america/detroit' }).should.eventually.be.resolved;
-  });
+  it('should successfully update the timezone',
+    () => users.updateUser(email, { timezone: 'america/detroit' }).should.eventually.be.resolved);
 });

@@ -24,10 +24,11 @@ before(done => {
 });
 
 after(done => {
-  // mongoose.disconnect();
+  mongoose.disconnect();
   return done();
 });
 
 // require('./classes/Davis');
 // require('./classes/Service');
 require('./classes/Users');
+require('./classes/Exchange');
