@@ -2,7 +2,7 @@
 
 const mongoose = require('mongoose');
 
-beforeEach(done => {
+before(done => {
   function clearDB() {
     for (let i in mongoose.connection.collections) {
       mongoose.connection.collections[i].remove(function () {
@@ -23,7 +23,7 @@ beforeEach(done => {
   }
 });
 
-afterEach(done => {
+after(done => {
   // mongoose.disconnect();
   return done();
 });
