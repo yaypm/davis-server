@@ -1,4 +1,33 @@
 'use strict';
 
-require('./classes/Davis');
-require('./classes/Service');
+const mongoose = require('mongoose');
+
+beforeEach(done => {
+  function clearDB() {
+    for (let i in mongoose.connection.collections) {
+      mongoose.connection.collections[i].remove(function () {
+      });
+    }
+    return done();
+  }
+
+  if (mongoose.connection.readyState === 0) {
+    mongoose.connect('127.0.0.1:27017/davis-test', err => {
+      if (err) {
+        throw new Error('Not connected to MongoDB!');
+      }
+      return clearDB();
+    });
+  } else {
+    return clearDB();
+  }
+});
+
+afterEach(done => {
+  // mongoose.disconnect();
+  return done();
+});
+
+// require('./classes/Davis');
+// require('./classes/Service');
+require('./classes/Users');
