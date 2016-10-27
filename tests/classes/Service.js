@@ -1,6 +1,5 @@
 'use strict';
 
-const expect = require('chai').expect;
 const Davis = require('../../lib/Davis');
 
 describe('Service', () => {

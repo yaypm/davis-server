@@ -5,8 +5,7 @@ const mongoose = require('mongoose');
 before(done => {
   function clearDB() {
     for (let i in mongoose.connection.collections) {
-      mongoose.connection.collections[i].remove(function () {
-      });
+      mongoose.connection.collections[i].remove();
     }
     return done();
   }
@@ -32,3 +31,4 @@ after(done => {
 // require('./classes/Service');
 require('./classes/Users');
 require('./classes/Exchange');
+require('./classes/Decide');
