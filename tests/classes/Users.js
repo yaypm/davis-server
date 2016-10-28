@@ -12,7 +12,7 @@ const Davis = require('../../lib/Davis');
 describe('Users', () => {
   const davis = new Davis();
   const Users = davis.classes.Users;
-  const users = new Users(davis);
+  const users = davis.users;
 
   const email = 'testuser@dynatrace.com';
 
