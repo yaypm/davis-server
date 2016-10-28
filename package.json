@@ -4,6 +4,7 @@
   "description": "Davis Server",
   "main": "./lib/Davis.js",
   "scripts": {
+    "start": "node ./bin/davis-server",
     "test": "istanbul cover node_modules/mocha/bin/_mocha tests/all -- -R spec --recursive",
     "lint": "eslint ."
   },

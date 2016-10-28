@@ -3,6 +3,7 @@ module.exports = {
   "plugins": [],
   "rules": {
     "no-param-reassign": [2, { "props": false }],
+    "no-underscore-dangle": "off",
     "new-cap": "off",
     "func-names": "off",
     "strict": "off",
