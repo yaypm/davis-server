@@ -1,3 +1,5 @@
+[![License](http://img.shields.io/:license-mit-blue.svg)](https://github.com/Dynatrace/davis-server/blob/master/LICENSE)
+
 #### With the Heroku Button
 
 [![Deploy](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy?template=https://github.com/Dynatrace/davis-server/tree/davisV2)
