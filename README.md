@@ -1,4 +1,4 @@
-[![Codeship Status for Dynatrace/davis-server](https://codeship.com/projects/f7fdbd60-7fb1-0134-f227-0a5ca88f8b76/status?branch=davisV2)](https://codeship.com/projects/181984)
+[![Codeship Status for Dynatrace/davis-server](https://codeship.com/projects/5e4a0b40-7fbb-0134-9099-0a5ca88f8b76/status?branch=davisV2)](https://codeship.com/projects/181990)
 [![License](http://img.shields.io/:license-mit-blue.svg)](https://github.com/Dynatrace/davis-server/blob/master/LICENSE)
 
 #### With the Heroku Button
