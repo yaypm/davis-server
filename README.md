@@ -176,7 +176,7 @@ When configuring an Echo user you will need to manually set the Canonical time z
 Dynatrace is really good at understanding the architecture of your application right out of the box. It automatically names applications, services and instances based on a number of factors. While this is great, it doesn't always look or sound that nice when Davis uses the raw value in it's response.  However, you can assist Davis’s pronunciation of these assets with configurable aliases.
 
 
-e.g. `Application Server One` can be an alias for the less friendly `Application Server - 0000001`.
+e.g. `Application Server One` can be an alias for the less friendly `Application Server - 000001`.
 
 You will find a placeholder configuration near the bottom of the [config.js](https://github.com/Dynatrace/davis-server/blob/master/demo/config.sample.js) you downloaded in a previous set.  The name should be the same as what you see in Dynatrace.  Audible and visual are used automatically when creating the response.  The aliases array is used to help match a received input.  Typically this would be useful when attempting to match a spoken phrase with an entity found in Dynatrace.  For example, you may have an application named easyTravel.  However, Alexa and Watson will hear that as easy travel.  Having easy travel in the alias array would help match that phrase with the appropriate entity.
 
