@@ -11,13 +11,12 @@ const Davis = require('../../lib/Davis');
 
 describe('Users', () => {
   const davis = new Davis();
-  const Users = davis.classes.Users;
   const users = davis.users;
 
   const email = 'testuser@dynatrace.com';
 
   it('should return a list of timezones',
-    () => Users.getValidTimezones().should.contain('america/detroit'));
+    () => users.getValidTimezones().should.contain('america/detroit'));
 
   it('should not find a valid Alexa user',
     () => users.validateAlexaUser('shouldNotExist').should.eventually.be.rejected);
