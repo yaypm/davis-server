@@ -33,3 +33,4 @@ require('./classes/Users');
 require('./classes/Exchange');
 require('./classes/Decide');
 require('./classes/Nlp');
+require('./classes/ResponseBuilder');
