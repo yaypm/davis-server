@@ -4,8 +4,8 @@
   "repository": "https://github.com/Dynatrace/davis-server/tree/davisV2",
   "keywords": ["davis", "dynatrace", "bot"],
   "env": {
-    "SECRET_TOKEN": {
-      "description": "A secret key for verifying the integrity of signed cookies.",
+    "JWT_TOKEN": {
+      "description": "A secret key used when creating JWT tokens.",
       "generator": "secret"
     }
   },
