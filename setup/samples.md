@@ -14,7 +14,7 @@ Davis stores each conversation that you have. So if you are sidetracked you can 
 
 Davis will ask you questions during your exchange and guide you to an important problem within your application. Act natural, and respond as if you were talking to a friend. Davis will translate your intent into action and provide you with the answers you are seeking.
 
-Your intention can be "Yes", but feel free to use "Sure", "absolutely", "yeah", or any other confirmation word. If your confirmation word or phrase doesn't work, please email davis@dynatrace.com and we will add it. If you are hosting your own Wit.AI instance, head on over to your conifguration to update and train your NLP model.
+Your intention can be "Yes", but feel free to use "Sure", "absolutely", "yeah", or any other confirmation word. If your confirmation word or phrase doesn't work, please email davis@dynatrace.com and we will add it. If you are hosting your own Wit.AI instance, head on over to your configuration to update and train your NLP model.
 
 Other phrases to help you get started:
 
