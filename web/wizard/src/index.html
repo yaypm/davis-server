@@ -1,0 +1,23 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>DavisWizard</title>
+  <base href="/">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <script src="/wizard/node_modules/core-js/client/shim.min.js"></script>
+  <script src="/wizard/node_modules/zone.js/dist/zone.min.js"></script>
+  <script src="/wizard/node_modules/reflect-metadata/Reflect.js"></script>
+  <script src="/wizard/node_modules/systemjs/dist/system.src.js"></script>
+  <script src="/wizard/src/systemjs.config.js"></script>
+  <script>
+    System.import('app').catch(function(err){ console.error(err); });
+  </script>
+</head>
+<body>
+  <app-root>Loading...</app-root>
+</body>
+<script>window.module = "aot";</script> 
+</html>
