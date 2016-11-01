@@ -3,6 +3,13 @@
   "version": "0.1.0",
   "description": "Davis Server",
   "main": "./lib/Davis.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Dynatrace/davis-server"
+  },
+  "engines": {
+    "node": ">= 4.0.0"
+  },
   "scripts": {
     "start": "node ./bin/davis-server",
     "test": "istanbul cover node_modules/mocha/bin/_mocha tests/all -- -R spec --recursive",
@@ -38,6 +45,7 @@
     "mongoose": "^4.6.3",
     "natural": "^0.4.0",
     "nunjucks": "^2.5.2",
+    "rand-token": "^0.2.1",
     "request": "^2.75.0",
     "request-promise": "^4.1.1",
     "serve-favicon": "^2.3.0",
