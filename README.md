@@ -232,6 +232,16 @@ You should simply be able to run:
 ````bash
     node ./index.js
 ````
+##Running Davis as a service
+
+You may want to consider running Davis as a service.  This can easily be accomplished by using forever.  The following commands should be run from the root of the Davis directory and will install forever globally as well as configure Davis as a service.
+````bash
+    npm install forever -g
+    npm install forever-service -g
+    forever-service install davis -s index.js
+    chkconfig davis on
+    service davis start
+````
 
 ## Disclaimer
 This software is experimental and currently NOT SUPPORTED by Dynatrace. 

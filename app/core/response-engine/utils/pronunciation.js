@@ -3,7 +3,7 @@
 const logger = require('../../../utils/logger');
     
 // Terms with matching spellings that match words in a string get replaced 
-// with appropriate audible or visual representation     
+// with appropriate audible or visual representation
 const terms = [
     {
         spellings: ['api'],
