@@ -1,0 +1,20 @@
+<div class="page">
+    <div class="title">
+        Connect to Amazon Alexa (Optional)
+    </div>
+    <div class="content">
+        <form (ngSubmit)="doLogin(loginForm)" #loginForm="ngForm">
+            <section class="flex-container">
+                <div class="flex-item full-width">
+                    <label>Alexa User ID</label>
+                    <input type="text" name="alexa" placeholder="amzn1.ask.account.AFP3ZWPOS2BGJR7OWZPO1SFXEQ..." ngModel autofocus required>
+                </div>
+            </section>
+            <section class="flex-container">
+                <div class="flex-item next">
+                    <button type="submit" class="nextBtn">Next</button>
+                </div>
+            </section>
+        </form>
+    </div>
+</div>

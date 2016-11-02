@@ -1,0 +1,23 @@
+.sidebar-img {
+    width: 100px;
+    height: 100px;
+}
+
+.sidebar-component {
+    float: left;
+    width: 100px;
+    height: 100%;
+    cursor: pointer;
+}
+
+.sidebar-section {
+    clear: both;
+    float: left;
+    margin: 20px 0 20px 0;
+}
+
+.selected {
+    background-color: rgba(0, 0, 0, 0.05);
+    border-top-right-radius: 9px;
+    border-bottom-right-radius: 9px;
+}

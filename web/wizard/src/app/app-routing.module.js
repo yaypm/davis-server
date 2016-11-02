@@ -8,44 +8,36 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var platform_browser_1 = require('@angular/platform-browser');
 var core_1 = require('@angular/core');
-var forms_1 = require('@angular/forms');
-var http_1 = require('@angular/http');
-var app_component_1 = require('./app.component');
-var app_routing_module_1 = require('./app-routing.module');
+var router_1 = require('@angular/router');
 var step1_component_1 = require('./step1/step1.component');
-var sidebar_component_1 = require('./sidebar/sidebar.component');
 var step2_component_1 = require('./step2/step2.component');
 var step3_component_1 = require('./step3/step3.component');
 var step4_component_1 = require('./step4/step4.component');
 var step5_component_1 = require('./step5/step5.component');
-var AppModule = (function () {
-    function AppModule() {
+var AppRoutingModule = (function () {
+    function AppRoutingModule() {
     }
-    AppModule = __decorate([
+    AppRoutingModule = __decorate([
         core_1.NgModule({
             imports: [
-                platform_browser_1.BrowserModule,
-                forms_1.FormsModule,
-                http_1.HttpModule,
-                app_routing_module_1.AppRoutingModule
+                router_1.RouterModule.forRoot([
+                    { path: 'wizard/src/step1', component: step1_component_1.Step1Component },
+                    { path: 'wizard/src/step2', component: step2_component_1.Step2Component },
+                    { path: 'wizard/src/step3', component: step3_component_1.Step3Component },
+                    { path: 'wizard/src/step4', component: step4_component_1.Step4Component },
+                    { path: 'wizard/src/step5', component: step5_component_1.Step5Component },
+                    // { path: 'wizard/src/step6', component: Step6Component },
+                    { path: 'wizard/src', component: step1_component_1.Step1Component }
+                ])
             ],
-            declarations: [
-                app_component_1.AppComponent,
-                step1_component_1.Step1Component,
-                sidebar_component_1.SidebarComponent,
-                step2_component_1.Step2Component,
-                step3_component_1.Step3Component,
-                step4_component_1.Step4Component,
-                step5_component_1.Step5Component
-            ],
-            providers: [],
-            bootstrap: [app_component_1.AppComponent]
+            exports: [
+                router_1.RouterModule
+            ]
         }), 
         __metadata('design:paramtypes', [])
-    ], AppModule);
-    return AppModule;
+    ], AppRoutingModule);
+    return AppRoutingModule;
 }());
-exports.AppModule = AppModule;
-//# sourceMappingURL=app.module.js.map
+exports.AppRoutingModule = AppRoutingModule;
+//# sourceMappingURL=app-routing.module.js.map

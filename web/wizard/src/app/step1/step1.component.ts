@@ -11,6 +11,8 @@ import { WizardService } from '../wizard.service';
 })
 export class Step1Component implements OnInit {
     
+    token: string;
+    errorMessage: string;
     submitted: boolean = false;
     
     constructor(private wizardService: WizardService) {}

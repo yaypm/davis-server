@@ -1,19 +1,24 @@
-<form (ngSubmit)="doLogin(loginForm)" #loginForm="ngForm">
-    <div>
-      <label>Email</label>
-      <input ngModel
-             name="email"
-             type="email"
-             autofocus
-             required>
+<div class="page">
+    <div class="title">
+        Connect to MongoDB Database (Required)
     </div>
-    <div>
-      <label>Password</label>
-      <input ngModel
-             name="password"
-             type="password"
-             required>
+    <div class="content">
+        <section class="flex-container">
+            <div class="flex-item full-width">
+                <ul>
+                    <li>
+                        Connection failed, confirm that MongoDB is running on the same server that Davis is running on.
+                    </li>
+                    <li>
+                        Set "process.env.MONGODB_URI" equal to your MongoDB connection URI.
+                    </li>
+                </ul>
+            </div>
+        </section>
+        <section class="flex-container">
+            <div class="flex-item next">
+                <button type="submit" class="nextBtn">Retry</button>
+            </div>
+        </section>
     </div>
-    
-    <button type="submit">Log in</button>
-</form>
+</div>

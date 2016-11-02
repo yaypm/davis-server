@@ -1,0 +1,26 @@
+<div class="page">
+    <div class="title">
+        Connect to Dynatrace (Required)
+    </div>
+    <div class="content">
+        <form (ngSubmit)="doLogin(loginForm)" #loginForm="ngForm">
+            <section class="flex-container">
+                <div class="flex-item full-width">
+                    <label>Dynatrace Tenant URL</label>
+                    <input type="text" name="url" placeholder="https://qwefgmasd.live.dynatrace.com" ngModel autofocus required>
+                </div>
+            </section>
+            <section class="flex-container">
+                <div class="flex-item full-width">
+                    <label>Dynatrace API Token</label>
+                    <input type="text" name="token" placeholder="IYVTz0nBSkZdsQOhS7W3P" ngModel autofocus required>
+                </div>
+            </section>
+            <section class="flex-container">
+                <div class="flex-item next">
+                    <button type="submit" class="nextBtn">Next</button>
+                </div>
+            </section>
+        </form>
+    </div>
+</div>

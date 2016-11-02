@@ -1,0 +1,8 @@
+<div class="sidebar-component">
+    <div class="sidebar-section" 
+        *ngFor="let step of steps" 
+        [class.selected]="isSelected(step)"
+        (click)="onSelect(step)">
+        <img src="./wizard/src/app/sidebar/images/{{ step.name }}/neutral.svg" class="sidebar-img">
+    </div>
+</div>

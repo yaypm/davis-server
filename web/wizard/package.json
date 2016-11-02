@@ -21,6 +21,7 @@
     "@angular/platform-browser": "~2.1.0",
     "@angular/platform-browser-dynamic": "~2.1.0",
     "@angular/router": "~3.1.0",
+    "angular-timezone-selector": "^1.2.1",
     "core-js": "^2.4.1",
     "es6-promise": "^3.2.1",
     "es6-shim": "^0.35.1",

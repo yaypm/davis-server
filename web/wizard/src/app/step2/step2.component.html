@@ -1,0 +1,48 @@
+<div class="page">
+    <div class="title">
+        Create Davis User (Required)
+    </div>
+    <div class="content">
+        <form (ngSubmit)="doLogin(loginForm)" #loginForm="ngForm">
+            <section class="flex-container">
+                <div class="flex-item half-width first-name">
+                    <label>First Name</label>
+                    <input type="text" name="first" placeholder="John" ngModel autofocus required>
+                </div>
+                 <div class="flex-item half-width last-name">
+                    <label>Last Name</label>
+                    <input type="text" name="last" placeholder="Smith" ngModel autofocus required>
+                </div>
+            </section>
+            <section class="flex-container">
+                <div class="flex-item full-width">
+                    <label>Email</label>
+                    <input type="email" name="email" placeholder="john.smith@example.com" ngModel autofocus required>
+                </div>
+            </section>
+            <section class="flex-container">
+                <div class="flex-item full-width">
+                    <label>Password</label>
+                    <input type="password" name="password" placeholder="*******" ngModel required>
+                </div>
+            </section>
+             <section class="flex-container">
+                <div class="flex-item full-width">
+                    <label>Password Confirmation</label>
+                    <input type="password" name="password2" placeholder="*******" ngModel required>
+                </div>
+            </section>
+            <section class="flex-container">
+                <div class="flex-item full-width">
+                    <label>Timezone</label>
+                    <input type="text" name="timezone" placeholder="America/Detroit" ngModel autofocus required>
+                </div>
+            </section>
+            <section class="flex-container">
+                <div class="flex-item next">
+                    <button type="submit" class="nextBtn">Next</button>
+                </div>
+            </section>
+        </form>
+    </div>
+</div>
