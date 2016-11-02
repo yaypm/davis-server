@@ -12,8 +12,9 @@
   },
   "scripts": {
     "start": "node ./bin/davis-server",
-    "test": "istanbul cover node_modules/mocha/bin/_mocha tests/all -- -R spec --recursive",
-    "lint": "eslint ."
+    "test": "istanbul cover node_modules/mocha/bin/_mocha tests/all -- -R spec --recursive --timeout 10000",
+    "lint": "eslint .",
+    "jsdoc": "jsdoc -r lib"
   },
   "author": "",
   "license": "MIT",
