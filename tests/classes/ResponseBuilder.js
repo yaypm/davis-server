@@ -7,7 +7,6 @@ chai.use(require('chai-as-promised'));
 
 chai.should();
 
-const Nlp = require('../../lib/classes/Nlp');
 const Davis = require('../../lib/Davis');
 
 describe('ResponseBuilder', () => {
