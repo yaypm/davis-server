@@ -10,6 +10,7 @@
         "./send/index.js",
         "./stop/index.js",
         "./unknown/index.js",
-        "./userActivity/index.js"
+        "./userActivity/index.js",
+        "./ping/index.js"
     ]
 }
