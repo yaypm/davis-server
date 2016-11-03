@@ -16,7 +16,7 @@ export class Step6Component implements OnInit {
   constructor(private wizardService: WizardService, private router: Router) {}
   
   doSubmit() {
-      if (this.wizardService.values.watson.stt.user.length > 5) {
+      if (this.wizardService.values.watson.stt.user) {
           this.wizardService.connectWatson()
             .then( 
                 result => {
@@ -32,9 +32,9 @@ export class Step6Component implements OnInit {
   }
 
   ngOnInit() {
-        if (this.wizardService.values.user.name.first.length < 1) {
+        if (!this.wizardService.values.user.name.first) {
             this.router.navigate(['wizard/src/step2']);
-        } else if (this.wizardService.values.dynatrace.url.length < 1) {
+        } else if (!this.wizardService.values.dynatrace.url) {
             this.router.navigate(['wizard/src/step3']);
         }
   }

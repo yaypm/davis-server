@@ -17,7 +17,7 @@ export class Step4Component implements OnInit {
     constructor(private wizardService: WizardService, private router: Router) {}
 
     validate() {
-        if (this.wizardService.values.alexa.user.length > 10) {
+        if (this.wizardService.values.alexa.user) {
             this.buttonText = 'Next';
         } else {
             this.buttonText = 'Skip';
@@ -37,9 +37,9 @@ export class Step4Component implements OnInit {
     }
 
     ngOnInit() {
-        if (this.wizardService.values.user.name.first.length < 1) {
+        if (!this.wizardService.values.user.name.first) {
             this.router.navigate(['wizard/src/step2']);
-        } else if (this.wizardService.values.dynatrace.url.length < 1) {
+        } else if (!this.wizardService.values.dynatrace.url) {
             this.router.navigate(['wizard/src/step3']);
         }
     }

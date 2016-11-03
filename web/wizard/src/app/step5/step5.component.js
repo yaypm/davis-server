@@ -18,11 +18,11 @@ var Step5Component = (function () {
         this.myURL = '';
         this.submitted = false;
         this.success = false;
-        this.buttonText = 'Create Davis Slack Bot';
+        this.buttonText = 'Skip';
         this.myURL = 'https://' + window.location.host;
     }
     Step5Component.prototype.validate = function () {
-        if (this.wizardService.values.slack.clientId.length > 20 && this.wizardService.values.slack.clientSecret.length > 20) {
+        if (this.wizardService.values.slack.clientId && this.wizardService.values.slack.clientSecret) {
             this.buttonText = 'Create Davis Slack Bot';
         }
         else if (!this.success) {
@@ -31,7 +31,7 @@ var Step5Component = (function () {
     };
     Step5Component.prototype.doSubmit = function () {
         var _this = this;
-        if (!this.success) {
+        if (!this.success && this.wizardService.values.slack.clientId && this.wizardService.values.slack.clientSecret) {
             this.wizardService.connectSlack()
                 .then(function (result) {
                 _this.success = true;
@@ -46,10 +46,10 @@ var Step5Component = (function () {
         }
     };
     Step5Component.prototype.ngOnInit = function () {
-        if (this.wizardService.values.user.name.first.length < 1) {
+        if (!this.wizardService.values.user.name.first) {
             this.router.navigate(['wizard/src/step2']);
         }
-        else if (this.wizardService.values.dynatrace.url.length < 1) {
+        else if (!this.wizardService.values.dynatrace.url) {
             this.router.navigate(['wizard/src/step3']);
         }
     };

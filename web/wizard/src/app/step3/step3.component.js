@@ -28,7 +28,7 @@ var Step3Component = (function () {
         this.submitted = true;
     };
     Step3Component.prototype.ngOnInit = function () {
-        if (this.wizardService.values.user.name.first.length < 1) {
+        if (!this.wizardService.values.user.name.first) {
             this.router.navigate(['wizard/src/step2']);
         }
     };

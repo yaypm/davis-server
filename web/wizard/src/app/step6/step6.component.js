@@ -19,7 +19,7 @@ var Step6Component = (function () {
     }
     Step6Component.prototype.doSubmit = function () {
         var _this = this;
-        if (this.wizardService.values.watson.stt.user.length > 5) {
+        if (this.wizardService.values.watson.stt.user) {
             this.wizardService.connectWatson()
                 .then(function (result) {
                 _this.router.navigate(['/']);
@@ -33,10 +33,10 @@ var Step6Component = (function () {
         }
     };
     Step6Component.prototype.ngOnInit = function () {
-        if (this.wizardService.values.user.name.first.length < 1) {
+        if (!this.wizardService.values.user.name.first) {
             this.router.navigate(['wizard/src/step2']);
         }
-        else if (this.wizardService.values.dynatrace.url.length < 1) {
+        else if (!this.wizardService.values.dynatrace.url) {
             this.router.navigate(['wizard/src/step3']);
         }
     };

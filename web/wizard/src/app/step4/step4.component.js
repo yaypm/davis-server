@@ -19,7 +19,7 @@ var Step4Component = (function () {
         this.buttonText = 'Next';
     }
     Step4Component.prototype.validate = function () {
-        if (this.wizardService.values.alexa.user.length > 10) {
+        if (this.wizardService.values.alexa.user) {
             this.buttonText = 'Next';
         }
         else {
@@ -37,10 +37,10 @@ var Step4Component = (function () {
         this.submitted = true;
     };
     Step4Component.prototype.ngOnInit = function () {
-        if (this.wizardService.values.user.name.first.length < 1) {
+        if (!this.wizardService.values.user.name.first) {
             this.router.navigate(['wizard/src/step2']);
         }
-        else if (this.wizardService.values.dynatrace.url.length < 1) {
+        else if (!this.wizardService.values.dynatrace.url) {
             this.router.navigate(['wizard/src/step3']);
         }
     };

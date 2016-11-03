@@ -28,7 +28,7 @@ export class Step3Component implements OnInit {
   }
 
   ngOnInit() {
-        if (this.wizardService.values.user.name.first.length < 1) {
+        if (!this.wizardService.values.user.name.first) {
           this.router.navigate(['wizard/src/step2']);
         }
   }
