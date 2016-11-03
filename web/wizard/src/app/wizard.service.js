@@ -14,11 +14,89 @@ var http_2 = require('@angular/http');
 var WizardService = (function () {
     function WizardService(http) {
         this.http = http;
+        this.values = {
+            user: {
+                email: null,
+                password: null,
+                passwordConfirmation: null,
+                timezone: null,
+                name: {
+                    first: null,
+                    last: null
+                }
+            },
+            dynatrace: {
+                url: null,
+                token: null,
+                strictSSL: true
+            },
+            alexa: {
+                enabled: true,
+                user: null
+            },
+            slack: {
+                enabled: true,
+                clientId: null,
+                clientSecret: null,
+                redirectUri: null
+            },
+            watson: {
+                enabled: true,
+                tts: {
+                    user: null,
+                    password: null
+                },
+                stt: {
+                    user: null,
+                    password: null
+                }
+            }
+        };
     }
-    WizardService.prototype.getToken = function (email, password) {
+    WizardService.prototype.getJwtToken = function () {
         var headers = new http_2.Headers({ 'Content-Type': 'application/json' });
         var options = new http_2.RequestOptions({ headers: headers });
-        return this.http.post('/api/v1/authenticate', { email: email, password: password })
+        return this.http.post('/api/v1/authenticate', { email: 'admin@localhost', password: 'changeme' }, options)
+            .toPromise()
+            .then(this.extractData)
+            .catch(this.handleError);
+    };
+    WizardService.prototype.addDavisUser = function () {
+        var headers = new http_2.Headers({ 'Content-Type': 'application/json', 'x-access-token': this.token });
+        var options = new http_2.RequestOptions({ headers: headers });
+        return this.http.post('/api/v1/system/user/', this.values.user, options)
+            .toPromise()
+            .then(this.extractData)
+            .catch(this.handleError);
+    };
+    WizardService.prototype.connectDynatrace = function () {
+        var headers = new http_2.Headers({ 'Content-Type': 'application/json', 'x-access-token': this.token });
+        var options = new http_2.RequestOptions({ headers: headers });
+        return this.http.put('/api/v1/system/config/dynatrace', this.values.dynatrace, options)
+            .toPromise()
+            .then(this.extractData)
+            .catch(this.handleError);
+    };
+    WizardService.prototype.connectAlexa = function () {
+        var headers = new http_2.Headers({ 'Content-Type': 'application/json', 'x-access-token': this.token });
+        var options = new http_2.RequestOptions({ headers: headers });
+        return this.http.put("/api/v1/system/user/" + this.values.user.email, this.values.alexa, options)
+            .toPromise()
+            .then(this.extractData)
+            .catch(this.handleError);
+    };
+    WizardService.prototype.connectSlack = function () {
+        var headers = new http_2.Headers({ 'Content-Type': 'application/json', 'x-access-token': this.token });
+        var options = new http_2.RequestOptions({ headers: headers });
+        return this.http.put('/api/v1/system/config/slack', this.values.slack, options)
+            .toPromise()
+            .then(this.extractData)
+            .catch(this.handleError);
+    };
+    WizardService.prototype.connectWatson = function () {
+        var headers = new http_2.Headers({ 'Content-Type': 'application/json', 'x-access-token': this.token });
+        var options = new http_2.RequestOptions({ headers: headers });
+        return this.http.put('/api/v1/system/config/watson', this.values.watson, options)
             .toPromise()
             .then(this.extractData)
             .catch(this.handleError);

@@ -11,38 +11,45 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var core_1 = require('@angular/core');
 var router_1 = require('@angular/router');
 var wizard_service_1 = require('../wizard.service');
-var Step1Component = (function () {
-    function Step1Component(wizardService, router) {
+var Step6Component = (function () {
+    function Step6Component(wizardService, router) {
         this.wizardService = wizardService;
         this.router = router;
-        this.success = true;
+        this.submitted = false;
     }
-    Step1Component.prototype.getJwtToken = function () {
+    Step6Component.prototype.doSubmit = function () {
         var _this = this;
-        this.wizardService.getJwtToken()
-            .then(function (response) {
-            _this.wizardService.token = response.token;
-            _this.router.navigate(['wizard/src/step2']);
-        }, function (error) { });
-    };
-    Step1Component.prototype.ngOnInit = function () {
-        if (this.wizardService.token) {
-            this.router.navigate(['wizard/src/step2']);
+        if (this.wizardService.values.watson.stt.user.length > 5) {
+            this.wizardService.connectWatson()
+                .then(function (result) {
+                _this.router.navigate(['/']);
+            }, function (error) {
+                console.log(error);
+            });
+            this.submitted = true;
         }
         else {
-            this.getJwtToken();
+            this.router.navigate(['/']);
         }
     };
-    Step1Component = __decorate([
+    Step6Component.prototype.ngOnInit = function () {
+        if (this.wizardService.values.user.name.first.length < 1) {
+            this.router.navigate(['wizard/src/step2']);
+        }
+        else if (this.wizardService.values.dynatrace.url.length < 1) {
+            this.router.navigate(['wizard/src/step3']);
+        }
+    };
+    Step6Component = __decorate([
         core_1.Component({
             moduleId: module.id,
-            selector: 'step1',
-            templateUrl: './step1.component.html',
-            styleUrls: ['./step1.component.css'],
+            selector: 'app-step6',
+            templateUrl: './step6.component.html',
+            styleUrls: ['./step6.component.css']
         }), 
         __metadata('design:paramtypes', [wizard_service_1.WizardService, router_1.Router])
-    ], Step1Component);
-    return Step1Component;
+    ], Step6Component);
+    return Step6Component;
 }());
-exports.Step1Component = Step1Component;
-//# sourceMappingURL=step1.component.js.map
+exports.Step6Component = Step6Component;
+//# sourceMappingURL=step6.component.js.map

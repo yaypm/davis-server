@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder } from '@angular/forms';
+import { Router } from '@angular/router';
+import { WizardService } from '../wizard.service';
 
 @Component({
   moduleId: module.id,
@@ -8,9 +11,37 @@ import { Component, OnInit } from '@angular/core';
 })
 export class Step4Component implements OnInit {
 
-  constructor() { }
+    submitted: boolean = false;
+    buttonText: string = 'Next';
+    
+    constructor(private wizardService: WizardService, private router: Router) {}
 
-  ngOnInit() {
-  }
+    validate() {
+        if (this.wizardService.values.alexa.user.length > 10) {
+            this.buttonText = 'Next';
+        } else {
+            this.buttonText = 'Skip';
+        }
+    }
+    
+    doSubmit() {
+        this.wizardService.connectAlexa()
+            .then( 
+                result => {
+                  this.router.navigate(['wizard/src/step5']);
+                },
+                error => {
+                  console.log(error);
+                });
+        this.submitted = true;
+    }
+
+    ngOnInit() {
+        if (this.wizardService.values.user.name.first.length < 1) {
+            this.router.navigate(['wizard/src/step2']);
+        } else if (this.wizardService.values.dynatrace.url.length < 1) {
+            this.router.navigate(['wizard/src/step3']);
+        }
+    }
 
 }

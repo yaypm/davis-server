@@ -1,0 +1,38 @@
+<div class="page">
+    <div class="title">
+        Connect to IBM Watson Speech Services (Optional)
+    </div>
+    <div class="content">
+        <form (ngSubmit)="doSubmit(form)" #form="ngForm">
+            <section class="flex-container">
+                <div class="flex-item full-width">
+                    <label>Speech to Text - Username</label>
+                    <input type="text" name="stt_user" placeholder="13129a6b-e2f1-4304-9b07-2cc949c71423" [(ngModel)]="this.wizardService.values.watson.stt.user" (input)="validate()" autofocus>
+                </div>
+            </section>
+            <section class="flex-container">
+                <div class="flex-item full-width">
+                    <label>Speech to Text - Password</label>
+                    <input type="text" name="stt_password" placeholder="acdWBCshhfDS" [(ngModel)]="this.wizardService.values.watson.stt.password" (input)="validate()">
+                </div>
+            </section>
+            <section class="flex-container">
+                <div class="flex-item full-width">
+                    <label>Text to Speech - Username</label>
+                    <input type="text" name="tts_user" placeholder="1152f6b-a3c2-4109-9b17-1ac149c41421" [(ngModel)]="this.wizardService.values.watson.tts.user" (input)="validate()">
+                </div>
+            </section>
+            <section class="flex-container">
+                <div class="flex-item full-width">
+                    <label>Text to Speech - Password</label>
+                    <input type="text" name="tts_password" placeholder="ahgMNCsahjNV" [(ngModel)]="this.wizardService.values.watson.tts.password" (input)="validate()">
+                </div>
+            </section>
+            <section class="flex-container">
+                <div class="flex-item next">
+                    <button type="submit" class="nextBtn">Finish</button>
+                </div>
+            </section>
+        </form>
+    </div>
+</div>

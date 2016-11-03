@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
+import { Router } from '@angular/router';
 import { WizardService } from '../wizard.service';
 
 @Component({
@@ -7,32 +7,30 @@ import { WizardService } from '../wizard.service';
     selector: 'step1',
     templateUrl: './step1.component.html',
     styleUrls: ['./step1.component.css'],
-    providers: [WizardService]
 })
 export class Step1Component implements OnInit {
     
-    token: string;
-    errorMessage: string;
-    submitted: boolean = false;
+    success: boolean = true;
     
-    constructor(private wizardService: WizardService) {}
+    constructor(private wizardService: WizardService, private router: Router) {}
     
-    doLogin(loginForm: any) {
-        console.log(loginForm.value);
-        this.wizardService.getToken(loginForm.value.email, loginForm.value.password)
+    getJwtToken() {
+        this.wizardService.getJwtToken()
             .then( 
                 response => {
-                    this.token = response.token;
-                    console.log('token: '+this.token);
+                    this.wizardService.token = response.token;
+                    this.router.navigate(['wizard/src/step2']);
                 },
-                error => {
-                    this.errorMessage = <any>error;
-                    console.log(this.errorMessage);
-                });
-        this.submitted = true;
+                error => {}
+            );
     }
     
     ngOnInit() {
+        if (this.wizardService.token) {
+            this.router.navigate(['wizard/src/step2']);
+        } else {
+            this.getJwtToken();
+        }
     }
 
 }

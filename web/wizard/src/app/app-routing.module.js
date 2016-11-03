@@ -15,6 +15,7 @@ var step2_component_1 = require('./step2/step2.component');
 var step3_component_1 = require('./step3/step3.component');
 var step4_component_1 = require('./step4/step4.component');
 var step5_component_1 = require('./step5/step5.component');
+var step6_component_1 = require('./step6/step6.component');
 var AppRoutingModule = (function () {
     function AppRoutingModule() {
     }
@@ -27,7 +28,7 @@ var AppRoutingModule = (function () {
                     { path: 'wizard/src/step3', component: step3_component_1.Step3Component },
                     { path: 'wizard/src/step4', component: step4_component_1.Step4Component },
                     { path: 'wizard/src/step5', component: step5_component_1.Step5Component },
-                    // { path: 'wizard/src/step6', component: Step6Component },
+                    { path: 'wizard/src/step6', component: step6_component_1.Step6Component },
                     { path: 'wizard/src', component: step1_component_1.Step1Component }
                 ])
             ],

@@ -1,8 +1,8 @@
 <div class="sidebar-component">
     <div class="sidebar-section" 
-        *ngFor="let step of steps" 
-        [class.selected]="isSelected(step)"
-        (click)="onSelect(step)">
+        *ngFor="let step of steps"
+        routerLink="{{step.path}}"
+        routerLinkActive="selected">
         <img src="./wizard/src/app/sidebar/images/{{ step.name }}/neutral.svg" class="sidebar-img">
     </div>
 </div>

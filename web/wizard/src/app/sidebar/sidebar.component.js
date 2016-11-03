@@ -48,12 +48,6 @@ var SidebarComponent = (function () {
             }
         ];
     }
-    SidebarComponent.prototype.onSelect = function (step) {
-        this.selectedPath = step.path;
-        // Navigate with relative link
-        this.router.navigate([step.path], { relativeTo: this.route });
-    };
-    SidebarComponent.prototype.isSelected = function (step) { return step.path === this.selectedPath; };
     SidebarComponent.prototype.ngOnInit = function () {
     };
     SidebarComponent = __decorate([

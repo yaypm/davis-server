@@ -9,10 +9,28 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = require('@angular/core');
+var router_1 = require('@angular/router');
+var wizard_service_1 = require('../wizard.service');
 var Step3Component = (function () {
-    function Step3Component() {
+    function Step3Component(wizardService, router) {
+        this.wizardService = wizardService;
+        this.router = router;
+        this.submitted = false;
     }
+    Step3Component.prototype.doSubmit = function () {
+        var _this = this;
+        this.wizardService.connectDynatrace()
+            .then(function (result) {
+            _this.router.navigate(['wizard/src/step4']);
+        }, function (error) {
+            console.log(error);
+        });
+        this.submitted = true;
+    };
     Step3Component.prototype.ngOnInit = function () {
+        if (this.wizardService.values.user.name.first.length < 1) {
+            this.router.navigate(['wizard/src/step2']);
+        }
     };
     Step3Component = __decorate([
         core_1.Component({
@@ -21,7 +39,7 @@ var Step3Component = (function () {
             templateUrl: './step3.component.html',
             styleUrls: ['./step3.component.css']
         }), 
-        __metadata('design:paramtypes', [])
+        __metadata('design:paramtypes', [wizard_service_1.WizardService, router_1.Router])
     ], Step3Component);
     return Step3Component;
 }());

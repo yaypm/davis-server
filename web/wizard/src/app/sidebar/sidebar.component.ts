@@ -44,17 +44,7 @@ export class SidebarComponent implements OnInit {
         }
     ];
     
-    onSelect(step: any) {
-        this.selectedPath = step.path;
-        
-        // Navigate with relative link
-        this.router.navigate([step.path], { relativeTo: this.route });
-    }
-    
-    isSelected(step: any) { return step.path === this.selectedPath; }
-    
-    constructor(private route: ActivatedRoute,
-        private router: Router) {}
+    constructor(private route: ActivatedRoute, private router: Router) {}
     
     ngOnInit() {
     }

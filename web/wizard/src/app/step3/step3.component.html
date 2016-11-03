@@ -3,17 +3,17 @@
         Connect to Dynatrace (Required)
     </div>
     <div class="content">
-        <form (ngSubmit)="doLogin(loginForm)" #loginForm="ngForm">
+        <form (ngSubmit)="doSubmit()" #form="ngForm">
             <section class="flex-container">
                 <div class="flex-item full-width">
                     <label>Dynatrace Tenant URL</label>
-                    <input type="text" name="url" placeholder="https://qwefgmasd.live.dynatrace.com" ngModel autofocus required>
+                    <input type="text" name="url" placeholder="https://qwefgmasd.live.dynatrace.com" [(ngModel)]="this.wizardService.values.dynatrace.url" autofocus required>
                 </div>
             </section>
             <section class="flex-container">
                 <div class="flex-item full-width">
                     <label>Dynatrace API Token</label>
-                    <input type="text" name="token" placeholder="IYVTz0nBSkZdsQOhS7W3P" ngModel autofocus required>
+                    <input type="text" name="token" placeholder="IYVTz0nBSkZdsQOhS7W3P" [(ngModel)]="this.wizardService.values.dynatrace.token" required>
                 </div>
             </section>
             <section class="flex-container">
