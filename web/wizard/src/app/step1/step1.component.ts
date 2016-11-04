@@ -19,9 +19,14 @@ export class Step1Component implements OnInit {
             .then( 
                 response => {
                     this.wizardService.token = response.token;
-                    this.router.navigate(['wizard/src/step2']);
+                    setTimeout( () => {
+                        this.router.navigate(['wizard/src/step2']);
+                    }, 1000);
                 },
-                error => {}
+                error => {
+                    console.log(error);
+                    this.wizardService.steps[0].status = 'failure';
+                }
             );
     }
     
@@ -29,6 +34,7 @@ export class Step1Component implements OnInit {
         if (this.wizardService.token) {
             this.router.navigate(['wizard/src/step2']);
         } else {
+            this.wizardService.steps[0].status = 'success';
             this.getJwtToken();
         }
     }

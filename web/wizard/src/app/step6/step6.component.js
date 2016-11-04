@@ -16,14 +16,25 @@ var Step6Component = (function () {
         this.wizardService = wizardService;
         this.router = router;
         this.submitted = false;
+        this.buttonText = 'Skip & Finish';
     }
+    Step6Component.prototype.validate = function () {
+        if (this.wizardService.values.watson.stt.user) {
+            this.buttonText = 'Finish';
+        }
+        else {
+            this.buttonText = 'Skip & Finish';
+        }
+    };
     Step6Component.prototype.doSubmit = function () {
+        var _this = this;
         if (this.wizardService.values.watson.stt.user) {
             this.wizardService.connectWatson()
                 .then(function (result) {
                 window.location.assign('https://' + window.location.host);
             }, function (error) {
                 console.log(error);
+                _this.wizardService.steps[5].status = 'failure';
             });
             this.submitted = true;
         }
@@ -32,10 +43,10 @@ var Step6Component = (function () {
         }
     };
     Step6Component.prototype.ngOnInit = function () {
-        if (!this.wizardService.values.user.name.first) {
+        if (this.wizardService.steps[1].status !== 'success') {
             this.router.navigate(['wizard/src/step2']);
         }
-        else if (!this.wizardService.values.dynatrace.url) {
+        else if (this.wizardService.steps[2].status !== 'success') {
             this.router.navigate(['wizard/src/step3']);
         }
     };

@@ -168,3 +168,17 @@ li {
     border: 1px solid #cccccc;
     font-family: Consolas, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New; 
 }
+
+.success {
+    color: #7DC540;
+    text-align: center;
+    font-size: 24px;
+}
+
+.error {
+    color: #DC172A;
+    font-size: 14px;
+    font-weight: bold;
+    text-align: center;
+    padding: 10px;
+}

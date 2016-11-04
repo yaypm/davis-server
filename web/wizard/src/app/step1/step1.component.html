@@ -1,32 +1,11 @@
 <div class="page">
     <div class="title">
-        Connect to MongoDB Database (Required)
+        Welcome to Dynatrace Davis
     </div>
     <div class="content">
-        <section class="flex-container" *ngIf="success">
-            <div class="flex-item full-width">
-                <ul>
-                    <li>
-                        Successfuly connected!
-                    </li>
-                </ul>
-            </div>
-        </section>
-        <section class="flex-container" *ngIf="!success">
-            <div class="flex-item full-width">
-                <ul>
-                    <li>
-                        Connection failed, confirm that MongoDB is running on the same server that Davis is running on.
-                    </li>
-                    <li>
-                        Set "process.env.MONGODB_URI" equal to your MongoDB connection URI.
-                    </li>
-                </ul>
-            </div>
-        </section>
         <section class="flex-container">
-            <div class="flex-item next">
-                <button type="button" class="nextBtn">Retry</button>
+            <div class="flex-item full-width success">
+                Connected to MongoDB!
             </div>
         </section>
     </div>

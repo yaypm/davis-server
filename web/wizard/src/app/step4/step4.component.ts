@@ -12,7 +12,7 @@ import { WizardService } from '../wizard.service';
 export class Step4Component implements OnInit {
 
     submitted: boolean = false;
-    buttonText: string = 'Next';
+    buttonText: string = 'Skip';
     
     constructor(private wizardService: WizardService, private router: Router) {}
 
@@ -25,21 +25,27 @@ export class Step4Component implements OnInit {
     }
     
     doSubmit() {
-        this.wizardService.connectAlexa()
-            .then( 
-                result => {
-                  this.router.navigate(['wizard/src/step5']);
-                },
-                error => {
-                  console.log(error);
-                });
+        if (this.wizardService.values.alexa.user) {
+            this.wizardService.connectAlexa()
+                .then( 
+                    result => {
+                        this.wizardService.steps[3].status = 'success';
+                        this.router.navigate(['wizard/src/step5']);
+                    },
+                    error => {
+                      console.log(error);
+                      this.wizardService.steps[3].status = 'failure';
+                    });
+        } else {
+            this.router.navigate(['wizard/src/step5']);
+        }
         this.submitted = true;
     }
 
     ngOnInit() {
-        if (!this.wizardService.values.user.name.first) {
+        if (this.wizardService.steps[1].status !== 'success') {
             this.router.navigate(['wizard/src/step2']);
-        } else if (!this.wizardService.values.dynatrace.url) {
+        } else if (this.wizardService.steps[2].status !== 'success') {
             this.router.navigate(['wizard/src/step3']);
         }
     }

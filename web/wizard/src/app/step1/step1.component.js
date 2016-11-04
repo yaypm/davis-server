@@ -22,14 +22,20 @@ var Step1Component = (function () {
         this.wizardService.getJwtToken()
             .then(function (response) {
             _this.wizardService.token = response.token;
-            _this.router.navigate(['wizard/src/step2']);
-        }, function (error) { });
+            setTimeout(function () {
+                _this.router.navigate(['wizard/src/step2']);
+            }, 1000);
+        }, function (error) {
+            console.log(error);
+            _this.wizardService.steps[0].status = 'failure';
+        });
     };
     Step1Component.prototype.ngOnInit = function () {
         if (this.wizardService.token) {
             this.router.navigate(['wizard/src/step2']);
         }
         else {
+            this.wizardService.steps[0].status = 'success';
             this.getJwtToken();
         }
     };

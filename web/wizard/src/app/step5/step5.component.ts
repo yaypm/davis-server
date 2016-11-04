@@ -34,9 +34,11 @@ export class Step5Component implements OnInit {
               .then( 
                   result => {
                       this.success = true;
+                      this.wizardService.steps[4].status = 'success';
                   },
                   error => {
                       console.log(error);
+                      this.wizardService.steps[4].status = 'failure';
                   });
             this.submitted = true;
             this.buttonText = 'Next';
@@ -46,9 +48,9 @@ export class Step5Component implements OnInit {
     }
     
     ngOnInit() {
-        if (!this.wizardService.values.user.name.first) {
+        if (this.wizardService.steps[1].status !== 'success') {
             this.router.navigate(['wizard/src/step2']);
-        } else if (!this.wizardService.values.dynatrace.url) {
+        } else if (this.wizardService.steps[2].status !== 'success') {
             this.router.navigate(['wizard/src/step3']);
         }
     }

@@ -10,43 +10,12 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 var core_1 = require('@angular/core');
 var router_1 = require('@angular/router');
+var wizard_service_1 = require('../wizard.service');
 var SidebarComponent = (function () {
-    function SidebarComponent(route, router) {
+    function SidebarComponent(wizardService, route, router) {
+        this.wizardService = wizardService;
         this.route = route;
         this.router = router;
-        this.selectedPath = 'wizard/src/step1';
-        this.steps = [
-            {
-                title: 'Connect to MongoDB',
-                name: 'mongo',
-                path: 'wizard/src/step1'
-            },
-            {
-                title: 'Create User',
-                name: 'user',
-                path: 'wizard/src/step2'
-            },
-            {
-                title: 'Connect to Dynatrace',
-                name: 'dynatrace',
-                path: 'wizard/src/step3'
-            },
-            {
-                title: 'Connect to Amazon Alexa',
-                name: 'alexa',
-                path: 'wizard/src/step4'
-            },
-            {
-                title: 'Connect to Slack',
-                name: 'slack',
-                path: 'wizard/src/step5'
-            },
-            {
-                title: 'Connect to Watson',
-                name: 'web',
-                path: 'wizard/src/step6'
-            }
-        ];
     }
     SidebarComponent.prototype.ngOnInit = function () {
     };
@@ -57,7 +26,7 @@ var SidebarComponent = (function () {
             templateUrl: './sidebar.component.html',
             styleUrls: ['./sidebar.component.css']
         }), 
-        __metadata('design:paramtypes', [router_1.ActivatedRoute, router_1.Router])
+        __metadata('design:paramtypes', [wizard_service_1.WizardService, router_1.ActivatedRoute, router_1.Router])
     ], SidebarComponent);
     return SidebarComponent;
 }());

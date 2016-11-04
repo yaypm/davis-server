@@ -16,16 +16,28 @@ var Step2Component = (function () {
         this.wizardService = wizardService;
         this.router = router;
         this.submitted = false;
+        this.passwordsMatch = true;
     }
     Step2Component.prototype.doSubmit = function () {
         var _this = this;
-        this.wizardService.addDavisUser()
-            .then(function (result) {
-            _this.router.navigate(['wizard/src/step3']);
-        }, function (error) {
-            console.log(error);
-        });
-        this.submitted = true;
+        if (this.wizardService.values.user.password === this.wizardService.values.user.passwordConfirmation) {
+            this.passwordsMatch = true;
+            this.wizardService.addDavisUser()
+                .then(function (result) {
+                _this.wizardService.steps[1].status = 'success';
+                _this.router.navigate(['wizard/src/step3']);
+            }, function (error) {
+                console.log(error);
+                _this.wizardService.steps[1].status = 'failure';
+            });
+            this.submitted = true;
+        }
+        else {
+            this.passwordsMatch = false;
+            this.wizardService.values.user.password = null;
+            this.wizardService.values.user.passwordConfirmation = null;
+            this.wizardService.steps[1].status = 'failure';
+        }
     };
     Step2Component.prototype.ngOnInit = function () {
     };

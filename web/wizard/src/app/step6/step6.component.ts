@@ -12,10 +12,19 @@ import { WizardService } from '../wizard.service';
 export class Step6Component implements OnInit {
 
   submitted: boolean = false;
+  buttonText: string = 'Skip & Finish';
 
   constructor(private wizardService: WizardService, private router: Router) {}
   
-  doSubmit() {
+    validate() {
+        if (this.wizardService.values.watson.stt.user) {
+            this.buttonText = 'Finish';
+        } else {
+            this.buttonText = 'Skip & Finish';
+        }
+    }
+  
+    doSubmit() {
       if (this.wizardService.values.watson.stt.user) {
           this.wizardService.connectWatson()
             .then( 
@@ -24,19 +33,20 @@ export class Step6Component implements OnInit {
                 },
                 error => {
                     console.log(error);
+                    this.wizardService.steps[5].status = 'failure';
                 });
           this.submitted = true;
       } else {  
           window.location.assign('https://' + window.location.host);
       }
-  }
-
-  ngOnInit() {
-        if (!this.wizardService.values.user.name.first) {
+    }
+    
+    ngOnInit() {
+        if (this.wizardService.steps[1].status !== 'success') {
             this.router.navigate(['wizard/src/step2']);
-        } else if (!this.wizardService.values.dynatrace.url) {
+        } else if (this.wizardService.steps[2].status !== 'success') {
             this.router.navigate(['wizard/src/step3']);
         }
-  }
+    }
 
 }

@@ -21,14 +21,16 @@ var Step3Component = (function () {
         var _this = this;
         this.wizardService.connectDynatrace()
             .then(function (result) {
+            _this.wizardService.steps[2].status = 'success';
             _this.router.navigate(['wizard/src/step4']);
         }, function (error) {
             console.log(error);
+            _this.wizardService.steps[2].status = 'failure';
         });
         this.submitted = true;
     };
     Step3Component.prototype.ngOnInit = function () {
-        if (!this.wizardService.values.user.name.first) {
+        if (this.wizardService.steps[1].status !== 'success') {
             this.router.navigate(['wizard/src/step2']);
         }
     };

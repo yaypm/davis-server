@@ -35,8 +35,10 @@ var Step5Component = (function () {
             this.wizardService.connectSlack()
                 .then(function (result) {
                 _this.success = true;
+                _this.wizardService.steps[4].status = 'success';
             }, function (error) {
                 console.log(error);
+                _this.wizardService.steps[4].status = 'failure';
             });
             this.submitted = true;
             this.buttonText = 'Next';
@@ -46,10 +48,10 @@ var Step5Component = (function () {
         }
     };
     Step5Component.prototype.ngOnInit = function () {
-        if (!this.wizardService.values.user.name.first) {
+        if (this.wizardService.steps[1].status !== 'success') {
             this.router.navigate(['wizard/src/step2']);
         }
-        else if (!this.wizardService.values.dynatrace.url) {
+        else if (this.wizardService.steps[2].status !== 'success') {
             this.router.navigate(['wizard/src/step3']);
         }
     };

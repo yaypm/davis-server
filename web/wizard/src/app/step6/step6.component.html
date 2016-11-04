@@ -1,6 +1,6 @@
 <div class="page">
     <div class="title">
-        Connect to IBM Watson Speech Services (Optional)
+        Connect to IBM Watson Speech Services
     </div>
     <div class="content">
         <form (ngSubmit)="doSubmit(form)" #form="ngForm">
@@ -30,7 +30,7 @@
             </section>
             <section class="flex-container">
                 <div class="flex-item next">
-                    <button type="submit" class="nextBtn">Finish</button>
+                    <button type="submit" class="nextBtn">{{buttonText}}</button>
                 </div>
             </section>
         </form>

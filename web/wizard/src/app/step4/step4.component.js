@@ -16,7 +16,7 @@ var Step4Component = (function () {
         this.wizardService = wizardService;
         this.router = router;
         this.submitted = false;
-        this.buttonText = 'Next';
+        this.buttonText = 'Skip';
     }
     Step4Component.prototype.validate = function () {
         if (this.wizardService.values.alexa.user) {
@@ -28,19 +28,26 @@ var Step4Component = (function () {
     };
     Step4Component.prototype.doSubmit = function () {
         var _this = this;
-        this.wizardService.connectAlexa()
-            .then(function (result) {
-            _this.router.navigate(['wizard/src/step5']);
-        }, function (error) {
-            console.log(error);
-        });
+        if (this.wizardService.values.alexa.user) {
+            this.wizardService.connectAlexa()
+                .then(function (result) {
+                _this.wizardService.steps[3].status = 'success';
+                _this.router.navigate(['wizard/src/step5']);
+            }, function (error) {
+                console.log(error);
+                _this.wizardService.steps[3].status = 'failure';
+            });
+        }
+        else {
+            this.router.navigate(['wizard/src/step5']);
+        }
         this.submitted = true;
     };
     Step4Component.prototype.ngOnInit = function () {
-        if (!this.wizardService.values.user.name.first) {
+        if (this.wizardService.steps[1].status !== 'success') {
             this.router.navigate(['wizard/src/step2']);
         }
-        else if (!this.wizardService.values.dynatrace.url) {
+        else if (this.wizardService.steps[2].status !== 'success') {
             this.router.navigate(['wizard/src/step3']);
         }
     };

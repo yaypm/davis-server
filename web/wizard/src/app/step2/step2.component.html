@@ -1,9 +1,14 @@
 <div class="page">
     <div class="title">
-        Create Davis User (Required)
+        Create Davis User
     </div>
     <div class="content">
         <form (ngSubmit)="doSubmit()" #form="ngForm">
+            <section class="flex-container" *ngIf="!passwordsMatch">
+                <div class="flex-item full-width error">
+                    Password Confirmation must match Password
+                </div>
+            </section>
             <section class="flex-container">
                 <div class="flex-item half-width first-name">
                     <label>First Name</label>

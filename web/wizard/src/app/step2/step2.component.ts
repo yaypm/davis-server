@@ -12,19 +12,30 @@ import { WizardService } from '../wizard.service';
 export class Step2Component implements OnInit {
     
     submitted: boolean = false;
+    passwordsMatch: boolean = true;
     
     constructor(private wizardService: WizardService, private router: Router) {}
     
     doSubmit() {
-        this.wizardService.addDavisUser()
-            .then( 
-                result => {
-                    this.router.navigate(['wizard/src/step3']);
-                },
-                error => {
-                    console.log(error);
-                });
-        this.submitted = true;
+        if(this.wizardService.values.user.password === this.wizardService.values.user.passwordConfirmation) {
+            this.passwordsMatch = true;
+            this.wizardService.addDavisUser()
+                .then( 
+                    result => {
+                        this.wizardService.steps[1].status = 'success';
+                        this.router.navigate(['wizard/src/step3']);
+                    },
+                    error => {
+                        console.log(error);
+                        this.wizardService.steps[1].status = 'failure';
+                    });
+            this.submitted = true;
+        } else {
+            this.passwordsMatch = false;
+            this.wizardService.values.user.password = null;
+            this.wizardService.values.user.passwordConfirmation = null;
+            this.wizardService.steps[1].status = 'failure';
+        }
     }
     
     ngOnInit() {

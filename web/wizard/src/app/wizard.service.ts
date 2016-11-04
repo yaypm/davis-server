@@ -46,6 +46,45 @@ export class WizardService {
         }
     };
     
+    steps: Array<any> = [
+        {
+            title: 'Connect to MongoDB',
+            name: 'mongo',
+            path: 'wizard/src/step1',
+            status: 'neutral'
+        },
+        {
+            title: 'Create User',
+            name: 'user',
+            path: 'wizard/src/step2',
+            status: 'neutral'
+        },
+        {
+            title: 'Connect to Dynatrace',
+            name: 'dynatrace',
+            path: 'wizard/src/step3',
+            status: 'neutral'
+        },
+        {
+            title: 'Connect to Amazon Alexa',
+            name: 'alexa',
+            path: 'wizard/src/step4',
+            status: 'neutral'
+        },
+        {
+            title: 'Connect to Slack',
+            name: 'slack',
+            path: 'wizard/src/step5',
+            status: 'neutral'
+        },
+        {
+            title: 'Connect to Watson',
+            name: 'web',
+            path: 'wizard/src/step6',
+            status: 'neutral'
+        }
+    ];
+    
     constructor (private http: Http) {
     }
     
