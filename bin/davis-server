@@ -16,4 +16,4 @@ process.noDeprecation = true;
   const davis = new Davis({ logLevel: 'debug' });
 
   return davis.run();
-}).catch(e => logError(e)))();
+}).catch(e => logError(e, true)))();
