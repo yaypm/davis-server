@@ -29,6 +29,16 @@ be set as the `x-access-token` header.
 
 # System
 
+## `/api/v1/system/config/:category(dynatrace|slack|watson)`
+
+### GET
+
+Get a configuration from :category.
+
+### PUT
+
+Update a configuration for :category.
+
 ## `/api/v1/system/user`
 
 ### GET
@@ -161,6 +171,16 @@ Create a new alias
 ### DELETE
 
 Delete an alias
+
+## `/api/v1/system/mongodb/validate`
+
+### GET
+
+Check that DAVIS is connected to a MongoDB instance
+
+## `/api/v1/system/dynatrace/validate`
+
+Check that DAVIS is connected to a Dynatrace instance
 
 # Events
 
