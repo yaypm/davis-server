@@ -1,9 +1,0 @@
-<div class="sidebar-component">
-    <div class="sidebar-section" 
-        *ngFor="let step of this.wizardService.steps"
-        routerLink="{{step.path}}"
-        routerLinkActive="selected"
-        title="{{step.title}}">
-        <img src="./wizard/src/app/sidebar/images/{{ step.name }}/{{ step.status }}.svg" class="sidebar-img">
-    </div>
-</div>
