@@ -79,17 +79,18 @@ li {
 }
 
 .title {
-    float: left;
-    width: 100%;
-    margin-top: 50px;
+    width: calc(100% - 85px);
     text-align: center;
+    margin-top: 50px;
+    padding-right: 65px;
     font-size: 28px;
     font-weight: bold;
 }
 
 .content {
     margin: 0 auto;
-    margin-top: 150px;
+    padding-right: 100px;
+    margin-top: 50px;
     width: 400px;
 }
 
