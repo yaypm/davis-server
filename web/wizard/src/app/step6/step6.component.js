@@ -18,18 +18,17 @@ var Step6Component = (function () {
         this.submitted = false;
     }
     Step6Component.prototype.doSubmit = function () {
-        var _this = this;
         if (this.wizardService.values.watson.stt.user) {
             this.wizardService.connectWatson()
                 .then(function (result) {
-                _this.router.navigate(['/']);
+                window.location.assign('https://' + window.location.host);
             }, function (error) {
                 console.log(error);
             });
             this.submitted = true;
         }
         else {
-            this.router.navigate(['/']);
+            window.location.assign('https://' + window.location.host);
         }
     };
     Step6Component.prototype.ngOnInit = function () {

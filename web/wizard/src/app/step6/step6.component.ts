@@ -20,14 +20,14 @@ export class Step6Component implements OnInit {
           this.wizardService.connectWatson()
             .then( 
                 result => {
-                    this.router.navigate(['/']);
+                    window.location.assign('https://' + window.location.host);
                 },
                 error => {
                     console.log(error);
                 });
           this.submitted = true;
       } else {  
-          this.router.navigate(['/']);
+          window.location.assign('https://' + window.location.host);
       }
   }
 
