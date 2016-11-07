@@ -127,7 +127,7 @@ describe('ResponseBuilder', () => {
       .then(e => {
         e.response({
           text: 'test response.',
-        }).followUp(null, {question: "Who am I?"});
+        }).followUp('Who am I?');
 
         return davis.pluginManager.responseBuilder.build(e);
       });
@@ -136,7 +136,7 @@ describe('ResponseBuilder', () => {
       .then(e => {
         e.response({
           say: 'test response.',
-        }).followUp(null, {question: "Who am I?"});
+        }).followUp('Who am I?');
 
         return davis.pluginManager.responseBuilder.build(e);
       });
@@ -147,7 +147,7 @@ describe('ResponseBuilder', () => {
           show: {
             text: 'test response.',  
           },
-        }).followUp(null, {question: "Who am I?"});
+        }).followUp('Who am I?');
         return davis.pluginManager.responseBuilder.build(e);
       });
 
