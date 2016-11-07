@@ -23,8 +23,8 @@ class RoutingDebug {
 
     this.hooks = {
       'routingDebug:ask': this.ask,
-      'after:routing:choice': (exchange) => BbPromise.resolve(exchange).bind(this)
-        .then(this.debug),
+      'after:routing:choice': (exchange, context) => BbPromise.resolve([exchange, context]).bind(this)
+        .spread(this.debug),
     };
   }
 
@@ -34,8 +34,8 @@ class RoutingDebug {
       .response('Debugging routing.').skipFollowUp();
   }
 
-  debug(exchange) {
-    const context = exchange.getConversationContext();
+  debug(exchange, context) {
+    // const context = exchange.getConversationContext();
     if (context.targetIntent === 'routingDebug') {
       const choice = _.isNumber(context.choice) ? context.choice + 1 : context.choice;
       const templates = this.davis.pluginManager.responseBuilder.getTemplates(this);

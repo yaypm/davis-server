@@ -3,7 +3,7 @@
 'use strict';
 
 const BbPromise = require('bluebird');
-const logError = require('../lib/classes/Error').logError;
+const logError = require('../lib/classes/Utils').logError;
 
 process.on('unhandledRejection', e => logError(e));
 process.noDeprecation = true;
