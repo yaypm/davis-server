@@ -6,7 +6,7 @@ chai.use(require('chai-as-promised'));
 
 chai.should();
 
-const Nlp = require('../../lib/classes/Nlp');
+const Nlp = require('../../lib/classes/PluginManager/Nlp');
 const Davis = require('../../lib/Davis');
 
 describe('Nlp', () => {
