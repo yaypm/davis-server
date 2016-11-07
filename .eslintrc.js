@@ -11,6 +11,7 @@ module.exports = {
     "react/require-extension" : "off",
     "import/no-extraneous-dependencies" : "off",
     "max-len": ["error", {
+      "code": 100,
       "ignoreComments": true,
       "ignoreTrailingComments": true,
       "ignoreUrls": true,
