@@ -54,6 +54,7 @@
     "serve-favicon": "^2.3.0",
     "socket.io": "^1.5.0",
     "vcap_services": "^0.2.0",
-    "watson-developer-cloud": "^2.6.0"
+    "watson-developer-cloud": "^2.6.0",
+    "alexa-verifier": "0.0.5"
   }
 }
