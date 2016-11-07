@@ -8,6 +8,8 @@ const logError = require('../lib/classes/Error').logError;
 process.on('unhandledRejection', e => logError(e));
 process.noDeprecation = true;
 
+const RoutingDebug = require('../routingDebug');
+
 (() => BbPromise.resolve().then(() => {
   // require here so that if anything goes wrong during require,
   // it will be caught.
@@ -15,5 +17,7 @@ process.noDeprecation = true;
 
   const davis = new Davis({ logLevel: 'debug' });
 
-  return davis.run();
+  return davis.init()
+    .then(() => davis.pluginManager.addPlugin(RoutingDebug))
+    .then(() => davis.run());
 }).catch(e => logError(e, true)))();
