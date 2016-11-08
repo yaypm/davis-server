@@ -3,10 +3,12 @@
 'use strict';
 
 const BbPromise = require('bluebird');
-const logError = require('../lib/classes/Error').logError;
+const logError = require('../lib/classes/Utils').logError;
 
 process.on('unhandledRejection', e => logError(e));
 process.noDeprecation = true;
+
+const RoutingDebug = require('../routingDebug');
 
 (() => BbPromise.resolve().then(() => {
   // require here so that if anything goes wrong during require,
@@ -15,5 +17,8 @@ process.noDeprecation = true;
 
   const davis = new Davis({ logLevel: 'debug' });
 
-  return davis.run();
+  return davis.init()
+    .then(() => davis.pluginManager.addPlugin(RoutingDebug))
+    .then(() => davis.run())
+    .then(() => davis.startSlack());
 }).catch(e => logError(e, true)))();

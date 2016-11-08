@@ -2,7 +2,7 @@
 
 const chai = require('chai');
 const Davis = require('../../lib/Davis');
-const Decide = require('../../lib/classes/Decide')
+const Decide = require('../../lib/classes/Exchange/Decide')
 
 chai.should();
 
@@ -21,5 +21,18 @@ describe('Decide', () => {
     ], { tense: 'past', problem: 'zero' });
 
     output.template.should.equal('past/zero');
+  });
+
+  it('should return two present problems', () => {
+    const output = decide.predict([
+      { tense: 'past',    problem: 'zero', test: true, output: { template: 'past/zero' }},
+      { tense: 'past',    problem: 'one',  test: true, output: { template: 'past/one' }},
+      { tense: 'past',    problem: 'two',  test: true, output: { template: 'past/two' }},
+      { tense: 'present', problem: 'zero',             output: { template: 'present/zero' }},
+      { tense: 'present', problem: 'one',  test: false, output: { template: 'present/one' }},
+      { tense: 'present', problem: 'two',              output: { template: 'present/two' }},
+    ], { tense: 'present', problem: 'two' });
+
+    output.template.should.equal('present/two');
   });
 });
