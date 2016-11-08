@@ -19,7 +19,7 @@ describe('Exchange', () => {
     return exchange.start('What happened yesterday?', 'alexa')
       .then(e => {
         e.isFirstInteraction().should.be.true;
-        return e.finish();
+        return e.save();
       });
   });
 
@@ -29,7 +29,7 @@ describe('Exchange', () => {
     return exchange.start('What about today?', 'alexa')
       .then(e => {
         e.isFirstInteraction().should.be.false;
-        return e.finish();
+        return e.save();
       });
   });
 });
