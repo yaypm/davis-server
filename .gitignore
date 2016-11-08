@@ -35,5 +35,5 @@ node_modules
 .DS_Store
 .tmp
 
-
-davisTest.js
+# Davis
+.env
