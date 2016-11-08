@@ -16,7 +16,7 @@ describe('Users', () => {
   const email = 'testuser@dynatrace.com';
 
   it('should return a list of timezones',
-    () => users.getValidTimezones().should.contain('america/detroit'));
+    () => users.getValidTimezones().should.contain('America/Detroit'));
 
   it('should not find a valid Alexa user',
     () => users.validateAlexaUser('shouldNotExist').should.eventually.be.rejected);
@@ -34,5 +34,5 @@ describe('Users', () => {
     () => users.updateUser(email, { timezone: 'invalid' }).should.eventually.be.rejected);
 
   it('should successfully update the timezone',
-    () => users.updateUser(email, { timezone: 'america/detroit' }).should.eventually.be.resolved);
+    () => users.updateUser(email, { timezone: 'America/Detroit' }).should.eventually.be.resolved);
 });
