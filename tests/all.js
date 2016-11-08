@@ -30,6 +30,7 @@ after(done => {
 // require('./classes/Davis');
 // require('./classes/Service');
 require('./classes/Users');
+require('./classes/Dynatrace');
 require('./classes/Exchange');
 require('./classes/Decide');
 require('./classes/Nlp');
