@@ -19,5 +19,6 @@ const RoutingDebug = require('../routingDebug');
 
   return davis.init()
     .then(() => davis.pluginManager.addPlugin(RoutingDebug))
-    .then(() => davis.run());
+    .then(() => davis.run())
+    .then(() => davis.startSlack());
 }).catch(e => logError(e, true)))();

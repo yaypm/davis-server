@@ -41,6 +41,7 @@ describe('ResponseBuilder', () => {
         e.response({
           show: {
             text: 'test response.',  
+            attachments: [],
           },
         }).end();
         return davis.pluginManager.responseBuilder.build(e);
@@ -53,6 +54,7 @@ describe('ResponseBuilder', () => {
           say: 'test response.',
           show: {
             text: 'test response.',
+            attachments: [],
           },
         };
         r1.should.eql(r);
@@ -110,6 +112,7 @@ describe('ResponseBuilder', () => {
           say: 'test response.',
           show: {
             text: 'test response.',
+            attachments: [],
           },
         };
         r1.should.eql(r);
@@ -145,7 +148,8 @@ describe('ResponseBuilder', () => {
       .then(e => {
         e.response({
           show: {
-            text: 'test response.',  
+            text: 'test response.',
+            attachments: [],
           },
         }).followUp('Who am I?');
         return davis.pluginManager.responseBuilder.build(e);
@@ -158,6 +162,7 @@ describe('ResponseBuilder', () => {
           say: 'test response.  Who am I?',
           show: {
             text: 'test response.  Who am I?',
+            attachments: [],
           },
         };
         r1.should.eql(r);
