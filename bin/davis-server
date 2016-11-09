@@ -9,16 +9,20 @@ process.on('unhandledRejection', e => logError(e));
 process.noDeprecation = true;
 
 const RoutingDebug = require('../routingDebug');
+const DateDebug = require('../dateDebug');
 
 (() => BbPromise.resolve().then(() => {
   // require here so that if anything goes wrong during require,
   // it will be caught.
   const Davis = require('../lib/Davis'); // eslint-disable-line global-require
 
-  const davis = new Davis({ logLevel: 'debug' });
+  const davis = new Davis({
+    logLevel: 'debug',
+    userPlugins: [
+      RoutingDebug,
+      DateDebug,
+    ],
+  });
 
-  return davis.init()
-    .then(() => davis.pluginManager.addPlugin(RoutingDebug))
-    .then(() => davis.run())
-    .then(() => davis.startSlack());
+  return davis.run();
 }).catch(e => logError(e, true)))();
