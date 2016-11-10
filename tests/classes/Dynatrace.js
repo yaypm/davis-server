@@ -37,7 +37,47 @@ describe('Dynatrace', () => {
 
     davis.dynatrace.getFilteredProblems(exchange)
       .then(problems => {
-        problems.length().should.equal(15);
+        problems.length.should.equal(15);
+        done();
+      });
+  });
+
+  it('should filter the list of problems', done => {
+    nock(davis.config.getDynatraceUrl())
+      .get('/api/v1/problem/feed')
+      .query(true)
+      .reply(200, problemSummary);
+
+    // Creating a fake exchange
+    const exchange = {};
+    _.set(exchange, 'model.request.analysed.timeRange.startTime', 1465571160000);
+    _.set(exchange, 'model.request.analysed.timeRange.stopTime', 1465572960000);
+
+    davis.dynatrace.getFilteredProblems(exchange)
+      .then(problems => {
+        const openProblems = problems.filter(e => e.status === 'OPEN');
+        openProblems.length.should.equal(1);
+        done();
+      });
+  });
+
+  it('should sort the list of problems', done => {
+    nock(davis.config.getDynatraceUrl())
+      .get('/api/v1/problem/feed')
+      .query(true)
+      .reply(200, problemSummary);
+
+    // Creating a fake exchange
+    const exchange = {};
+    _.set(exchange, 'model.request.analysed.timeRange.startTime', 1465571160000);
+    _.set(exchange, 'model.request.analysed.timeRange.stopTime', 1465572960000);
+
+    davis.dynatrace.getFilteredProblems(exchange)
+      .then(problems => {
+        const openProblems = problems.filter(e => e.status === 'OPEN');
+        const closedProblems = problems.filter(e => e.status === 'CLOSED');
+        openProblems[0].should.eql(problems[0]);
+        closedProblems[0].should.eql(problems[1]);
         done();
       });
   });

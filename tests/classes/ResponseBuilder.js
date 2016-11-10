@@ -23,7 +23,8 @@ describe('ResponseBuilder', () => {
         e.response({
           text: 'test response.',
         }).end();
-
+        e.model.request.analysed = {};
+        e.model.request.analysed.timeRange = null;
         return davis.pluginManager.responseBuilder.build(e);
       });
 
@@ -32,7 +33,8 @@ describe('ResponseBuilder', () => {
         e.response({
           say: 'test response.',
         }).end();
-
+        e.model.request.analysed = {};
+        e.model.request.analysed.timeRange = null;
         return davis.pluginManager.responseBuilder.build(e);
       });
 
@@ -44,6 +46,8 @@ describe('ResponseBuilder', () => {
             attachments: [],
           },
         }).end();
+        e.model.request.analysed = {};
+        e.model.request.analysed.timeRange = null;
         return davis.pluginManager.responseBuilder.build(e);
       });
 
@@ -74,7 +78,8 @@ describe('ResponseBuilder', () => {
         e.addTemplateContext({
           variable: "response",
         });
-
+        e.model.request.analysed = {};
+        e.model.request.analysed.timeRange = null;
         e.response({
           textString: 'test {{variable}}.',
         }).end();
@@ -90,7 +95,8 @@ describe('ResponseBuilder', () => {
         e.response({
           sayString: 'test {{variable}}.',
         }).end();
-
+        e.model.request.analysed = {};
+        e.model.request.analysed.timeRange = null;
         return davis.pluginManager.responseBuilder.build(e);
       });
 
@@ -102,6 +108,8 @@ describe('ResponseBuilder', () => {
         e.response({
           showString: '{"text": "test {{variable}}."}',
         }).end();
+        e.model.request.analysed = {};
+        e.model.request.analysed.timeRange = null;
         return davis.pluginManager.responseBuilder.build(e);
       });
 
@@ -131,7 +139,8 @@ describe('ResponseBuilder', () => {
         e.response({
           text: 'test response.',
         }).followUp('Who am I?');
-
+        e.model.request.analysed = {};
+        e.model.request.analysed.timeRange = null;
         return davis.pluginManager.responseBuilder.build(e);
       });
 
@@ -140,7 +149,8 @@ describe('ResponseBuilder', () => {
         e.response({
           say: 'test response.',
         }).followUp('Who am I?');
-
+        e.model.request.analysed = {};
+        e.model.request.analysed.timeRange = null;
         return davis.pluginManager.responseBuilder.build(e);
       });
 
@@ -152,6 +162,8 @@ describe('ResponseBuilder', () => {
             attachments: [],
           },
         }).followUp('Who am I?');
+        e.model.request.analysed = {};
+        e.model.request.analysed.timeRange = null;
         return davis.pluginManager.responseBuilder.build(e);
       });
 
