@@ -32,12 +32,12 @@ describe('Dynatrace', () => {
 
     // Creating a fake exchange
     const exchange = {};
-    _.set(exchange, 'model.request.analysed.timerange.startTime', 1465571160000);
-    _.set(exchange, 'model.request.analysed.timerange.stopTime', 1465572960000);
+    _.set(exchange, 'model.request.analysed.timeRange.startTime', 1465571160000);
+    _.set(exchange, 'model.request.analysed.timeRange.stopTime', 1465572960000);
 
     davis.dynatrace.getFilteredProblems(exchange)
       .then(problems => {
-        problems.length().should.equal(15);
+        problems.length.should.equal(15);
         done();
       });
   });
