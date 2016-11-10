@@ -37,7 +37,7 @@ describe('Dynatrace', () => {
 
     davis.dynatrace.getFilteredProblems(exchange)
       .then(problems => {
-        problems.length().should.equal(15);
+        problems.length.should.equal(15);
         done();
       });
   });
