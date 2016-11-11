@@ -1,4 +1,4 @@
-module.exports = {
+{
   "extends": "airbnb",
   "plugins": [],
   "rules": {
@@ -22,4 +22,4 @@ module.exports = {
   "env": {
        "mocha": true
    }
-};
+}
