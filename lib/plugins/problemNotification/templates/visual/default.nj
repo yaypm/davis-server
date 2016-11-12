@@ -1,0 +1,4 @@
+{
+  "title": "A problem was detected",
+  "text": "Problem ID {{ problem.id }} was detected"
+}
