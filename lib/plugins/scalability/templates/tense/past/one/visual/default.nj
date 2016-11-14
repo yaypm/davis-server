@@ -1,0 +1,8 @@
+{
+    "text": "There was one infrastructure problem during the past week.",
+    "attachments": [
+        {% for problem in problems %}
+           {% include "lib/plugins/shared-templates/problem-summary/visual/default.nj" %}
+        {%- endfor %}
+    ]
+}

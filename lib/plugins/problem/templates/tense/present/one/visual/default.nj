@@ -1,0 +1,25 @@
+{
+    "text": "There is currently one problem.",
+    "attachments": [
+        {% for problem in problems %}
+           {% include "lib/plugins/shared-templates/problem-summary/visual/default.nj" %}
+        {%- endfor %}
+        ,{
+            "callback_id": "problem_present_one",
+            "actions": [
+                {
+                    "name":"yes",
+                    "text": "Yes",
+                    "value": "yes",
+                    "type": "button"
+                },
+                {
+                    "name":"no",
+                    "text": "No",
+                    "value": "no",
+                    "type": "button"
+                }
+            ]
+        }
+    ]
+}

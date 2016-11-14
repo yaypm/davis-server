@@ -1,0 +1,31 @@
+{
+    "text": "There were a couple of problems during that time frame.",
+    "attachments": [
+        {% for problem in problems %}
+           {% include "lib/plugins/shared-templates/problem-summary/visual/default.nj" %}{%- if not loop.last %},{% endif %}
+        {%- endfor %}
+        ,{
+            "callback_id": "problem_past_two",
+            "actions": [
+                {
+                    "name":"1",
+                    "text": "First",
+                    "value": "1",
+                    "type": "button"
+                },
+                {
+                    "name":"2",
+                    "text": "Second",
+                    "value": "2",
+                    "type": "button"
+                },
+                {
+                    "name":"no",
+                    "text": "No thanks",
+                    "value": "no",
+                    "type": "button"
+                }
+            ]
+        }
+    ]
+}

@@ -1,0 +1,18 @@
+{
+    "fallback": "{% if loop.length > 1 %}{{ loop.index }}. {% endif %}{{ problems[loop.index0].rankedImpacts[0].eventType | friendlyEventFirstAlias | toTitleCase | replace("A ", "") }}\nImpacted: {{ problems[loop.index0].rankedImpacts[0] | friendlyEntityName("visual") }}\n{% if problems[loop.index0].status == 'OPEN' %}Unresolved{% else %}Resolved - {{ problems[loop.index0].endTime | time(user) }}{% endif %}",
+    "color": "{% if problems[loop.index0].status == 'OPEN' %}#dc172a{% else %}#7dc540{% endif %}",
+    "title": "{% if loop.length > 1 %}{{ loop.index }}. {% endif %}{{ problems[loop.index0].rankedImpacts[0].eventType | friendlyEventFirstAlias | toTitleCase | replace("A ", "") }}{% if problems[loop.index0].hasRootCause %} :key:{% endif %}",
+    "title_link": "{{problems[loop.index0] | buildProblemUrl(user) }}",
+    "fields": [
+        {
+            "title": "Impacted",
+            "value": "{{ problems[loop.index0].rankedImpacts[0] | friendlyEntityName("visual") }}",
+            "short": "true"
+        },
+        {
+            "title": "Status",
+            "value": "{% if problems[loop.index0].status == 'OPEN' %}Unresolved{% else %}Resolved - {{ problems[loop.index0].endTime | time(user, "visual") | capitalizeFirstCharacter }}{% endif %}",
+            "short": "true"
+        }
+    ]
+}

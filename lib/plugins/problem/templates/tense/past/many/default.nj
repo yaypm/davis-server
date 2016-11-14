@@ -1,1 +1,0 @@
-I hate to be the bearer of bad news, but there were {{ num_problems }} problems detected {{ timeRange | friendlyTimeRange(user) }}.  However, I would recommend focusing on one of the following problems.  {% include "lib/plugins/shared-templates/top-three-problems.nj" %}

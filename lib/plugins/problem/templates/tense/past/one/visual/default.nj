@@ -1,0 +1,25 @@
+{
+    "text": "There was one problem during that time frame.",
+    "attachments": [
+        {% for problem in problems %}
+           {% include "lib/plugins/shared-templates/problem-summary/visual/default.nj" %}
+        {%- endfor %}
+        ,{
+            "callback_id": "problem_past_one",
+            "actions": [
+                {
+                    "name":"yes",
+                    "text": "Yes",
+                    "value": "yes",
+                    "type": "button"
+                },
+                {
+                    "name":"no",
+                    "text": "No",
+                    "value": "no",
+                    "type": "button"
+                }
+            ]
+        }
+    ]
+}

@@ -1,11 +1,11 @@
 {
+    "text": "There are currently a couple of problems.",
     "attachments": [
-        {
-            "fallback": "It looks like three problems occurred yesterday. After giving it some thought, here are my top three problems.",
-            "text": "It looks like three problems occurred yesterday. After giving it some thought, here are my top three problems."  
-        }
+        {% for problem in problems %}
+           {% include "lib/plugins/shared-templates/problem-summary/visual/default.nj" %}{%- if not loop.last %},{% endif %}
+        {%- endfor %}
         ,{
-            "callback_id": "problem_past_many",
+            "callback_id": "problem_present_two",
             "actions": [
                 {
                     "name":"1",
@@ -17,12 +17,6 @@
                     "name":"2",
                     "text": "Second",
                     "value": "2",
-                    "type": "button"
-                },
-                {
-                    "name":"3",
-                    "text": "Third",
-                    "value": "3",
                     "type": "button"
                 },
                 {
