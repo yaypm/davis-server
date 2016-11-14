@@ -22,9 +22,15 @@ describe('Nlp', () => {
   const nlp = new Nlp(davis, { apps: [
     {
       name: 'Test App',
-      variants: ['test app', 'testapp', 'testing app'],
+      category: '',
+      entityId: '',
+      display: {
+        visual: '',
+        audible: '',
+      },
+      aliases: ['test app', 'testapp', 'testing app'],
     },
-  ] });
+  ]});
 
   nlp.addDocument('what happened yesterday with testapp', 'problem');
   nlp.addDocument('what version are you running');
@@ -41,7 +47,7 @@ describe('Nlp', () => {
   it('should add apps', () => {
     nlp.addApp({
       name: 'Testing DB',
-      variants: ['testing db', 'test db'],
+      aliases: ['testing db', 'test db'],
     });
 
     nlp.apps.should.have.lengthOf(2);
@@ -60,7 +66,7 @@ describe('Nlp', () => {
 
   it('should extract apps', () => {
     started.then((nlpData) => {
-      nlpData.app.app.should.equal('Test App');
+      nlpData.app.name.should.equal('Test App');
       nlpData.app.body.should.equal('testapp');
     });
   });
