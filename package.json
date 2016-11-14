@@ -36,6 +36,7 @@
     "nock": "^9.0.2"
   },
   "dependencies": {
+    "alexa-verifier": "0.0.5",
     "bcrypt-nodejs": "0.0.3",
     "bluebird": "^3.4.6",
     "body-parser": "^1.15.2",
@@ -59,8 +60,8 @@
     "request-promise": "^4.1.1",
     "serve-favicon": "^2.3.0",
     "socket.io": "^1.5.0",
+    "to-title-case": "^1.0.0",
     "vcap_services": "^0.2.0",
-    "watson-developer-cloud": "^2.6.0",
-    "alexa-verifier": "0.0.5"
+    "watson-developer-cloud": "^2.6.0"
   }
 }
