@@ -30,6 +30,7 @@
     "eslint-plugin-react": "^6.1.1",
     "gulp": "^3.9.1",
     "gulp-mocha": "^3.0.1",
+    "gulp-update": "0.0.2",
     "istanbul": "^0.4.5",
     "mocha": "^3.1.2",
     "nock": "^9.0.2"
