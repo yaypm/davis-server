@@ -10,7 +10,7 @@ class RoutingDebug {
     this.dir = __dirname;
 
     this.intents = {
-      routingDebug: {
+      startRoutingDebug: {
         usage: 'Debug the routing intent',
         phrases: [
           'Debug the routing intent',
@@ -19,11 +19,20 @@ class RoutingDebug {
           'ask',
         ],
       },
+
+      routingDebug: {
+        usage: 'Debug the routing intent',
+        phrases: [
+        ],
+        lifecycleEvents: [
+          'respond',
+        ],
+      },
     };
 
     this.hooks = {
-      'routingDebug:ask': this.ask,
-      'after:routing:choice': (exchange, context) => BbPromise.resolve([exchange, context]).bind(this)
+      'startRoutingDebug:ask': this.ask,
+      'routingDebug:respond': (exchange, context) => BbPromise.resolve([exchange, context]).bind(this)
         .spread(this.debug),
     };
   }
@@ -36,11 +45,9 @@ class RoutingDebug {
 
   debug(exchange, context) {
     // const context = exchange.getConversationContext();
-    if (context.targetIntent === 'routingDebug') {
-      const choice = _.isNumber(context.choice) ? context.choice + 1 : context.choice;
-      const templates = this.davis.pluginManager.responseBuilder.getTemplates(this);
-      exchange.addTemplateContext({ choice }).response(templates).skipFollowUp();
-    }
+    const choice = _.isNumber(context.choice) ? context.choice + 1 : context.choice;
+    const templates = this.davis.pluginManager.responseBuilder.getTemplates(this);
+    exchange.addTemplateContext({ choice }).response(templates).skipFollowUp();
   }
 }
 
