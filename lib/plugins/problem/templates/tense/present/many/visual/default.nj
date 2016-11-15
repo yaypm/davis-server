@@ -1,9 +1,8 @@
-{%- set problems = [problem1, problem2, problem3] %}
 {
     "attachments": [
         {
             "fallback": "It looks like {{ problems.length }} problems occurred {{ timeRange | friendlyTimeRange(user, false, "visual") }}. {% if problems.length > 3 %}After giving it some thought, here are my top three problems.{% endif %}",
-            "text": "It looks like <{{ problems | buildProblemsUrl(user)}}|{{ problems.length }} problems> occurred {{ timeRange | friendlyTimeRange(user, false, "visual") }}. {% if problems.length > 3 %}After giving it some thought, here are my top three problems.{% endif %}"  
+            "text": "It looks like <{{ problems | buildProblemsUrl(user)}}|{{ problems.length }} problems> occurred {{ timeRange | friendlyTimeRange(user, false, "visual") }}. {% if problems.length > 3 %}After giving it some thought, here are my top three problems.{% endif %}"
         },
         {% for i in range(0, 3) %}
            {% include "lib/plugins/shared-templates/problem-summary/visual/default.nj" %}{%- if not loop.last %},{% endif %}
