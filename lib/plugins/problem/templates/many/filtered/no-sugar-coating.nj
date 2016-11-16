@@ -1,0 +1,1 @@
+It looks like there were {{ problems.length }} problems affecting {{ appname }} {{ timeRange | friendlyTimeRange(user) }}. {% if problems.length > 3 %}After giving it some thought, here are my top three.{% endif %} {% include "lib/plugins/shared-templates/top-three-problems-filtered.nj" %}

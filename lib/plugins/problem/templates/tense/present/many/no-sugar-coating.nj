@@ -1,1 +1,0 @@
-It looks like there are {{ problems.length }} active problems. {% if problems.length > 3 %}After giving it some though, here are my top three.{% endif %} {% include "lib/plugins/shared-templates/top-three-problems.nj" %}

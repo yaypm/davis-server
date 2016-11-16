@@ -1,1 +1,0 @@
-Unfortunately there are {{ problems.length }} currently active problems. {% if problems.length > 3 %}After careful consideration, I would focus on one of the following problems first.{% endif %}  {% include "lib/plugins/shared-templates/top-three-problems.nj" %}
