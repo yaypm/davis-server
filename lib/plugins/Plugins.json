@@ -8,6 +8,7 @@
         "./problemDetails/index.js",
         "./scalability/index.js",
         "./stop/index.js",
+        "./thanks/index.js",
         "./unknown/index.js",
         "./userActivity/index.js",
         "./ping/index.js",
