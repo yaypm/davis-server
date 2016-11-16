@@ -35,4 +35,12 @@ describe('Users', () => {
 
   it('should successfully update the timezone',
     () => users.updateUser(email, { timezone: 'America/Detroit' }).should.eventually.be.resolved);
+  
+  it('should create an internal user', () => {
+    return davis.config.load()
+      .then(() => users.getSystemUser())
+      .then(user => {
+        user.url.should.equal(process.env.DYNATRACE_URL);
+      })
+  })
 });
