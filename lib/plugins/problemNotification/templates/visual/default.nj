@@ -3,7 +3,14 @@
 {%- set eventsDisplayed = 0 -%}
 {%- set rootCauseCount = 0 -%}
 {
-    "text": "A new problem has been detected.",
+    "text": "{% if problem.status == 'OPEN' %}{{ [
+        'I just wanted to let know that the following problem was detected',
+        'I just wanted to give you a quick heads up that the follow problem was detected'
+    ] | random }}{% else %}{{ [
+        'Good news, the following problem has been resolved',
+        'Great, the following problem has been resolved',
+        'Nice!  The following problem has been resolved'
+    ] | random }}{% endif %}:",
     "attachments": [
         {
             "fallback": "{{ currentEvent.eventType | toTitleCase | replace("A ", "") }}\nImpacted: {{ currentEvent | friendlyEntityName("visual") }} \n{{ problem.impactLevel | capitalize }}\nInitial Event: {{ startingEvent.eventType | friendlyEventFirstAlias | toTitleCase | replace("A ", "") }}\nStatus: {% if problem.status == 'OPEN' %}Unresolved{% else %}Resolved{% endif %}",
