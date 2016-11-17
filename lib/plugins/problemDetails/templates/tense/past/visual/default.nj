@@ -9,7 +9,7 @@
             "fallback": "{{ currentEvent.eventType | toTitleCase | replace("A ", "") }}\nImpacted: {{ currentEvent | friendlyEntityName("visual") }} \n{{ problem.impactLevel | capitalize }}\nInitial Event: {{ startingEvent.eventType | friendlyEventFirstAlias | toTitleCase | replace("A ", "") }}\nStatus: {% if problem.status == 'OPEN' %}Unresolved{% else %}Resolved{% endif %}",
             "color": "{% if problem.status == 'OPEN' %}#dc172a{% else %}#7dc540{% endif %}",
             "title": "{{ currentEvent.eventType | friendlyEventFirstAlias | toTitleCase | replace("A ", "") }}",
-            "title_link": "{{problem | buildProblemUrl(user) }}",
+            "title_link": "{{problem | buildProblemUrl }}",
             "fields": [
                 {
                     "title": "Impacted",
