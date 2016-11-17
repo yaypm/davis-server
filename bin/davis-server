@@ -9,7 +9,7 @@ process.on('unhandledRejection', e => logError(e));
 process.noDeprecation = true;
 
 const RoutingDebug = require('../routingDebug');
-const DateDebug = require('../dateDebug');
+const PronunciationDebug = require('../pronunciationDebug');
 
 (() => BbPromise.resolve().then(() => {
   // require here so that if anything goes wrong during require,
@@ -20,7 +20,7 @@ const DateDebug = require('../dateDebug');
     logLevel: 'debug',
     userPlugins: [
       RoutingDebug,
-      DateDebug,
+      PronunciationDebug,
     ],
   });
 
