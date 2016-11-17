@@ -1,0 +1,29 @@
+<div class="page">
+    <div class="step">
+        Step 2 of 5
+    </div>
+    <div class="title">
+        Connect to Dynatrace
+    </div>
+    <div class="content">
+        <form (ngSubmit)="doSubmit()" #form="ngForm">
+            <section class="flex-container">
+                <div class="flex-item full-width">
+                    <label>Dynatrace Tenant URL</label>
+                    <input type="text" name="url" placeholder="https://qwefgmasd.live.dynatrace.com" [(ngModel)]="this.wizardService.values.dynatrace.url" autofocus required>
+                </div>
+            </section>
+            <section class="flex-container">
+                <div class="flex-item full-width">
+                    <label>Dynatrace API Token</label>
+                    <input type="text" name="token" placeholder="IYVTz0nBSkZdsQOhS7W3P" [(ngModel)]="this.wizardService.values.dynatrace.token" required>
+                </div>
+            </section>
+            <section class="flex-container">
+                <div class="flex-item next">
+                    <button type="submit" class="nextBtn">Continue</button>
+                </div>
+            </section>
+        </form>
+    </div>
+</div>
