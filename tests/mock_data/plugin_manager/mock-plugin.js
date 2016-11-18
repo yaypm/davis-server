@@ -1,6 +1,5 @@
 class MockPlugin {
   constructor(davis, options) {
-    this.dir = __dirname;
     this.intents = {
       mockIntent: {
         usage: 'Testing Intet',
