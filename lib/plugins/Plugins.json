@@ -1,18 +1,18 @@
 {
     "intents": [
-        "./problem/index.js",
-        "./routing/index.js",
-        "./help/index.js",
-        "./davisVersion/index.js",
-        "./launch/index.js",
-        "./problemDetails/index.js",
-        "./scalability/index.js",
-        "./stop/index.js",
-        "./thanks/index.js",
-        "./unknown/index.js",
-        "./userActivity/index.js",
-        "./ping/index.js",
-        "./problemNotification/index.js",
-        "./pushLink/index.js"
+        "./problem",
+        "./routing",
+        "./help",
+        "./davisVersion",
+        "./launch",
+        "./problemDetails",
+        "./scalability",
+        "./stop",
+        "./thanks",
+        "./unknown",
+        "./userActivity",
+        "./ping",
+        "./problemNotification",
+        "./pushLink"
     ]
 }
