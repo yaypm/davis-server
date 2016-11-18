@@ -16,22 +16,23 @@ const davisParserData = require('../mock_data/nlp/yesterday.json');
 
 
 describe('ResponseBuilder', () => {
-  const davis = new Davis();
+  const davis = new Davis({
+    userPlugins: [
+      './tests/mock_data/plugin_manager/mock-plugin',
+    ],
+  });
   after(() => nock.restore());
   nock('https://ogj1j3zad0.execute-api.us-east-1.amazonaws.com')
     .post('/prod/datetime')
     .reply(200, davisParserData);
 
-  it('should load core plugins', () => {
+  it('should load plugins', () => {
     davis.pluginManager.loadCorePlugins();
-    davis.pluginManager.plugins.length.should.eql(plugins.intents.length);
-  });
-
-  it('should load user plugins', () => {
-    davis.pluginManager.loadUserPlugins(['./tests/mock_data/plugin_manager/mock-plugin']);
-    console.log(process.cwd());
+    davis.pluginManager.loadUserPlugins([
+      './tests/mock_data/plugin_manager/mock-plugin',
+    ])
     davis.pluginManager.plugins.length.should.eql(plugins.intents.length + 1);
-  })
+  });
 
   it('should have user intent', () => {
     davis.pluginManager.getIntents().should.include.keys('mockIntent');
