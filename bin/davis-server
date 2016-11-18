@@ -16,10 +16,6 @@ process.noDeprecation = true;
 
   const davis = new Davis({
     logLevel: 'debug',
-    userPlugins: [
-      './routingDebug',
-      './pronunciationDebug',
-    ],
   });
 
   return davis.run();
