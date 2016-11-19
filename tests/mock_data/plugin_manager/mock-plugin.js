@@ -2,7 +2,7 @@ class MockPlugin {
   constructor(davis, options) {
     this.intents = {
       mockIntent: {
-        usage: 'Testing Intet',
+        usage: 'Testing Intent',
         phrases: [
           'test',
         ],
