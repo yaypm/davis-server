@@ -31,7 +31,7 @@ Conversation
 ------------
 
 In Davis, a conversation is between a user and the Davis system, regardless of what system the user
-uses to converse. This means that a user can start talking no their Amazon echo, and carry on
+uses to converse. This means that a user can start talking to their Amazon echo, and carry on
 the conversation on Slack part way through the conversation.
 
 Exchange
