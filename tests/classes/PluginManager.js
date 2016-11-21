@@ -15,7 +15,7 @@ const davisParserData = require('../mock_data/nlp/yesterday.json');
 
 
 
-describe('ResponseBuilder', () => {
+describe('PluginManager', () => {
   const davis = new Davis({
     userPlugins: [
       './tests/mock_data/plugin_manager/mock-plugin',
@@ -47,7 +47,7 @@ describe('ResponseBuilder', () => {
     pluginName: 'MockPlugin',
     intents: undefined,
     key: 'mockIntent',
-    usage: 'Testing Intet',
+    usage: 'Testing Intent',
     phrases: [
       'test',
     ],
