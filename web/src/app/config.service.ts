@@ -38,36 +38,36 @@ export class ConfigService {
         }
     };
     
-    steps: Array<any> = [
-        {
+    config: any = {
+        user: {
             title: 'Create Admin Account',
             name: 'user',
             path: 'src/config-user',
             error: null,
             success: null
         },
-        {
+        dynatrace: {
             title: 'Let\'s connect to Dynatrace!',
             name: 'dynatrace',
             path: 'src/config-dynatrace',
             error: null,
             success: null
         },
-        {
+        alexa: {
             title: 'Connect to Amazon Alexa',
             name: 'alexa',
             path: 'src/config-alexa',
             error: null,
             success: null
         },
-        {
+        slack: {
             title: 'Connect to Slack',
             name: 'slack',
             path: 'src/config-slack',
             error: null,
             success: null
         }
-    ];
+    };
     
     constructor (private http: Http) {
     }

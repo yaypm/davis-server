@@ -13,45 +13,51 @@ export class ConfigSlackComponent implements OnInit {
 
     myURL:string = '';
     submitted: boolean = false;
-    success: boolean = false;
     buttonText: string = 'Skip';
+    isPasswordFocused: boolean = false;
+    isPasswordMasked: boolean = true;
     
     constructor(private configService: ConfigService, private router: Router) {
         this.myURL = 'https://' + window.location.host;
     }
     
+    //ToDo: Use https://clipboardjs.com library to add copy to clipboard functionality to URLs
+    
     validate() {
         if (this.configService.values.slack.clientId && this.configService.values.slack.clientSecret) {
             this.buttonText = 'Create Davis Slack Bot';
-        } else if (!this.success){
+        } else if (!this.configService.config['slack'].success){
             this.buttonText = 'Skip and Finish';
         }
     }
     
     doSubmit() {
-        if (!this.success && this.configService.values.slack.clientId && this.configService.values.slack.clientSecret) {
+        if (!this.configService.config['slack'].success && this.configService.values.slack.clientId && this.configService.values.slack.clientSecret) {
             this.configService.connectSlack()
-              .then( 
-                  result => {
-                      this.success = true;
-                      window.location.assign('https://' + window.location.host);
-                  },
-                  error => {
-                      console.log(error);
-                      this.configService.steps[4].success = false;
-                  });
+              .then(result => {
+                if (result.success) {
+                  //REST call to endpoint here, trigger restart of Botkit
+                  this.configService.config['slack'].success = true;
+                } else {
+                  this.configService.config['slack'].success = false;
+                  this.configService.config['slack'].error = result.message;
+                }
+              },
+              error => {
+                  console.log(error);
+                  this.configService.config['slack'].success = false;
+              });
             this.submitted = true;
-            this.buttonText = 'Finish';
         } else {
             this.configService.windowLocation(this.myURL);
         }
     }
     
     ngOnInit() {
-        if (!this.configService.steps[1].success) {
-            this.router.navigate([this.configService.steps[1].path]);
-        } else if (!this.configService.steps[2].success) {
-            this.router.navigate([this.configService.steps[2].path]);
+        if (!this.configService.config['user'].success) {
+            this.router.navigate([this.configService.config['user'].path]);
+        } else if (!this.configService.config['dynatrace'].success) {
+            this.router.navigate([this.configService.config['dynatrace'].path]);
         }
     }
 

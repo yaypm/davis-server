@@ -25,40 +25,42 @@ var ConfigUserComponent = (function () {
         this.configService.addDavisUser()
             .then(function (result) {
             if (result.success) {
-                _this.configService.removeDavisUser('admin@localhost')
-                    .then(function (res) {
-                    if (res.email === 'admin@localhost') {
-                        _this.configService.steps[0].success = true;
-                        // Authenticate new user, update token
-                        _this.configService.values.authenticate.email = _this.configService.values.user.email;
-                        _this.configService.values.authenticate.password = _this.configService.values.user.password;
-                        _this.configService.getJwtToken()
-                            .then(function (response) {
-                            _this.configService.token = response.token;
-                            _this.router.navigate([_this.configService.steps[1].path]);
-                        }, function (error) {
-                            _this.configService.steps[0].success = false;
-                            _this.configService.steps[0].error = 'Sorry an error occured, please try again.';
-                        });
-                    }
-                    else {
-                        _this.configService.steps[0].success = false;
-                        _this.configService.steps[0].error = res.message;
-                    }
-                }, function (error) {
-                    _this.configService.steps[0].success = false;
-                    _this.configService.steps[0].error = 'Sorry an error occured, please try again.';
-                });
+                if (_this.configService.isWizard) {
+                    _this.configService.removeDavisUser(_this.configService.values.authenticate.email)
+                        .then(function (res) {
+                        if (res.success) {
+                            _this.configService.config['user'].success = true;
+                            // Authenticate new user, update token
+                            _this.configService.values.authenticate.email = _this.configService.values.user.email;
+                            _this.configService.values.authenticate.password = _this.configService.values.user.password;
+                            _this.configService.getJwtToken()
+                                .then(function (response) {
+                                _this.configService.token = response.token;
+                                _this.router.navigate([_this.configService.config['dynatrace'].path]);
+                            }, function (error) {
+                                _this.configService.config['user'].success = false;
+                                _this.configService.config['user'].error = 'Sorry an error occured, please try again.';
+                            });
+                        }
+                        else {
+                            _this.configService.config['user'].success = false;
+                            _this.configService.config['user'].error = res.message;
+                        }
+                    }, function (error) {
+                        _this.configService.config['user'].success = false;
+                        _this.configService.config['user'].error = 'Sorry an error occured, please try again.';
+                    });
+                }
             }
             else {
-                _this.configService.steps[0].success = false;
-                _this.configService.steps[0].error = result.message;
+                _this.configService.config['user'].success = false;
+                _this.configService.config['user'].error = result.message;
                 _this.configService.values.user.email = '';
                 _this.configService.values.user.password = '';
             }
         }, function (error) {
-            _this.configService.steps[0].success = false;
-            _this.configService.steps[0].error = 'Sorry an error occured, please try again.';
+            _this.configService.config['user'].success = false;
+            _this.configService.config['user'].error = 'Sorry an error occured, please try again.';
         });
         this.submitted = true;
     };
@@ -81,12 +83,12 @@ var ConfigUserComponent = (function () {
                 _this.configService.timezones = response.timezones;
                 _this.configService.values.user.timezone = _this.configService.getTimezone();
             }, function (error) {
-                _this.configService.steps[0].success = false;
-                _this.configService.steps[0].error = 'Unable to get timezones, please try again later.';
+                _this.configService.config['user'].success = false;
+                _this.configService.config['user'].error = 'Unable to get timezones, please try again later.';
             });
         }, function (error) {
-            _this.configService.steps[0].success = false;
-            _this.configService.steps[0].error = 'Sorry an error occured, please try again.';
+            _this.configService.config['user'].success = false;
+            _this.configService.config['user'].error = 'Sorry an error occured, please try again.';
         });
     };
     ConfigUserComponent = __decorate([

@@ -6,10 +6,10 @@
         Create <span *ngIf="this.configService.values.user.admin">Administrator</span><span *ngIf="!this.configService.values.user.admin">User</span> Account
     </div>
     <div class="content">
-        <form (ngSubmit)="doSubmit()" #form="ngForm">
-            <section *ngIf="!this.configService.steps[0].success" class="flex-container">
+        <form (submit)="doSubmit()" #form="ngForm">
+            <section *ngIf="!this.configService.config['user'].success" class="flex-container">
                 <div class="flex-item full-width error">
-                    {{this.configService.steps[0].error}}
+                    {{this.configService.config['user'].error}}
                 </div>
             </section>
             <section class="flex-container">
@@ -34,10 +34,10 @@
                     <div class="input-button-wrapper" [class.input-button-wrapper-focus]="isPasswordFocused">
                         <input *ngIf="isPasswordMasked" type="password" name="password" class="input-button-input" 
                             placeholder="&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;" [(ngModel)]="this.configService.values.user.password" 
-                            (focus)="isPasswordFocused = true" (blur)="isPasswordFocused = false" (keypress)="this.keySubmit($event.keyCode)" required>
+                            (focus)="isPasswordFocused = true" (blur)="isPasswordFocused = false" required>
                         <input *ngIf="!isPasswordMasked" type="text" name="passwordText" class="input-button-input" 
                             placeholder="&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;" [(ngModel)]="this.configService.values.user.password" 
-                            (focus)="isPasswordFocused = true" (blur)="isPasswordFocused = false" (keypress)="this.keySubmit($event.keyCode)" required>
+                            (focus)="isPasswordFocused = true" (blur)="isPasswordFocused = false" required>
                         <div class="input-button-button" (click)="isPasswordMasked = !isPasswordMasked">
                             <img class="input-button-img" [class.input-button-img-password-masked]="isPasswordMasked" src="./src/eye.svg">
                         </div>

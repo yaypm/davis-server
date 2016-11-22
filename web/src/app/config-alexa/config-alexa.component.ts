@@ -17,7 +17,7 @@ export class ConfigAlexaComponent implements OnInit {
     constructor(private configService: ConfigService, private router: Router) {}
 
     validate() {
-        if (!this.configService.values.alexa_ids) {
+        if (this.configService.values.alexa_ids) {
             this.buttonText = 'Continue';
         } else {
             this.buttonText = 'Skip';
@@ -28,24 +28,24 @@ export class ConfigAlexaComponent implements OnInit {
         if (this.configService.values.alexa_ids) {
             this.configService.connectAlexa()
                 .then(result => {
-                    this.configService.steps[3].success = true;
-                    this.router.navigate([this.configService.steps[3].path]);
+                    this.configService.config['alexa'].success = true;
+                    this.router.navigate([this.configService.config['slack'].path]);
                 },
                 error => {
                   console.log(error);
-                  this.configService.steps[3].success = false;
+                  this.configService.config['alexa'].success = false;
                 });
         } else {
-            this.router.navigate([this.configService.steps[4]]);
+            this.router.navigate([this.configService.config['slack'].path]);
         }
         this.submitted = true;
     }
 
     ngOnInit() {
-        if (!this.configService.steps[1].success) {
-            this.router.navigate([this.configService.steps[1].path]);
-        } else if (!this.configService.steps[2].success) {
-            this.router.navigate([this.configService.steps[2].path]);
+        if (!this.configService.config['user'].success) {
+            this.router.navigate([this.configService.config['user'].path]);
+        } else if (!this.configService.config['dynatrace'].success) {
+            this.router.navigate([this.configService.config['dynatrace'].path]);
         }
     }
 

@@ -6,10 +6,10 @@
         Connect to Dynatrace
     </div>
     <div class="content">
-        <form (ngSubmit)="doSubmit()" #form="ngForm">
-            <section *ngIf="!this.configService.steps[1].success" class="flex-container">
+        <form (submit)="doSubmit()" #form="ngForm">
+            <section *ngIf="!this.configService.config['dynatrace'].success" class="flex-container">
                 <div class="flex-item full-width error">
-                    {{this.configService.steps[1].error}}
+                    {{this.configService.config['dynatrace'].error}}
                 </div>
             </section>
             <section class="flex-container">
@@ -21,7 +21,7 @@
             <section class="flex-container">
                 <div class="flex-item full-width">
                     <label>Dynatrace API Token</label>
-                    <input type="text" name="token" placeholder="IYVTz0nBSkZdsQOhS7W3P" [(ngModel)]="this.configService.values.dynatrace.token" (keypress)="this.keySubmit($event.keyCode)" required>
+                    <input type="text" name="token" placeholder="IYVTz0nBSkZdsQOhS7W3P" [(ngModel)]="this.configService.values.dynatrace.token" required>
                 </div>
             </section>
             <section class="flex-container">

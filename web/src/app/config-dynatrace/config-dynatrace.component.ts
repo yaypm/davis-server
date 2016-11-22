@@ -22,25 +22,25 @@ export class ConfigDynatraceComponent implements OnInit {
             this.configService.validateDynatrace()
             .then(res => {
               if (res.success) {
-                this.configService.steps[1].success = true;
-                this.router.navigate([this.configService.steps[2].path]);
+                this.configService.config['dynatrace'].success = true;
+                this.router.navigate([this.configService.config['alexa'].path]);
               } else {
-                this.configService.steps[1].success = false;
-                this.configService.steps[1].error = res.message;
+                this.configService.config['dynatrace'].success = false;
+                this.configService.config['dynatrace'].error = res.message;
               }
             },
             err => {
-              this.configService.steps[1].success = false;
-              this.configService.steps[1].error = 'Sorry an error occured, please try again.';
+              this.configService.config['dynatrace'].success = false;
+              this.configService.config['dynatrace'].error = 'Sorry an error occured, please try again.';
             });
           } else {
-            this.configService.steps[1].success = false;
-            this.configService.steps[1].error = result.message;
+            this.configService.config['dynatrace'].success = false;
+            this.configService.config['dynatrace'].error = result.message;
           }
         },
         error => {
-          this.configService.steps[1].success = false;
-          this.configService.steps[1].error = 'Sorry an error occured, please try again.';
+          this.configService.config['dynatrace'].success = false;
+          this.configService.config['dynatrace'].error = 'Sorry an error occured, please try again.';
         });
     this.submitted = true;
   }
@@ -50,8 +50,8 @@ export class ConfigDynatraceComponent implements OnInit {
   }
 
   ngOnInit() {
-        if (!this.configService.steps[1].success) {
-            this.router.navigate([this.configService.steps[1].path]);
+        if (!this.configService.config['user'].success) {
+            this.router.navigate([this.configService.config['user'].path]);
         }
   }
 

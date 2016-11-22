@@ -17,42 +17,49 @@ var ConfigSlackComponent = (function () {
         this.router = router;
         this.myURL = '';
         this.submitted = false;
-        this.success = false;
         this.buttonText = 'Skip';
+        this.isPasswordFocused = false;
+        this.isPasswordMasked = true;
         this.myURL = 'https://' + window.location.host;
     }
+    //ToDo: Use https://clipboardjs.com library to add copy to clipboard functionality to URLs
     ConfigSlackComponent.prototype.validate = function () {
         if (this.configService.values.slack.clientId && this.configService.values.slack.clientSecret) {
             this.buttonText = 'Create Davis Slack Bot';
         }
-        else if (!this.success) {
+        else if (!this.configService.config['slack'].success) {
             this.buttonText = 'Skip and Finish';
         }
     };
     ConfigSlackComponent.prototype.doSubmit = function () {
         var _this = this;
-        if (!this.success && this.configService.values.slack.clientId && this.configService.values.slack.clientSecret) {
+        if (!this.configService.config['slack'].success && this.configService.values.slack.clientId && this.configService.values.slack.clientSecret) {
             this.configService.connectSlack()
                 .then(function (result) {
-                _this.success = true;
-                window.location.assign('https://' + window.location.host);
+                if (result.success) {
+                    //REST call to endpoint here, trigger restart of Botkit
+                    _this.configService.config['slack'].success = true;
+                }
+                else {
+                    _this.configService.config['slack'].success = false;
+                    _this.configService.config['slack'].error = result.message;
+                }
             }, function (error) {
                 console.log(error);
-                _this.configService.steps[4].success = false;
+                _this.configService.config['slack'].success = false;
             });
             this.submitted = true;
-            this.buttonText = 'Finish';
         }
         else {
             this.configService.windowLocation(this.myURL);
         }
     };
     ConfigSlackComponent.prototype.ngOnInit = function () {
-        if (!this.configService.steps[1].success) {
-            this.router.navigate([this.configService.steps[1].path]);
+        if (!this.configService.config['user'].success) {
+            this.router.navigate([this.configService.config['user'].path]);
         }
-        else if (!this.configService.steps[2].success) {
-            this.router.navigate([this.configService.steps[2].path]);
+        else if (!this.configService.config['dynatrace'].success) {
+            this.router.navigate([this.configService.config['dynatrace'].path]);
         }
     };
     ConfigSlackComponent = __decorate([

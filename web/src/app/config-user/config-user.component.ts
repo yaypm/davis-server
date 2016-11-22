@@ -22,46 +22,47 @@ export class ConfigUserComponent implements OnInit {
       this.configService.addDavisUser()
         .then(result => {
             if (result.success) {
-              
-              this.configService.removeDavisUser('admin@localhost')
-                .then(res => {
-                    if (res.email === 'admin@localhost') {
-                      this.configService.steps[0].success = true;
-                      
-                      // Authenticate new user, update token
-                      this.configService.values.authenticate.email = this.configService.values.user.email;
-                      this.configService.values.authenticate.password = this.configService.values.user.password;
-                      
-                       this.configService.getJwtToken()
-                        .then( 
-                          response => {
-                            this.configService.token = response.token;
-                            this.router.navigate([this.configService.steps[1].path]);
-                          },
-                          error => {
-                            this.configService.steps[0].success = false;
-                            this.configService.steps[0].error = 'Sorry an error occured, please try again.';
-                          }
-                        );
-                    } else {
-                      this.configService.steps[0].success = false;
-                      this.configService.steps[0].error = res.message;
-                    }
-                },
-                error => {
-                  this.configService.steps[0].success = false;
-                  this.configService.steps[0].error = 'Sorry an error occured, please try again.';
-                });
+              if (this.configService.isWizard) {
+                this.configService.removeDavisUser(this.configService.values.authenticate.email)
+                  .then(res => {
+                      if (res.success) {
+                        this.configService.config['user'].success = true;
+                        
+                        // Authenticate new user, update token
+                        this.configService.values.authenticate.email = this.configService.values.user.email;
+                        this.configService.values.authenticate.password = this.configService.values.user.password;
+                        
+                         this.configService.getJwtToken()
+                          .then( 
+                            response => {
+                              this.configService.token = response.token;
+                              this.router.navigate([this.configService.config['dynatrace'].path]);
+                            },
+                            error => {
+                              this.configService.config['user'].success = false;
+                              this.configService.config['user'].error = 'Sorry an error occured, please try again.';
+                            }
+                          );
+                      } else {
+                        this.configService.config['user'].success = false;
+                        this.configService.config['user'].error = res.message;
+                      }
+                  },
+                  error => {
+                    this.configService.config['user'].success = false;
+                    this.configService.config['user'].error = 'Sorry an error occured, please try again.';
+                  });
+                }
             } else {
-              this.configService.steps[0].success = false;
-              this.configService.steps[0].error = result.message;
+              this.configService.config['user'].success = false;
+              this.configService.config['user'].error = result.message;
               this.configService.values.user.email = '';
               this.configService.values.user.password = '';
             }
           },
           error => {
-            this.configService.steps[0].success = false;
-            this.configService.steps[0].error = 'Sorry an error occured, please try again.';
+            this.configService.config['user'].success = false;
+            this.configService.config['user'].error = 'Sorry an error occured, please try again.';
           });
       this.submitted = true;
     }
@@ -87,14 +88,14 @@ export class ConfigUserComponent implements OnInit {
                   this.configService.values.user.timezone = this.configService.getTimezone();
                 },
                 error => {
-                  this.configService.steps[0].success = false;
-                  this.configService.steps[0].error = 'Unable to get timezones, please try again later.';
+                  this.configService.config['user'].success = false;
+                  this.configService.config['user'].error = 'Unable to get timezones, please try again later.';
                 }
               );
           },
           error => {
-            this.configService.steps[0].success = false;
-            this.configService.steps[0].error = 'Sorry an error occured, please try again.';
+            this.configService.config['user'].success = false;
+            this.configService.config['user'].error = 'Sorry an error occured, please try again.';
           }
         );
     }

@@ -19,7 +19,7 @@ var ConfigAlexaComponent = (function () {
         this.buttonText = 'Skip';
     }
     ConfigAlexaComponent.prototype.validate = function () {
-        if (!this.configService.values.alexa_ids) {
+        if (this.configService.values.alexa_ids) {
             this.buttonText = 'Continue';
         }
         else {
@@ -31,24 +31,24 @@ var ConfigAlexaComponent = (function () {
         if (this.configService.values.alexa_ids) {
             this.configService.connectAlexa()
                 .then(function (result) {
-                _this.configService.steps[3].success = true;
-                _this.router.navigate([_this.configService.steps[3].path]);
+                _this.configService.config['alexa'].success = true;
+                _this.router.navigate([_this.configService.config['slack'].path]);
             }, function (error) {
                 console.log(error);
-                _this.configService.steps[3].success = false;
+                _this.configService.config['alexa'].success = false;
             });
         }
         else {
-            this.router.navigate([this.configService.steps[4]]);
+            this.router.navigate([this.configService.config['slack'].path]);
         }
         this.submitted = true;
     };
     ConfigAlexaComponent.prototype.ngOnInit = function () {
-        if (!this.configService.steps[1].success) {
-            this.router.navigate([this.configService.steps[1].path]);
+        if (!this.configService.config['user'].success) {
+            this.router.navigate([this.configService.config['user'].path]);
         }
-        else if (!this.configService.steps[2].success) {
-            this.router.navigate([this.configService.steps[2].path]);
+        else if (!this.configService.config['dynatrace'].success) {
+            this.router.navigate([this.configService.config['dynatrace'].path]);
         }
     };
     ConfigAlexaComponent = __decorate([

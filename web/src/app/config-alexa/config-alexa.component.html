@@ -6,16 +6,16 @@
         Connect to Amazon Alexa
     </div>
     <div class="content">
-        <form (ngSubmit)="doSubmit()" #form="ngForm">
+        <form (submit)="doSubmit()" #form="ngForm">
             <section class="flex-container">
                 <div class="flex-item full-width">
                     <label>Alexa User ID</label>
-                    <input type="text" name="alexa" placeholder="amzn1.ask.account.AFP3ZWPOS2BGJR7OWZPO1SFXEQ..." [(ngModel)]="this.configService.values.alexa_ids" (input)="validate()" autofocus>
+                    <input type="text" name="alexa" placeholder="amzn1.ask.account.AFP3ZWPOS2BGJR7OWZPO1SFXEQ..." [(ngModel)]="this.configService.values.alexa_ids" (keyup)="validate()" autofocus>
                 </div>
             </section>
             <section class="flex-container">
                 <div class="flex-item next">
-                    <button type="submit" class="nextBtn">{{buttonText}}</button>
+                    <button type="submit" class="nextBtn" [class.warning]="buttonText === 'Skip'">{{buttonText}}</button>
                 </div>
             </section>
         </form>

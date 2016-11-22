@@ -147,6 +147,18 @@ button:focus {
   outline: none;
 }
 
+.warning {
+  background-color: #d3571a;
+}
+
+.warning:hover {
+  background-color: #b64915;
+}
+
+.warning:active {
+  background-color: #92380e;
+}
+
 li {
   margin-bottom: 20px;
 }

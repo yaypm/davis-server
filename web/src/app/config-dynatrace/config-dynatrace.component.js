@@ -25,25 +25,25 @@ var ConfigDynatraceComponent = (function () {
                 _this.configService.validateDynatrace()
                     .then(function (res) {
                     if (res.success) {
-                        _this.configService.steps[1].success = true;
-                        _this.router.navigate([_this.configService.steps[2].path]);
+                        _this.configService.config['dynatrace'].success = true;
+                        _this.router.navigate([_this.configService.config['alexa'].path]);
                     }
                     else {
-                        _this.configService.steps[1].success = false;
-                        _this.configService.steps[1].error = res.message;
+                        _this.configService.config['dynatrace'].success = false;
+                        _this.configService.config['dynatrace'].error = res.message;
                     }
                 }, function (err) {
-                    _this.configService.steps[1].success = false;
-                    _this.configService.steps[1].error = 'Sorry an error occured, please try again.';
+                    _this.configService.config['dynatrace'].success = false;
+                    _this.configService.config['dynatrace'].error = 'Sorry an error occured, please try again.';
                 });
             }
             else {
-                _this.configService.steps[1].success = false;
-                _this.configService.steps[1].error = result.message;
+                _this.configService.config['dynatrace'].success = false;
+                _this.configService.config['dynatrace'].error = result.message;
             }
         }, function (error) {
-            _this.configService.steps[1].success = false;
-            _this.configService.steps[1].error = 'Sorry an error occured, please try again.';
+            _this.configService.config['dynatrace'].success = false;
+            _this.configService.config['dynatrace'].error = 'Sorry an error occured, please try again.';
         });
         this.submitted = true;
     };
@@ -52,8 +52,8 @@ var ConfigDynatraceComponent = (function () {
             this.doSubmit();
     };
     ConfigDynatraceComponent.prototype.ngOnInit = function () {
-        if (!this.configService.steps[1].success) {
-            this.router.navigate([this.configService.steps[1].path]);
+        if (!this.configService.config['user'].success) {
+            this.router.navigate([this.configService.config['user'].path]);
         }
     };
     ConfigDynatraceComponent = __decorate([
