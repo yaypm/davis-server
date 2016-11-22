@@ -1,0 +1,17 @@
+{
+    "text": "Sounds like you could use a little help! \nHere are some examples of questions you can ask me:",
+    "attachments": [
+        {
+            "title": "Ask for problems in a specific time range",
+            "text": " - {% include "lib/plugins/help/templates/shared/filterByTimeRangeExample1.nj" %} \n - {% include "lib/plugins/help/templates/shared/filterByTimeRangeExample2.nj" %} \n - {% include "lib/plugins/help/templates/shared/filterByTimeRangeExample3.nj" %}"
+        },
+        {
+            "title": "Ask for problems in a specific application",
+            "text": " - {% include "lib/plugins/help/templates/shared/filterByApplicationExample1.nj" %}"
+        },
+        {
+            "title": "Ask for problems in a specific application and time range",
+            "text": " - {% include "lib/plugins/help/templates/shared/filterByTimeRangeAndApplicationExample1.nj" %}"
+        }
+    ]
+}

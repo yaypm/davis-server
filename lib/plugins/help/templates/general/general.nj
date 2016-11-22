@@ -1,0 +1,2 @@
+Sounds like you could use a little help, here's a few examples of the types of questions you can ask me:
+"{% include "lib/plugins/help/templates/shared/filterByTimeRangeExample2.nj" %}", "{% include "lib/plugins/help/templates/shared/filterByApplicationExample1.nj" %}", and "{% include "lib/plugins/help/templates/shared/filterByTimeRangeAndApplicationExample1.nj" %}"
