@@ -8,8 +8,6 @@ const logError = require('../lib/classes/Utils').logError;
 process.on('unhandledRejection', e => logError(e));
 process.noDeprecation = true;
 
-const RoutingDebug = require('../routingDebug');
-const PronunciationDebug = require('../pronunciationDebug');
 
 (() => BbPromise.resolve().then(() => {
   // require here so that if anything goes wrong during require,
@@ -18,10 +16,6 @@ const PronunciationDebug = require('../pronunciationDebug');
 
   const davis = new Davis({
     logLevel: 'debug',
-    userPlugins: [
-      RoutingDebug,
-      PronunciationDebug,
-    ],
   });
 
   return davis.run();

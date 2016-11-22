@@ -11,3 +11,10 @@
 * Log in with the [Heroku Toolbelt](https://toolbelt.heroku.com/) and create an app: `heroku create`
 * Use the [mLab addon](https://elements.heroku.com/addons/mongolab): `heroku addons:create mongolab:sandbox --app YourAppName`
 * Deploy it with: `git push heroku master`
+
+## Disclaimer
+This software is experimental and currently NOT SUPPORTED by Dynatrace. 
+Please use at your own risk. You can contact the author via Github issues.
+
+## License
+Licensed under the MIT License. See the [LICENSE](LICENSE) file for details.

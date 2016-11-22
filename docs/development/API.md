@@ -39,7 +39,7 @@ Get a configuration from :category.
 
 Update a configuration for :category.
 
-## `/api/v1/system/user`
+## `/api/v1/system/users`
 
 ### GET
 
@@ -67,7 +67,7 @@ Create a user
 }
 ```
 
-## `/api/v1/system/user/:user_email`
+## `/api/v1/system/users/:user_email`
 
 ### GET
 
@@ -98,7 +98,7 @@ Modify a single user
 
 Delete a single user
 
-## `/api/v1/system/user/timezones`
+## `/api/v1/system/users/timezones`
 
 ### GET
 
@@ -176,11 +176,11 @@ Delete an alias
 
 ### GET
 
-Check that DAVIS is connected to a MongoDB instance
+Check that Davis is connected to a MongoDB instance
 
 ## `/api/v1/system/dynatrace/validate`
 
-Check that DAVIS is connected to a Dynatrace instance
+Check that Davis is connected to a Dynatrace instance
 
 # Events
 
@@ -190,9 +190,19 @@ Check that DAVIS is connected to a Dynatrace instance
 
 Get help with webhook configuration
 
+#### Response
+
+```
+{
+  msg: 'Add the following to the web hook configuration.',
+  uri: `/api/v1/events/problems/${token}/`,
+  config: 'Example Dynatrace WebHook config'
+}
+```
+
 ### POST
 
-Save a problem to the database
+Save a problem to the database and sends alerts to subscribed channels
 
 #### Payload
 
@@ -214,9 +224,12 @@ N/A
 
 # Alexa
 
-## `/api/v1/alexa`
+## `/alexa`
 
-This endpoint is for the amazon echo app.
+This endpoint is for the amazon echo app.  If the Davis server has
+the `production` environment variable set, any requests not sent from
+the Amazon Alexa service will be rejected.  The feature requires Davis
+to be running an a Linux server with OpenSSL.
 
 # Watson
 
