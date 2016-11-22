@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
-import { Step2Component } from './step2/step2.component';
 // Add the RxJS Observable operators.
 import './rxjs-operators';
+import { ConfigService } from './config.service';
 
 @Component({
   moduleId: module.id,
@@ -10,5 +10,5 @@ import './rxjs-operators';
   styleUrls: ['./app.component.css'],
 })
 export class AppComponent {
-  title = 'Davis Wizard';
+  constructor(private configService: ConfigService) {}
 }

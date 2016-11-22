@@ -10,11 +10,10 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 var core_1 = require('@angular/core');
 var router_1 = require('@angular/router');
-var step2_component_1 = require('./step2/step2.component');
-var step3_component_1 = require('./step3/step3.component');
-var step4_component_1 = require('./step4/step4.component');
-var step5_component_1 = require('./step5/step5.component');
-var step6_component_1 = require('./step6/step6.component');
+var config_user_component_1 = require('./config-user/config-user.component');
+var config_dynatrace_component_1 = require('./config-dynatrace/config-dynatrace.component');
+var config_alexa_component_1 = require('./config-alexa/config-alexa.component');
+var config_slack_component_1 = require('./config-slack/config-slack.component');
 var AppRoutingModule = (function () {
     function AppRoutingModule() {
     }
@@ -22,12 +21,11 @@ var AppRoutingModule = (function () {
         core_1.NgModule({
             imports: [
                 router_1.RouterModule.forRoot([
-                    { path: 'src/step2', component: step2_component_1.Step2Component },
-                    { path: 'src/step3', component: step3_component_1.Step3Component },
-                    { path: 'src/step4', component: step4_component_1.Step4Component },
-                    { path: 'src/step5', component: step5_component_1.Step5Component },
-                    { path: 'src/step6', component: step6_component_1.Step6Component },
-                    { path: 'src', component: step2_component_1.Step2Component }
+                    { path: 'src/config-user', component: config_user_component_1.ConfigUserComponent },
+                    { path: 'src/config-dynatrace', component: config_dynatrace_component_1.ConfigDynatraceComponent },
+                    { path: 'src/config-alexa', component: config_alexa_component_1.ConfigAlexaComponent },
+                    { path: 'src/config-slack', component: config_slack_component_1.ConfigSlackComponent },
+                    { path: 'src', component: config_user_component_1.ConfigUserComponent }
                 ])
             ],
             exports: [

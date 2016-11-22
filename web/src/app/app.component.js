@@ -11,9 +11,10 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var core_1 = require('@angular/core');
 // Add the RxJS Observable operators.
 require('./rxjs-operators');
+var config_service_1 = require('./config.service');
 var AppComponent = (function () {
-    function AppComponent() {
-        this.title = 'Davis Wizard';
+    function AppComponent(configService) {
+        this.configService = configService;
     }
     AppComponent = __decorate([
         core_1.Component({
@@ -22,7 +23,7 @@ var AppComponent = (function () {
             templateUrl: './app.component.html',
             styleUrls: ['./app.component.css'],
         }), 
-        __metadata('design:paramtypes', [])
+        __metadata('design:paramtypes', [config_service_1.ConfigService])
     ], AppComponent);
     return AppComponent;
 }());

@@ -1,0 +1,23 @@
+<div class="page">
+    <div *ngIf="this.configService.isWizard" class="step">
+        Step 3 of 4
+    </div>
+    <div class="title">
+        Connect to Amazon Alexa
+    </div>
+    <div class="content">
+        <form (ngSubmit)="doSubmit()" #form="ngForm">
+            <section class="flex-container">
+                <div class="flex-item full-width">
+                    <label>Alexa User ID</label>
+                    <input type="text" name="alexa" placeholder="amzn1.ask.account.AFP3ZWPOS2BGJR7OWZPO1SFXEQ..." [(ngModel)]="this.configService.values.alexa_ids" (input)="validate()" autofocus>
+                </div>
+            </section>
+            <section class="flex-container">
+                <div class="flex-item next">
+                    <button type="submit" class="nextBtn">{{buttonText}}</button>
+                </div>
+            </section>
+        </form>
+    </div>
+</div>

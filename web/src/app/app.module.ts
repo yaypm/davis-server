@@ -6,12 +6,11 @@ import { RouterModule } from '@angular/router';
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
-import { WizardService } from './wizard.service';
-import { Step2Component } from './step2/step2.component';
-import { Step3Component } from './step3/step3.component';
-import { Step4Component } from './step4/step4.component';
-import { Step5Component } from './step5/step5.component';
-import { Step6Component } from './step6/step6.component';
+import { ConfigService } from './config.service';
+import { ConfigUserComponent } from './config-user/config-user.component';
+import { ConfigDynatraceComponent } from './config-dynatrace/config-dynatrace.component';
+import { ConfigAlexaComponent } from './config-alexa/config-alexa.component';
+import { ConfigSlackComponent } from './config-slack/config-slack.component';
 
 @NgModule({
     imports: [
@@ -22,13 +21,12 @@ import { Step6Component } from './step6/step6.component';
     ],
     declarations: [
         AppComponent,
-        Step2Component,
-        Step3Component,
-        Step4Component,
-        Step5Component,
-        Step6Component
+        ConfigUserComponent,
+        ConfigDynatraceComponent,
+        ConfigAlexaComponent,
+        ConfigSlackComponent
     ],
-    providers: [WizardService],
+    providers: [ConfigService],
     bootstrap: [AppComponent]
 })
 export class AppModule {}

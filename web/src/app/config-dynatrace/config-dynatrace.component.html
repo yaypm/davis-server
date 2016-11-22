@@ -1,0 +1,34 @@
+<div class="page">
+    <div *ngIf="this.configService.isWizard" class="step">
+        Step 2 of 4
+    </div>
+    <div class="title">
+        Connect to Dynatrace
+    </div>
+    <div class="content">
+        <form (ngSubmit)="doSubmit()" #form="ngForm">
+            <section *ngIf="!this.configService.steps[1].success" class="flex-container">
+                <div class="flex-item full-width error">
+                    {{this.configService.steps[1].error}}
+                </div>
+            </section>
+            <section class="flex-container">
+                <div class="flex-item full-width">
+                    <label>Dynatrace Tenant URL</label>
+                    <input type="text" name="url" placeholder="https://qwefgmasd.live.dynatrace.com" [(ngModel)]="this.configService.values.dynatrace.url" autofocus required>
+                </div>
+            </section>
+            <section class="flex-container">
+                <div class="flex-item full-width">
+                    <label>Dynatrace API Token</label>
+                    <input type="text" name="token" placeholder="IYVTz0nBSkZdsQOhS7W3P" [(ngModel)]="this.configService.values.dynatrace.token" (keypress)="this.keySubmit($event.keyCode)" required>
+                </div>
+            </section>
+            <section class="flex-container">
+                <div class="flex-item next">
+                    <button type="submit" class="nextBtn">Continue</button>
+                </div>
+            </section>
+        </form>
+    </div>
+</div>

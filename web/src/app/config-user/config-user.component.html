@@ -1,0 +1,66 @@
+<div class="page">
+    <div *ngIf="this.configService.isWizard" class="step">
+        Step 1 of 4
+    </div>
+    <div class="title">
+        Create <span *ngIf="this.configService.values.user.admin">Administrator</span><span *ngIf="!this.configService.values.user.admin">User</span> Account
+    </div>
+    <div class="content">
+        <form (ngSubmit)="doSubmit()" #form="ngForm">
+            <section *ngIf="!this.configService.steps[0].success" class="flex-container">
+                <div class="flex-item full-width error">
+                    {{this.configService.steps[0].error}}
+                </div>
+            </section>
+            <section class="flex-container">
+                <div class="flex-item half-width left-half">
+                    <label>First Name</label>
+                    <input type="text" name="first" placeholder="John" [(ngModel)]="this.configService.values.user.name.first" autofocus required>
+                </div>
+                 <div class="flex-item half-width right-half">
+                    <label>Last Name</label>
+                    <input type="text" name="last" placeholder="Smith" [(ngModel)]="this.configService.values.user.name.last" required>
+                </div>
+            </section>
+            <section class="flex-container">
+                <div class="flex-item full-width">
+                    <label>Email</label>
+                    <input type="email" name="email" placeholder="john.smith@example.com" [(ngModel)]="this.configService.values.user.email" required>
+                </div>
+            </section>
+            <section class="flex-container">
+                <div class="flex-item half-width left-half">
+                    <label>Password</label>
+                    <div class="input-button-wrapper" [class.input-button-wrapper-focus]="isPasswordFocused">
+                        <input *ngIf="isPasswordMasked" type="password" name="password" class="input-button-input" 
+                            placeholder="&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;" [(ngModel)]="this.configService.values.user.password" 
+                            (focus)="isPasswordFocused = true" (blur)="isPasswordFocused = false" (keypress)="this.keySubmit($event.keyCode)" required>
+                        <input *ngIf="!isPasswordMasked" type="text" name="passwordText" class="input-button-input" 
+                            placeholder="&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;" [(ngModel)]="this.configService.values.user.password" 
+                            (focus)="isPasswordFocused = true" (blur)="isPasswordFocused = false" (keypress)="this.keySubmit($event.keyCode)" required>
+                        <div class="input-button-button" (click)="isPasswordMasked = !isPasswordMasked">
+                            <img class="input-button-img" [class.input-button-img-password-masked]="isPasswordMasked" src="./src/eye.svg">
+                        </div>
+                    </div>
+                </div>
+                <div class="flex-item half-width right-half">
+                    <label>Timezone</label>
+                    <select name="timezone" [(ngModel)]="this.configService.values.user.timezone" [class.select-opened]="isSelectOpened" (click)="isSelectOpened = !isSelectOpened" (blur)="isSelectOpened = false" required>
+                        <option *ngFor="let tz of this.configService.timezones" [value]="tz">{{tz}}</option>
+                    </select>
+                </div>
+            </section>
+            <section *ngIf="!this.configService.isWizard" class="flex-container">
+                <div class="flex-item full-width">
+                    <label>Administrator</label>
+                    <input type="checkbox" name="admin" [(ngModel)]="this.configService.values.user.admin">
+                </div>
+            </section>
+            <section class="flex-container">
+                <div class="flex-item next">
+                    <button type="submit" class="nextBtn">Continue</button>
+                </div>
+            </section>
+        </form>
+    </div>
+</div>

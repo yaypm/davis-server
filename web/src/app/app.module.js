@@ -14,12 +14,11 @@ var forms_1 = require('@angular/forms');
 var http_1 = require('@angular/http');
 var app_component_1 = require('./app.component');
 var app_routing_module_1 = require('./app-routing.module');
-var wizard_service_1 = require('./wizard.service');
-var step2_component_1 = require('./step2/step2.component');
-var step3_component_1 = require('./step3/step3.component');
-var step4_component_1 = require('./step4/step4.component');
-var step5_component_1 = require('./step5/step5.component');
-var step6_component_1 = require('./step6/step6.component');
+var config_service_1 = require('./config.service');
+var config_user_component_1 = require('./config-user/config-user.component');
+var config_dynatrace_component_1 = require('./config-dynatrace/config-dynatrace.component');
+var config_alexa_component_1 = require('./config-alexa/config-alexa.component');
+var config_slack_component_1 = require('./config-slack/config-slack.component');
 var AppModule = (function () {
     function AppModule() {
     }
@@ -33,13 +32,12 @@ var AppModule = (function () {
             ],
             declarations: [
                 app_component_1.AppComponent,
-                step2_component_1.Step2Component,
-                step3_component_1.Step3Component,
-                step4_component_1.Step4Component,
-                step5_component_1.Step5Component,
-                step6_component_1.Step6Component
+                config_user_component_1.ConfigUserComponent,
+                config_dynatrace_component_1.ConfigDynatraceComponent,
+                config_alexa_component_1.ConfigAlexaComponent,
+                config_slack_component_1.ConfigSlackComponent
             ],
-            providers: [wizard_service_1.WizardService],
+            providers: [config_service_1.ConfigService],
             bootstrap: [app_component_1.AppComponent]
         }), 
         __metadata('design:paramtypes', [])
