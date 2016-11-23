@@ -21,7 +21,7 @@ import { ConfigModule } from "../shared/config/config.module";
 import { WizardRouting } from "./wizard.routing";
 
 // Services
-import { WizardService } from "./wizard.service";
+import { ConfigService } from "../shared/config/config.service";
 
 // ----------------------------------------------------------------------------
 // Module
@@ -36,7 +36,7 @@ import { WizardService } from "./wizard.service";
     WizardRouting
   ],
   providers: [
-    WizardService,
+    ConfigService,
   ]
 })
 

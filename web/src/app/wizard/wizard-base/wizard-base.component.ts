@@ -11,7 +11,7 @@
 import { Component } from "@angular/core";
 
 // Services
-import { WizardService } from "../wizard.service";
+import { ConfigService } from "../../shared/config/config.service";
 
 // ----------------------------------------------------------------------------
 // Class
@@ -26,5 +26,5 @@ export class WizardBaseComponent {
   // ------------------------------------------------------
   // Inject services
   // ------------------------------------------------------
-  constructor(public iWizard: WizardService) {}
+  constructor(public iConfig: ConfigService) {}
 }

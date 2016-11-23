@@ -23,6 +23,6 @@ export class ConfigService {
   // Select view in Wizard
   // ------------------------------------------------------
   SelectView(newView: string) {
-    view = newView;
+    this.view = newView;
   }
 }

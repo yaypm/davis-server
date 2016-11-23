@@ -26,7 +26,7 @@ var config_module_1 = require("../shared/config/config.module");
 // Routes
 var wizard_routing_1 = require("./wizard.routing");
 // Services
-var wizard_service_1 = require("./wizard.service");
+var config_service_1 = require("../shared/config/config.service");
 // ----------------------------------------------------------------------------
 // Module
 // ----------------------------------------------------------------------------
@@ -44,7 +44,7 @@ var WizardModule = (function () {
                 wizard_routing_1.WizardRouting
             ],
             providers: [
-                wizard_service_1.WizardService,
+                config_service_1.ConfigService,
             ]
         }), 
         __metadata('design:paramtypes', [])
