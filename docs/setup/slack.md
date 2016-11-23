@@ -1,3 +1,3 @@
 Coming soon!
 
-[Home](../../README.md)
+[Home](https://github.com/Dynatrace/davis-server)
