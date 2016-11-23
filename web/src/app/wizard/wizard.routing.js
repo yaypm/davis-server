@@ -10,7 +10,7 @@
 // Angular
 var router_1 = require("@angular/router");
 // Components
-var wizard_component_1 = require("./wizard-base/wizard.component");
+var wizard_base_component_1 = require("./wizard-base/wizard-base.component");
 // Services
 // import { AuthGuard } from "../auth/auth-guard/auth-guard.service";
 // ----------------------------------------------------------------------------
@@ -24,7 +24,7 @@ var WizardRoutes = [
     },
     {
         path: "wizard",
-        component: wizard_component_1.WizardComponent,
+        component: wizard_base_component_1.WizardBaseComponent,
     },
 ];
 // ----------------------------------------------------------------------------

@@ -12,7 +12,7 @@ import { NgModule }     from "@angular/core";
 import { CommonModule } from "@angular/common";
 
 // Components
-import { WizardComponent } from "./wizard-base/wizard.component";
+import { WizardBaseComponent } from "./wizard-base/wizard-base.component";
 
 // Modules
 import { ConfigModule } from "../shared/config/config.module";
@@ -20,18 +20,24 @@ import { ConfigModule } from "../shared/config/config.module";
 // Routes
 import { WizardRouting } from "./wizard.routing";
 
+// Services
+import { WizardService } from "./wizard.service";
+
 // ----------------------------------------------------------------------------
 // Module
 // ----------------------------------------------------------------------------
 @NgModule({
   declarations: [
-    WizardComponent,
+    WizardBaseComponent,
   ],
   imports: [
     CommonModule,
     ConfigModule,
     WizardRouting
   ],
+  providers: [
+    WizardService,
+  ]
 })
 
 export class WizardModule { }

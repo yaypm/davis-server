@@ -20,11 +20,13 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var core_1 = require("@angular/core");
 var common_1 = require("@angular/common");
 // Components
-var wizard_component_1 = require("./wizard-base/wizard.component");
+var wizard_base_component_1 = require("./wizard-base/wizard-base.component");
 // Modules
 var config_module_1 = require("../shared/config/config.module");
 // Routes
 var wizard_routing_1 = require("./wizard.routing");
+// Services
+var wizard_service_1 = require("./wizard.service");
 // ----------------------------------------------------------------------------
 // Module
 // ----------------------------------------------------------------------------
@@ -34,13 +36,16 @@ var WizardModule = (function () {
     WizardModule = __decorate([
         core_1.NgModule({
             declarations: [
-                wizard_component_1.WizardComponent,
+                wizard_base_component_1.WizardBaseComponent,
             ],
             imports: [
                 common_1.CommonModule,
                 config_module_1.ConfigModule,
                 wizard_routing_1.WizardRouting
             ],
+            providers: [
+                wizard_service_1.WizardService,
+            ]
         }), 
         __metadata('design:paramtypes', [])
     ], WizardModule);
