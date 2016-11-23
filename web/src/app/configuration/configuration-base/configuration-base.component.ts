@@ -10,6 +10,7 @@
 // Angular
 import { Component } from "@angular/core";
 import { Router }    from "@angular/router";
+import { ConfigService } from "../../shared/config/config.service";
 
 // ----------------------------------------------------------------------------
 // Class
@@ -24,7 +25,7 @@ export class ConfigurationBaseComponent  {
   // ------------------------------------------------------
   // Inject services
   // ------------------------------------------------------
-  constructor(public router: Router) { }
+  constructor(public router: Router, public iConfig: ConfigService) { }
 
   // ------------------------------------------------------
   // Initialize component

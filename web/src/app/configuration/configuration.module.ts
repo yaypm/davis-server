@@ -11,6 +11,7 @@
 import { NgModule }     from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { ConfigModule } from "../shared/config/config.module";
+import { ConfigService } from "../shared/config/config.service";
 
 // Components
 import { ConfigurationBaseComponent } from "./configuration-base/configuration-base.component";
@@ -30,6 +31,9 @@ import { ConfigurationRouting } from "./configuration.routing";
     ConfigurationRouting,
     ConfigurationModule,
   ],
+  providers: [
+    ConfigService,  
+  ]
 })
 
 export class ConfigurationModule { }

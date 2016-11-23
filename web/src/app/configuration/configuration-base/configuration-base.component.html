@@ -1,21 +1,22 @@
 <div class="navbar-wrapper">
-    <div class="navbar-button">
+    <div class="navbar-button" (click)="iConfig.SelectView('user')">
         My Account
     </div>
-    <div class="navbar-button">
+    <!--<div class="navbar-button" (click)="iConfig.SelectView('users')">
         User Accounts
-    </div>
-    <div class="navbar-button">
+    </div>-->
+    <div class="navbar-button" (click)="iConfig.SelectView('dynatrace')">
         Dynatrace
     </div>
-    <div class="navbar-button">
+    <div class="navbar-button" (click)="iConfig.SelectView('alexa')">
         Alexa
     </div>
-    <div class="navbar-button" (click)="this.configService.SelectView('slack')">
+    <div class="navbar-button" (click)="iConfig.SelectView('slack')">
         Slack App
     </div>
 </div>
 <config-user *ngIf="iConfig.view === 'user'"></config-user>
+<config-users *ngIf="iConfig.view === 'users'"></config-users>
 <config-dynatrace *ngIf="iConfig.view === 'dynatrace'"></config-dynatrace>
 <config-alexa *ngIf="iConfig.view === 'alexa'"></config-alexa>
 <config-slack *ngIf="iConfig.view === 'slack'"></config-slack>
