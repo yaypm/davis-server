@@ -1,4 +1,4 @@
->******We are currently upgrading the Davis with some new exciting features! Watch our live keynote unveiling the new Davis as AWS re:Invent 2017 and**  [Building the future of DevOps](https://www.portal.reinvent.awsevents.com/connect/sessionDetail.ww?SESSION_ID=8749). **Please see our latest stable release** [here](https://github.com/Dynatrace/davis-server/releases/tag/davis-v1).****
+>******We are currently upgrading Davis with some new exciting features! Watch our live keynote unveiling the new Davis as AWS re:Invent 2017 and**  [Building the future of DevOps](https://www.portal.reinvent.awsevents.com/connect/sessionDetail.ww?SESSION_ID=8749). **Please see our latest stable release** [here](https://github.com/Dynatrace/davis-server/releases/tag/davis-v1).****
 
 ![](https://s3.amazonaws.com/dynatrace-davis/assets/images/dynatrace-davis-logo.png)
 
