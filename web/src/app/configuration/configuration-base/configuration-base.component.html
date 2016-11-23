@@ -1,17 +1,20 @@
+<div class="title title-config">
+    Davis Configuration
+</div>
 <div class="navbar-wrapper">
-    <div class="navbar-button" (click)="iConfig.SelectView('user')">
+    <div class="navbar-button" [class.navbar-button-selected]="iConfig.view === 'user'" (click)="iConfig.SelectView('user')">
         My Account
     </div>
-    <!--<div class="navbar-button" (click)="iConfig.SelectView('users')">
+    <div class="navbar-button" [class.navbar-button-selected]="iConfig.view === 'users'" (click)="iConfig.SelectView('users')">
         User Accounts
-    </div>-->
-    <div class="navbar-button" (click)="iConfig.SelectView('dynatrace')">
+    </div>
+    <div class="navbar-button" [class.navbar-button-selected]="iConfig.view === 'dynatrace'" (click)="iConfig.SelectView('dynatrace')">
         Dynatrace
     </div>
-    <div class="navbar-button" (click)="iConfig.SelectView('alexa')">
+    <div class="navbar-button" [class.navbar-button-selected]="iConfig.view === 'alexa'" (click)="iConfig.SelectView('alexa')">
         Alexa
     </div>
-    <div class="navbar-button" (click)="iConfig.SelectView('slack')">
+    <div class="navbar-button" [class.navbar-button-selected]="iConfig.view === 'slack'" (click)="iConfig.SelectView('slack')">
         Slack App
     </div>
 </div>

@@ -16,39 +16,39 @@ export class ConfigSlackComponent {
     isPasswordFocused: boolean = false;
     isPasswordMasked: boolean = true;
     
-    constructor(public configService: DavisService, public router: Router) {
+    constructor(public davisService: DavisService, public router: Router) {
         this.myURL = "https://" + window.location.host;
     }
     
     //ToDo: Use https://clipboardjs.com library to add copy to clipboard functionality to URLs
     
     validate() {
-        if (this.configService.values.slack.clientId && this.configService.values.slack.clientSecret) {
+        if (this.davisService.values.slack.clientId && this.davisService.values.slack.clientSecret) {
             this.buttonText = "Create Davis Slack Bot";
-        } else if (!this.configService.config["slack"].success){
+        } else if (!this.davisService.config["slack"].success){
             this.buttonText = "Skip and Finish";
         }
     }
     
     doSubmit() {
-        if (!this.configService.config["slack"].success && this.configService.values.slack.clientId && this.configService.values.slack.clientSecret) {
-            this.configService.connectSlack()
+        if (!this.davisService.config["slack"].success && this.davisService.values.slack.clientId && this.davisService.values.slack.clientSecret) {
+            this.davisService.connectSlack()
               .then(result => {
                 if (result.success) {
                   //REST call to endpoint here, trigger restart of Botkit
-                  this.configService.config["slack"].success = true;
+                  this.davisService.config["slack"].success = true;
                 } else {
-                  this.configService.config["slack"].success = false;
-                  this.configService.config["slack"].error = result.message;
+                  this.davisService.config["slack"].success = false;
+                  this.davisService.config["slack"].error = result.message;
                 }
               },
               error => {
                   console.log(error);
-                  this.configService.config["slack"].success = false;
+                  this.davisService.config["slack"].success = false;
               });
             this.submitted = true;
         } else {
-            this.configService.windowLocation(this.myURL);
+            this.davisService.windowLocation(this.myURL);
         }
     }
 }

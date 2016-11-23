@@ -12,8 +12,8 @@ var core_1 = require("@angular/core");
 var router_1 = require("@angular/router");
 var davis_service_1 = require("../../davis.service");
 var ConfigUserComponent = (function () {
-    function ConfigUserComponent(configService, router) {
-        this.configService = configService;
+    function ConfigUserComponent(davisService, router) {
+        this.davisService = davisService;
         this.router = router;
         this.submitted = false;
         this.isPasswordFocused = false;
@@ -22,73 +22,69 @@ var ConfigUserComponent = (function () {
     }
     ConfigUserComponent.prototype.doSubmit = function () {
         var _this = this;
-        this.configService.addDavisUser()
+        this.davisService.addDavisUser()
             .then(function (result) {
             if (result.success) {
-                if (_this.configService.isWizard) {
-                    _this.configService.removeDavisUser(_this.configService.values.authenticate.email)
+                if (_this.davisService.isWizard) {
+                    _this.davisService.removeDavisUser(_this.davisService.values.authenticate.email)
                         .then(function (res) {
                         if (res.success) {
-                            _this.configService.config["user"].success = true;
+                            _this.davisService.config["user"].success = true;
                             // Authenticate new user, update token
-                            _this.configService.values.authenticate.email = _this.configService.values.user.email;
-                            _this.configService.values.authenticate.password = _this.configService.values.user.password;
-                            _this.configService.getJwtToken()
+                            _this.davisService.values.authenticate.email = _this.davisService.values.user.email;
+                            _this.davisService.values.authenticate.password = _this.davisService.values.user.password;
+                            _this.davisService.getJwtToken()
                                 .then(function (response) {
-                                _this.configService.token = response.token;
-                                _this.router.navigate([_this.configService.config["dynatrace"].path]);
+                                _this.davisService.token = response.token;
+                                _this.router.navigate([_this.davisService.config["dynatrace"].path]);
                             }, function (error) {
-                                _this.configService.config["user"].success = false;
-                                _this.configService.config["user"].error = "Sorry an error occured, please try again.";
+                                _this.davisService.config["user"].success = false;
+                                _this.davisService.config["user"].error = "Sorry an error occured, please try again.";
                             });
                         }
                         else {
-                            _this.configService.config["user"].success = false;
-                            _this.configService.config["user"].error = res.message;
+                            _this.davisService.config["user"].success = false;
+                            _this.davisService.config["user"].error = res.message;
                         }
                     }, function (error) {
-                        _this.configService.config["user"].success = false;
-                        _this.configService.config["user"].error = "Sorry an error occured, please try again.";
+                        _this.davisService.config["user"].success = false;
+                        _this.davisService.config["user"].error = "Sorry an error occured, please try again.";
                     });
                 }
             }
             else {
-                _this.configService.config["user"].success = false;
-                _this.configService.config["user"].error = result.message;
-                _this.configService.values.user.email = "";
-                _this.configService.values.user.password = "";
+                _this.davisService.config["user"].success = false;
+                _this.davisService.config["user"].error = result.message;
+                _this.davisService.values.user.email = "";
+                _this.davisService.values.user.password = "";
             }
         }, function (error) {
-            _this.configService.config["user"].success = false;
-            _this.configService.config["user"].error = "Sorry an error occured, please try again.";
+            _this.davisService.config["user"].success = false;
+            _this.davisService.config["user"].error = "Sorry an error occured, please try again.";
         });
         this.submitted = true;
     };
-    ConfigUserComponent.prototype.keySubmit = function (keyCode) {
-        if (keyCode == 13)
-            this.doSubmit();
-    };
     ConfigUserComponent.prototype.ngOnInit = function () {
         var _this = this;
-        if (this.configService.isWizard && !this.configService.token) {
-            this.configService.values.authenticate.email = "admin@localhost";
-            this.configService.values.authenticate.password = "changeme";
-            this.configService.values.user.admin = true;
+        if (this.davisService.isWizard && !this.davisService.token) {
+            this.davisService.values.authenticate.email = "admin@localhost";
+            this.davisService.values.authenticate.password = "changeme";
+            this.davisService.values.user.admin = true;
         }
-        this.configService.getJwtToken()
+        this.davisService.getJwtToken()
             .then(function (response) {
-            _this.configService.token = response.token;
-            _this.configService.getTimezones()
+            _this.davisService.token = response.token;
+            _this.davisService.getTimezones()
                 .then(function (response) {
-                _this.configService.timezones = response.timezones;
-                _this.configService.values.user.timezone = _this.configService.getTimezone();
+                _this.davisService.timezones = response.timezones;
+                _this.davisService.values.user.timezone = _this.davisService.getTimezone();
             }, function (error) {
-                _this.configService.config["user"].success = false;
-                _this.configService.config["user"].error = "Unable to get timezones, please try again later.";
+                _this.davisService.config["user"].success = false;
+                _this.davisService.config["user"].error = "Unable to get timezones, please try again later.";
             });
         }, function (error) {
-            _this.configService.config["user"].success = false;
-            _this.configService.config["user"].error = "Sorry an error occured, please try again.";
+            _this.davisService.config["user"].success = false;
+            _this.davisService.config["user"].error = "Sorry an error occured, please try again.";
         });
     };
     ConfigUserComponent = __decorate([

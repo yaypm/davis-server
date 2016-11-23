@@ -11,13 +11,13 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var core_1 = require("@angular/core");
 var davis_service_1 = require("../../davis.service");
 var ConfigAlexaComponent = (function () {
-    function ConfigAlexaComponent(configService) {
-        this.configService = configService;
+    function ConfigAlexaComponent(davisService) {
+        this.davisService = davisService;
         this.submitted = false;
         this.buttonText = "Skip";
     }
     ConfigAlexaComponent.prototype.validate = function () {
-        if (this.configService.values.alexa_ids) {
+        if (this.davisService.values.alexa_ids) {
             this.buttonText = "Continue";
         }
         else {
@@ -26,14 +26,14 @@ var ConfigAlexaComponent = (function () {
     };
     ConfigAlexaComponent.prototype.doSubmit = function () {
         var _this = this;
-        if (this.configService.values.alexa_ids) {
-            this.configService.connectAlexa()
+        if (this.davisService.values.alexa_ids) {
+            this.davisService.connectAlexa()
                 .then(function (result) {
-                _this.configService.config["alexa"].success = true;
-                // this.router.navigate([this.configService.config["slack"].path]);
+                _this.davisService.config["alexa"].success = true;
+                // this.router.navigate([this.davisService.config["slack"].path]);
             }, function (error) {
                 console.log(error);
-                _this.configService.config["alexa"].success = false;
+                _this.davisService.config["alexa"].success = false;
             });
         }
         else {

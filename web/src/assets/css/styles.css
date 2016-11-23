@@ -207,6 +207,13 @@ li {
   font-weight: bold;
 }
 
+.title-config {
+  clear: both;
+  margin-top: 100px;
+  width: 530px;
+  text-align: center;
+}
+
 .content {
   margin: 0 auto;
   margin-top: 10px;
@@ -291,9 +298,9 @@ li {
 /* Configuration navbar */
 .navbar-wrapper {
   margin: 0 auto;
+  padding-top: 40px;
   clear: both;
   width: 530px;
-  margin-top: 100px;
 }
 
 .navbar-button {
@@ -306,4 +313,9 @@ li {
 .navbar-button:hover {
   text-decoration: underline;
   cursor: pointer;
+}
+
+.navbar-button-selected {
+  text-decoration: underline;
+  font-weight: bold;
 }

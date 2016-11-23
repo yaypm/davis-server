@@ -11,34 +11,34 @@ export class ConfigDynatraceComponent {
 
   submitted: boolean = false;
     
-  constructor(public configService: DavisService, public router: Router) {}
+  constructor(public davisService: DavisService, public router: Router) {}
   
   doSubmit() {
-    this.configService.connectDynatrace()
+    this.davisService.connectDynatrace()
         .then(result => {
           if (result.success) {
-            this.configService.validateDynatrace()
+            this.davisService.validateDynatrace()
             .then(res => {
               if (res.success) {
-                this.configService.config["dynatrace"].success = true;
-                this.router.navigate([this.configService.config["alexa"].path]);
+                this.davisService.config["dynatrace"].success = true;
+                this.router.navigate([this.davisService.config["alexa"].path]);
               } else {
-                this.configService.config["dynatrace"].success = false;
-                this.configService.config["dynatrace"].error = res.message;
+                this.davisService.config["dynatrace"].success = false;
+                this.davisService.config["dynatrace"].error = res.message;
               }
             },
             err => {
-              this.configService.config["dynatrace"].success = false;
-              this.configService.config["dynatrace"].error = "Sorry an error occured, please try again.";
+              this.davisService.config["dynatrace"].success = false;
+              this.davisService.config["dynatrace"].error = "Sorry an error occured, please try again.";
             });
           } else {
-            this.configService.config["dynatrace"].success = false;
-            this.configService.config["dynatrace"].error = result.message;
+            this.davisService.config["dynatrace"].success = false;
+            this.davisService.config["dynatrace"].error = result.message;
           }
         },
         error => {
-          this.configService.config["dynatrace"].success = false;
-          this.configService.config["dynatrace"].error = "Sorry an error occured, please try again.";
+          this.davisService.config["dynatrace"].success = false;
+          this.davisService.config["dynatrace"].error = "Sorry an error occured, please try again.";
         });
     this.submitted = true;
   }

@@ -10,10 +10,10 @@ export class ConfigAlexaComponent {
   submitted: boolean = false;
   buttonText: string = "Skip";
 
-  constructor(public configService: DavisService) {}
+  constructor(public davisService: DavisService) {}
 
   validate() {
-    if (this.configService.values.alexa_ids) {
+    if (this.davisService.values.alexa_ids) {
       this.buttonText = "Continue";
     } else {
       this.buttonText = "Skip";
@@ -21,18 +21,18 @@ export class ConfigAlexaComponent {
   }
 
   doSubmit() {
-    if (this.configService.values.alexa_ids) {
-      this.configService.connectAlexa()
+    if (this.davisService.values.alexa_ids) {
+      this.davisService.connectAlexa()
       .then(result => {
-        this.configService.config["alexa"].success = true;
-        // this.router.navigate([this.configService.config["slack"].path]);
+        this.davisService.config["alexa"].success = true;
+        // this.router.navigate([this.davisService.config["slack"].path]);
       },
       error => {
       console.log(error);
-      this.configService.config["alexa"].success = false;
+      this.davisService.config["alexa"].success = false;
     });
     } else {
-      // this.router.navigate([this.configService.config["slack"].path]);
+      // this.router.navigate([this.davisService.config["slack"].path]);
     }
 
     this.submitted = true;

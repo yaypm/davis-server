@@ -12,38 +12,38 @@ var core_1 = require("@angular/core");
 var router_1 = require("@angular/router");
 var davis_service_1 = require("../../davis.service");
 var ConfigDynatraceComponent = (function () {
-    function ConfigDynatraceComponent(configService, router) {
-        this.configService = configService;
+    function ConfigDynatraceComponent(davisService, router) {
+        this.davisService = davisService;
         this.router = router;
         this.submitted = false;
     }
     ConfigDynatraceComponent.prototype.doSubmit = function () {
         var _this = this;
-        this.configService.connectDynatrace()
+        this.davisService.connectDynatrace()
             .then(function (result) {
             if (result.success) {
-                _this.configService.validateDynatrace()
+                _this.davisService.validateDynatrace()
                     .then(function (res) {
                     if (res.success) {
-                        _this.configService.config["dynatrace"].success = true;
-                        _this.router.navigate([_this.configService.config["alexa"].path]);
+                        _this.davisService.config["dynatrace"].success = true;
+                        _this.router.navigate([_this.davisService.config["alexa"].path]);
                     }
                     else {
-                        _this.configService.config["dynatrace"].success = false;
-                        _this.configService.config["dynatrace"].error = res.message;
+                        _this.davisService.config["dynatrace"].success = false;
+                        _this.davisService.config["dynatrace"].error = res.message;
                     }
                 }, function (err) {
-                    _this.configService.config["dynatrace"].success = false;
-                    _this.configService.config["dynatrace"].error = "Sorry an error occured, please try again.";
+                    _this.davisService.config["dynatrace"].success = false;
+                    _this.davisService.config["dynatrace"].error = "Sorry an error occured, please try again.";
                 });
             }
             else {
-                _this.configService.config["dynatrace"].success = false;
-                _this.configService.config["dynatrace"].error = result.message;
+                _this.davisService.config["dynatrace"].success = false;
+                _this.davisService.config["dynatrace"].error = result.message;
             }
         }, function (error) {
-            _this.configService.config["dynatrace"].success = false;
-            _this.configService.config["dynatrace"].error = "Sorry an error occured, please try again.";
+            _this.davisService.config["dynatrace"].success = false;
+            _this.davisService.config["dynatrace"].error = "Sorry an error occured, please try again.";
         });
         this.submitted = true;
     };

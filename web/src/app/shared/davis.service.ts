@@ -10,7 +10,7 @@ export class DavisService {
 
     token: string;
     timezones: any = [];
-    isWizard: boolean = true;
+    isWizard: boolean = false;
 
     values: any = {
         authenticate: {
@@ -43,28 +43,35 @@ export class DavisService {
 
     config: any = {
         user: {
-            title: "Create Admin Account",
+            title: "My Account",
             name: "user",
             path: "src/config-user",
             error: null,
             success: null
         },
+        users: {
+            title: "User Accounts",
+            name: "users",
+            path: "src/config-users",
+            error: null,
+            success: null
+        },
         dynatrace: {
-            title: "Let\'s connect to Dynatrace!",
+            title: "Let's connect to Dynatrace!",
             name: "dynatrace",
             path: "src/config-dynatrace",
             error: null,
             success: null
         },
         alexa: {
-            title: "Connect to Amazon Alexa",
+            title: "Alexa",
             name: "alexa",
             path: "src/config-alexa",
             error: null,
             success: null
         },
         slack: {
-            title: "Connect to Slack",
+            title: "Slack App",
             name: "slack",
             path: "src/config-slack",
             error: null,

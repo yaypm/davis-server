@@ -1,27 +1,27 @@
 <div class="page">
-    <div *ngIf="this.configService.isWizard" class="step">
+    <div *ngIf="davisService.isWizard" class="step">
         Step 2 of 4
     </div>
-    <div class="title">
+    <div *ngIf="davisService.isWizard" class="title">
         Connect to Dynatrace
     </div>
     <div class="content">
         <form (submit)="doSubmit()" #form="ngForm">
-            <section *ngIf="!this.configService.config['dynatrace'].success" class="flex-container">
+            <section *ngIf="!davisService.config['dynatrace'].success" class="flex-container">
                 <div class="flex-item full-width error">
-                    {{this.configService.config['dynatrace'].error}}
+                    {{davisService.config['dynatrace'].error}}
                 </div>
             </section>
             <section class="flex-container">
                 <div class="flex-item full-width">
                     <label>Dynatrace Tenant URL</label>
-                    <input type="text" name="url" placeholder="https://qwefgmasd.live.dynatrace.com" [(ngModel)]="this.configService.values.dynatrace.url" autofocus required>
+                    <input type="text" name="url" placeholder="https://qwefgmasd.live.dynatrace.com" [(ngModel)]="davisService.values.dynatrace.url" autofocus required>
                 </div>
             </section>
             <section class="flex-container">
                 <div class="flex-item full-width">
                     <label>Dynatrace API Token</label>
-                    <input type="text" name="token" placeholder="IYVTz0nBSkZdsQOhS7W3P" [(ngModel)]="this.configService.values.dynatrace.token" required>
+                    <input type="text" name="token" placeholder="IYVTz0nBSkZdsQOhS7W3P" [(ngModel)]="davisService.values.dynatrace.token" required>
                 </div>
             </section>
             <section class="flex-container">

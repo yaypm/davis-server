@@ -32,8 +32,8 @@ export class AuthLoginComponent  {
   // ------------------------------------------------------
   // Initialize component
   // ------------------------------------------------------
-  ngOnInit() {
-    
+  login() {
+    this.submitted = true;
   }
 
 }

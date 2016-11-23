@@ -34,7 +34,8 @@ var AuthLoginComponent = (function () {
     // ------------------------------------------------------
     // Initialize component
     // ------------------------------------------------------
-    AuthLoginComponent.prototype.ngOnInit = function () {
+    AuthLoginComponent.prototype.login = function () {
+        this.submitted = true;
     };
     AuthLoginComponent = __decorate([
         core_1.Component({

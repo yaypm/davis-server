@@ -12,8 +12,8 @@ var core_1 = require("@angular/core");
 var router_1 = require("@angular/router");
 var davis_service_1 = require("../../davis.service");
 var ConfigSlackComponent = (function () {
-    function ConfigSlackComponent(configService, router) {
-        this.configService = configService;
+    function ConfigSlackComponent(davisService, router) {
+        this.davisService = davisService;
         this.router = router;
         this.myURL = "";
         this.submitted = false;
@@ -24,34 +24,34 @@ var ConfigSlackComponent = (function () {
     }
     //ToDo: Use https://clipboardjs.com library to add copy to clipboard functionality to URLs
     ConfigSlackComponent.prototype.validate = function () {
-        if (this.configService.values.slack.clientId && this.configService.values.slack.clientSecret) {
+        if (this.davisService.values.slack.clientId && this.davisService.values.slack.clientSecret) {
             this.buttonText = "Create Davis Slack Bot";
         }
-        else if (!this.configService.config["slack"].success) {
+        else if (!this.davisService.config["slack"].success) {
             this.buttonText = "Skip and Finish";
         }
     };
     ConfigSlackComponent.prototype.doSubmit = function () {
         var _this = this;
-        if (!this.configService.config["slack"].success && this.configService.values.slack.clientId && this.configService.values.slack.clientSecret) {
-            this.configService.connectSlack()
+        if (!this.davisService.config["slack"].success && this.davisService.values.slack.clientId && this.davisService.values.slack.clientSecret) {
+            this.davisService.connectSlack()
                 .then(function (result) {
                 if (result.success) {
                     //REST call to endpoint here, trigger restart of Botkit
-                    _this.configService.config["slack"].success = true;
+                    _this.davisService.config["slack"].success = true;
                 }
                 else {
-                    _this.configService.config["slack"].success = false;
-                    _this.configService.config["slack"].error = result.message;
+                    _this.davisService.config["slack"].success = false;
+                    _this.davisService.config["slack"].error = result.message;
                 }
             }, function (error) {
                 console.log(error);
-                _this.configService.config["slack"].success = false;
+                _this.davisService.config["slack"].success = false;
             });
             this.submitted = true;
         }
         else {
-            this.configService.windowLocation(this.myURL);
+            this.davisService.windowLocation(this.myURL);
         }
     };
     ConfigSlackComponent = __decorate([

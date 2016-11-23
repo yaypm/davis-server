@@ -15,86 +15,82 @@ export class ConfigUserComponent implements OnInit {
     isPasswordMasked: boolean = true;
     isSelectOpened: boolean = false;
     
-    constructor(public configService: DavisService, public router: Router) {}
+    constructor(public davisService: DavisService, public router: Router) {}
     
     doSubmit() {
-      this.configService.addDavisUser()
+      this.davisService.addDavisUser()
         .then(result => {
             if (result.success) {
-              if (this.configService.isWizard) {
-                this.configService.removeDavisUser(this.configService.values.authenticate.email)
+              if (this.davisService.isWizard) {
+                this.davisService.removeDavisUser(this.davisService.values.authenticate.email)
                   .then(res => {
                       if (res.success) {
-                        this.configService.config["user"].success = true;
+                        this.davisService.config["user"].success = true;
                         
                         // Authenticate new user, update token
-                        this.configService.values.authenticate.email = this.configService.values.user.email;
-                        this.configService.values.authenticate.password = this.configService.values.user.password;
+                        this.davisService.values.authenticate.email = this.davisService.values.user.email;
+                        this.davisService.values.authenticate.password = this.davisService.values.user.password;
                         
-                         this.configService.getJwtToken()
+                         this.davisService.getJwtToken()
                           .then( 
                             response => {
-                              this.configService.token = response.token;
-                              this.router.navigate([this.configService.config["dynatrace"].path]);
+                              this.davisService.token = response.token;
+                              this.router.navigate([this.davisService.config["dynatrace"].path]);
                             },
                             error => {
-                              this.configService.config["user"].success = false;
-                              this.configService.config["user"].error = "Sorry an error occured, please try again.";
+                              this.davisService.config["user"].success = false;
+                              this.davisService.config["user"].error = "Sorry an error occured, please try again.";
                             }
                           );
                       } else {
-                        this.configService.config["user"].success = false;
-                        this.configService.config["user"].error = res.message;
+                        this.davisService.config["user"].success = false;
+                        this.davisService.config["user"].error = res.message;
                       }
                   },
                   error => {
-                    this.configService.config["user"].success = false;
-                    this.configService.config["user"].error = "Sorry an error occured, please try again.";
+                    this.davisService.config["user"].success = false;
+                    this.davisService.config["user"].error = "Sorry an error occured, please try again.";
                   });
                 }
             } else {
-              this.configService.config["user"].success = false;
-              this.configService.config["user"].error = result.message;
-              this.configService.values.user.email = "";
-              this.configService.values.user.password = "";
+              this.davisService.config["user"].success = false;
+              this.davisService.config["user"].error = result.message;
+              this.davisService.values.user.email = "";
+              this.davisService.values.user.password = "";
             }
           },
           error => {
-            this.configService.config["user"].success = false;
-            this.configService.config["user"].error = "Sorry an error occured, please try again.";
+            this.davisService.config["user"].success = false;
+            this.davisService.config["user"].error = "Sorry an error occured, please try again.";
           });
       this.submitted = true;
     }
     
-    keySubmit(keyCode: any) {
-      if (keyCode == 13) this.doSubmit();
-    }
-    
     ngOnInit() {
-      if (this.configService.isWizard && !this.configService.token) {
-        this.configService.values.authenticate.email = "admin@localhost";
-        this.configService.values.authenticate.password = "changeme";
-        this.configService.values.user.admin = true;
+      if (this.davisService.isWizard && !this.davisService.token) {
+        this.davisService.values.authenticate.email = "admin@localhost";
+        this.davisService.values.authenticate.password = "changeme";
+        this.davisService.values.user.admin = true;
       }
-      this.configService.getJwtToken()
+      this.davisService.getJwtToken()
         .then( 
           response => {
-            this.configService.token = response.token;
-            this.configService.getTimezones()
+            this.davisService.token = response.token;
+            this.davisService.getTimezones()
               .then( 
                 response => {
-                  this.configService.timezones = response.timezones;
-                  this.configService.values.user.timezone = this.configService.getTimezone();
+                  this.davisService.timezones = response.timezones;
+                  this.davisService.values.user.timezone = this.davisService.getTimezone();
                 },
                 error => {
-                  this.configService.config["user"].success = false;
-                  this.configService.config["user"].error = "Unable to get timezones, please try again later.";
+                  this.davisService.config["user"].success = false;
+                  this.davisService.config["user"].error = "Unable to get timezones, please try again later.";
                 }
               );
           },
           error => {
-            this.configService.config["user"].success = false;
-            this.configService.config["user"].error = "Sorry an error occured, please try again.";
+            this.davisService.config["user"].success = false;
+            this.davisService.config["user"].error = "Sorry an error occured, please try again.";
           }
         );
     }
