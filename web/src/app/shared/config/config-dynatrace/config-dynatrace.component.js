@@ -51,11 +51,6 @@ var ConfigDynatraceComponent = (function () {
         if (keyCode == 13)
             this.doSubmit();
     };
-    ConfigDynatraceComponent.prototype.ngOnInit = function () {
-        if (!this.configService.config["user"].success) {
-            this.router.navigate([this.configService.config["user"].path]);
-        }
-    };
     ConfigDynatraceComponent = __decorate([
         core_1.Component({
             moduleId: module.id,

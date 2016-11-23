@@ -9,12 +9,10 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = require("@angular/core");
-var router_1 = require("@angular/router");
 var config_service_1 = require("../../config.service");
 var ConfigAlexaComponent = (function () {
-    function ConfigAlexaComponent(configService, router) {
+    function ConfigAlexaComponent(configService) {
         this.configService = configService;
-        this.router = router;
         this.submitted = false;
         this.buttonText = "Skip";
     }
@@ -43,21 +41,13 @@ var ConfigAlexaComponent = (function () {
         }
         this.submitted = true;
     };
-    ConfigAlexaComponent.prototype.ngOnInit = function () {
-        if (!this.configService.config["user"].success) {
-            this.router.navigate([this.configService.config["user"].path]);
-        }
-        else if (!this.configService.config["dynatrace"].success) {
-            this.router.navigate([this.configService.config["dynatrace"].path]);
-        }
-    };
     ConfigAlexaComponent = __decorate([
         core_1.Component({
             moduleId: module.id,
             selector: "config-alexa",
             templateUrl: "./config-alexa.component.html",
         }), 
-        __metadata('design:paramtypes', [config_service_1.ConfigService, router_1.Router])
+        __metadata('design:paramtypes', [config_service_1.ConfigService])
     ], ConfigAlexaComponent);
     return ConfigAlexaComponent;
 }());

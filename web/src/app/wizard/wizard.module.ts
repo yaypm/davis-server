@@ -14,6 +14,9 @@ import { CommonModule } from "@angular/common";
 // Components
 import { WizardComponent } from "./wizard-base/wizard.component";
 
+// Modules
+import { ConfigModule } from "../shared/config/config.module";
+
 // Routes
 import { WizardRouting } from "./wizard.routing";
 
@@ -26,6 +29,7 @@ import { WizardRouting } from "./wizard.routing";
   ],
   imports: [
     CommonModule,
+    ConfigModule,
     WizardRouting
   ],
 })

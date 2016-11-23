@@ -54,14 +54,6 @@ var ConfigSlackComponent = (function () {
             this.configService.windowLocation(this.myURL);
         }
     };
-    ConfigSlackComponent.prototype.ngOnInit = function () {
-        if (!this.configService.config["user"].success) {
-            this.router.navigate([this.configService.config["user"].path]);
-        }
-        else if (!this.configService.config["dynatrace"].success) {
-            this.router.navigate([this.configService.config["dynatrace"].path]);
-        }
-    };
     ConfigSlackComponent = __decorate([
         core_1.Component({
             moduleId: module.id,

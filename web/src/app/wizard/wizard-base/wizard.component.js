@@ -15,8 +15,10 @@ var WizardComponent = (function () {
     function WizardComponent(configService, router) {
         this.configService = configService;
         this.router = router;
+        this.view = "user";
     }
-    WizardComponent.prototype.ngOnInit = function () {
+    WizardComponent.prototype.SelectView = function (newView) {
+        view = newView;
     };
     WizardComponent = __decorate([
         core_1.Component({

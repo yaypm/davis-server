@@ -21,6 +21,8 @@ var core_1 = require("@angular/core");
 var common_1 = require("@angular/common");
 // Components
 var wizard_component_1 = require("./wizard-base/wizard.component");
+// Modules
+var config_module_1 = require("../shared/config/config.module");
 // Routes
 var wizard_routing_1 = require("./wizard.routing");
 // ----------------------------------------------------------------------------
@@ -36,6 +38,7 @@ var WizardModule = (function () {
             ],
             imports: [
                 common_1.CommonModule,
+                config_module_1.ConfigModule,
                 wizard_routing_1.WizardRouting
             ],
         }), 
