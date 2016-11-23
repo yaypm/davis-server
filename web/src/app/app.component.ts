@@ -1,14 +1,25 @@
-import { Component } from '@angular/core';
-// Add the RxJS Observable operators.
-import './rxjs-operators';
-import { ConfigService } from './config.service';
+// ============================================================================
+// App - COMPONENT
+//
+// This component is the foundation of the application
+// ============================================================================
 
+// ----------------------------------------------------------------------------
+// Imports
+// ----------------------------------------------------------------------------
+// Angular
+import { Component } from "@angular/core";
+
+// Third party
+import "./rxjs-operators";
+
+// ----------------------------------------------------------------------------
+// Class
+// ----------------------------------------------------------------------------
 @Component({
   moduleId: module.id,
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css'],
+  selector: "davis",
+  templateUrl: "./app.component.html",
 })
-export class AppComponent {
-  constructor(private configService: ConfigService) {}
-}
+
+export class AppComponent { }

@@ -1,32 +1,59 @@
-import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { HttpModule } from '@angular/http';
-import { RouterModule } from '@angular/router';
+// ============================================================================
+// App - MODULE
+//
+// This module handles all functionality for the application
+// ============================================================================
 
-import { AppComponent } from './app.component';
-import { AppRoutingModule } from './app-routing.module';
-import { ConfigService } from './config.service';
-import { ConfigUserComponent } from './config-user/config-user.component';
-import { ConfigDynatraceComponent } from './config-dynatrace/config-dynatrace.component';
-import { ConfigAlexaComponent } from './config-alexa/config-alexa.component';
-import { ConfigSlackComponent } from './config-slack/config-slack.component';
+// ----------------------------------------------------------------------------
+// Imports
+// ----------------------------------------------------------------------------
+// Angular
+import { NgModule }       from "@angular/core";
+import { BrowserModule }  from "@angular/platform-browser";
+import { FormsModule }    from "@angular/forms";
+import { HttpModule,
+         JsonpModule }    from "@angular/http";
+import { RouterModule } from "@angular/router";
 
+// Components
+import { AppComponent } from "./app.component";
+
+// Modules
+import { AuthModule }   from "./auth/auth.module";
+import { ConfigModule } from "./config/config.module";
+import { WizardModule } from "./wizard/wizard.module";
+
+// Routing
+import { AppRouting } from "./app.routing";
+
+// Services
+import { ConfigService } from "./shared/config.service";
+
+// ----------------------------------------------------------------------------
+// Module
+// ----------------------------------------------------------------------------
 @NgModule({
-    imports: [
-        BrowserModule,
-        FormsModule,
-        HttpModule,
-        AppRoutingModule
-    ],
-    declarations: [
-        AppComponent,
-        ConfigUserComponent,
-        ConfigDynatraceComponent,
-        ConfigAlexaComponent,
-        ConfigSlackComponent
-    ],
-    providers: [ConfigService],
-    bootstrap: [AppComponent]
+  bootstrap: [
+    AppComponent
+  ],
+  declarations: [
+    AppComponent
+  ],
+  imports: [
+    AuthModule,
+    AppRouting,
+    BrowserModule,
+    ConfigModule,
+    FormsModule,
+    HttpModule,
+    JsonpModule,
+    RouterModule,
+    WizardModule,
+  ],
+  providers: [
+    ConfigService,
+  ],
 })
-export class AppModule {}
+
+export class AppModule { }
+

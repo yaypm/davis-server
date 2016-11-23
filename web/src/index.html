@@ -1,27 +1,27 @@
 <!doctype html>
 <html>
-<head>
-  <meta charset="utf-8">
-  <title>DavisWizard</title>
-  <base href="/">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="icon" type="image/x-icon" href="favicon.ico">
-  <link rel="stylesheet" type="text/css" href="/src/styles.css">
-  <!--<link rel="stylesheet" type="text/css" href="/node_modules/angular-timezone-selector/dist/angular-timezone-selector.min.css">-->
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans">
-  <!--<script src="/node_modules/angular-timezone-selector/dist/angular-timezone-selector.min.js"></script>-->
-  <script src="/node_modules/core-js/client/shim.min.js"></script>
-  <script src="/node_modules/zone.js/dist/zone.min.js"></script>
-  <script src="/node_modules/reflect-metadata/Reflect.js"></script>
-  <script src="/node_modules/systemjs/dist/system.src.js"></script>
-  <script src="/src/systemjs.config.js"></script>
-  <script>
-    System.import('app').catch(function(err){ console.error(err); });
-  </script>
-</head>
-<body>
-  <app-root>
-  </app-root>
-</body>
-<script>window.module = "aot";</script>
+  <head>
+    <title>Dynatrace Davis</title>
+    <base href="/">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" href="favicon.ico">
+    <link rel="stylesheet" href="assets/css/styles.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans">
+    <!--<link rel="stylesheet" type="text/css" href="/node_modules/angular-timezone-selector/dist/angular-timezone-selector.min.css">-->
+    <!--<script src="/node_modules/angular-timezone-selector/dist/angular-timezone-selector.min.js"></script>-->
+  </head>
+
+  <body>
+    <davis></davis>
+  </body>
+
+  <script src="../node_modules/core-js/client/shim.min.js"></script>
+  <script src="../node_modules/zone.js/dist/zone.min.js"></script>
+
+  <script src="../node_modules/reflect-metadata/Reflect.js"></script>
+  <script src="../node_modules/systemjs/dist/system.src.js"></script>
+  <script src="systemjs.config.js"></script>
+  <script>System.import("app").catch((err) => { console.error(err) });</script>
 </html>
+

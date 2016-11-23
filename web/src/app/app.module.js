@@ -1,48 +1,42 @@
-"use strict";
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-var platform_browser_1 = require('@angular/platform-browser');
-var core_1 = require('@angular/core');
-var forms_1 = require('@angular/forms');
-var http_1 = require('@angular/http');
-var app_component_1 = require('./app.component');
-var app_routing_module_1 = require('./app-routing.module');
-var config_service_1 = require('./config.service');
-var config_user_component_1 = require('./config-user/config-user.component');
-var config_dynatrace_component_1 = require('./config-dynatrace/config-dynatrace.component');
-var config_alexa_component_1 = require('./config-alexa/config-alexa.component');
-var config_slack_component_1 = require('./config-slack/config-slack.component');
-var AppModule = (function () {
+import { NgModule } from "@angular/core";
+import { BrowserModule } from "@angular/platform-browser";
+import { FormsModule } from "@angular/forms";
+import { HttpModule, JsonpModule } from "@angular/http";
+import { RouterModule } from "@angular/router";
+import { AppComponent } from "./app.component";
+import { AuthModule } from "./auth/auth.module";
+import { ConfigModule } from "./config/config.module";
+import { WizardModule } from "./wizard/wizard.module";
+import { AppRouting } from "./app.routing";
+import { ConfigService } from "./shared/config.service";
+export var AppModule = (function () {
     function AppModule() {
     }
-    AppModule = __decorate([
-        core_1.NgModule({
-            imports: [
-                platform_browser_1.BrowserModule,
-                forms_1.FormsModule,
-                http_1.HttpModule,
-                app_routing_module_1.AppRoutingModule
-            ],
-            declarations: [
-                app_component_1.AppComponent,
-                config_user_component_1.ConfigUserComponent,
-                config_dynatrace_component_1.ConfigDynatraceComponent,
-                config_alexa_component_1.ConfigAlexaComponent,
-                config_slack_component_1.ConfigSlackComponent
-            ],
-            providers: [config_service_1.ConfigService],
-            bootstrap: [app_component_1.AppComponent]
-        }), 
-        __metadata('design:paramtypes', [])
-    ], AppModule);
+    AppModule.decorators = [
+        { type: NgModule, args: [{
+                    bootstrap: [
+                        AppComponent
+                    ],
+                    declarations: [
+                        AppComponent
+                    ],
+                    imports: [
+                        AuthModule,
+                        AppRouting,
+                        BrowserModule,
+                        ConfigModule,
+                        FormsModule,
+                        HttpModule,
+                        JsonpModule,
+                        RouterModule,
+                        WizardModule,
+                    ],
+                    providers: [
+                        ConfigService,
+                    ],
+                },] },
+    ];
+    AppModule.ctorParameters = [];
     return AppModule;
 }());
-exports.AppModule = AppModule;
 //# sourceMappingURL=app.module.js.map
