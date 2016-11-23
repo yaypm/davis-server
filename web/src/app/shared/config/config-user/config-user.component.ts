@@ -1,7 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { FormBuilder } from "@angular/forms";
 import { Router } from "@angular/router";
-import { ConfigService } from "../../config.service";
+import { DavisService } from "../../davis.service";
 
 @Component({
     moduleId: module.id,
@@ -15,7 +15,7 @@ export class ConfigUserComponent implements OnInit {
     isPasswordMasked: boolean = true;
     isSelectOpened: boolean = false;
     
-    constructor(public configService: ConfigService, public router: Router) {}
+    constructor(public configService: DavisService, public router: Router) {}
     
     doSubmit() {
       this.configService.addDavisUser()

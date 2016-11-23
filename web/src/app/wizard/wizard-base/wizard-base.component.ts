@@ -26,5 +26,5 @@ export class WizardBaseComponent {
   // ------------------------------------------------------
   // Inject services
   // ------------------------------------------------------
-  constructor(public iConfig: ConfigService) {}
+  constructor(public iConfig: ConfigService) { }
 }

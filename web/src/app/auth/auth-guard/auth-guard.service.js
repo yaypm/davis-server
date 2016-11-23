@@ -20,7 +20,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var core_1 = require("@angular/core");
 var router_1 = require("@angular/router");
 // Services
-var config_service_1 = require("../../shared/config.service");
+var davis_service_1 = require("../../shared/davis.service");
 // ----------------------------------------------------------------------------
 // Class
 // ----------------------------------------------------------------------------
@@ -46,7 +46,7 @@ var AuthGuard = (function () {
     };
     AuthGuard = __decorate([
         core_1.Injectable(), 
-        __metadata('design:paramtypes', [config_service_1.ConfigService, router_1.Router])
+        __metadata('design:paramtypes', [davis_service_1.DavisService, router_1.Router])
     ], AuthGuard);
     return AuthGuard;
 }());

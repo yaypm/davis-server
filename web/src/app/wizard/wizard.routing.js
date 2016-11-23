@@ -11,8 +11,6 @@
 var router_1 = require("@angular/router");
 // Components
 var wizard_base_component_1 = require("./wizard-base/wizard-base.component");
-// Services
-// import { AuthGuard } from "../auth/auth-guard/auth-guard.service";
 // ----------------------------------------------------------------------------
 // Routes
 // ----------------------------------------------------------------------------

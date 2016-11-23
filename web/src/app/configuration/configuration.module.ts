@@ -28,7 +28,7 @@ import { ConfigurationRouting } from "./configuration.routing";
   imports: [
     CommonModule,
     ConfigurationRouting,
-    ConfigurationModule,
+    ConfigModule,
   ],
 })
 

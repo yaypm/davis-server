@@ -20,9 +20,6 @@ import { ConfigModule } from "../shared/config/config.module";
 // Routes
 import { WizardRouting } from "./wizard.routing";
 
-// Services
-import { ConfigService } from "../shared/config/config.service";
-
 // ----------------------------------------------------------------------------
 // Module
 // ----------------------------------------------------------------------------
@@ -35,9 +32,6 @@ import { ConfigService } from "../shared/config/config.service";
     ConfigModule,
     WizardRouting
   ],
-  providers: [
-    ConfigService,
-  ]
 })
 
 export class WizardModule { }

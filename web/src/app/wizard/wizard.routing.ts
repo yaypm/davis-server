@@ -13,9 +13,6 @@ import { Routes, RouterModule } from "@angular/router";
 // Components
 import { WizardBaseComponent } from "./wizard-base/wizard-base.component";
 
-// Services
-// import { AuthGuard } from "../auth/auth-guard/auth-guard.service";
-
 // ----------------------------------------------------------------------------
 // Routes
 // ----------------------------------------------------------------------------
@@ -28,7 +25,6 @@ const WizardRoutes: Routes = [
   {
     path: "wizard",
     component: WizardBaseComponent,
-    // canActivate: [AuthGuard],
   },
 ];
 
