@@ -10,23 +10,24 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 var core_1 = require('@angular/core');
 var router_1 = require('@angular/router');
-var wizard_routing_module_1 = require('./wizard/wizard-routing.module');
-var AppRoutingModule = (function () {
-    function AppRoutingModule() {
+var config_service_1 = require('../config.service');
+var WizardComponent = (function () {
+    function WizardComponent(configService, router) {
+        this.configService = configService;
+        this.router = router;
     }
-    AppRoutingModule = __decorate([
-        core_1.NgModule({
-            imports: [
-                wizard_routing_module_1.WizardModule
-            ],
-            exports: [
-                router_1.RouterModule
-            ],
-            bootstrap: [AppComponent]
+    WizardComponent.prototype.ngOnInit = function () {
+    };
+    WizardComponent = __decorate([
+        core_1.Component({
+            moduleId: module.id,
+            selector: 'wizard',
+            templateUrl: './wizard.component.html',
+            styleUrls: ['./wizard.component.css']
         }), 
-        __metadata('design:paramtypes', [])
-    ], AppRoutingModule);
-    return AppRoutingModule;
+        __metadata('design:paramtypes', [config_service_1.ConfigService, router_1.Router])
+    ], WizardComponent);
+    return WizardComponent;
 }());
-exports.AppRoutingModule = AppRoutingModule;
-//# sourceMappingURL=app-routing.module.js.map
+exports.WizardComponent = WizardComponent;
+//# sourceMappingURL=wizard.component.js.map
