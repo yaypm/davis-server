@@ -25,6 +25,8 @@ var config_alexa_component_1 = require("./config-alexa/config-alexa.component");
 var config_dynatrace_component_1 = require("./config-dynatrace/config-dynatrace.component");
 var config_slack_component_1 = require("./config-slack/config-slack.component");
 var config_user_component_1 = require("./config-user/config-user.component");
+// Services
+var config_service_1 = require("./config.service");
 // ----------------------------------------------------------------------------
 // Module
 // ----------------------------------------------------------------------------
@@ -48,6 +50,9 @@ var ConfigModule = (function () {
             imports: [
                 common_1.CommonModule,
                 forms_1.FormsModule,
+            ],
+            providers: [
+                config_service_1.ConfigService,
             ],
         }), 
         __metadata('design:paramtypes', [])

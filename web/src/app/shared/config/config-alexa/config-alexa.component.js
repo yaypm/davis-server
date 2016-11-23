@@ -9,12 +9,10 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = require("@angular/core");
-var router_1 = require("@angular/router");
-var config_service_1 = require("../../config.service");
+var davis_service_1 = require("../../davis.service");
 var ConfigAlexaComponent = (function () {
-    function ConfigAlexaComponent(configService, router) {
+    function ConfigAlexaComponent(configService) {
         this.configService = configService;
-        this.router = router;
         this.submitted = false;
         this.buttonText = "Skip";
     }
@@ -32,14 +30,13 @@ var ConfigAlexaComponent = (function () {
             this.configService.connectAlexa()
                 .then(function (result) {
                 _this.configService.config["alexa"].success = true;
-                _this.router.navigate([_this.configService.config["slack"].path]);
+                // this.router.navigate([this.configService.config["slack"].path]);
             }, function (error) {
                 console.log(error);
                 _this.configService.config["alexa"].success = false;
             });
         }
         else {
-            this.router.navigate([this.configService.config["slack"].path]);
         }
         this.submitted = true;
     };
@@ -49,7 +46,7 @@ var ConfigAlexaComponent = (function () {
             selector: "config-alexa",
             templateUrl: "./config-alexa.component.html",
         }), 
-        __metadata('design:paramtypes', [config_service_1.ConfigService, router_1.Router])
+        __metadata('design:paramtypes', [davis_service_1.DavisService])
     ], ConfigAlexaComponent);
     return ConfigAlexaComponent;
 }());

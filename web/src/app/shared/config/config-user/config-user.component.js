@@ -10,7 +10,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 var core_1 = require("@angular/core");
 var router_1 = require("@angular/router");
-var config_service_1 = require("../../config.service");
+var davis_service_1 = require("../../davis.service");
 var ConfigUserComponent = (function () {
     function ConfigUserComponent(configService, router) {
         this.configService = configService;
@@ -97,7 +97,7 @@ var ConfigUserComponent = (function () {
             selector: "config-user",
             templateUrl: "./config-user.component.html",
         }), 
-        __metadata('design:paramtypes', [config_service_1.ConfigService, router_1.Router])
+        __metadata('design:paramtypes', [davis_service_1.DavisService, router_1.Router])
     ], ConfigUserComponent);
     return ConfigUserComponent;
 }());

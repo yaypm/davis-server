@@ -31,7 +31,7 @@ var wizard_module_1 = require("./wizard/wizard.module");
 // Routing
 var app_routing_1 = require("./app.routing");
 // Services
-var config_service_1 = require("./shared/config.service");
+var davis_service_1 = require("./shared/davis.service");
 // ----------------------------------------------------------------------------
 // Module
 // ----------------------------------------------------------------------------
@@ -58,7 +58,7 @@ var AppModule = (function () {
                 wizard_module_1.WizardModule,
             ],
             providers: [
-                config_service_1.ConfigService,
+                davis_service_1.DavisService,
             ],
         }), 
         __metadata('design:paramtypes', [])

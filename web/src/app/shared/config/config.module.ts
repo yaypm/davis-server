@@ -18,6 +18,9 @@ import { ConfigDynatraceComponent } from "./config-dynatrace/config-dynatrace.co
 import { ConfigSlackComponent }     from "./config-slack/config-slack.component";
 import { ConfigUserComponent }      from "./config-user/config-user.component";
 
+// Services
+import { ConfigService } from "./config.service";
+
 // ----------------------------------------------------------------------------
 // Module
 // ----------------------------------------------------------------------------
@@ -37,6 +40,9 @@ import { ConfigUserComponent }      from "./config-user/config-user.component";
   imports: [
     CommonModule,
     FormsModule,
+  ],
+  providers: [
+    ConfigService,
   ],
 })
 

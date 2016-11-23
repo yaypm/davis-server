@@ -13,7 +13,7 @@ import { Router, CanActivate,
          ActivatedRouteSnapshot, RouterStateSnapshot } from "@angular/router";
 
 // Services
-import { ConfigService } from "../../shared/config.service";
+import { DavisService } from "../../shared/davis.service";
 
 // ----------------------------------------------------------------------------
 // Class
@@ -24,7 +24,7 @@ export class AdminGuard implements CanActivate {
   // Inject services
   // ------------------------------------------------------
   constructor(
-    private iConfig: ConfigService,
+    private iConfig: DavisService,
     private router: Router) { }
 
   // ------------------------------------------------------
