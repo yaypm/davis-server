@@ -1,4 +1,4 @@
-How It Works
+Core Concepts
 ============
 
 Davis

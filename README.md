@@ -1,16 +1,18 @@
+![](https://s3.amazonaws.com/dynatrace-davis/assets/images/dynatrace-davis-logo.png)
+
 [ ![Codeship Status for Dynatrace/davis-server](https://app.codeship.com/projects/db947ab0-7fc9-0134-339c-0295c16491cd/status?branch=davisV2)](https://app.codeship.com/projects/182000)
 [![License](http://img.shields.io/:license-mit-blue.svg)](https://github.com/Dynatrace/davis-server/blob/master/LICENSE)
 
-#### With the Heroku Button
+Welcome to Davis!  Davis provides several new, cutting edge mediums for interacting with Dynatrace.  Currently integration with Slack and Amazon Alexa are officially supported but more could be added in the future.
 
-[![Deploy](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy?template=https://github.com/Dynatrace/davis-server/tree/davisV2)
+We've tried to make the process of setting up and configuring Davis as simple as possible.  However, feel free to open an issue or <a href="mailto:davis@dynatrace.com">email</a> if any questions or feedback.  Now, without further ado, let's get started!
 
-#### Without It
-
-* Clone the repo and change directory to it
-* Log in with the [Heroku Toolbelt](https://toolbelt.heroku.com/) and create an app: `heroku create`
-* Use the [mLab addon](https://elements.heroku.com/addons/mongolab): `heroku addons:create mongolab:sandbox --app YourAppName`
-* Deploy it with: `git push heroku master`
+## Table of Contents
+ - [Getting Started](docs/getting_started.md)
+ - [Core Concepts](docs/concepts.md)
+ - [Supported Phrases](docs/supported_phrases.md)
+ - [Extending Davis](docs/development/extending_davis.md)
+ - [Road Map](https://github.com/Dynatrace/davis-server/projects/2)
 
 ## Disclaimer
 This software is experimental and currently NOT SUPPORTED by Dynatrace. 
