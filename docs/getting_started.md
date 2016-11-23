@@ -14,7 +14,7 @@ Getting Started
 
 ### Heroku - Cloud Platform-as-a-Service PaaS provider
 #### Button
-[![Deploy](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy?template=https://github.com/Dynatrace/davis-server/tree/davisV2)
+[![Deploy](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy?template=https://github.com/Dynatrace/davis-server)
 
 By far the simplest way to get started with Davis is to simply click the "Deploy to Heroku" button.  This will automatically grab the latest version of Davis, provision a MongoDB instance, and start the server.  From there, you can configure Davis via the configuration UI.
 
