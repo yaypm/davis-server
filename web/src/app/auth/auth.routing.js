@@ -1,32 +1,15 @@
-// ============================================================================
-// Auth - ROUTING
-//
-// This module handles all routing for the Auth section
-// ============================================================================
-"use strict";
-// ----------------------------------------------------------------------------
-// Imports
-// ----------------------------------------------------------------------------
-// Angular
-var router_1 = require("@angular/router");
-// Components
-var auth_login_component_1 = require("./auth-login/auth-login.component");
-// ----------------------------------------------------------------------------
-// Routes
-// ----------------------------------------------------------------------------
+import { RouterModule } from "@angular/router";
+import { AuthLoginComponent } from "./auth-login/auth-login.component";
 var AuthRoutes = [
     {
         children: [
             {
-                component: auth_login_component_1.AuthLoginComponent,
+                component: AuthLoginComponent,
                 path: "login",
             },
         ],
         path: "auth",
     },
 ];
-// ----------------------------------------------------------------------------
-// Module
-// ----------------------------------------------------------------------------
-exports.AuthRouting = router_1.RouterModule.forChild(AuthRoutes);
+export var AuthRouting = RouterModule.forChild(AuthRoutes);
 //# sourceMappingURL=auth.routing.js.map

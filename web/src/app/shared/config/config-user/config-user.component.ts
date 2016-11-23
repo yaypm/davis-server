@@ -1,6 +1,7 @@
 import { Component, OnInit } from "@angular/core";
-import { FormBuilder } from "@angular/forms";
-import { Router } from "@angular/router";
+
+// Services
+import { ConfigService } from "../config.service";
 import { DavisService } from "../../davis.service";
 
 @Component({
@@ -15,7 +16,9 @@ export class ConfigUserComponent implements OnInit {
     isPasswordMasked: boolean = true;
     isSelectOpened: boolean = false;
     
-    constructor(public davisService: DavisService, public router: Router) {}
+    constructor(
+      public davisService: DavisService,
+      public iConfig: ConfigService) {}
     
     doSubmit() {
       this.davisService.addDavisUser()
@@ -35,7 +38,7 @@ export class ConfigUserComponent implements OnInit {
                           .then( 
                             response => {
                               this.davisService.token = response.token;
-                              this.router.navigate([this.davisService.config["dynatrace"].path]);
+                              this.iConfig.SelectView("dynatrace");
                             },
                             error => {
                               this.davisService.config["user"].success = false;

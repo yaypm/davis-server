@@ -17,8 +17,8 @@ import "./rxjs-operators";
 // Class
 // ----------------------------------------------------------------------------
 @Component({
-  moduleId: module.id,
-  selector: "davis",
+  moduleId:    module.id,
+  selector:    "davis",
   templateUrl: "./app.component.html",
 })
 

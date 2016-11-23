@@ -1,5 +1,7 @@
-import { Component, OnInit } from "@angular/core";
-import { Router } from "@angular/router";
+import { Component } from "@angular/core";
+
+// Services
+import { ConfigService } from "../config.service";
 import { DavisService } from "../../davis.service";
 
 @Component({
@@ -11,7 +13,9 @@ export class ConfigDynatraceComponent {
 
   submitted: boolean = false;
     
-  constructor(public davisService: DavisService, public router: Router) {}
+  constructor(
+    public davisService: DavisService,
+    public iConfig: ConfigService) { }
   
   doSubmit() {
     this.davisService.connectDynatrace()
@@ -21,7 +25,7 @@ export class ConfigDynatraceComponent {
             .then(res => {
               if (res.success) {
                 this.davisService.config["dynatrace"].success = true;
-                this.router.navigate([this.davisService.config["alexa"].path]);
+                this.iConfig.SelectView("alexa");
               } else {
                 this.davisService.config["dynatrace"].success = false;
                 this.davisService.config["dynatrace"].error = res.message;

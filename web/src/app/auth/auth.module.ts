@@ -12,11 +12,11 @@ import { NgModule }     from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { FormsModule }  from "@angular/forms";
 
-// Routes
-import { AuthRouting } from "./auth.routing";
-
 // Components
 import { AuthLoginComponent } from "./auth-login/auth-login.component";
+
+// Routes
+import { AuthRouting } from "./auth.routing";
 
 // ----------------------------------------------------------------------------
 // Module

@@ -23,11 +23,6 @@ export var Wrapper_AuthLoginComponent = (function () {
     Wrapper_AuthLoginComponent.prototype.ngDoCheck = function (view, el, throwOnChange) {
         var changed = this._changed;
         this._changed = false;
-        if (!throwOnChange) {
-            if ((view.numberOfChecks === 0)) {
-                this.context.ngOnInit();
-            }
-        }
         return changed;
     };
     Wrapper_AuthLoginComponent.prototype.checkHost = function (view, componentView, el, throwOnChange) {

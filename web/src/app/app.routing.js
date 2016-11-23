@@ -1,16 +1,4 @@
-// ============================================================================
-// App - ROUTING
-//
-// This module handles all routing for the application
-// ============================================================================
-"use strict";
-var router_1 = require("@angular/router");
-// ----------------------------------------------------------------------------
-// Routes
-// ----------------------------------------------------------------------------
+import { RouterModule } from "@angular/router";
 var AppRoutes = [];
-// ----------------------------------------------------------------------------
-// Module
-// ----------------------------------------------------------------------------
-exports.AppRouting = router_1.RouterModule.forRoot(AppRoutes);
+export var AppRouting = RouterModule.forRoot(AppRoutes);
 //# sourceMappingURL=app.routing.js.map

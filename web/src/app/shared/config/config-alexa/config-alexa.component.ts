@@ -1,5 +1,8 @@
 import { Component } from "@angular/core";
-import { DavisService } from "../../davis.service";
+
+// Services
+import { ConfigService } from "../config.service";
+import { DavisService }  from "../../davis.service";
 
 @Component({
   moduleId: module.id,
@@ -10,7 +13,9 @@ export class ConfigAlexaComponent {
   submitted: boolean = false;
   buttonText: string = "Skip";
 
-  constructor(public davisService: DavisService) {}
+  constructor(
+    public davisService: DavisService,
+    public iConfig: ConfigService) { }
 
   validate() {
     if (this.davisService.values.alexa_ids) {
@@ -25,14 +30,14 @@ export class ConfigAlexaComponent {
       this.davisService.connectAlexa()
       .then(result => {
         this.davisService.config["alexa"].success = true;
-        // this.router.navigate([this.davisService.config["slack"].path]);
+        this.iConfig.SelectView("slack");
       },
       error => {
       console.log(error);
       this.davisService.config["alexa"].success = false;
     });
     } else {
-      // this.router.navigate([this.davisService.config["slack"].path]);
+      this.iConfig.SelectView("slack");
     }
 
     this.submitted = true;

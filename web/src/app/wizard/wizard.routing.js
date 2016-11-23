@@ -1,19 +1,6 @@
-// ============================================================================
-// Wizard - ROUTING
-//
-// This module handles all routing for the Wizard section
-// ============================================================================
-"use strict";
-// ----------------------------------------------------------------------------
-// Imports
-// ----------------------------------------------------------------------------
-// Angular
-var router_1 = require("@angular/router");
-// Components
-var wizard_base_component_1 = require("./wizard-base/wizard-base.component");
-// ----------------------------------------------------------------------------
-// Routes
-// ----------------------------------------------------------------------------
+import { RouterModule } from "@angular/router";
+import { WizardBaseComponent } from "./wizard-base/wizard-base.component";
+import { WizardGuard } from "../auth/auth-guard/wizard-guard.service";
 var WizardRoutes = [
     {
         path: "",
@@ -22,11 +9,9 @@ var WizardRoutes = [
     },
     {
         path: "wizard",
-        component: wizard_base_component_1.WizardBaseComponent,
+        component: WizardBaseComponent,
+        canActivate: [WizardGuard],
     },
 ];
-// ----------------------------------------------------------------------------
-// Module
-// ----------------------------------------------------------------------------
-exports.WizardRouting = router_1.RouterModule.forChild(WizardRoutes);
+export var WizardRouting = RouterModule.forChild(WizardRoutes);
 //# sourceMappingURL=wizard.routing.js.map

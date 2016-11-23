@@ -1,20 +1,10 @@
-"use strict";
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-var core_1 = require("@angular/core");
-var router_1 = require("@angular/router");
-var davis_service_1 = require("../../davis.service");
-var ConfigUserComponent = (function () {
-    function ConfigUserComponent(davisService, router) {
+import { Component } from "@angular/core";
+import { ConfigService } from "../config.service";
+import { DavisService } from "../../davis.service";
+export var ConfigUserComponent = (function () {
+    function ConfigUserComponent(davisService, iConfig) {
         this.davisService = davisService;
-        this.router = router;
+        this.iConfig = iConfig;
         this.submitted = false;
         this.isPasswordFocused = false;
         this.isPasswordMasked = true;
@@ -30,13 +20,12 @@ var ConfigUserComponent = (function () {
                         .then(function (res) {
                         if (res.success) {
                             _this.davisService.config["user"].success = true;
-                            // Authenticate new user, update token
                             _this.davisService.values.authenticate.email = _this.davisService.values.user.email;
                             _this.davisService.values.authenticate.password = _this.davisService.values.user.password;
                             _this.davisService.getJwtToken()
                                 .then(function (response) {
                                 _this.davisService.token = response.token;
-                                _this.router.navigate([_this.davisService.config["dynatrace"].path]);
+                                _this.iConfig.SelectView("dynatrace");
                             }, function (error) {
                                 _this.davisService.config["user"].success = false;
                                 _this.davisService.config["user"].error = "Sorry an error occured, please try again.";
@@ -87,15 +76,17 @@ var ConfigUserComponent = (function () {
             _this.davisService.config["user"].error = "Sorry an error occured, please try again.";
         });
     };
-    ConfigUserComponent = __decorate([
-        core_1.Component({
-            moduleId: module.id,
-            selector: "config-user",
-            templateUrl: "./config-user.component.html",
-        }), 
-        __metadata('design:paramtypes', [davis_service_1.DavisService, router_1.Router])
-    ], ConfigUserComponent);
+    ConfigUserComponent.decorators = [
+        { type: Component, args: [{
+                    moduleId: module.id,
+                    selector: "config-user",
+                    templateUrl: "./config-user.component.html",
+                },] },
+    ];
+    ConfigUserComponent.ctorParameters = [
+        { type: DavisService, },
+        { type: ConfigService, },
+    ];
     return ConfigUserComponent;
 }());
-exports.ConfigUserComponent = ConfigUserComponent;
 //# sourceMappingURL=config-user.component.js.map

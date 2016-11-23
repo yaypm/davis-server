@@ -13,18 +13,22 @@ import { Routes, RouterModule } from "@angular/router";
 // Components
 import { WizardBaseComponent } from "./wizard-base/wizard-base.component";
 
+// Services
+import { WizardGuard } from "../auth/auth-guard/wizard-guard.service";
+
 // ----------------------------------------------------------------------------
 // Routes
 // ----------------------------------------------------------------------------
 const WizardRoutes: Routes = [
   {
-    path: "",
+    path:       "",
     redirectTo: "/wizard",
-    pathMatch: "full"
+    pathMatch:  "full"
   },
   {
     path: "wizard",
     component: WizardBaseComponent,
+    canActivate: [WizardGuard],
   },
 ];
 

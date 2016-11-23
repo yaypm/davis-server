@@ -1,6 +1,6 @@
-import { Component, OnInit } from "@angular/core";
-import { FormBuilder } from "@angular/forms";
-import { Router } from "@angular/router";
+import { Component } from "@angular/core";
+
+// Services
 import { DavisService } from "../../davis.service";
 
 @Component({
@@ -10,13 +10,13 @@ import { DavisService } from "../../davis.service";
 })
 export class ConfigSlackComponent {
 
-    myURL:string = "";
+    myURL: string = "";
     submitted: boolean = false;
     buttonText: string = "Skip";
     isPasswordFocused: boolean = false;
     isPasswordMasked: boolean = true;
     
-    constructor(public davisService: DavisService, public router: Router) {
+    constructor(public davisService: DavisService) {
         this.myURL = "https://" + window.location.host;
     }
     

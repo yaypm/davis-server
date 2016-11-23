@@ -27,6 +27,7 @@ import { WizardModule }        from "./wizard/wizard.module";
 import { AppRouting } from "./app.routing";
 
 // Services
+import { WizardGuard }    from "./auth/auth-guard/wizard-guard.service";
 import { DavisService } from "./shared/davis.service";
 
 // ----------------------------------------------------------------------------
@@ -51,6 +52,7 @@ import { DavisService } from "./shared/davis.service";
     WizardModule,
   ],
   providers: [
+    WizardGuard,
     DavisService,
   ],
 })
