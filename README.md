@@ -1,6 +1,5 @@
 ![](https://s3.amazonaws.com/dynatrace-davis/assets/images/dynatrace-davis-logo.png)
 
-[ ![Codeship Status for Dynatrace/davis-server](https://app.codeship.com/projects/db947ab0-7fc9-0134-339c-0295c16491cd/status?branch=davisV2)](https://app.codeship.com/projects/182000)
 [![License](http://img.shields.io/:license-mit-blue.svg)](https://github.com/Dynatrace/davis-server/blob/master/LICENSE)
 
 Welcome to Davis!  Davis provides several new, cutting edge mediums for interacting with Dynatrace.  Currently integration with Slack and Amazon Alexa are officially supported but more could be added in the future.
