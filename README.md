@@ -1,3 +1,5 @@
+>******We are currently upgrading the Davis with some new exciting features! Watch our live keynote unveiling the new Davis as AWS re:Invent 2017 and**  [Building the future of DevOps](https://www.portal.reinvent.awsevents.com/connect/sessionDetail.ww?SESSION_ID=8749). **Please see our latest stable release** [here](https://github.com/Dynatrace/davis-server/releases/tag/davis-v1).****
+
 ![](https://s3.amazonaws.com/dynatrace-davis/assets/images/dynatrace-davis-logo.png)
 
 Welcome to Davis!  Davis provides several new, cutting edge mediums for interacting with Dynatrace.  Currently integration with Slack and Amazon Alexa are officially supported but more could be added in the future.
