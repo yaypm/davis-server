@@ -40,7 +40,7 @@ sudo yum -y install mongo-10gen-server mongodb-org-shell
 sudo yum -y install sysstat
 ```
 
-> We are using /var/lib/mongo folder to save davis data.
+> We are using /var/lib/mongo folder to save Davis data.
 
 **Shell**
 ```shell
@@ -48,7 +48,7 @@ sudo mkdir /var/lib/mongo/davis
 
 ```
 
-> Set the storage items (davis conversations) to be owned by the user
+> Set the storage items (Davis conversations) to be owned by the user
 > (mongod) and group (mongod) that MongoDB will be starting under:
 
 **Shell**

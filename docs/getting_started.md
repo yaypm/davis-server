@@ -8,7 +8,7 @@ Getting Started
 - **Node.js** - (6.x or newer) installed
 - **MongoDB** - installed with a [fully qualified domain name (FQDN)](https://kb.iu.edu/d/aiuv). This can be on the same server as your Davis instance (local) or on another server (remote). Guides: [AWS: EC2 instance with Route53](setup/mongo.md) or [Cloud9](https://community.c9.io/t/setting-up-mongodb/1717).  The MongoLab addon removes this requirement if you're using Heroku.
 - **Valid Certificate** - Davis communicates with a number of different services.  It's required that this connection is secured with a valid cert.
-- **Publicly accessible endpoint** - Davis needs to be publicly accessible.
+- **Publicly accessible endpoint** - This is required for both Slack and Alexa support.
 
 ## Deploy
 
@@ -20,12 +20,12 @@ By far the simplest way to get started with Davis is to simply click the "Deploy
 
 #### CLI
 
-It's possible to deploy to Heroku using their CLI.  
+It's also possible to deploy to Heroku using their CLI.  
 
-* Clone the repo and change directory to it
+* Clone this repo and change directory to it
 * Log in with the [Heroku Toolbelt](https://toolbelt.heroku.com/) and create an app: `heroku create`
 * Use the [mLab addon](https://elements.heroku.com/addons/mongolab): `heroku addons:create mongolab:sandbox --app YourAppName`
-* Deploy it with: `git push heroku master`
+* Deploy with the following command: `git push heroku master`
 
 #### Limitations
 
@@ -34,3 +34,12 @@ While Heroku offers a generous free tier, it's not recommends for Davis.  Feel f
 ### AWS - Cloud Computing services
 
 Coming soon!
+
+## Configuration
+
+- [Alexa](setup/alexa.md)
+- [Slack](setup/slack.md)
+
+## Management
+
+A configuration UI is currently in the works!  Until then, please have a look at our [REST API docs](development/API.md).
