@@ -20,12 +20,12 @@ By far the simplest way to get started with Davis is to simply click the "Deploy
 
 #### CLI
 
-It's possible to deploy to Heroku using their CLI.  
+It's also possible to deploy to Heroku using their CLI.  
 
-* Clone the repo and change directory to it
+* Clone this repo and change directory to it
 * Log in with the [Heroku Toolbelt](https://toolbelt.heroku.com/) and create an app: `heroku create`
 * Use the [mLab addon](https://elements.heroku.com/addons/mongolab): `heroku addons:create mongolab:sandbox --app YourAppName`
-* Deploy it with: `git push heroku master`
+* Deploy with the following command: `git push heroku master`
 
 #### Limitations
 
@@ -34,3 +34,12 @@ While Heroku offers a generous free tier, it's not recommends for Davis.  Feel f
 ### AWS - Cloud Computing services
 
 Coming soon!
+
+## Configuration
+
+- [Alexa](setup/alexa.md)
+- [Slack](setup/slack.md)
+
+## Management
+
+A configuration UI is currently in the works!  Until then, please have a look at our [REST API docs](development/API.md).
