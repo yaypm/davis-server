@@ -1,9 +1,0 @@
-{
-  "PID": "5198131",
-  "ProblemID": "378",
-  "State": "RESOLVED",
-  "ProblemImpact": "APPLICATION",
-  "ProblemURL": "http://test.com",
-  "ImpactedEntity": "Web check local outage for Web check test.com",
-  "Tags": "dev, bas"
-}

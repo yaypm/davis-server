@@ -1,2 +1,0 @@
-{# I'm Davis version {{version.tag | replace("v", "")}} {% if version.branch != "master" %}on the {{version.branch}} branch{% endif %}, I was last updated by Dynatrace on {{version.lastUpdate}}. #}
-Sorry, I'm unable to get version information at this time.

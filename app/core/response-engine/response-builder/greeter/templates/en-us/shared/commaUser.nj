@@ -1,1 +1,0 @@
-{% if user.name and user.name.first %}, {{ user.name.first | capitalize }}{% endif %}
