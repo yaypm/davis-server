@@ -26,7 +26,7 @@ var router_1 = require("@angular/router");
 var app_component_1 = require("./app.component");
 // Modules
 var auth_module_1 = require("./auth/auth.module");
-var config_module_1 = require("./config/config.module");
+var configuration_module_1 = require("./configuration/configuration.module");
 var wizard_module_1 = require("./wizard/wizard.module");
 // Routing
 var app_routing_1 = require("./app.routing");
@@ -50,7 +50,7 @@ var AppModule = (function () {
                 auth_module_1.AuthModule,
                 app_routing_1.AppRouting,
                 platform_browser_1.BrowserModule,
-                config_module_1.ConfigModule,
+                configuration_module_1.ConfigurationModule,
                 forms_1.FormsModule,
                 http_1.HttpModule,
                 http_1.JsonpModule,
