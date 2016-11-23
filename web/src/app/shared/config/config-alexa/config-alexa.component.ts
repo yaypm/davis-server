@@ -1,4 +1,5 @@
 import { Component } from "@angular/core";
+import { Router } from"@angular/router";
 import { ConfigService } from "../../config.service";
 
 @Component({
@@ -10,7 +11,7 @@ export class ConfigAlexaComponent {
   submitted: boolean = false;
   buttonText: string = "Skip";
 
-  constructor(public configService: ConfigService) {}
+  constructor(public configService: ConfigService, public router: Router) {}
 
   validate() {
     if (this.configService.values.alexa_ids) {

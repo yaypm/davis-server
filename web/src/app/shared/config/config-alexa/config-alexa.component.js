@@ -9,10 +9,12 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = require("@angular/core");
+var router_1 = require("@angular/router");
 var config_service_1 = require("../../config.service");
 var ConfigAlexaComponent = (function () {
-    function ConfigAlexaComponent(configService) {
+    function ConfigAlexaComponent(configService, router) {
         this.configService = configService;
+        this.router = router;
         this.submitted = false;
         this.buttonText = "Skip";
     }
@@ -47,7 +49,7 @@ var ConfigAlexaComponent = (function () {
             selector: "config-alexa",
             templateUrl: "./config-alexa.component.html",
         }), 
-        __metadata('design:paramtypes', [config_service_1.ConfigService])
+        __metadata('design:paramtypes', [config_service_1.ConfigService, router_1.Router])
     ], ConfigAlexaComponent);
     return ConfigAlexaComponent;
 }());
