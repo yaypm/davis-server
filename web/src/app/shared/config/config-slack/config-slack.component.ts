@@ -8,7 +8,7 @@ import { ConfigService } from "../../config.service";
     selector: "config-slack",
     templateUrl: "./config-slack.component.html",
 })
-export class ConfigSlackComponent implements OnInit {
+export class ConfigSlackComponent {
 
     myURL:string = "";
     submitted: boolean = false;
@@ -51,13 +51,4 @@ export class ConfigSlackComponent implements OnInit {
             this.configService.windowLocation(this.myURL);
         }
     }
-    
-    ngOnInit() {
-        if (!this.configService.config["user"].success) {
-            this.router.navigate([this.configService.config["user"].path]);
-        } else if (!this.configService.config["dynatrace"].success) {
-            this.router.navigate([this.configService.config["dynatrace"].path]);
-        }
-    }
-
 }

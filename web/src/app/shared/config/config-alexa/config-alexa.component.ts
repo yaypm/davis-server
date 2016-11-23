@@ -1,5 +1,4 @@
-import { Component, OnInit } from "@angular/core";
-import { Router } from "@angular/router";
+import { Component } from "@angular/core";
 import { ConfigService } from "../../config.service";
 
 @Component({
@@ -7,44 +6,35 @@ import { ConfigService } from "../../config.service";
   selector: "config-alexa",
   templateUrl: "./config-alexa.component.html",
 })
-export class ConfigAlexaComponent implements OnInit {
+export class ConfigAlexaComponent {
+  submitted: boolean = false;
+  buttonText: string = "Skip";
 
-    submitted: boolean = false;
-    buttonText: string = "Skip";
-    
-    constructor(public configService: ConfigService, public router: Router) {}
+  constructor(public configService: ConfigService) {}
 
-    validate() {
-        if (this.configService.values.alexa_ids) {
-            this.buttonText = "Continue";
-        } else {
-            this.buttonText = "Skip";
-        }
+  validate() {
+    if (this.configService.values.alexa_ids) {
+      this.buttonText = "Continue";
+    } else {
+      this.buttonText = "Skip";
     }
-    
-    doSubmit() {
-        if (this.configService.values.alexa_ids) {
-            this.configService.connectAlexa()
-                .then(result => {
-                    this.configService.config["alexa"].success = true;
-                    this.router.navigate([this.configService.config["slack"].path]);
-                },
-                error => {
-                  console.log(error);
-                  this.configService.config["alexa"].success = false;
-                });
-        } else {
-            this.router.navigate([this.configService.config["slack"].path]);
-        }
-        this.submitted = true;
+  }
+
+  doSubmit() {
+    if (this.configService.values.alexa_ids) {
+      this.configService.connectAlexa()
+      .then(result => {
+        this.configService.config["alexa"].success = true;
+        this.router.navigate([this.configService.config["slack"].path]);
+      },
+      error => {
+      console.log(error);
+      this.configService.config["alexa"].success = false;
+    });
+    } else {
+      this.router.navigate([this.configService.config["slack"].path]);
     }
 
-    ngOnInit() {
-        if (!this.configService.config["user"].success) {
-            this.router.navigate([this.configService.config["user"].path]);
-        } else if (!this.configService.config["dynatrace"].success) {
-            this.router.navigate([this.configService.config["dynatrace"].path]);
-        }
-    }
-
+    this.submitted = true;
+  }
 }

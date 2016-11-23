@@ -8,7 +8,7 @@ import { ConfigService } from "../../config.service";
   selector: "config-dynatrace",
   templateUrl: "./config-dynatrace.component.html",
 })
-export class ConfigDynatraceComponent implements OnInit {
+export class ConfigDynatraceComponent {
 
   submitted: boolean = false;
     
@@ -47,11 +47,4 @@ export class ConfigDynatraceComponent implements OnInit {
   keySubmit(keyCode: any) {
     if (keyCode == 13) this.doSubmit();
   }
-
-  ngOnInit() {
-        if (!this.configService.config["user"].success) {
-            this.router.navigate([this.configService.config["user"].path]);
-        }
-  }
-
 }

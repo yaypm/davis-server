@@ -1,10 +1,29 @@
-import { RouterModule } from "@angular/router";
-import { ConfigBaseComponent } from "./config-base/config-base.component";
+// ============================================================================
+// Configuration - ROUTING
+//
+// This module handles all routing for the Configuration section
+// ============================================================================
+"use strict";
+// ----------------------------------------------------------------------------
+// Imports
+// ----------------------------------------------------------------------------
+// Angular
+var router_1 = require("@angular/router");
+// Components
+var config_base_component_1 = require("./config-base/config-base.component");
+// Services
+// import { AuthGuard } from "../auth/auth-guard/auth-guard.service";
+// ----------------------------------------------------------------------------
+// Routes
+// ----------------------------------------------------------------------------
 var ConfigRoutes = [
     {
         path: "config",
-        component: ConfigBaseComponent,
+        component: config_base_component_1.ConfigBaseComponent,
     },
 ];
-export var ConfigRouting = RouterModule.forChild(ConfigRoutes);
+// ----------------------------------------------------------------------------
+// Module
+// ----------------------------------------------------------------------------
+exports.ConfigRouting = router_1.RouterModule.forChild(ConfigRoutes);
 //# sourceMappingURL=config.routing.js.map

@@ -7,12 +7,12 @@ import { ConfigService } from "../../shared/config.service";
     selector: "wizard",
     templateUrl: "./wizard.component.html",
 })
-export class WizardComponent implements OnInit {
-    
-    constructor(private configService: ConfigService, private router: Router) {}
+export class WizardComponent {
+  view: string = "user";
 
-    ngOnInit() {
-     
-    }
+  constructor(private configService: ConfigService, private router: Router) {}
 
+  SelectView(newView: string) {
+    view = newView;
+  }
 }

@@ -1,0 +1,22 @@
+typings
+node_modules
+
+src/*.js
+src/*.map
+src/**/*.js
+src/**/*.map
+
+#Log files
+logs
+*.log
+
+#IDE configuration files
+.vscode
+
+#OS X files
+.DS_Store
+
+#Built files
+ngfactory
+
+!/src/systemjs.config.js
