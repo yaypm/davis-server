@@ -20,7 +20,7 @@ import { AppComponent } from "./app.component";
 
 // Modules
 import { AuthModule }   from "./auth/auth.module";
-import { ConfigModule } from "./config/config.module";
+import { ConfigurationModule } from "./configuration/configuration.module";
 import { WizardModule } from "./wizard/wizard.module";
 
 // Routing
@@ -43,7 +43,7 @@ import { ConfigService } from "./shared/config.service";
     AuthModule,
     AppRouting,
     BrowserModule,
-    ConfigModule,
+    ConfigurationModule,
     FormsModule,
     HttpModule,
     JsonpModule,

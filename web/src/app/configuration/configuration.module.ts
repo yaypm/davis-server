@@ -10,24 +10,26 @@
 // Angular
 import { NgModule }     from "@angular/core";
 import { CommonModule } from "@angular/common";
+import { ConfigModule } from "../shared/config/config.module";
 
 // Components
-import { ConfigBaseComponent } from "./config-base/config-base.component";
+import { ConfigurationBaseComponent } from "./configuration-base/configuration-base.component";
 
 // Routes
-import { ConfigRouting } from "./config.routing";
+import { ConfigurationRouting } from "./configuration.routing";
 
 // ----------------------------------------------------------------------------
 // Module
 // ----------------------------------------------------------------------------
 @NgModule({
   declarations: [
-    ConfigBaseComponent,
+    ConfigurationBaseComponent,
   ],
   imports: [
     CommonModule,
-    ConfigRouting
+    ConfigurationRouting,
+    ConfigurationModule,
   ],
 })
 
-export class ConfigModule { }
+export class ConfigurationModule { }

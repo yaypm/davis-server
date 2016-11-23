@@ -16,11 +16,11 @@ import { Router }    from "@angular/router";
 // ----------------------------------------------------------------------------
 @Component({
   moduleId:    module.id,
-  selector:    "config-base",
-  templateUrl: "./config-base.component.html",
+  selector:    "configuration-base",
+  templateUrl: "./configuration-base.component.html",
 })
 
-export class ConfigBaseComponent  {
+export class ConfigurationBaseComponent  {
   // ------------------------------------------------------
   // Inject services
   // ------------------------------------------------------

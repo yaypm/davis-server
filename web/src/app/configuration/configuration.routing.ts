@@ -11,7 +11,7 @@
 import { Routes, RouterModule } from "@angular/router";
 
 // Components
-import { ConfigBaseComponent } from "./config-base/config-base.component";
+import { ConfigurationBaseComponent } from "./configuration-base/configuration-base.component";
 
 // Services
 // import { AuthGuard } from "../auth/auth-guard/auth-guard.service";
@@ -19,10 +19,10 @@ import { ConfigBaseComponent } from "./config-base/config-base.component";
 // ----------------------------------------------------------------------------
 // Routes
 // ----------------------------------------------------------------------------
-const ConfigRoutes: Routes = [
+const ConfigurationRoutes: Routes = [
   {
-    path: "config",
-    component: ConfigBaseComponent,
+    path: "configuration",
+    component: ConfigurationBaseComponent,
     // canActivate: [AuthGuard],
   },
 ];
@@ -30,4 +30,4 @@ const ConfigRoutes: Routes = [
 // ----------------------------------------------------------------------------
 // Module
 // ----------------------------------------------------------------------------
-export const ConfigRouting = RouterModule.forChild(ConfigRoutes);
+export const ConfigurationRouting = RouterModule.forChild(ConfigurationRoutes);
