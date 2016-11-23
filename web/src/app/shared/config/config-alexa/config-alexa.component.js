@@ -1,7 +1,18 @@
-import { Component } from "@angular/core";
-import { ConfigService } from "../config.service";
-import { DavisService } from "../../davis.service";
-export var ConfigAlexaComponent = (function () {
+"use strict";
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+var core_1 = require("@angular/core");
+// Services
+var config_service_1 = require("../config.service");
+var davis_service_1 = require("../../davis.service");
+var ConfigAlexaComponent = (function () {
     function ConfigAlexaComponent(davisService, iConfig) {
         this.davisService = davisService;
         this.iConfig = iConfig;
@@ -33,17 +44,15 @@ export var ConfigAlexaComponent = (function () {
         }
         this.submitted = true;
     };
-    ConfigAlexaComponent.decorators = [
-        { type: Component, args: [{
-                    moduleId: module.id,
-                    selector: "config-alexa",
-                    templateUrl: "./config-alexa.component.html",
-                },] },
-    ];
-    ConfigAlexaComponent.ctorParameters = [
-        { type: DavisService, },
-        { type: ConfigService, },
-    ];
+    ConfigAlexaComponent = __decorate([
+        core_1.Component({
+            moduleId: module.id,
+            selector: "config-alexa",
+            templateUrl: "./config-alexa.component.html",
+        }), 
+        __metadata('design:paramtypes', [davis_service_1.DavisService, config_service_1.ConfigService])
+    ], ConfigAlexaComponent);
     return ConfigAlexaComponent;
 }());
+exports.ConfigAlexaComponent = ConfigAlexaComponent;
 //# sourceMappingURL=config-alexa.component.js.map
