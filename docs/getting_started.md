@@ -8,7 +8,7 @@ Getting Started
 - **Node.js** - (6.x or newer) installed
 - **MongoDB** - installed with a [fully qualified domain name (FQDN)](https://kb.iu.edu/d/aiuv). This can be on the same server as your Davis instance (local) or on another server (remote). Guides: [AWS: EC2 instance with Route53](setup/mongo.md) or [Cloud9](https://community.c9.io/t/setting-up-mongodb/1717).  The MongoLab addon removes this requirement if you're using Heroku.
 - **Valid Certificate** - Davis communicates with a number of different services.  It's required that this connection is secured with a valid cert.
-- **Publicly accessible endpoint** - Davis needs to be publicly accessible.
+- **Publicly accessible endpoint** - This is required for both Slack and Alexa support.
 
 ## Deploy
 
