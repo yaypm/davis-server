@@ -19,6 +19,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 // Angular
 var core_1 = require("@angular/core");
 var router_1 = require("@angular/router");
+var davis_service_1 = require("../../shared/davis.service");
 // ----------------------------------------------------------------------------
 // Class
 // ----------------------------------------------------------------------------
@@ -26,7 +27,8 @@ var AuthLoginComponent = (function () {
     // ------------------------------------------------------
     // Inject services
     // ------------------------------------------------------
-    function AuthLoginComponent(router) {
+    function AuthLoginComponent(iDavis, router) {
+        this.iDavis = iDavis;
         this.router = router;
         // Initialize form submission
         this.submitted = false;
@@ -35,6 +37,13 @@ var AuthLoginComponent = (function () {
     // Initialize component
     // ------------------------------------------------------
     AuthLoginComponent.prototype.login = function () {
+        this.iDavis.getJwtToken()
+            .then(function (result) {
+            if (result.success) {
+            }
+            else {
+            }
+        });
         this.submitted = true;
     };
     AuthLoginComponent = __decorate([
@@ -43,7 +52,7 @@ var AuthLoginComponent = (function () {
             selector: "auth-login",
             templateUrl: "./auth-login.component.html",
         }), 
-        __metadata('design:paramtypes', [router_1.Router])
+        __metadata('design:paramtypes', [davis_service_1.DavisService, router_1.Router])
     ], AuthLoginComponent);
     return AuthLoginComponent;
 }());

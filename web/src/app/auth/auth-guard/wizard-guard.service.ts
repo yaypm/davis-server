@@ -59,6 +59,7 @@ export class WizardGuard implements CanActivate {
     if (response.success) {
       this.iDavis.isWizard = true;
       this.iDavis.token = response.token;
+      this.iDavis.values.user.admin = true;
       return true;
     } else {
       this.iDavis.isWizard = false;

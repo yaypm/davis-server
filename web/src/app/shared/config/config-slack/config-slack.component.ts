@@ -32,6 +32,7 @@ export class ConfigSlackComponent {
     
     doSubmit() {
         if (!this.davisService.config["slack"].success && this.davisService.values.slack.clientId && this.davisService.values.slack.clientSecret) {
+            //ToDo: Add redirect url and enabled=true to payload
             this.davisService.connectSlack()
               .then(result => {
                 if (result.success) {

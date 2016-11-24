@@ -33,6 +33,7 @@ var ConfigSlackComponent = (function () {
     ConfigSlackComponent.prototype.doSubmit = function () {
         var _this = this;
         if (!this.davisService.config["slack"].success && this.davisService.values.slack.clientId && this.davisService.values.slack.clientSecret) {
+            //ToDo: Add redirect url and enabled=true to payload
             this.davisService.connectSlack()
                 .then(function (result) {
                 if (result.success) {

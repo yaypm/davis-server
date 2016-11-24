@@ -10,6 +10,7 @@
 // Angular
 import { Component } from "@angular/core";
 import { Router }    from "@angular/router";
+import { DavisService } from "../../shared/davis.service";
 
 // ----------------------------------------------------------------------------
 // Class
@@ -27,12 +28,20 @@ export class AuthLoginComponent  {
   // ------------------------------------------------------
   // Inject services
   // ------------------------------------------------------
-  constructor(public router: Router) { }
+  constructor(public iDavis: DavisService, public router: Router) { }
 
   // ------------------------------------------------------
   // Initialize component
   // ------------------------------------------------------
   login() {
+    this.iDavis.getJwtToken()
+      .then(result => {
+        if (result.success) {
+          
+        } else {
+          // router.
+        }
+      });
     this.submitted = true;
   }
 

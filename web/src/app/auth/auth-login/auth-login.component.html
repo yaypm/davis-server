@@ -1,0 +1,26 @@
+<div class="page">
+    <div class="title title-config">
+        Welcome to Davis!
+    </div>
+    <div class="content">
+        <form (submit)="login()" #form="ngForm">
+            <section class="flex-container">
+                <div class="flex-item full-width">
+                    <label>Email</label>
+                    <input type="email" name="email" placeholder="john.smith@example.com" (ngModel)="davisService.values.authenticate.email" autofocus required>
+                </div>
+            </section>
+            <section class="flex-container">
+                <div class="flex-item full-width">
+                    <label>Password</label>
+                    <input type="password" name="password" placeholder="&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;" (ngModel)="davisService.values.authenticate.password" required>
+                </div>
+            </section>
+            <section class="flex-container">
+                <div class="flex-item next">
+                    <button type="submit" class="nextBtn">Sign in</button>
+                </div>
+            </section>
+        </form>
+    </div>
+</div>
