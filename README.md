@@ -11,7 +11,6 @@ We've tried to make the process of setting up and configuring Davis as simple as
  - [Core Concepts](docs/concepts.md)
  - [Supported Phrases](docs/supported_phrases.md)
  - [Creating Custom Plugins](docs/development/plugins.md)
- - [Extending Davis](docs/development/extending_davis.md)
  - [Road Map](https://github.com/Dynatrace/davis-server/projects/2)
 
 ## Disclaimer
