@@ -14,6 +14,7 @@
         "./ping",
         "./problemNotification",
         "./pushLink",
-        "./autoFollowUp"
+        "./autoFollowUp",
+        "./lastProblem"
     ]
 }
