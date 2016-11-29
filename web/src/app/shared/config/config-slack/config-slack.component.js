@@ -20,6 +20,7 @@ var ConfigSlackComponent = (function () {
         this.isPasswordFocused = false;
         this.isPasswordMasked = true;
         this.myURL = "https://" + window.location.host;
+        this.iDavis.values.slack.redirectUri = this.myURL + "/oauth";
     }
     //ToDo: Use https://clipboardjs.com library to add copy to clipboard functionality to URLs
     ConfigSlackComponent.prototype.validate = function () {
@@ -37,8 +38,19 @@ var ConfigSlackComponent = (function () {
             this.iDavis.connectSlack()
                 .then(function (result) {
                 if (result.success) {
-                    //REST call to endpoint here, trigger restart of Botkit
-                    _this.iDavis.config["slack"].success = true;
+                    _this.iDavis.startSlack()
+                        .then(function (result) {
+                        if (result.success) {
+                            _this.iDavis.config["slack"].success = true;
+                        }
+                        else {
+                            _this.iDavis.config["slack"].success = false;
+                            _this.iDavis.config["slack"].error = result.message;
+                        }
+                    }, function (error) {
+                        console.log(error);
+                        _this.iDavis.config["slack"].success = false;
+                    });
                 }
                 else {
                     _this.iDavis.config["slack"].success = false;

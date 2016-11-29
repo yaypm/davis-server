@@ -51,7 +51,7 @@
             <section class="flex-container" *ngIf="!iDavis.config['slack'].success">
                 <div class="flex-item full-width">
                     <label>OAuth & Permissions - Redirect URL</label>
-                    <div class="code">{{ myURL }}/oauth</div>
+                    <div class="code">{{ iDavis.values.slack.redirectUri }}</div>
                 </div>
             </section>
              <section class="flex-container" *ngIf="!iDavis.config['slack'].success">
@@ -70,7 +70,7 @@
             </section>
             <section class="flex-container" *ngIf="!iDavis.config['slack'].success">
                 <div class="flex-item next">
-                    <button type="submit" class="nextBtn" [class.warning]="buttonText === 'Skip and Finish' || buttonText === 'Skip'">{{(iDavis.isWizard) ? buttonText : 'Save'}}</button>
+                    <button type="submit" class="content-save-button" [class.warning]="buttonText === 'Skip and Finish' || buttonText === 'Skip'">{{(iDavis.isWizard) ? buttonText : 'Save'}}</button>
                 </div>
             </section>
         </form>

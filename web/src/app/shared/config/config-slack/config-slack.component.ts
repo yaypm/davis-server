@@ -18,6 +18,7 @@ export class ConfigSlackComponent {
     
     constructor(public iDavis: DavisService) {
         this.myURL = "https://" + window.location.host;
+        this.iDavis.values.slack.redirectUri = `${this.myURL}/oauth`;
     }
     
     //ToDo: Use https://clipboardjs.com library to add copy to clipboard functionality to URLs
@@ -36,12 +37,23 @@ export class ConfigSlackComponent {
             this.iDavis.connectSlack()
               .then(result => {
                 if (result.success) {
-                  //REST call to endpoint here, trigger restart of Botkit
-                  this.iDavis.config["slack"].success = true;
-                } else {
-                  this.iDavis.config["slack"].success = false;
-                  this.iDavis.config["slack"].error = result.message;
-                }
+                  this.iDavis.startSlack()
+                    .then(result => {
+                        if (result.success) {
+                              this.iDavis.config["slack"].success = true;
+                            } else {
+                              this.iDavis.config["slack"].success = false;
+                              this.iDavis.config["slack"].error = result.message;
+                            }
+                          },
+                          error => {
+                              console.log(error);
+                              this.iDavis.config["slack"].success = false;
+                          });
+                        } else {
+                          this.iDavis.config["slack"].success = false;
+                          this.iDavis.config["slack"].error = result.message;
+                        }
               },
               error => {
                   console.log(error);

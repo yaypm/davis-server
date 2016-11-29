@@ -162,6 +162,16 @@ export class DavisService {
             .then(this.extractData)
             .catch(this.handleError);
     }
+    
+    startSlack(): Promise<any> {
+        let headers = new Headers({ "Content-Type": "application/json", "x-access-token": this.token });
+        let options = new RequestOptions({ headers: headers });
+
+        return this.http.post("/api/v1/system/config/slack/start", {}, options)
+            .toPromise()
+            .then(this.extractData)
+            .catch(this.handleError);
+    }
 
     private extractData(res: Response) {
         let body = res.json();

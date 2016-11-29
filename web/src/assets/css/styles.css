@@ -222,11 +222,17 @@ li {
 }
 
 #made-in-detroit {
-  position: absolute;
-  bottom: 10px;
-  width: 100%;
+  position: fixed;
+  left: calc(50% - 55px);
+  bottom: 0;
+  width: 110px;
+  padding: 5px;
+  background-color: rgba(255, 255, 255, 0.4);
   text-align: center;
-  font-size: 14px;
+  font-size: 12px;
+  border: 1px solid transparent;
+  border-top-left-radius: 3px;
+  border-top-right-radius: 3px;
 }
 
 #davis-logo {
@@ -341,6 +347,7 @@ li {
 
 .next {
   position: relative;
+  padding-bottom: 90px;
   -webkit-flex: 2;
   -moz-flex: 2;
   -ms-flex: 2;
