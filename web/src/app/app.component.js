@@ -18,21 +18,31 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 // ----------------------------------------------------------------------------
 // Angular
 var core_1 = require("@angular/core");
+var router_1 = require("@angular/router");
 // Third party
 require("./rxjs-operators");
+var davis_service_1 = require("./shared/davis.service");
 // ----------------------------------------------------------------------------
 // Class
 // ----------------------------------------------------------------------------
 var AppComponent = (function () {
-    function AppComponent() {
+    function AppComponent(iDavis, router) {
+        this.iDavis = iDavis;
+        this.router = router;
     }
+    AppComponent.prototype.logOut = function () {
+        this.iDavis.isAuthenticated = false;
+        this.iDavis.isAdmin = false;
+        this.iDavis.token = null;
+        this.router.navigate(["/auth/login"]);
+    };
     AppComponent = __decorate([
         core_1.Component({
             moduleId: module.id,
             selector: "davis",
             templateUrl: "./app.component.html",
         }), 
-        __metadata('design:paramtypes', [])
+        __metadata('design:paramtypes', [davis_service_1.DavisService, router_1.Router])
     ], AppComponent);
     return AppComponent;
 }());

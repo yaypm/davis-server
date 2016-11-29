@@ -9,9 +9,11 @@
 // ----------------------------------------------------------------------------
 // Angular
 import { Component } from "@angular/core";
+import { Router } from "@angular/router";
 
 // Third party
 import "./rxjs-operators";
+import { DavisService } from "./shared/davis.service";
 
 // ----------------------------------------------------------------------------
 // Class
@@ -22,4 +24,13 @@ import "./rxjs-operators";
   templateUrl: "./app.component.html",
 })
 
-export class AppComponent { }
+export class AppComponent { 
+  constructor(public iDavis: DavisService, public router: Router) {}
+  
+  logOut(): void {
+    this.iDavis.isAuthenticated = false;
+    this.iDavis.isAdmin = false;
+    this.iDavis.token = null;
+    this.router.navigate(["/auth/login"]);
+  }
+}

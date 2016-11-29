@@ -13,14 +13,14 @@ var core_1 = require("@angular/core");
 var config_service_1 = require("../config.service");
 var davis_service_1 = require("../../davis.service");
 var ConfigAlexaComponent = (function () {
-    function ConfigAlexaComponent(davisService, iConfig) {
-        this.davisService = davisService;
+    function ConfigAlexaComponent(iDavis, iConfig) {
+        this.iDavis = iDavis;
         this.iConfig = iConfig;
         this.submitted = false;
         this.buttonText = "Skip";
     }
     ConfigAlexaComponent.prototype.validate = function () {
-        if (this.davisService.values.alexa_ids) {
+        if (this.iDavis.values.alexa_ids) {
             this.buttonText = "Continue";
         }
         else {
@@ -29,14 +29,14 @@ var ConfigAlexaComponent = (function () {
     };
     ConfigAlexaComponent.prototype.doSubmit = function () {
         var _this = this;
-        if (this.davisService.values.alexa_ids) {
-            this.davisService.connectAlexa()
+        if (this.iDavis.values.alexa_ids) {
+            this.iDavis.connectAlexa()
                 .then(function (result) {
-                _this.davisService.config["alexa"].success = true;
+                _this.iDavis.config["alexa"].success = true;
                 _this.iConfig.SelectView("slack");
             }, function (error) {
                 console.log(error);
-                _this.davisService.config["alexa"].success = false;
+                _this.iDavis.config["alexa"].success = false;
             });
         }
         else {

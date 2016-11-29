@@ -15,7 +15,7 @@ export class ConfigUsersComponent implements OnInit {
     isPasswordMasked: boolean = true;
     isSelectOpened: boolean = false;
     
-    constructor(public davisService: DavisService, public router: Router) {}
+    constructor(public iDavis: DavisService, public router: Router) {}
     
     doSubmit() {
       

@@ -13,38 +13,38 @@ var core_1 = require("@angular/core");
 var config_service_1 = require("../config.service");
 var davis_service_1 = require("../../davis.service");
 var ConfigDynatraceComponent = (function () {
-    function ConfigDynatraceComponent(davisService, iConfig) {
-        this.davisService = davisService;
+    function ConfigDynatraceComponent(iDavis, iConfig) {
+        this.iDavis = iDavis;
         this.iConfig = iConfig;
         this.submitted = false;
     }
     ConfigDynatraceComponent.prototype.doSubmit = function () {
         var _this = this;
-        this.davisService.connectDynatrace()
+        this.iDavis.connectDynatrace()
             .then(function (result) {
             if (result.success) {
-                _this.davisService.validateDynatrace()
+                _this.iDavis.validateDynatrace()
                     .then(function (res) {
                     if (res.success) {
-                        _this.davisService.config["dynatrace"].success = true;
+                        _this.iDavis.config["dynatrace"].success = true;
                         _this.iConfig.SelectView("alexa");
                     }
                     else {
-                        _this.davisService.config["dynatrace"].success = false;
-                        _this.davisService.config["dynatrace"].error = res.message;
+                        _this.iDavis.config["dynatrace"].success = false;
+                        _this.iDavis.config["dynatrace"].error = res.message;
                     }
                 }, function (err) {
-                    _this.davisService.config["dynatrace"].success = false;
-                    _this.davisService.config["dynatrace"].error = "Sorry an error occured, please try again.";
+                    _this.iDavis.config["dynatrace"].success = false;
+                    _this.iDavis.config["dynatrace"].error = "Sorry an error occurred, please try again.";
                 });
             }
             else {
-                _this.davisService.config["dynatrace"].success = false;
-                _this.davisService.config["dynatrace"].error = result.message;
+                _this.iDavis.config["dynatrace"].success = false;
+                _this.iDavis.config["dynatrace"].error = result.message;
             }
         }, function (error) {
-            _this.davisService.config["dynatrace"].success = false;
-            _this.davisService.config["dynatrace"].error = "Sorry an error occured, please try again.";
+            _this.iDavis.config["dynatrace"].success = false;
+            _this.iDavis.config["dynatrace"].error = "Sorry an error occurred, please try again.";
         });
         this.submitted = true;
     };

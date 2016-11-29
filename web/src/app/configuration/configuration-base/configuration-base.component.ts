@@ -26,12 +26,12 @@ export class ConfigurationBaseComponent  {
   // ------------------------------------------------------
   // Inject services
   // ------------------------------------------------------
-  constructor(public router: Router, public iConfig: ConfigService) { }
+  constructor(public router: Router, public iConfig: ConfigService, public iDavis: DavisService) { }
 
   // ------------------------------------------------------
   // Initialize component
   // ------------------------------------------------------
   ngOnInit() {
-    
+    this.iDavis.titleGlobal = 'Configure Davis';
   }
 }

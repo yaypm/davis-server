@@ -24,25 +24,37 @@ import { DavisService } from "../../shared/davis.service";
 export class AuthLoginComponent  {
   // Initialize form submission
   submitted: boolean = false;
+  loginError: string = null;
+  password: string = '';
 
   // ------------------------------------------------------
   // Inject services
   // ------------------------------------------------------
-  constructor(public iDavis: DavisService, public router: Router) { }
+  constructor(public iDavis: DavisService, public router: Router) {
+    this.iDavis.titleGlobal = '';
+  }
 
   // ------------------------------------------------------
   // Initialize component
   // ------------------------------------------------------
-  login() {
+  login(form: any) {
+    this.submitted = true;
+    this.iDavis.values.authenticate.email = form.value.email;
+    this.iDavis.values.authenticate.password = form.value.password;
     this.iDavis.getJwtToken()
       .then(result => {
+          console.log(result);
         if (result.success) {
-          
+          this.loginError = null;
+          this.iDavis.token = result.token;
+          this.iDavis.isAuthenticated = true;
+          this.iDavis.isAdmin = true;
+          this.router.navigate(['/configuration']);
         } else {
-          // router.
+          this.loginError = result.message;
+          this.password = '';
         }
       });
-    this.submitted = true;
   }
 
 }

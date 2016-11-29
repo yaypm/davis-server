@@ -32,19 +32,33 @@ var AuthLoginComponent = (function () {
         this.router = router;
         // Initialize form submission
         this.submitted = false;
+        this.loginError = null;
+        this.password = '';
+        this.iDavis.titleGlobal = '';
     }
     // ------------------------------------------------------
     // Initialize component
     // ------------------------------------------------------
-    AuthLoginComponent.prototype.login = function () {
+    AuthLoginComponent.prototype.login = function (form) {
+        var _this = this;
+        this.submitted = true;
+        this.iDavis.values.authenticate.email = form.value.email;
+        this.iDavis.values.authenticate.password = form.value.password;
         this.iDavis.getJwtToken()
             .then(function (result) {
+            console.log(result);
             if (result.success) {
+                _this.loginError = null;
+                _this.iDavis.token = result.token;
+                _this.iDavis.isAuthenticated = true;
+                _this.iDavis.isAdmin = true;
+                _this.router.navigate(['/configuration']);
             }
             else {
+                _this.loginError = result.message;
+                _this.password = '';
             }
         });
-        this.submitted = true;
     };
     AuthLoginComponent = __decorate([
         core_1.Component({

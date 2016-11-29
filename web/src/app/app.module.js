@@ -31,6 +31,7 @@ var wizard_module_1 = require("./wizard/wizard.module");
 // Routing
 var app_routing_1 = require("./app.routing");
 // Services
+var config_guard_service_1 = require("./auth/auth-guard/config-guard.service");
 var wizard_guard_service_1 = require("./auth/auth-guard/wizard-guard.service");
 var davis_service_1 = require("./shared/davis.service");
 // ----------------------------------------------------------------------------
@@ -59,6 +60,7 @@ var AppModule = (function () {
                 wizard_module_1.WizardModule,
             ],
             providers: [
+                config_guard_service_1.ConfigGuard,
                 wizard_guard_service_1.WizardGuard,
                 davis_service_1.DavisService,
             ],

@@ -59,7 +59,9 @@ export class ConfigGuard implements CanActivate {
     if (response.success) {
       this.iDavis.isWizard = true;
       this.iDavis.token = response.token;
-      return true;
+      this.iDavis.values.user.admin = true;
+      this.router.navigate(["/wizard"]);
+      return false;
     } else {
       this.iDavis.isWizard = false;
       this.router.navigate(["/auth/login"]);

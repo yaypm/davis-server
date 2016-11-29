@@ -1,32 +1,32 @@
 <div class="page">
-    <div *ngIf="davisService.isWizard" class="step">
+    <div *ngIf="iDavis.isWizard" class="step">
         Step 2 of 4
     </div>
-    <div *ngIf="davisService.isWizard" class="title">
+    <div *ngIf="iDavis.isWizard" class="title">
         Connect to Dynatrace
     </div>
     <div class="content">
-        <form (submit)="doSubmit()" #form="ngForm">
-            <section *ngIf="!davisService.config['dynatrace'].success" class="flex-container">
+        <form (ngSubmit)="doSubmit()" #form="ngForm">
+            <section *ngIf="!iDavis.config['dynatrace'].success" class="flex-container">
                 <div class="flex-item full-width error">
-                    {{davisService.config['dynatrace'].error}}
+                    {{iDavis.config['dynatrace'].error}}
                 </div>
             </section>
             <section class="flex-container">
                 <div class="flex-item full-width">
                     <label>Dynatrace Tenant URL</label>
-                    <input type="text" name="url" placeholder="https://qwefgmasd.live.dynatrace.com" [(ngModel)]="davisService.values.dynatrace.url" autofocus required>
+                    <input type="text" name="url" placeholder="https://qwefgmasd.live.dynatrace.com" [(ngModel)]="iDavis.values.dynatrace.url" autofocus required>
                 </div>
             </section>
             <section class="flex-container">
                 <div class="flex-item full-width">
                     <label>Dynatrace API Token</label>
-                    <input type="text" name="token" placeholder="IYVTz0nBSkZdsQOhS7W3P" [(ngModel)]="davisService.values.dynatrace.token" required>
+                    <input type="text" name="token" placeholder="IYVTz0nBSkZdsQOhS7W3P" [(ngModel)]="iDavis.values.dynatrace.token" required>
                 </div>
             </section>
             <section class="flex-container">
                 <div class="flex-item next">
-                    <button type="submit" class="nextBtn">Continue</button>
+                    <button type="submit" class="content-save-button">{{(iDavis.isWizard) ? 'Continue' : 'Save'}}</button>
                 </div>
             </section>
         </form>

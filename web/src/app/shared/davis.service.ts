@@ -11,6 +11,7 @@ export class DavisService {
     token: string;
     timezones: any = [];
     isWizard: boolean = false;
+    titleGlobal: string = '';
 
     values: any = {
         authenticate: {

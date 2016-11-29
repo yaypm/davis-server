@@ -14,7 +14,7 @@ import { Routes, RouterModule } from "@angular/router";
 import { ConfigurationBaseComponent } from "./configuration-base/configuration-base.component";
 
 // Services
-// import { AuthGuard } from "../auth/auth-guard/auth-guard.service";
+import { ConfigGuard } from "../auth/auth-guard/config-guard.service";
 
 // ----------------------------------------------------------------------------
 // Routes
@@ -23,7 +23,7 @@ const ConfigurationRoutes: Routes = [
   {
     path: "configuration",
     component: ConfigurationBaseComponent,
-    // canActivate: [AuthGuard],
+    canActivate: [ConfigGuard],
   },
 ];
 

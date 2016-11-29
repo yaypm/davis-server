@@ -147,6 +147,48 @@ button:focus {
   outline: none;
 }
 
+.log-in {
+  background-color: #00a6fb;
+}
+
+.log-in:hover {
+  background-color: #008cdb;
+}
+
+.log-in:active {
+  background-color: #006bba;
+}
+
+.log-out {
+  position: relative;
+  right: 0;
+  float: right;
+  margin: 10px;
+  padding: 0px 17px;
+  border-color: #006bba;
+  background-color: transparent;
+  color: #006bba;
+}
+
+.log-out:hover {
+  padding: 0px 16px;
+  border: 2px solid #008cdb;
+  background-color: transparent;
+  color: #008cdb;
+}
+
+.log-out:active {
+  padding: 0px 16px;
+  border: 2px solid #006bba;
+  background-color: transparent;
+  color: #006bba;
+}
+
+.content-save-button {
+  position: absolute;
+  right: -15px;
+}
+
 .warning {
   background-color: #d3571a;
 }
@@ -187,13 +229,27 @@ li {
   font-size: 14px;
 }
 
-#heart-emoji {
-  color: red;
+#davis-logo {
+  float: left;
+  width: 80px;
+  border: 1px solid #00A6FB;
+  border-top-left-radius: 3px;
+  border-bottom-left-radius: 3px;
+}
+
+#davis-logo-text {
+  text-align: center;
+  width: calc(100% - 82px);
+  float: left;
+  font-size: 60px;
+  border-top-right-radius: 3px;
+  border-bottom-right-radius: 3px;
+  background-color: white;
 }
 
 .step {
   margin: 0 auto;
-  margin-top: 100px;
+  margin-top: 50px;
   width: 400px;
   font-size: 14px;
   font-weight: bold;
@@ -207,17 +263,31 @@ li {
   font-weight: bold;
 }
 
-.title-config {
+.title-global {
+  width: calc(100% - 450px);
+  text-align: center;
+  font-size: 36px;
+  float: left;
+  padding-top: 5px;
+}
+
+.title-auth {
   clear: both;
   margin-top: 100px;
-  width: 530px;
-  text-align: center;
+  width: 315px;
+  padding-left: 15px;
 }
 
 .content {
   margin: 0 auto;
   margin-top: 10px;
   width: 400px;
+}
+
+.content-auth {
+  clear: both;
+  padding-top: 20px;
+  width: 300px;
 }
 
 .flex-container {
@@ -275,11 +345,6 @@ li {
   -moz-flex: 2;
   -ms-flex: 2;
   -o-flex: 2;
-}
-
-.nextBtn {
-  position: absolute;
-  right: -15px;
 }
 
 .code {

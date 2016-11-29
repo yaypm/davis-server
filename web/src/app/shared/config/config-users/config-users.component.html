@@ -1,10 +1,10 @@
 <div class="page">
     <div class="content">
-        <form (submit)="doSubmit()" #form="ngForm">
+        <form (ngSubmit)="doSubmit()" #form="ngForm">
           
             <section class="flex-container">
                 <div class="flex-item next">
-                    <button type="submit" class="nextBtn">Continue</button>
+                    <button type="submit" class="content-save-button">{{(iDavis.isWizard) ? 'Continue' : 'Save'}}</button>
                 </div>
             </section>
         </form>

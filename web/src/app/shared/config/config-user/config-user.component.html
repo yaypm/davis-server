@@ -1,31 +1,31 @@
 <div class="page">
-    <div *ngIf="davisService.isWizard" class="step">
+    <div *ngIf="iDavis.isWizard" class="step">
         Step 1 of 4
     </div>
-    <div *ngIf="davisService.isWizard" class="title">
-        Create <span *ngIf="davisService.values.user.admin">Administrator</span><span *ngIf="!davisService.values.user.admin">User</span> Account
+    <div *ngIf="iDavis.isWizard" class="title">
+        Create <span *ngIf="iDavis.values.user.admin">Administrator</span><span *ngIf="!iDavis.values.user.admin">User</span> Account
     </div>
     <div class="content">
-        <form (submit)="doSubmit()" #form="ngForm">
-            <section *ngIf="!davisService.config['user'].success" class="flex-container">
+        <form (ngSubmit)="doSubmit()" #form="ngForm">
+            <section *ngIf="!iDavis.config['user'].success" class="flex-container">
                 <div class="flex-item full-width error">
-                    {{davisService.config['user'].error}}
+                    {{iDavis.config['user'].error}}
                 </div>
             </section>
             <section class="flex-container">
                 <div class="flex-item half-width left-half">
                     <label>First Name</label>
-                    <input type="text" name="first" placeholder="John" [(ngModel)]="davisService.values.user.name.first" autofocus required>
+                    <input type="text" name="first" placeholder="John" [(ngModel)]="iDavis.values.user.name.first" autofocus required>
                 </div>
                  <div class="flex-item half-width right-half">
                     <label>Last Name</label>
-                    <input type="text" name="last" placeholder="Smith" [(ngModel)]="davisService.values.user.name.last" required>
+                    <input type="text" name="last" placeholder="Smith" [(ngModel)]="iDavis.values.user.name.last" required>
                 </div>
             </section>
             <section class="flex-container">
                 <div class="flex-item full-width">
                     <label>Email</label>
-                    <input type="email" name="email" placeholder="john.smith@example.com" [(ngModel)]="davisService.values.user.email" required>
+                    <input type="email" name="email" placeholder="john.smith@example.com" [(ngModel)]="iDavis.values.user.email" required>
                 </div>
             </section>
             <section class="flex-container">
@@ -33,10 +33,10 @@
                     <label>Password</label>
                     <div class="input-button-wrapper" [class.input-button-wrapper-focus]="isPasswordFocused">
                         <input *ngIf="isPasswordMasked" type="password" name="password" class="input-button-input" 
-                            placeholder="&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;" [(ngModel)]="davisService.values.user.password" 
+                            placeholder="&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;" [(ngModel)]="iDavis.values.user.password" 
                             (focus)="isPasswordFocused = true" (blur)="isPasswordFocused = false" required>
                         <input *ngIf="!isPasswordMasked" type="text" name="passwordText" class="input-button-input" 
-                            placeholder="&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;" [(ngModel)]="davisService.values.user.password" 
+                            placeholder="&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;" [(ngModel)]="iDavis.values.user.password" 
                             (focus)="isPasswordFocused = true" (blur)="isPasswordFocused = false" required>
                         <div class="input-button-button" (click)="isPasswordMasked = !isPasswordMasked">
                             <img class="input-button-img" [class.input-button-img-password-masked]="isPasswordMasked" src="/assets/img/eye.svg">
@@ -45,20 +45,20 @@
                 </div>
                 <div class="flex-item half-width right-half">
                     <label>Timezone</label>
-                    <select name="timezone" [(ngModel)]="davisService.values.user.timezone" [class.select-opened]="isSelectOpened" (click)="isSelectOpened = !isSelectOpened" (blur)="isSelectOpened = false" required>
-                        <option *ngFor="let tz of davisService.timezones" [value]="tz">{{tz}}</option>
+                    <select name="timezone" [(ngModel)]="iDavis.values.user.timezone" [class.select-opened]="isSelectOpened" (click)="isSelectOpened = !isSelectOpened" (blur)="isSelectOpened = false" required>
+                        <option *ngFor="let tz of iDavis.timezones" [value]="tz">{{tz}}</option>
                     </select>
                 </div>
             </section>
-            <section *ngIf="!davisService.isWizard" class="flex-container">
+            <section *ngIf="!iDavis.isWizard" class="flex-container">
                 <div class="flex-item full-width">
                     <label>Administrator</label>
-                    <input type="checkbox" name="admin" [(ngModel)]="davisService.values.user.admin">
+                    <input type="checkbox" name="admin" [(ngModel)]="iDavis.values.user.admin">
                 </div>
             </section>
             <section class="flex-container">
                 <div class="flex-item next">
-                    <button type="submit" class="nextBtn">Continue</button>
+                    <button type="submit" class="content-save-button">{{(iDavis.isWizard) ? 'Continue' : 'Save'}}</button>
                 </div>
             </section>
         </form>

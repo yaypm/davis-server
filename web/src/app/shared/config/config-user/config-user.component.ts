@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, Input } from "@angular/core";
 
 // Services
 import { ConfigService } from "../config.service";
@@ -10,6 +10,8 @@ import { DavisService } from "../../davis.service";
     templateUrl: "./config-user.component.html",
 })
 export class ConfigUserComponent implements OnInit {
+  
+    @Input() isWizard: boolean;
     
     submitted: boolean = false;
     isPasswordFocused: boolean = false;
@@ -17,85 +19,70 @@ export class ConfigUserComponent implements OnInit {
     isSelectOpened: boolean = false;
     
     constructor(
-      public davisService: DavisService,
+      public iDavis: DavisService,
       public iConfig: ConfigService) {}
     
     doSubmit() {
-      this.davisService.addDavisUser()
+      this.submitted = true;
+      this.iDavis.addDavisUser()
         .then(result => {
             if (result.success) {
-              if (this.davisService.isWizard) {
-                this.davisService.removeDavisUser(this.davisService.values.authenticate.email)
+              if (this.iDavis.isWizard) {
+                this.iDavis.removeDavisUser(this.iDavis.values.authenticate.email)
                   .then(res => {
                       if (res.success) {
-                        this.davisService.config["user"].success = true;
+                        this.iDavis.config["user"].success = true;
                         
                         // Authenticate new user, update token
-                        this.davisService.values.authenticate.email = this.davisService.values.user.email;
-                        this.davisService.values.authenticate.password = this.davisService.values.user.password;
+                        this.iDavis.values.authenticate.email = this.iDavis.values.user.email;
+                        this.iDavis.values.authenticate.password = this.iDavis.values.user.password;
                         
-                         this.davisService.getJwtToken()
+                         this.iDavis.getJwtToken()
                           .then( 
                             response => {
-                              this.davisService.token = response.token;
+                              this.iDavis.token = response.token;
                               this.iConfig.SelectView("dynatrace");
                             },
                             error => {
-                              this.davisService.config["user"].success = false;
-                              this.davisService.config["user"].error = "Sorry an error occured, please try again.";
+                              this.iDavis.config["user"].success = false;
+                              this.iDavis.config["user"].error = "Sorry an error occurred, please try again.";
                             }
                           );
                       } else {
-                        this.davisService.config["user"].success = false;
-                        this.davisService.config["user"].error = res.message;
+                        this.iDavis.config["user"].success = false;
+                        this.iDavis.config["user"].error = res.message;
                       }
                   },
                   error => {
-                    this.davisService.config["user"].success = false;
-                    this.davisService.config["user"].error = "Sorry an error occured, please try again.";
+                    this.iDavis.config["user"].success = false;
+                    this.iDavis.config["user"].error = "Sorry an error occurred, please try again.";
                   });
                 }
             } else {
-              this.davisService.config["user"].success = false;
-              this.davisService.config["user"].error = result.message;
-              this.davisService.values.user.email = "";
-              this.davisService.values.user.password = "";
+              this.iDavis.config["user"].success = false;
+              this.iDavis.config["user"].error = result.message;
+              this.iDavis.values.user.email = "";
+              this.iDavis.values.user.password = "";
             }
           },
           error => {
-            this.davisService.config["user"].success = false;
-            this.davisService.config["user"].error = "Sorry an error occured, please try again.";
+            this.iDavis.config["user"].success = false;
+            this.iDavis.config["user"].error = "Sorry an error occurred, please try again.";
           });
-      this.submitted = true;
     }
     
     ngOnInit() {
-      if (this.davisService.isWizard && !this.davisService.token) {
-        this.davisService.values.authenticate.email = "admin@localhost";
-        this.davisService.values.authenticate.password = "changeme";
-        this.davisService.values.user.admin = true;
-      }
-      this.davisService.getJwtToken()
+     
+      this.iDavis.getTimezones()
         .then( 
           response => {
-            this.davisService.token = response.token;
-            this.davisService.getTimezones()
-              .then( 
-                response => {
-                  this.davisService.timezones = response.timezones;
-                  this.davisService.values.user.timezone = this.davisService.getTimezone();
-                },
-                error => {
-                  this.davisService.config["user"].success = false;
-                  this.davisService.config["user"].error = "Unable to get timezones, please try again later.";
-                }
-              );
+            this.iDavis.timezones = response.timezones;
+            this.iDavis.values.user.timezone = this.iDavis.getTimezone();
           },
           error => {
-            this.davisService.config["user"].success = false;
-            this.davisService.config["user"].error = "Sorry an error occured, please try again.";
-          }
-        );
+            this.iDavis.config["user"].success = false;
+            this.iDavis.config["user"].error = "Unable to get timezones, please try again later.";
+          });
     }
 
 }

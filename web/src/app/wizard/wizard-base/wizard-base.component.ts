@@ -12,6 +12,7 @@ import { Component } from "@angular/core";
 
 // Services
 import { ConfigService } from "../../shared/config/config.service";
+import { DavisService }  from "../../shared/davis.service";
 
 // ----------------------------------------------------------------------------
 // Class
@@ -26,5 +27,7 @@ export class WizardBaseComponent {
   // ------------------------------------------------------
   // Inject services
   // ------------------------------------------------------
-  constructor(public iConfig: ConfigService) { }
+  constructor(public iConfig: ConfigService, public iDavis: DavisService) { 
+    this.iDavis.titleGlobal = 'Setup Davis';
+  }
 }

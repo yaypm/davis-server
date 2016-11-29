@@ -14,11 +14,11 @@ export class ConfigAlexaComponent {
   buttonText: string = "Skip";
 
   constructor(
-    public davisService: DavisService,
+    public iDavis: DavisService,
     public iConfig: ConfigService) { }
 
   validate() {
-    if (this.davisService.values.alexa_ids) {
+    if (this.iDavis.values.alexa_ids) {
       this.buttonText = "Continue";
     } else {
       this.buttonText = "Skip";
@@ -26,15 +26,15 @@ export class ConfigAlexaComponent {
   }
 
   doSubmit() {
-    if (this.davisService.values.alexa_ids) {
-      this.davisService.connectAlexa()
+    if (this.iDavis.values.alexa_ids) {
+      this.iDavis.connectAlexa()
       .then(result => {
-        this.davisService.config["alexa"].success = true;
+        this.iDavis.config["alexa"].success = true;
         this.iConfig.SelectView("slack");
       },
       error => {
       console.log(error);
-      this.davisService.config["alexa"].success = false;
+      this.iDavis.config["alexa"].success = false;
     });
     } else {
       this.iConfig.SelectView("slack");

@@ -14,35 +14,35 @@ export class ConfigDynatraceComponent {
   submitted: boolean = false;
     
   constructor(
-    public davisService: DavisService,
+    public iDavis: DavisService,
     public iConfig: ConfigService) { }
   
   doSubmit() {
-    this.davisService.connectDynatrace()
+    this.iDavis.connectDynatrace()
         .then(result => {
           if (result.success) {
-            this.davisService.validateDynatrace()
+            this.iDavis.validateDynatrace()
             .then(res => {
               if (res.success) {
-                this.davisService.config["dynatrace"].success = true;
+                this.iDavis.config["dynatrace"].success = true;
                 this.iConfig.SelectView("alexa");
               } else {
-                this.davisService.config["dynatrace"].success = false;
-                this.davisService.config["dynatrace"].error = res.message;
+                this.iDavis.config["dynatrace"].success = false;
+                this.iDavis.config["dynatrace"].error = res.message;
               }
             },
             err => {
-              this.davisService.config["dynatrace"].success = false;
-              this.davisService.config["dynatrace"].error = "Sorry an error occured, please try again.";
+              this.iDavis.config["dynatrace"].success = false;
+              this.iDavis.config["dynatrace"].error = "Sorry an error occurred, please try again.";
             });
           } else {
-            this.davisService.config["dynatrace"].success = false;
-            this.davisService.config["dynatrace"].error = result.message;
+            this.iDavis.config["dynatrace"].success = false;
+            this.iDavis.config["dynatrace"].error = result.message;
           }
         },
         error => {
-          this.davisService.config["dynatrace"].success = false;
-          this.davisService.config["dynatrace"].error = "Sorry an error occured, please try again.";
+          this.iDavis.config["dynatrace"].success = false;
+          this.iDavis.config["dynatrace"].error = "Sorry an error occurred, please try again.";
         });
     this.submitted = true;
   }

@@ -16,40 +16,40 @@ export class ConfigSlackComponent {
     isPasswordFocused: boolean = false;
     isPasswordMasked: boolean = true;
     
-    constructor(public davisService: DavisService) {
+    constructor(public iDavis: DavisService) {
         this.myURL = "https://" + window.location.host;
     }
     
     //ToDo: Use https://clipboardjs.com library to add copy to clipboard functionality to URLs
     
     validate() {
-        if (this.davisService.values.slack.clientId && this.davisService.values.slack.clientSecret) {
+        if (this.iDavis.values.slack.clientId && this.iDavis.values.slack.clientSecret) {
             this.buttonText = "Create Davis Slack Bot";
-        } else if (!this.davisService.config["slack"].success){
+        } else if (!this.iDavis.config["slack"].success){
             this.buttonText = "Skip and Finish";
         }
     }
     
     doSubmit() {
-        if (!this.davisService.config["slack"].success && this.davisService.values.slack.clientId && this.davisService.values.slack.clientSecret) {
+        if (!this.iDavis.config["slack"].success && this.iDavis.values.slack.clientId && this.iDavis.values.slack.clientSecret) {
             //ToDo: Add redirect url and enabled=true to payload
-            this.davisService.connectSlack()
+            this.iDavis.connectSlack()
               .then(result => {
                 if (result.success) {
                   //REST call to endpoint here, trigger restart of Botkit
-                  this.davisService.config["slack"].success = true;
+                  this.iDavis.config["slack"].success = true;
                 } else {
-                  this.davisService.config["slack"].success = false;
-                  this.davisService.config["slack"].error = result.message;
+                  this.iDavis.config["slack"].success = false;
+                  this.iDavis.config["slack"].error = result.message;
                 }
               },
               error => {
                   console.log(error);
-                  this.davisService.config["slack"].success = false;
+                  this.iDavis.config["slack"].success = false;
               });
             this.submitted = true;
         } else {
-            this.davisService.windowLocation(this.myURL);
+            this.iDavis.windowLocation(this.myURL);
         }
     }
 }
