@@ -20,7 +20,7 @@ By far the simplest way to get started with Davis is to simply click the "Deploy
 
 #### CLI
 
-It's also possible to deploy to Heroku using their CLI.  
+It's also possible to deploy to Heroku using their CLI.
 
 * Clone this repo and change directory to it
 * Log in with the [Heroku Toolbelt](https://toolbelt.heroku.com/) and create an app: `heroku create`
@@ -29,7 +29,7 @@ It's also possible to deploy to Heroku using their CLI.
 
 #### Limitations
 
-While Heroku offers a generous free tier, it's not recommends for Davis.  Feel free to use it while you're evaluating but the hobby tier is recommended for production use.  This is mainly because the free tier goes to sleep after 30 minutes of inactivity and the startup process is relativity slow.
+While Heroku offers a generous free tier, it is not recommended for Davis.  Feel free to use it while you're evaluating but the hobby tier is recommended for production use.  This is mainly because the free tier goes to sleep after 30 minutes of inactivity and the startup process is relativity slow.
 
 ### AWS - Cloud Computing services
 
@@ -43,3 +43,51 @@ Coming soon!
 ## Management
 
 A configuration UI is currently in the works!  Until then, please have a look at our [REST API docs](development/API.md).
+
+## Basic Usage
+
+Here are a few example interactions to get you started with Davis.
+
+### Basic Time Range query
+
+> Alexa, start davis.
+
+> How can I be of service?
+
+> What happened yesterday?
+
+> I hate to be the bearer of bad news, but there were 15 problems detected yesterday between
+12:00 AM and 11:59 PM. However, I would recommend focusing on one of the following problems. First
+off, there was a global outage for synthetic based web checks, which affected Jerry -
+easytravel.demo.dynatrace dot com:8080/, but it closed around 6:40 AM. Next, there was a global
+outage for synthetic based web checks, which affected easyTravel demo booking, but was resolved
+yesterday around 1:05 AM. Finally, there was a global outage for synthetic based web checks, which
+affected easyTravel demo booking, but it closed yesterday around 2:40 AM. Would you be interested in
+hearing more about the first, second, or third problem?
+
+> The third one
+
+> This problem started yesterday around 2:00 AM when a global outage for synthetic based web checks
+started impacting easyTravel demo booking. This problem appears to be resolved now. However, I would
+recommend investigating the root cause of this problem to see if there's a way to avoid this in the
+future. Is there anything else I can help you with?
+
+> No
+
+> Ok, Have a good one!
+
+### Specific Application Query
+
+> Alexa, start davis.
+
+> How can I be of service?
+
+> What happened yesterday with my fancy application?
+
+> There was a series of connectivity failures that affected my fancy application.  This problem
+started yesterday around 3 AM but was resolved yesterday around 3:30 AM. Would you like me to
+analyze this further for you?
+
+> No
+
+> Ok, Have a nice day!
