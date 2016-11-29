@@ -45,6 +45,8 @@ Update a configuration for :category.
 
 List all users
 
+## `/api/v1/system/users/:user_email`
+
 ### POST
 
 Create a user
@@ -53,7 +55,6 @@ Create a user
 
 ```
 {
-	"email": "user@example.com",
 	"password": "12345"
 }
 ```
@@ -66,8 +67,6 @@ Create a user
   "message": "User created!"
 }
 ```
-
-## `/api/v1/system/users/:user_email`
 
 ### GET
 

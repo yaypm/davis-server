@@ -1,3 +1,4 @@
-{{ timeRange | friendlyTimeRange(user) | capitalize }}, {{ appName}} experienced an average of {{ averageUsers }} user actions per minute.
+{{ timeRange | friendlyTimeRange(user) | capitalize }}, {{ appName}} was your most active application,
+experiencing an average of {{ averageUsers }} user actions per minute.
 The greatest load was {{ maxUsers }} user actions per minute {{ maxTime | friendlyTime(user) }}.
 The least was {{ minUsers }} user actions per minute {{ minTime | friendlyTime(user) }}.

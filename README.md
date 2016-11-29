@@ -1,19 +1,20 @@
-[ ![Codeship Status for Dynatrace/davis-server](https://app.codeship.com/projects/db947ab0-7fc9-0134-339c-0295c16491cd/status?branch=davisV2)](https://app.codeship.com/projects/182000)
-[![License](http://img.shields.io/:license-mit-blue.svg)](https://github.com/Dynatrace/davis-server/blob/master/LICENSE)
+>******We are currently upgrading Davis with some new exciting features! Watch our live keynote unveiling the new Davis as AWS re:Invent 2016 and**  [Building the future of DevOps](https://www.portal.reinvent.awsevents.com/connect/sessionDetail.ww?SESSION_ID=8749). **Please see our latest stable release** [here](https://github.com/Dynatrace/davis-server/releases/tag/davis-v1).****
 
-#### With the Heroku Button
+![](https://s3.amazonaws.com/dynatrace-davis/assets/images/dynatrace-davis-logo.png)
 
-[![Deploy](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy?template=https://github.com/Dynatrace/davis-server/tree/davisV2)
+Welcome to Davis!  Davis provides several new, cutting edge mediums for interacting with Dynatrace.  Currently integration with Slack and Amazon Alexa are officially supported but more could be added in the future.
 
-#### Without It
+We've tried to make the process of setting up and configuring Davis as simple as possible.  However, feel free to open an issue or <a href="mailto:davis@dynatrace.com">email</a> if any questions or feedback.  Now, without further ado, let's get started!
 
-* Clone the repo and change directory to it
-* Log in with the [Heroku Toolbelt](https://toolbelt.heroku.com/) and create an app: `heroku create`
-* Use the [mLab addon](https://elements.heroku.com/addons/mongolab): `heroku addons:create mongolab:sandbox --app YourAppName`
-* Deploy it with: `git push heroku master`
+## Table of Contents
+ - [Getting Started](docs/getting_started.md)
+ - [Core Concepts](docs/concepts.md)
+ - [Supported Phrases](docs/supported_phrases.md)
+ - [Creating Custom Plugins](docs/development/plugins.md)
+ - [Road Map](https://github.com/Dynatrace/davis-server/projects/2)
 
 ## Disclaimer
-This software is experimental and currently NOT SUPPORTED by Dynatrace. 
+This software is experimental and currently NOT SUPPORTED by Dynatrace.
 Please use at your own risk. You can contact the author via Github issues.
 
 ## License
