@@ -1,15 +1,15 @@
 ## Amazon Echo Configuration and UserID
 
-- [Navigate to Amazon's Alexa Service](https://github.com/ruxit/davis-server/blob/master/setup/echo.md#1---navigate-to-amazons-alexa-service)
-- [Select Alexa](https://github.com/ruxit/davis-server/blob/master/setup/echo.md#2---select-alexa)
-- [Get Started](https://github.com/ruxit/davis-server/blob/master/setup/echo.md#3---get-started)
-- [Add A New Skill](https://github.com/ruxit/davis-server/blob/master/setup/echo.md#4---add-a-new-skill)
-- [Name Your Skill](https://github.com/ruxit/davis-server/blob/master/setup/echo.md#5---name-your-skill)
-- [Configure Intent Schema - Pass Through](https://github.com/ruxit/davis-server/blob/master/setup/echo.md#6---configure-intent-schema---pass-through)
-- [Configure Sample Utterances - Pass Through](https://github.com/ruxit/davis-server/blob/master/setup/echo.md#7---configure-sample-utterances---pass-through)
-- [Add Your Davis Endpoint](https://github.com/ruxit/davis-server/blob/master/setup/echo.md#8---add-your-davis-endpoint)
-- [Configure Security](https://github.com/ruxit/davis-server/blob/master/setup/echo.md#9---configure-security)
-- [Obtain Echo UserID from Sample Request](https://github.com/ruxit/davis-server/blob/master/setup/echo.md#10---obtain-echo-userid-from-sample-request)
+- [Navigate to Amazon's Alexa Service](#1---navigate-to-amazons-alexa-service)
+- [Select Alexa](#2---select-alexa)
+- [Get Started](#3---get-started)
+- [Add A New Skill](#4---add-a-new-skill)
+- [Name Your Skill](#5---name-your-skill)
+- [Configure Intent Schema - Pass Through](#6---configure-intent-schema---pass-through)
+- [Configure Sample Utterances - Pass Through](#7---configure-sample-utterances---pass-through)
+- [Add Your Davis Endpoint](#8---add-your-davis-endpoint)
+- [Configure Security](#9---configure-security)
+- [Obtain Echo UserID from Sample Request](#10---obtain-echo-userid-from-sample-request)
 
 ***
 ### 1 - Navigate to Amazon's Alexa Service
@@ -61,7 +61,7 @@
 DoCommand {script parameters|command}
 ````
 ***
-### 8 - Add Your Davis Endpoint 
+### 8 - Add Your Davis Endpoint
 ![Alexa Homepage](https://s3.amazonaws.com/dynatrace-davis/assets/images/docs/alex-token-8.png)
 
 >If you launched this using our Heroku integration this will be your dyno application url. Selecting Open app.
@@ -80,5 +80,5 @@ DoCommand {script parameters|command}
 
 ***
 
-> Use this UserID in step four (4) of the configuration wizard. 
-> **Note:** Davis REST endpoints are available to add additional devices to Davis. In the next release of Davis you will be able to add these in the Davis UI. 
+> Use this UserID in step four (4) of the configuration wizard.
+> **Note:** Davis REST endpoints are available to add additional devices to Davis. In the next release of Davis you will be able to add these in the Davis UI.
