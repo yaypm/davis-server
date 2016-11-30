@@ -48,7 +48,10 @@ gpgkey=https://www.mongodb.org/static/pgp/server-3.2.asc" |
   sudo tee -a /etc/yum.repos.d/mongodb-org-3.2.repo
 sudo yum -y update && sudo yum install -y mongodb-org-server \
   mongodb-org-shell mongodb-org-tools git nginx python27-devel \
-  nodejs
+  nodejs npm
+git clone https://github.com/Dynatrace.com/davis-server.git
+cd davis-server
+npm install --production
 ```
 
 On Ubuntu Linux:
