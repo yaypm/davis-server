@@ -5,6 +5,9 @@ Getting Started
 - [Custom Deployment](#custom-deployment)
  - [Prerequisites](#prerequisites)
  - [Setup](#setup)
+  - [Installation](#installation)
+  - [SSL Configuration](#ssl-configuration)
+  - [Nginx Configuration](#nginx-configuration)
 - [Configuration](#configuration)
 - [Management](#management)
 - [Basic Usage](#basic-usage)
@@ -41,6 +44,8 @@ While Heroku offers a generous free tier, it is not recommended for Davis.  Feel
 ### Setup
 > TODO: Build and deploy releases on github
 
+#### Installation
+
 If using Amazon Linux AMI
 
 ```bash
@@ -69,7 +74,7 @@ cd davis-server
 npm install --production
 ```
 
-#### letsencrypt
+#### SSL Configuration
 
 Next we need to obtain an ssl certificate. If you already have
 an ssl certificate, skip to [nginx configuration](#nginx-configuration).
