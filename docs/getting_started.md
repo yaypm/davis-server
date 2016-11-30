@@ -3,6 +3,11 @@ Getting Started
 
 - [Deploy to Heroku](#deploy-to-heroku-cloud-paas-provider)
 - [Custom Deployment](#custom-deployment)
+ - [Prerequisites](#prerequisites)
+ - [Setup](#setup)
+- [Configuration](#configuration)
+- [Management](#management)
+- [Basic Usage](#basic-usage)
 
 ## Deploy to Heroku Cloud Paas Provider
 
