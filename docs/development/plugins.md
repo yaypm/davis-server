@@ -3,8 +3,9 @@ All of the functionality of Davis is implemented through the plugin system, from
 to routing. In order to showcase how simple it is to create a new intent, I'm going to create
 a weather intent using the [Weather Underground API](https://www.wunderground.com/weather/api/).
 Grab an API key and we can get started. The free tier is more than enough for this simple
-application. First, we have to set up a Davis environment. The full code for the finished plugin
-can be found [here](../../examples/davisWeather/).
+application. First, we have to set up a Davis environment.
+
+The full code for the finished plugin can be found [here](../../examples/davisWeather/).
 
 # Davis Setup
 
