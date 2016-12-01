@@ -1,45 +1,50 @@
-import { Component } from "@angular/core";
+import { Component, OnInit } from '@angular/core';
 
 // Services
-import { ConfigService } from "../config.service";
-import { DavisService }  from "../../davis.service";
+import { ConfigService } from '../config.service';
+import { DavisService }  from '../../davis.service';
 
 @Component({
   moduleId: module.id,
-  selector: "config-alexa",
-  templateUrl: "./config-alexa.component.html",
+  selector: 'config-alexa',
+  templateUrl: './config-alexa.component.html',
 })
-export class ConfigAlexaComponent {
+export class ConfigAlexaComponent implements OnInit {
   submitted: boolean = false;
-  buttonText: string = "Skip";
+  submitButton: string = (this.iDavis.isWizard) ? 'Skip' : 'Save';
 
   constructor(
     public iDavis: DavisService,
     public iConfig: ConfigService) { }
 
   validate() {
-    if (this.iDavis.values.alexa_ids) {
-      this.buttonText = "Continue";
+    if (this.iDavis.values.user.alexa_ids) {
+      this.submitButton = 'Continue';
     } else {
-      this.buttonText = "Skip";
+      this.submitButton = 'Skip';
     }
   }
 
   doSubmit() {
-    if (this.iDavis.values.alexa_ids) {
+    if (this.iDavis.values.user.alexa_ids) {
+      this.submitButton = 'Saving...';
       this.iDavis.connectAlexa()
-      .then(result => {
-        this.iDavis.config["alexa"].success = true;
-        this.iConfig.SelectView("slack");
-      },
-      error => {
-      console.log(error);
-      this.iDavis.config["alexa"].success = false;
-    });
+        .then(result => {
+          this.iDavis.config['alexa'].success = true;
+          this.iConfig.SelectView('slack');
+        },
+        error => {
+          console.log(error);
+          this.iDavis.config['alexa'].success = false;
+        });
     } else {
-      this.iConfig.SelectView("slack");
+      this.iConfig.SelectView('slack');
     }
 
     this.submitted = true;
+  }
+  
+  ngOnInit() {
+    document.getElementsByName('alexa')[0].focus();
   }
 }

@@ -8,10 +8,10 @@
 // Imports
 // ----------------------------------------------------------------------------
 // Angular
-import { Routes, RouterModule } from "@angular/router";
+import { Routes, RouterModule } from '@angular/router';
 
 // Components
-import { AuthLoginComponent } from "./auth-login/auth-login.component";
+import { AuthLoginComponent } from './auth-login/auth-login.component';
 
 // ----------------------------------------------------------------------------
 // Routes
@@ -21,10 +21,10 @@ const AuthRoutes: Routes = [
     children: [
       {
         component: AuthLoginComponent,
-        path: "login",
+        path: 'login',
       },
     ],
-    path: "auth",
+    path: 'auth',
   },
 ];
 

@@ -8,17 +8,17 @@
 // Imports
 // ----------------------------------------------------------------------------
 // Angular
-import { Component } from "@angular/core";
-import { Router }    from "@angular/router";
-import { DavisService } from "../../shared/davis.service";
+import { Component } from '@angular/core';
+import { Router }    from '@angular/router';
+import { DavisService } from '../../shared/davis.service';
 
 // ----------------------------------------------------------------------------
 // Class
 // ----------------------------------------------------------------------------
 @Component({
   moduleId:    module.id,
-  selector:    "auth-login",
-  templateUrl: "./auth-login.component.html",
+  selector:    'auth-login',
+  templateUrl: './auth-login.component.html',
 })
 
 export class AuthLoginComponent  {
@@ -43,12 +43,14 @@ export class AuthLoginComponent  {
     this.iDavis.values.authenticate.password = form.value.password;
     this.iDavis.getJwtToken()
       .then(result => {
-          console.log(result);
         if (result.success) {
           this.loginError = null;
           this.iDavis.token = result.token;
           this.iDavis.isAuthenticated = true;
-          this.iDavis.isAdmin = true;
+          this.iDavis.isAdmin = result.admin;
+          localStorage.setItem('email', form.value.email);
+          localStorage.setItem('token', result.token);
+          localStorage.setItem('isAdmin', result.admin);
           this.router.navigate(['/configuration']);
         } else {
           this.loginError = result.message;

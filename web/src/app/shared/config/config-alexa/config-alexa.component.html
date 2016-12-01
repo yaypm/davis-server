@@ -7,7 +7,7 @@
     </div>
     <div class="content">
         <form (ngSubmit)="doSubmit()" #form="ngForm">
-            <section *ngIf="!iDavis.config['alexa'].success" class="flex-container">
+            <section *ngIf="iDavis.config['user'].success === false" class="flex-container">
                 <div class="flex-item full-width error">
                     {{iDavis.config['alexa'].error}}
                 </div>
@@ -15,12 +15,19 @@
             <section class="flex-container">
                 <div class="flex-item full-width">
                     <label>Alexa User ID</label>
-                    <input type="text" name="alexa" placeholder="amzn1.ask.account.AFP3ZWPOS2BGJR7OWZPO1SFXEQ..." [(ngModel)]="iDavis.values.alexa_ids" (keyup)="validate()" autofocus>
+                    <input type="text" name="alexa" placeholder="amzn1.ask.account.AFP3ZWPOS2BGJR7OWZPO1SFXEQ..." 
+                        [(ngModel)]="iDavis.values.user.alexa_ids" 
+                        (keyup)="validate()" 
+                        [required]="(submitButton === 'Save') ? '' : null">
                 </div>
             </section>
             <section class="flex-container">
                 <div class="flex-item next">
-                    <button type="submit" class="content-save-button" [class.warning]="buttonText === 'Skip'" [disabled]="!form.valid">{{(iDavis.isWizard) ? buttonText : 'Save'}}</button>
+                    <button type="submit" class="content-save-button" 
+                        [class.warning]="submitButton === 'Skip'"
+                        [attr.disabled]="(!form.valid || submitButton === 'Saving...') ? true : null">
+                        {{ submitButton }}
+                    </button>
                 </div>
             </section>
         </form>

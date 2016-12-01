@@ -17,9 +17,9 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 // Imports
 // ----------------------------------------------------------------------------
 // Angular
-var core_1 = require("@angular/core");
-var router_1 = require("@angular/router");
-var davis_service_1 = require("../../shared/davis.service");
+var core_1 = require('@angular/core');
+var router_1 = require('@angular/router');
+var davis_service_1 = require('../../shared/davis.service');
 // ----------------------------------------------------------------------------
 // Class
 // ----------------------------------------------------------------------------
@@ -46,12 +46,14 @@ var AuthLoginComponent = (function () {
         this.iDavis.values.authenticate.password = form.value.password;
         this.iDavis.getJwtToken()
             .then(function (result) {
-            console.log(result);
             if (result.success) {
                 _this.loginError = null;
                 _this.iDavis.token = result.token;
                 _this.iDavis.isAuthenticated = true;
-                _this.iDavis.isAdmin = true;
+                _this.iDavis.isAdmin = result.admin;
+                localStorage.setItem('email', form.value.email);
+                localStorage.setItem('token', result.token);
+                localStorage.setItem('isAdmin', result.admin);
                 _this.router.navigate(['/configuration']);
             }
             else {
@@ -63,8 +65,8 @@ var AuthLoginComponent = (function () {
     AuthLoginComponent = __decorate([
         core_1.Component({
             moduleId: module.id,
-            selector: "auth-login",
-            templateUrl: "./auth-login.component.html",
+            selector: 'auth-login',
+            templateUrl: './auth-login.component.html',
         }), 
         __metadata('design:paramtypes', [davis_service_1.DavisService, router_1.Router])
     ], AuthLoginComponent);

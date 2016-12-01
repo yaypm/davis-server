@@ -7,7 +7,7 @@
     </div>
     <div class="content">
         <form (ngSubmit)="doSubmit()" #form="ngForm">
-            <section *ngIf="!iDavis.config['user'].success" class="flex-container">
+            <section *ngIf="iDavis.config['user'].success === false" class="flex-container">
                 <div class="flex-item full-width error">
                     {{iDavis.config['user'].error}}
                 </div>
@@ -15,14 +15,14 @@
             <section class="flex-container">
                 <div class="flex-item half-width left-half">
                     <label>First Name</label>
-                    <input type="text" name="first" placeholder="John" [(ngModel)]="iDavis.values.user.name.first" autofocus required>
+                    <input type="text" name="first" placeholder="John" [(ngModel)]="iDavis.values.user.name.first" required>
                 </div>
                  <div class="flex-item half-width right-half">
                     <label>Last Name</label>
                     <input type="text" name="last" placeholder="Smith" [(ngModel)]="iDavis.values.user.name.last" required>
                 </div>
             </section>
-            <section class="flex-container">
+            <section class="flex-container" *ngIf="iDavis.isWizard">
                 <div class="flex-item full-width">
                     <label>Email</label>
                     <input type="email" name="email" placeholder="john.smith@example.com" [(ngModel)]="iDavis.values.user.email" required>
@@ -30,14 +30,14 @@
             </section>
             <section class="flex-container">
                 <div class="flex-item half-width left-half">
-                    <label>Password</label>
+                    <label>{{ (iDavis.isWizard) ? '' : 'Change ' }}Password</label>
                     <div class="input-button-wrapper" [class.input-button-wrapper-focus]="isPasswordFocused">
                         <input *ngIf="isPasswordMasked" type="password" name="password" class="input-button-input" 
                             placeholder="&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;" [(ngModel)]="iDavis.values.user.password" 
-                            (focus)="isPasswordFocused = true" (blur)="isPasswordFocused = false" required>
+                            (focus)="isPasswordFocused = true" (blur)="isPasswordFocused = false" [required]="(iDavis.isWizard) ? '' : null">
                         <input *ngIf="!isPasswordMasked" type="text" name="passwordText" class="input-button-input" 
                             placeholder="&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;" [(ngModel)]="iDavis.values.user.password" 
-                            (focus)="isPasswordFocused = true" (blur)="isPasswordFocused = false" required>
+                            (focus)="isPasswordFocused = true" (blur)="isPasswordFocused = false" [required]="(iDavis.isWizard) ? '' : null">
                         <div class="input-button-button" (click)="isPasswordMasked = !isPasswordMasked">
                             <img class="input-button-img" [class.input-button-img-password-masked]="isPasswordMasked" src="/assets/img/eye.svg">
                         </div>
@@ -50,15 +50,26 @@
                     </select>
                 </div>
             </section>
-            <section *ngIf="!iDavis.isWizard" class="flex-container">
+            <section *ngIf="!iDavis.isWizard && !isMyAccount" class="flex-container">
                 <div class="flex-item full-width">
                     <label>Administrator</label>
                     <input type="checkbox" name="admin" [(ngModel)]="iDavis.values.user.admin">
                 </div>
             </section>
+            <section *ngIf="!iDavis.isWizard" class="flex-container">
+                <div class="flex-item full-width">
+                    <label>Alexa User ID</label>
+                    <input type="text" name="alexa" placeholder="amzn1.ask.account.AFP3ZWPOS2BGJR7OWZPO1SFXEQ..." 
+                        [(ngModel)]="iDavis.values.user.alexa_ids" 
+                        (keyup)="validate()">
+                </div>
+            </section>
             <section class="flex-container">
                 <div class="flex-item next">
-                    <button type="submit" class="content-save-button">{{(iDavis.isWizard) ? 'Continue' : 'Save'}}</button>
+                    <button type="submit" class="content-save-button" 
+                        [attr.disabled]="(!form.valid || submitButton === 'Saving...') ? true : null">
+                        {{ submitButton }}
+                    </button>
                 </div>
             </section>
         </form>

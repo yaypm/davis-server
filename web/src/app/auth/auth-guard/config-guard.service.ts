@@ -25,7 +25,7 @@ export class ConfigGuard implements CanActivate {
   // ------------------------------------------------------
   constructor(
     public iDavis: DavisService,
-    public router: Router) { }
+    public router: Router) {}
 
   // ------------------------------------------------------
   // Check if default user is created before routing
@@ -62,6 +62,13 @@ export class ConfigGuard implements CanActivate {
       this.iDavis.values.user.admin = true;
       this.router.navigate(["/wizard"]);
       return false;
+    } else if (localStorage.getItem('token')) {
+      this.iDavis.isWizard = false;
+      this.iDavis.token = localStorage.getItem('token'); 
+      this.iDavis.isAuthenticated = true;
+      this.iDavis.isAdmin = localStorage.getItem('isAdmin') === 'true';
+      this.iDavis.values.authenticate.email = localStorage.getItem('email');
+      return true;
     } else {
       this.iDavis.isWizard = false;
       this.router.navigate(["/auth/login"]);

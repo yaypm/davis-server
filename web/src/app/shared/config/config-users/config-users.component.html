@@ -4,7 +4,10 @@
           
             <section class="flex-container">
                 <div class="flex-item next">
-                    <button type="submit" class="content-save-button">{{(iDavis.isWizard) ? 'Continue' : 'Save'}}</button>
+                    <button type="submit" class="content-save-button" 
+                        [attr.disabled]="(!form.valid || submitButton === 'Saving...') ? true : null">
+                        {{ submitButton }}
+                    </button>
                 </div>
             </section>
         </form>

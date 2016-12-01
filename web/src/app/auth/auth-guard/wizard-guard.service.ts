@@ -8,12 +8,12 @@
 // Imports
 // ----------------------------------------------------------------------------
 // Angular
-import { Injectable } from "@angular/core";
+import { Injectable } from '@angular/core';
 import { Router, CanActivate,
-         ActivatedRouteSnapshot, RouterStateSnapshot } from "@angular/router";
+         ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 
 // Services
-import { DavisService } from "../../shared/davis.service";
+import { DavisService } from '../../shared/davis.service';
 
 // ----------------------------------------------------------------------------
 // Class
@@ -43,8 +43,8 @@ export class WizardGuard implements CanActivate {
   // ------------------------------------------------------
   CheckUser(): Promise<any> {
     // Set default user attributes
-    this.iDavis.values.authenticate.email = "admin@localhost";
-    this.iDavis.values.authenticate.password = "changeme";
+    this.iDavis.values.authenticate.email = 'admin@localhost';
+    this.iDavis.values.authenticate.password = 'changeme';
 
     // Attempt to get token
     return this.iDavis.getJwtToken()
@@ -61,9 +61,17 @@ export class WizardGuard implements CanActivate {
       this.iDavis.token = response.token;
       this.iDavis.values.user.admin = true;
       return true;
+    } else if (localStorage.getItem('token')) {
+      this.iDavis.isWizard = false;
+      this.iDavis.token = localStorage.getItem('token');
+      this.iDavis.isAuthenticated = true;
+      this.iDavis.isAdmin = localStorage.getItem('isAdmin') === 'true';
+      this.iDavis.values.authenticate.email = localStorage.getItem('email');
+      this.router.navigate(['/configuration']);
+      return true;
     } else {
       this.iDavis.isWizard = false;
-      this.router.navigate(["/auth/login"]);
+      this.router.navigate(['/auth/login']);
       return false;
     }
   }
@@ -73,7 +81,7 @@ export class WizardGuard implements CanActivate {
   // ------------------------------------------------------
   CheckUserError(error: any) {
     this.iDavis.isWizard = false;
-    this.router.navigate(["/auth/login"]);
+    this.router.navigate(['/auth/login']);
     return false;
   }
 }

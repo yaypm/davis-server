@@ -8,20 +8,20 @@
 // Imports
 // ----------------------------------------------------------------------------
 // Angular
-import { Routes, RouterModule } from "@angular/router";
+import { Routes, RouterModule } from '@angular/router';
 
 // Components
-import { ConfigurationBaseComponent } from "./configuration-base/configuration-base.component";
+import { ConfigurationBaseComponent } from './configuration-base/configuration-base.component';
 
 // Services
-import { ConfigGuard } from "../auth/auth-guard/config-guard.service";
+import { ConfigGuard } from '../auth/auth-guard/config-guard.service';
 
 // ----------------------------------------------------------------------------
 // Routes
 // ----------------------------------------------------------------------------
 const ConfigurationRoutes: Routes = [
   {
-    path: "configuration",
+    path: 'configuration',
     component: ConfigurationBaseComponent,
     canActivate: [ConfigGuard],
   },

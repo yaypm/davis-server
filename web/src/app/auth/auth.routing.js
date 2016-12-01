@@ -8,9 +8,9 @@
 // Imports
 // ----------------------------------------------------------------------------
 // Angular
-var router_1 = require("@angular/router");
+var router_1 = require('@angular/router');
 // Components
-var auth_login_component_1 = require("./auth-login/auth-login.component");
+var auth_login_component_1 = require('./auth-login/auth-login.component');
 // ----------------------------------------------------------------------------
 // Routes
 // ----------------------------------------------------------------------------
@@ -19,10 +19,10 @@ var AuthRoutes = [
         children: [
             {
                 component: auth_login_component_1.AuthLoginComponent,
-                path: "login",
+                path: 'login',
             },
         ],
-        path: "auth",
+        path: 'auth',
     },
 ];
 // ----------------------------------------------------------------------------

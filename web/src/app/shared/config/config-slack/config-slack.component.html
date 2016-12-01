@@ -20,8 +20,7 @@
                             Copy and paste the Redirect URL and Request URL from below to the corresponding pages in your Slack App configuration
                         </li>
                         <li *ngIf="iDavis.config['slack'].success">
-                            Click the Add to Slack button below and follow the steps offered on Slack's site to finish 
-                            or access the Add to Slack button on the Davis Configuration page at anytime.
+                            Click the Add to Slack button below and follow the steps offered on Slack's site to finish
                         </li>
                     </ul>
                 </div>
@@ -29,19 +28,19 @@
             <section class="flex-container" *ngIf="!iDavis.config['slack'].success">
                 <div class="flex-item full-width">
                     <label>Client ID</label>
-                    <input type="text" name="id" placeholder="2316109355.90688238946" [(ngModel)]="iDavis.values.slack.clientId" (keyup)="validate()" autofocus>
+                    <input type="text" name="clientId" placeholder="2316109355.90688238946" [(ngModel)]="iDavis.values.slack.clientId" (keyup)="validate()">
                 </div>
             </section>
             <section class="flex-container" *ngIf="!iDavis.config['slack'].success">
                 <div class="flex-item full-width">
                     <label>Client Secret</label>
                     <div class="input-button-wrapper" [class.input-button-wrapper-focus]="isPasswordFocused">
-                        <input *ngIf="isPasswordMasked" type="password" name="secret" class="input-button-input" 
+                        <input *ngIf="isPasswordMasked" type="password" name="clientSecret" class="input-button-input" 
                             placeholder="4c712f6d4fb2208ed389c33810a63df7" [(ngModel)]="iDavis.values.slack.clientSecret" 
-                            (focus)="isPasswordFocused = true" (blur)="isPasswordFocused = false" (keyup)="validate()">
-                        <input *ngIf="!isPasswordMasked" type="text" name="secretText" class="input-button-input" 
+                            (focus)="isPasswordFocused = true" (blur)="isPasswordFocused = false" (keyup)="validate()" [required]="(submitButton === 'Save') ? '' : null">
+                        <input *ngIf="!isPasswordMasked" type="text" name="clientSecretText" class="input-button-input" 
                             placeholder="4c712f6d4fb2208ed389c33810a63df7" [(ngModel)]="iDavis.values.slack.clientSecret" 
-                            (focus)="isPasswordFocused = true" (blur)="isPasswordFocused = false" (keyup)="validate()">
+                            (focus)="isPasswordFocused = true" (blur)="isPasswordFocused = false" (keyup)="validate()" [required]="(submitButton === 'Save') ? '' : null">
                         <div class="input-button-button" (click)="isPasswordMasked = !isPasswordMasked">
                             <img class="input-button-img" [class.input-button-img-password-masked]="isPasswordMasked" src="/assets/img/eye.svg">
                         </div>
@@ -63,14 +62,18 @@
             <section class="flex-container" *ngIf="iDavis.config['slack'].success">
                 <div class="flex-item next">
                     <a href="https://slack.com/oauth/authorize?scope=incoming-webhook,commands,bot&client_id={{ iDavis.values.slack.clientId }}">
-                        <img alt="Add to Slack" height="40" width="139" src="https://platform.slack-edge.com/img/add_to_slack.png"
+                        <img class="slack-button" alt="Add to Slack" height="40" width="139" src="https://platform.slack-edge.com/img/add_to_slack.png"
                         srcset="https://platform.slack-edge.com/img/add_to_slack.png 1x, https://platform.slack-edge.com/img/add_to_slack@2x.png 2x" />
                     </a>
                 </div>
             </section>
             <section class="flex-container" *ngIf="!iDavis.config['slack'].success">
                 <div class="flex-item next">
-                    <button type="submit" class="content-save-button" [class.warning]="buttonText === 'Skip and Finish' || buttonText === 'Skip'">{{(iDavis.isWizard) ? buttonText : 'Save'}}</button>
+                    <button type="submit" class="content-save-button" 
+                        [class.warning]="submitButton === 'Skip and Finish' || submitButton === 'Skip'" 
+                        [attr.disabled]="(!form.valid || submitButton === 'Saving...') ? true : null">
+                        {{ submitButton }}
+                    </button>
                 </div>
             </section>
         </form>

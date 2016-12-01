@@ -8,18 +8,18 @@
 // Imports
 // ----------------------------------------------------------------------------
 // Angular
-import { Component } from "@angular/core";
-import { Router }    from "@angular/router";
-import { ConfigService } from "../../shared/config/config.service";
-import { DavisService } from "../../shared/davis.service";
+import { Component } from '@angular/core';
+import { Router }    from '@angular/router';
+import { ConfigService } from '../../shared/config/config.service';
+import { DavisService } from '../../shared/davis.service';
 
 // ----------------------------------------------------------------------------
 // Class
 // ----------------------------------------------------------------------------
 @Component({
   moduleId:    module.id,
-  selector:    "configuration-base",
-  templateUrl: "./configuration-base.component.html",
+  selector:    'configuration-base',
+  templateUrl: './configuration-base.component.html',
 })
 
 export class ConfigurationBaseComponent  {
@@ -33,5 +33,40 @@ export class ConfigurationBaseComponent  {
   // ------------------------------------------------------
   ngOnInit() {
     this.iDavis.titleGlobal = 'Configure Davis';
+    this.iDavis.getDavisUser()
+      .then(result => {
+        if (result.success) {
+          this.iDavis.values.user = result.user;
+        } else {
+          this.iDavis.config['user'].error = result.message;
+        }
+      })
+      .catch(err => {
+        this.iDavis.config['user'].error = err.message;
+      });
+      
+    this.iDavis.getDynatrace()
+      .then(result => {
+        if (result.success) {
+          this.iDavis.values.dynatrace = result.dynatrace;
+        } else {
+          this.iDavis.config['dynatrace'].error = result.message;
+        }
+      })
+      .catch(err => {
+        this.iDavis.config['dynatrace'].error = err.message;
+      });
+      
+    this.iDavis.getSlack()
+      .then(result => {
+        if (result.success) {
+          this.iDavis.values.slack = result.slack;
+        } else {
+          this.iDavis.config['slack'].error = result.message;
+        }
+      })
+      .catch(err => {
+        this.iDavis.config['slack'].error = err.message;
+      });
   }
 }

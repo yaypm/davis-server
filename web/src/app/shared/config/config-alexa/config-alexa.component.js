@@ -8,47 +8,51 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var core_1 = require("@angular/core");
+var core_1 = require('@angular/core');
 // Services
-var config_service_1 = require("../config.service");
-var davis_service_1 = require("../../davis.service");
+var config_service_1 = require('../config.service');
+var davis_service_1 = require('../../davis.service');
 var ConfigAlexaComponent = (function () {
     function ConfigAlexaComponent(iDavis, iConfig) {
         this.iDavis = iDavis;
         this.iConfig = iConfig;
         this.submitted = false;
-        this.buttonText = "Skip";
+        this.submitButton = (this.iDavis.isWizard) ? 'Skip' : 'Save';
     }
     ConfigAlexaComponent.prototype.validate = function () {
-        if (this.iDavis.values.alexa_ids) {
-            this.buttonText = "Continue";
+        if (this.iDavis.values.user.alexa_ids) {
+            this.submitButton = 'Continue';
         }
         else {
-            this.buttonText = "Skip";
+            this.submitButton = 'Skip';
         }
     };
     ConfigAlexaComponent.prototype.doSubmit = function () {
         var _this = this;
-        if (this.iDavis.values.alexa_ids) {
+        if (this.iDavis.values.user.alexa_ids) {
+            this.submitButton = 'Saving...';
             this.iDavis.connectAlexa()
                 .then(function (result) {
-                _this.iDavis.config["alexa"].success = true;
-                _this.iConfig.SelectView("slack");
+                _this.iDavis.config['alexa'].success = true;
+                _this.iConfig.SelectView('slack');
             }, function (error) {
                 console.log(error);
-                _this.iDavis.config["alexa"].success = false;
+                _this.iDavis.config['alexa'].success = false;
             });
         }
         else {
-            this.iConfig.SelectView("slack");
+            this.iConfig.SelectView('slack');
         }
         this.submitted = true;
+    };
+    ConfigAlexaComponent.prototype.ngOnInit = function () {
+        document.getElementsByName('alexa')[0].focus();
     };
     ConfigAlexaComponent = __decorate([
         core_1.Component({
             moduleId: module.id,
-            selector: "config-alexa",
-            templateUrl: "./config-alexa.component.html",
+            selector: 'config-alexa',
+            templateUrl: './config-alexa.component.html',
         }), 
         __metadata('design:paramtypes', [davis_service_1.DavisService, config_service_1.ConfigService])
     ], ConfigAlexaComponent);
