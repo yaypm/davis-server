@@ -14,10 +14,10 @@
                             <button type="button" onclick="window.open('https://api.slack.com/apps')">Create Slack App</button>
                         </li>
                         <li *ngIf="!iDavis.config['slack'].success">
-                            Copy and paste the Client ID and Client Secret from the Basic Information page to the inputs below
+                            Copy and paste the Client ID and Client Secret from your Slack App's Basic Information page to the inputs below
                         </li>
                         <li *ngIf="!iDavis.config['slack'].success">
-                            Copy and paste the Redirect URL and Request URL from below to the corresponding pages in your Slack App configuration
+                            Copy and paste the Redirect URL and Request URL from below to the corresponding pages' inputs in your Slack App's configuration
                         </li>
                         <li *ngIf="iDavis.config['slack'].success">
                             Click the Add to Slack button below and follow the steps offered on Slack's site to finish
@@ -37,10 +37,10 @@
                     <div class="input-button-wrapper" [class.input-button-wrapper-focus]="isPasswordFocused">
                         <input *ngIf="isPasswordMasked" type="password" name="clientSecret" class="input-button-input" 
                             placeholder="4c712f6d4fb2208ed389c33810a63df7" [(ngModel)]="iDavis.values.slack.clientSecret" 
-                            (focus)="isPasswordFocused = true" (blur)="isPasswordFocused = false" (keyup)="validate()" [required]="(submitButton === 'Save') ? '' : null">
+                            (focus)="isPasswordFocused = true" (blur)="isPasswordFocused = false" (keyup)="validate()" [required]="(!iDavis.isWizard) ? '' : null">
                         <input *ngIf="!isPasswordMasked" type="text" name="clientSecretText" class="input-button-input" 
                             placeholder="4c712f6d4fb2208ed389c33810a63df7" [(ngModel)]="iDavis.values.slack.clientSecret" 
-                            (focus)="isPasswordFocused = true" (blur)="isPasswordFocused = false" (keyup)="validate()" [required]="(submitButton === 'Save') ? '' : null">
+                            (focus)="isPasswordFocused = true" (blur)="isPasswordFocused = false" (keyup)="validate()" [required]="(!iDavis.isWizard) ? '' : null">
                         <div class="input-button-button" (click)="isPasswordMasked = !isPasswordMasked">
                             <img class="input-button-img" [class.input-button-img-password-masked]="isPasswordMasked" src="/assets/img/eye.svg">
                         </div>
@@ -50,13 +50,27 @@
             <section class="flex-container" *ngIf="!iDavis.config['slack'].success">
                 <div class="flex-item full-width">
                     <label>OAuth & Permissions - Redirect URL</label>
-                    <div class="code">{{ iDavis.values.slack.redirectUri }}</div>
+                    <div class="input-button-wrapper" [class.input-button-wrapper-focus]="isRedirectUriFocused">
+                        <input type="text" id="redirectUri" name="redirectUri" class="input-button-input" 
+                            [(ngModel)]="iDavis.values.slack.redirectUri" 
+                            (focus)="isRedirectUriFocused = true" (blur)="isRedirectUriFocused = false" (click)="iDavis.clickElem('redirectUriBtn')" readonly>
+                        <div id="redirectUriBtn" class="input-button-button clipboard" data-clipboard-target="#redirectUri">
+                            <img class="input-button-img" [class.input-button-img-password-masked]="!isRedirectUriFocused" src="/assets/img/cut.svg">
+                        </div>
+                    </div>
                 </div>
             </section>
-             <section class="flex-container" *ngIf="!iDavis.config['slack'].success">
+            <section class="flex-container" *ngIf="!iDavis.config['slack'].success">
                 <div class="flex-item full-width">
                     <label>Interactive Messages - Request URL</label>
-                    <div class="code">{{ myURL }}/slack/receive</div>
+                    <div class="input-button-wrapper" [class.input-button-wrapper-focus]="isRequestUriFocused">
+                        <input type="text" id="requestUri" name="requestUri" class="input-button-input" 
+                            [(ngModel)]="requestUri"
+                            (focus)="isRequestUriFocused = true" (blur)="isRequestUriFocused = false" (click)="iDavis.clickElem('requestUriBtn')" readonly>
+                        <div id="requestUriBtn" class="input-button-button clipboard" data-clipboard-target="#requestUri">
+                            <img class="input-button-img" [class.input-button-img-password-masked]="!isRequestUriFocused" src="/assets/img/cut.svg">
+                        </div>
+                    </div>
                 </div>
             </section>
             <section class="flex-container" *ngIf="iDavis.config['slack'].success">
@@ -71,7 +85,7 @@
                 <div class="flex-item next">
                     <button type="submit" class="content-save-button" 
                         [class.warning]="submitButton === 'Skip and Finish' || submitButton === 'Skip'" 
-                        [attr.disabled]="(!form.valid || submitButton === 'Saving...') ? true : null">
+                        [attr.disabled]="(!form.valid || submitButton === 'Saving...' || !isDirty) ? true : null">
                         {{ submitButton }}
                     </button>
                 </div>

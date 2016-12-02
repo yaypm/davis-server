@@ -39,6 +39,11 @@ export class DavisService {
       clientId: null,
       clientSecret: null,
       redirectUri: null
+    },
+    original: {
+      user: {},
+      dynatrace: {},
+      slack: {}
     }
   };
 
@@ -237,6 +242,10 @@ export class DavisService {
 
   windowOpen(url:string): void {
     window.open(url);
+  }
+  
+  clickElem(id: string): void {
+    document.getElementById(id).click();
   }
 
   getTimezone(): string {

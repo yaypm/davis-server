@@ -12,12 +12,14 @@ var core_1 = require('@angular/core');
 // Services
 var config_service_1 = require('../config.service');
 var davis_service_1 = require('../../davis.service');
+var _ = require("lodash");
 var ConfigDynatraceComponent = (function () {
     function ConfigDynatraceComponent(iDavis, iConfig) {
         this.iDavis = iDavis;
         this.iConfig = iConfig;
         this.submitted = false;
         this.submitButton = (this.iDavis.isWizard) ? 'Continue' : 'Save';
+        this.isDirty = false;
     }
     ConfigDynatraceComponent.prototype.doSubmit = function () {
         var _this = this;
@@ -34,21 +36,38 @@ var ConfigDynatraceComponent = (function () {
                     else {
                         _this.iDavis.config['dynatrace'].success = false;
                         _this.iDavis.config['dynatrace'].error = res.message;
+                        _this.submitButton = (_this.iDavis.isWizard) ? 'Continue' : 'Save';
                     }
                 }, function (err) {
                     _this.iDavis.config['dynatrace'].success = false;
                     _this.iDavis.config['dynatrace'].error = 'Sorry an error occurred, please try again.';
+                    _this.submitButton = (_this.iDavis.isWizard) ? 'Continue' : 'Save';
+                })
+                    .catch(function (err) {
+                    _this.iDavis.config['dynatrace'].success = false;
+                    _this.iDavis.config['dynatrace'].error = 'Sorry an error occurred, please try again.';
+                    _this.submitButton = (_this.iDavis.isWizard) ? 'Continue' : 'Save';
                 });
             }
             else {
                 _this.iDavis.config['dynatrace'].success = false;
                 _this.iDavis.config['dynatrace'].error = result.message;
+                _this.submitButton = (_this.iDavis.isWizard) ? 'Continue' : 'Save';
             }
         }, function (error) {
             _this.iDavis.config['dynatrace'].success = false;
             _this.iDavis.config['dynatrace'].error = 'Sorry an error occurred, please try again.';
+            _this.submitButton = (_this.iDavis.isWizard) ? 'Continue' : 'Save';
+        })
+            .catch(function (err) {
+            _this.iDavis.config['dynatrace'].success = false;
+            _this.iDavis.config['dynatrace'].error = 'Sorry an error occurred, please try again.';
+            _this.submitButton = (_this.iDavis.isWizard) ? 'Continue' : 'Save';
         });
         this.submitted = true;
+    };
+    ConfigDynatraceComponent.prototype.validate = function () {
+        this.isDirty = !_.isEqual(this.iDavis.values.dynatrace, this.iDavis.values.original.dynatrace);
     };
     ConfigDynatraceComponent.prototype.keySubmit = function (keyCode) {
         if (keyCode === 13) {

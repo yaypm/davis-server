@@ -12,12 +12,14 @@ var core_1 = require('@angular/core');
 // Services
 var config_service_1 = require('../config.service');
 var davis_service_1 = require('../../davis.service');
+var _ = require("lodash");
 var ConfigAlexaComponent = (function () {
     function ConfigAlexaComponent(iDavis, iConfig) {
         this.iDavis = iDavis;
         this.iConfig = iConfig;
         this.submitted = false;
         this.submitButton = (this.iDavis.isWizard) ? 'Skip' : 'Save';
+        this.isDirty = false;
     }
     ConfigAlexaComponent.prototype.validate = function () {
         if (this.iDavis.values.user.alexa_ids) {
@@ -26,6 +28,7 @@ var ConfigAlexaComponent = (function () {
         else {
             this.submitButton = 'Skip';
         }
+        this.isDirty = !_.isEqual(this.iDavis.values.user, this.iDavis.values.original.user);
     };
     ConfigAlexaComponent.prototype.doSubmit = function () {
         var _this = this;

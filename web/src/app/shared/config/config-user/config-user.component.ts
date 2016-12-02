@@ -3,6 +3,7 @@ import { Component, OnInit, Input } from '@angular/core';
 // Services
 import { ConfigService } from '../config.service';
 import { DavisService } from '../../davis.service';
+import * as _ from "lodash";
 
 @Component({
     moduleId: module.id,
@@ -18,6 +19,7 @@ export class ConfigUserComponent implements OnInit {
     isPasswordFocused: boolean = false;
     isPasswordMasked: boolean = true;
     isSelectOpened: boolean = false;
+    isDirty: boolean = false;
     
     constructor(
       public iDavis: DavisService,
@@ -101,6 +103,10 @@ export class ConfigUserComponent implements OnInit {
       }
     }
     
+    validate() {
+      this.isDirty = !_.isEqual(this.iDavis.values.user, this.iDavis.values.original.user);
+    }
+    
     ngOnInit() {
       document.getElementsByName('first')[0].focus();
       this.iDavis.getTimezones()
@@ -113,6 +119,8 @@ export class ConfigUserComponent implements OnInit {
             this.iDavis.config['user'].success = false;
             this.iDavis.config['user'].error = 'Unable to get timezones, please try again later.';
           });
+      setTimeout(() => {
+        this.validate();
+      }, 200);
     }
-
 }

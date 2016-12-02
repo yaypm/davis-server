@@ -12,6 +12,7 @@ import { Component } from '@angular/core';
 import { Router }    from '@angular/router';
 import { ConfigService } from '../../shared/config/config.service';
 import { DavisService } from '../../shared/davis.service';
+import * as _ from "lodash";
 
 // ----------------------------------------------------------------------------
 // Class
@@ -37,6 +38,7 @@ export class ConfigurationBaseComponent  {
       .then(result => {
         if (result.success) {
           this.iDavis.values.user = result.user;
+          this.iDavis.values.original.user = _.cloneDeep(this.iDavis.values.user);
         } else {
           this.iDavis.config['user'].error = result.message;
         }
@@ -49,6 +51,7 @@ export class ConfigurationBaseComponent  {
       .then(result => {
         if (result.success) {
           this.iDavis.values.dynatrace = result.dynatrace;
+          this.iDavis.values.original.dynatrace = _.cloneDeep(this.iDavis.values.dynatrace);
         } else {
           this.iDavis.config['dynatrace'].error = result.message;
         }
@@ -61,6 +64,8 @@ export class ConfigurationBaseComponent  {
       .then(result => {
         if (result.success) {
           this.iDavis.values.slack = result.slack;
+          this.iDavis.values.slack.enabled = true;
+          this.iDavis.values.original.slack = _.cloneDeep(this.iDavis.values.slack);
         } else {
           this.iDavis.config['slack'].error = result.message;
         }

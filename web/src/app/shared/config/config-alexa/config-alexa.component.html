@@ -25,7 +25,7 @@
                 <div class="flex-item next">
                     <button type="submit" class="content-save-button" 
                         [class.warning]="submitButton === 'Skip'"
-                        [attr.disabled]="(!form.valid || submitButton === 'Saving...') ? true : null">
+                        [attr.disabled]="(!form.valid || submitButton === 'Saving...' || !isDirty) ? true : null">
                         {{ submitButton }}
                     </button>
                 </div>

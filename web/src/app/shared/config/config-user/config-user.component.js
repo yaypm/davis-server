@@ -12,6 +12,7 @@ var core_1 = require('@angular/core');
 // Services
 var config_service_1 = require('../config.service');
 var davis_service_1 = require('../../davis.service');
+var _ = require("lodash");
 var ConfigUserComponent = (function () {
     function ConfigUserComponent(iDavis, iConfig) {
         this.iDavis = iDavis;
@@ -21,6 +22,7 @@ var ConfigUserComponent = (function () {
         this.isPasswordFocused = false;
         this.isPasswordMasked = true;
         this.isSelectOpened = false;
+        this.isDirty = false;
     }
     ConfigUserComponent.prototype.doSubmit = function () {
         var _this = this;
@@ -96,6 +98,9 @@ var ConfigUserComponent = (function () {
             });
         }
     };
+    ConfigUserComponent.prototype.validate = function () {
+        this.isDirty = !_.isEqual(this.iDavis.values.user, this.iDavis.values.original.user);
+    };
     ConfigUserComponent.prototype.ngOnInit = function () {
         var _this = this;
         document.getElementsByName('first')[0].focus();
@@ -107,6 +112,9 @@ var ConfigUserComponent = (function () {
             _this.iDavis.config['user'].success = false;
             _this.iDavis.config['user'].error = 'Unable to get timezones, please try again later.';
         });
+        setTimeout(function () {
+            _this.validate();
+        }, 200);
     };
     __decorate([
         core_1.Input(), 

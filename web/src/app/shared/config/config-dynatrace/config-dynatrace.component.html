@@ -7,7 +7,7 @@
     </div>
     <div class="content">
         <form (ngSubmit)="doSubmit()" #form="ngForm">
-            <section *ngIf="iDavis.config['user'].success === false" class="flex-container">
+            <section *ngIf="iDavis.config['dynatrace'].success === false" class="flex-container">
                 <div class="flex-item full-width error">
                     {{iDavis.config['dynatrace'].error}}
                 </div>
@@ -15,19 +15,19 @@
             <section class="flex-container">
                 <div class="flex-item full-width">
                     <label>Dynatrace Tenant URL</label>
-                    <input type="text" name="url" placeholder="https://qwefgmasd.live.dynatrace.com" [(ngModel)]="iDavis.values.dynatrace.url" required>
+                    <input type="text" name="url" placeholder="https://qwefgmasd.live.dynatrace.com" [(ngModel)]="iDavis.values.dynatrace.url" (keyup)="validate()" required>
                 </div>
             </section>
             <section class="flex-container">
                 <div class="flex-item full-width">
                     <label>Dynatrace API Token</label>
-                    <input type="text" name="token" placeholder="IYVTz0nBSkZdsQOhS7W3P" [(ngModel)]="iDavis.values.dynatrace.token" required>
+                    <input type="text" name="token" placeholder="IYVTz0nBSkZdsQOhS7W3P" [(ngModel)]="iDavis.values.dynatrace.token" (keyup)="validate()" required>
                 </div>
             </section>
             <section class="flex-container">
                 <div class="flex-item next">
                     <button type="submit" class="content-save-button" 
-                        [attr.disabled]="(!form.valid || submitButton === 'Saving...') ? true : null">
+                        [attr.disabled]="(!form.valid || submitButton === 'Saving...' || !isDirty) ? true : null">
                         {{ submitButton }}
                     </button>
                 </div>

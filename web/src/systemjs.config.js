@@ -17,15 +17,19 @@
       '@angular/forms': 'npm:@angular/forms/bundles/forms.umd.js',
 
       // Other libraries
-      'rxjs': 'npm:rxjs'
+      'rxjs': 'npm:rxjs',
+      'lodash': 'npm:lodash/lodash.min.js'
     },
     packages: {
       app: {
         main: '/main.js',
-        defaultExtension: "js"
+        defaultExtension: 'js'
       },
       rxjs: {
-        defaultExtension: "js"
+        defaultExtension: 'js'
+      },
+      lodash: {
+        defaultExtension: 'js'
       }
     }
   });

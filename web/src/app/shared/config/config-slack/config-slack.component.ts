@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 
 // Services
 import { DavisService } from '../../davis.service';
+import * as _ from "lodash";
 
 @Component({
     moduleId: module.id,
@@ -11,24 +12,26 @@ import { DavisService } from '../../davis.service';
 export class ConfigSlackComponent implements OnInit {
 
     myURL: string = '';
+    requestUri: string = '';
     submitted: boolean = false;
-    submitButton: string = (this.iDavis.isWizard) ? 'Skip' : 'Save';
+    submitButton: string = (this.iDavis.isWizard) ? 'Skip' : 'Create Davis Slack Bot';
     isPasswordFocused: boolean = false;
     isPasswordMasked: boolean = true;
+    isDirty: boolean = false;
     
     constructor(public iDavis: DavisService) {
         this.myURL = 'https://' + window.location.host;
+        this.requestUri = `${this.myURL}/slack/receive`;
         this.iDavis.values.slack.redirectUri = `${this.myURL}/oauth`;
     }
-    
-    //ToDo: Use https://clipboardjs.com library to add copy to clipboard functionality to URLs
-    
+  
     validate() {
-        if (this.iDavis.values.slack.clientId && this.iDavis.values.slack.clientSecret) {
-            this.submitButton = 'Create Davis Slack Bot';
-        } else if (!this.iDavis.config['slack'].success){
-            this.submitButton = 'Skip and Finish';
-        }
+      if (this.iDavis.values.slack.clientId && this.iDavis.values.slack.clientSecret) {
+          this.submitButton = 'Create Davis Slack Bot';
+      } else if (!this.iDavis.config['slack'].success && this.iDavis.isWizard){
+          this.submitButton = 'Skip and Finish';
+      }
+      this.isDirty = !_.isEqual(this.iDavis.values.slack, this.iDavis.values.original.slack);
     }
     
     doSubmit() {
@@ -68,6 +71,7 @@ export class ConfigSlackComponent implements OnInit {
     ngOnInit() {
       setTimeout(() => {
         document.getElementsByName('clientId')[0].focus();
+        new Clipboard('.clipboard');
       }, 200);
     }
 }

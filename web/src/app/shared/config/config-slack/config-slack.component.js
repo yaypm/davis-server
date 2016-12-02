@@ -11,25 +11,29 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var core_1 = require('@angular/core');
 // Services
 var davis_service_1 = require('../../davis.service');
+var _ = require("lodash");
 var ConfigSlackComponent = (function () {
     function ConfigSlackComponent(iDavis) {
         this.iDavis = iDavis;
         this.myURL = '';
+        this.requestUri = '';
         this.submitted = false;
-        this.submitButton = (this.iDavis.isWizard) ? 'Skip' : 'Save';
+        this.submitButton = (this.iDavis.isWizard) ? 'Skip' : 'Create Davis Slack Bot';
         this.isPasswordFocused = false;
         this.isPasswordMasked = true;
+        this.isDirty = false;
         this.myURL = 'https://' + window.location.host;
+        this.requestUri = this.myURL + "/slack/receive";
         this.iDavis.values.slack.redirectUri = this.myURL + "/oauth";
     }
-    //ToDo: Use https://clipboardjs.com library to add copy to clipboard functionality to URLs
     ConfigSlackComponent.prototype.validate = function () {
         if (this.iDavis.values.slack.clientId && this.iDavis.values.slack.clientSecret) {
             this.submitButton = 'Create Davis Slack Bot';
         }
-        else if (!this.iDavis.config['slack'].success) {
+        else if (!this.iDavis.config['slack'].success && this.iDavis.isWizard) {
             this.submitButton = 'Skip and Finish';
         }
+        this.isDirty = !_.isEqual(this.iDavis.values.slack, this.iDavis.values.original.slack);
     };
     ConfigSlackComponent.prototype.doSubmit = function () {
         var _this = this;
@@ -69,6 +73,7 @@ var ConfigSlackComponent = (function () {
     ConfigSlackComponent.prototype.ngOnInit = function () {
         setTimeout(function () {
             document.getElementsByName('clientId')[0].focus();
+            new Clipboard('.clipboard');
         }, 200);
     };
     ConfigSlackComponent = __decorate([
