@@ -30,7 +30,7 @@ It's also possible to deploy to Heroku using their CLI.
 
 ### Limitations
 
-While Heroku offers a generous free tier, it is not recommended for Davis.  Feel free to use it while you're evaluating but the hobby tier is recommended for production use.  This is mainly because the free tier goes to sleep after 30 minutes of inactivity and the startup process is relativity slow.
+While Heroku offers a generous free tier, it is not recommended for Davis.  Feel free to use it while you're evaluating but the hobby tier is not recommended for production use.  This is mainly because the free tier goes to sleep after 30 minutes of inactivity and the startup process is relativity slow.
 
 ## Custom Deployment
 

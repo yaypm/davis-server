@@ -1,0 +1,24 @@
+{
+  "compilerOptions": {
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "module": "es2015",
+    "moduleResolution": "node",
+    "noImplicitAny": true,
+    "removeComments": true,
+    "sourceMap": true,
+    "suppressImplicitAnyIndexErrors": true,
+    "target": "es5",
+    "typeRoots": [
+      "node_modules/@types/"
+    ]
+  },
+  "files": [
+    "src/app/app.module.ts",
+    "src/main.prod.ts"
+  ],
+  "angularCompilerOptions": {
+    "genDir": "ngfactory",
+    "skipMetadataEmit" : true
+  }
+}

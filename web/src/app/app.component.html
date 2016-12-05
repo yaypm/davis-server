@@ -1,0 +1,9 @@
+<a href="https://github.com/Dynatrace/davis-server" target="_blank">
+  <img id="logo" src="/assets/img/Dynatrace_Logo_RGB_CPH_512x92px.png">
+</a>
+<div class="title-global">
+    {{iDavis.titleGlobal}}
+</div>
+<button type="button" class="log-out" *ngIf="iDavis.isAuthenticated && !iDavis.isWizard" (click)="logOut()">Sign out</button>
+<router-outlet></router-outlet>
+<div id="made-in-detroit">Made in Detroit</div>
