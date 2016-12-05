@@ -45,6 +45,7 @@ var ConfigSlackComponent = (function () {
                     _this.iDavis.startSlack()
                         .then(function (result) {
                         if (result.success) {
+                            sessionStorage.setItem('wizard-finished', 'true');
                             _this.iDavis.config['slack'].success = true;
                         }
                         else {
@@ -67,6 +68,7 @@ var ConfigSlackComponent = (function () {
             this.submitted = true;
         }
         else {
+            sessionStorage.setItem('wizard-finished', 'true');
             this.iDavis.windowLocation(this.myURL);
         }
     };

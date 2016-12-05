@@ -43,6 +43,7 @@ export class ConfigSlackComponent implements OnInit {
               this.iDavis.startSlack()
                 .then(result => {
                   if (result.success) {
+                        sessionStorage.setItem('wizard-finished', 'true');
                         this.iDavis.config['slack'].success = true;
                       } else {
                         this.iDavis.config['slack'].success = false;
@@ -64,7 +65,8 @@ export class ConfigSlackComponent implements OnInit {
           });
         this.submitted = true;
       } else {
-          this.iDavis.windowLocation(this.myURL);
+        sessionStorage.setItem('wizard-finished', 'true');
+        this.iDavis.windowLocation(this.myURL);
       }
     }
     

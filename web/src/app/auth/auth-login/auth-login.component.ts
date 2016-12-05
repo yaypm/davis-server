@@ -48,9 +48,9 @@ export class AuthLoginComponent  {
           this.iDavis.token = result.token;
           this.iDavis.isAuthenticated = true;
           this.iDavis.isAdmin = result.admin;
-          localStorage.setItem('email', form.value.email);
-          localStorage.setItem('token', result.token);
-          localStorage.setItem('isAdmin', result.admin);
+          sessionStorage.setItem('email', form.value.email);
+          sessionStorage.setItem('token', result.token);
+          sessionStorage.setItem('isAdmin', result.admin);
           this.router.navigate(['/configuration']);
         } else {
           this.loginError = result.message;

@@ -63,9 +63,9 @@ var ConfigUserComponent = (function () {
                                     _this.iDavis.token = response.token;
                                     _this.iConfig.SelectView('dynatrace');
                                     _this.submitButton = 'Continue';
-                                    localStorage.setItem('email', _this.iDavis.values.user.email);
-                                    localStorage.setItem('token', response.token);
-                                    localStorage.setItem('isAdmin', response.admin);
+                                    sessionStorage.setItem('email', _this.iDavis.values.user.email);
+                                    sessionStorage.setItem('token', response.token);
+                                    sessionStorage.setItem('isAdmin', response.admin);
                                 }, function (error) {
                                     _this.iDavis.config['user'].success = false;
                                     _this.iDavis.config['user'].error = 'Sorry an error occurred, please try again.';

@@ -31,9 +31,9 @@ export class AppComponent {
     this.iDavis.isAuthenticated = false;
     this.iDavis.isAdmin = false;
     this.iDavis.token = null;
-    localStorage.removeItem('email');
-    localStorage.removeItem('token');
-    localStorage.removeItem('isAdmin');
+    sessionStorage.removeItem('email');
+    sessionStorage.removeItem('token');
+    sessionStorage.removeItem('isAdmin');
     this.router.navigate(["/auth/login"]);
   }
 }

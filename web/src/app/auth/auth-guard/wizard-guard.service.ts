@@ -61,12 +61,12 @@ export class WizardGuard implements CanActivate {
       this.iDavis.token = response.token;
       this.iDavis.values.user.admin = true;
       return true;
-    } else if (localStorage.getItem('token')) {
+    } else if (sessionStorage.getItem('token')) {
       this.iDavis.isWizard = false;
-      this.iDavis.token = localStorage.getItem('token');
+      this.iDavis.token = sessionStorage.getItem('token');
       this.iDavis.isAuthenticated = true;
-      this.iDavis.isAdmin = localStorage.getItem('isAdmin') === 'true';
-      this.iDavis.values.authenticate.email = localStorage.getItem('email');
+      this.iDavis.isAdmin = sessionStorage.getItem('isAdmin') === 'true';
+      this.iDavis.values.authenticate.email = sessionStorage.getItem('email');
       this.router.navigate(['/configuration']);
       return true;
     } else {

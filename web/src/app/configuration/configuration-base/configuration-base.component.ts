@@ -24,6 +24,9 @@ import * as _ from "lodash";
 })
 
 export class ConfigurationBaseComponent  {
+  
+  showConfigureButton: boolean = false;
+  
   // ------------------------------------------------------
   // Inject services
   // ------------------------------------------------------
@@ -33,7 +36,13 @@ export class ConfigurationBaseComponent  {
   // Initialize component
   // ------------------------------------------------------
   ngOnInit() {
-    this.iDavis.titleGlobal = 'Configure Davis';
+    if (sessionStorage.getItem('wizard-finished')) {
+      sessionStorage.removeItem('wizard-finished');
+      this.iDavis.titleGlobal = 'Great! It looks like we\'re all set now.';
+      this.showConfigureButton = true;
+    } else {
+      this.iDavis.titleGlobal = 'Configure Davis';
+    }
     this.iDavis.getDavisUser()
       .then(result => {
         if (result.success) {

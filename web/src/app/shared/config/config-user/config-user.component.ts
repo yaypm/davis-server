@@ -65,9 +65,9 @@ export class ConfigUserComponent implements OnInit {
                                 this.iDavis.token = response.token;
                                 this.iConfig.SelectView('dynatrace');
                                 this.submitButton = 'Continue';
-                                localStorage.setItem('email', this.iDavis.values.user.email);
-                                localStorage.setItem('token', response.token);
-                                localStorage.setItem('isAdmin', response.admin);
+                                sessionStorage.setItem('email', this.iDavis.values.user.email);
+                                sessionStorage.setItem('token', response.token);
+                                sessionStorage.setItem('isAdmin', response.admin);
                               },
                               error => {
                                 this.iDavis.config['user'].success = false;

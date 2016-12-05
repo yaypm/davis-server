@@ -51,9 +51,9 @@ var AuthLoginComponent = (function () {
                 _this.iDavis.token = result.token;
                 _this.iDavis.isAuthenticated = true;
                 _this.iDavis.isAdmin = result.admin;
-                localStorage.setItem('email', form.value.email);
-                localStorage.setItem('token', result.token);
-                localStorage.setItem('isAdmin', result.admin);
+                sessionStorage.setItem('email', form.value.email);
+                sessionStorage.setItem('token', result.token);
+                sessionStorage.setItem('isAdmin', result.admin);
                 _this.router.navigate(['/configuration']);
             }
             else {
