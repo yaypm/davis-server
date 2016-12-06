@@ -36,3 +36,4 @@ require('./classes/Decide');
 require('./classes/Nlp');
 require('./classes/ResponseBuilder');
 require('./classes/PluginManager');
+require('./classes/Express');
