@@ -2,6 +2,7 @@
 
 const chai = require('chai');
 const chaiAsPromised = require('chai-as-promised');
+const UserModel = require('../../lib/models/User');
 
 chai.use(chaiAsPromised);
 
@@ -14,6 +15,11 @@ describe('Users', () => {
   const users = davis.users;
 
   const email = 'testuser@dynatrace.com';
+
+  after(() => {
+    return users.createUser({ email: 'admin@localhost', password: 'changeme', admin: true })
+      .then(() => users.deleteUser(email));
+  });
 
   it('should return a list of timezones',
     () => users.getValidTimezones().should.contain('America/Detroit'));
@@ -36,7 +42,7 @@ describe('Users', () => {
 
   it('should successfully update the timezone',
     () => users.updateUser(email, { timezone: 'America/Detroit' }).should.eventually.be.resolved);
-  
+
   it('should create an internal user', () => {
     return davis.config.load()
       .then(() => users.getSystemUser())
