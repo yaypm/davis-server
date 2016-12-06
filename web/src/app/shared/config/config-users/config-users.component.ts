@@ -14,7 +14,6 @@ export class ConfigUsersComponent implements OnInit {
     submitButton: string = 'Save';
     isPasswordFocused: boolean = false;
     isPasswordMasked: boolean = true;
-    isSelectOpened: boolean = false;
     
     constructor(public iDavis: DavisService, public router: Router) {}
     

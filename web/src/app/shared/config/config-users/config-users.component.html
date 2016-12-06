@@ -1,19 +1,30 @@
 <div class="page">
     <div class="content">
-        <form (ngSubmit)="doSubmit()" #form="ngForm">
-             <section class="flex-container">
-                <div class="flex-item full-width">
-                    <h3 style="text-align: center">Coming soon!</h3>
-                </div>
-            </section>
-            <section class="flex-container" *ngIf="false">
-                <div class="flex-item next">
-                    <button type="submit" class="content-save-button" 
-                        [attr.disabled]="(!form.valid || submitButton === 'Saving...') ? true : null">
-                        {{ submitButton }}
-                    </button>
-                </div>
-            </section>
-        </form>
+        <div> 
+            <table>
+                <th>
+                    Name
+                </th>
+                <th>
+                    Email
+                </th>
+                <th>
+                    Administrator
+                </th>
+                <tr>
+                    <td>
+                        Woolf, Cory
+                    </td>
+                    <td>
+                        corywoolf@gmail.com
+                    </td>
+                    <td>
+                        &#x2713;
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <hr>
+        <config-user [isNewUser]="true" [isMyUser]="false"></config-user>
     </div>
 </div>

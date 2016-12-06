@@ -28,8 +28,9 @@ var ConfigUserComponent = (function () {
         var _this = this;
         this.submitted = true;
         this.submitButton = 'Saving...';
-        if (this.isMyAccount && !this.iDavis.isWizard) {
-            this.iDavis.updateDavisUser()
+        this.user = (!this.iDavis.isWizard && !this.isMyUser) ? this.iDavis.values.otherUser : this.iDavis.values.user;
+        if ((!this.iDavis.isWizard && !this.isNewUser) || (!this.iDavis.isWizard && this.isMyUser)) {
+            this.iDavis.updateDavisUser(this.user)
                 .then(function (result) {
                 if (result.success) {
                     _this.iDavis.config['user'].success = true;
@@ -47,10 +48,11 @@ var ConfigUserComponent = (function () {
             });
         }
         else {
-            this.iDavis.addDavisUser()
+            this.iDavis.addDavisUser(this.user)
                 .then(function (result) {
                 if (result.success) {
                     if (_this.iDavis.isWizard) {
+                        _this.iDavis.values.original.user = _.cloneDeep(_this.user);
                         _this.iDavis.removeDavisUser(_this.iDavis.values.authenticate.email)
                             .then(function (res) {
                             if (res.success) {
@@ -83,6 +85,9 @@ var ConfigUserComponent = (function () {
                             _this.submitButton = 'Continue';
                         });
                     }
+                    else {
+                        _this.iDavis.values.original.otherUser = _.cloneDeep(_this.user);
+                    }
                 }
                 else {
                     _this.iDavis.config['user'].success = false;
@@ -99,27 +104,44 @@ var ConfigUserComponent = (function () {
         }
     };
     ConfigUserComponent.prototype.validate = function () {
-        this.isDirty = !_.isEqual(this.iDavis.values.user, this.iDavis.values.original.user);
+        this.isDirty = (this.isMyUser) ? !_.isEqual(this.iDavis.values.user, this.iDavis.values.original.user) : !_.isEqual(this.iDavis.values.otherUser, this.iDavis.values.original.otherUser);
+    };
+    ConfigUserComponent.prototype.onTimezoneChange = function (tz) {
+        if (this.isMyUser) {
+            this.iDavis.values.user.timezone = tz;
+        }
+        else {
+            this.iDavis.values.otherUser.timezone = tz;
+        }
     };
     ConfigUserComponent.prototype.ngOnInit = function () {
         var _this = this;
-        document.getElementsByName('first')[0].focus();
         this.iDavis.getTimezones()
             .then(function (response) {
             _this.iDavis.timezones = response.timezones;
-            _this.iDavis.values.user.timezone = _this.iDavis.getTimezone();
+            if (_this.iDavis.isWizard) {
+                _this.iDavis.values.user.timezone = _this.iDavis.getTimezone();
+            }
+            else if (_this.isNewUser) {
+                _this.iDavis.values.otherUser.timezone = _this.iDavis.getTimezone();
+            }
         }, function (error) {
             _this.iDavis.config['user'].success = false;
             _this.iDavis.config['user'].error = 'Unable to get timezones, please try again later.';
         });
         setTimeout(function () {
+            document.getElementsByName('first')[0].focus();
             _this.validate();
         }, 200);
     };
     __decorate([
         core_1.Input(), 
         __metadata('design:type', Boolean)
-    ], ConfigUserComponent.prototype, "isMyAccount", void 0);
+    ], ConfigUserComponent.prototype, "isMyUser", void 0);
+    __decorate([
+        core_1.Input(), 
+        __metadata('design:type', Boolean)
+    ], ConfigUserComponent.prototype, "isNewUser", void 0);
     ConfigUserComponent = __decorate([
         core_1.Component({
             moduleId: module.id,

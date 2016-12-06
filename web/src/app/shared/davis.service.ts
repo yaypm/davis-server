@@ -29,6 +29,17 @@ export class DavisService {
       },
       admin: false
     },
+    otherUser: {
+      email: null,
+      password: null,
+      timezone: null,
+      alexa_ids: null,
+      name: {
+          first: null,
+          last: null
+      },
+      admin: false
+    },
     dynatrace: {
       url: null,
       token: null,
@@ -42,6 +53,7 @@ export class DavisService {
     },
     original: {
       user: {},
+      otherUser: {},
       dynatrace: {},
       slack: {}
     }
@@ -118,21 +130,21 @@ export class DavisService {
       .catch(this.handleError);
   }
   
-  updateDavisUser(): Promise<any> {
+  updateDavisUser(user: any): Promise<any> {
     let headers = new Headers({ 'Content-Type': 'application/json', 'x-access-token': this.token });
     let options = new RequestOptions({ headers: headers });
 
-    return this.http.put(`/api/v1/system/users/${this.values.user.email}`, this.values.user, options)
+    return this.http.put(`/api/v1/system/users/${user.email}`, user, options)
       .toPromise()
       .then(this.extractData)
       .catch(this.handleError);
   }
 
-  addDavisUser(): Promise<any> {
+  addDavisUser(user: any): Promise<any> {
     let headers = new Headers({ 'Content-Type': 'application/json', 'x-access-token': this.token });
     let options = new RequestOptions({ headers: headers });
 
-    return this.http.post(`/api/v1/system/users/${this.values.user.email}`, this.values.user, options)
+    return this.http.post(`/api/v1/system/users/${user.email}`, user, options)
       .toPromise()
       .then(this.extractData)
       .catch(this.handleError);
