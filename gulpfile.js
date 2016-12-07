@@ -2,7 +2,7 @@
 
 const gulp = require('gulp');
 const mocha = require('gulp-mocha');
-const typescript = require('gulp-tsc');
+const tsc = require('gulp-typescript');
 
 gulp.task('update', () => {
   const update = require('gulp-update')();
@@ -13,20 +13,18 @@ gulp.task('update', () => {
 });
 
 gulp.task('compile', () => {
-  return gulp.src([
-      'web/src/**/*.ts',
-      '!web/src/main.prod.ts',
+  const tsProject = tsc.createProject('tsconfig.json');
+  gulp.src([
+    'web/src/**/*.ts',
+    '!web/src/main.prod.ts',
   ])
-    .pipe(typescript({ experimentalDecorators: true }))
+    .pipe(tsc(tsProject))
     .pipe(gulp.dest('web/dist'));
 });
 
-gulp.task('dev', ['compile'], () => {
-  console.log('dev');
-});
 
-gulp.task('test', ['compile'], () => {
-  return gulp.src(['tests/all.js'], { read: false })
+gulp.task('test', ['compile'], () =>
+   gulp.src(['tests/all.js'], { read: false })
     .pipe(mocha({
       reporter: 'spec',
     }))
@@ -35,7 +33,7 @@ gulp.task('test', ['compile'], () => {
     })
     .once('end', () => {
       process.exit(0);
-    });
-});
+    })
+);
 
 gulp.task('default', ['compile', 'test']);
