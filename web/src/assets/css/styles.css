@@ -9,6 +9,10 @@ body {
   background-color: #f2f2f2;
 }
 
+li {
+  margin-bottom: 20px;
+}
+
 label {
   float: left;
   font-size: 12px;
@@ -16,6 +20,7 @@ label {
   margin-bottom: 3px;
 }
 
+/* Form inputs */
 input[type=text], input[type=email], input[type=password]  {
   clear: both;
   float: left;
@@ -53,8 +58,8 @@ input[type=text]::-ms-input-placeholder, input[type=email]::-ms-input-placeholde
 }
 
 .input-button-wrapper-focus {
-    padding: 0px 11px 0px 0px;
-    border-width: 2px;
+  padding: 0px 11px 0px 0px;
+  border-width: 2px;
 }
 
 input[type=text].input-button-input, input[type=email].input-button-input, input[type=password].input-button-input {
@@ -139,7 +144,7 @@ button {
   cursor: pointer;
 }
 
-button:hover {
+button:hover, button:focus {
   background-color: #00848e;
 }
 
@@ -160,7 +165,7 @@ button:focus {
   background-color: #00a6fb;
 }
 
-.log-in:hover {
+.log-in:hover, .log-in:focus {
   background-color: #008cdb;
 }
 
@@ -178,7 +183,7 @@ button:focus {
   color: #006bba;
 }
 
-.log-out:hover {
+.log-out:hover, .log-out:focus {
   padding: 0px 16px;
   border: 2px solid #008cdb;
   background-color: transparent;
@@ -195,13 +200,14 @@ button:focus {
 .config {
   clear: both;
   float: left;
-  margin-top: 100px;
-  margin-left: calc(50% - 32px);
+  margin-top: 50px;
+  margin-left: 50%;
+  transform: translateX(-50%);
   border-color: #00a1b2;
   color: #00a1b2;
 }
 
-.config:hover {
+.config:hover, .config:focus {
   border: 2px solid #00848e;
   color: #00848e;
 }
@@ -220,7 +226,7 @@ button:focus {
   background-color: #d3571a;
 }
 
-.warning:hover {
+.warning:hover, .warning:focus {
   background-color: #b64915;
 }
 
@@ -233,10 +239,46 @@ button:focus {
   left: 100px;
 }
 
-li {
-  margin-bottom: 20px;
+.button-group-wrapper {
+  clear: both;
+  float: left;
+  margin-top: 30px;
+  padding-bottom: 30px;
+  margin-left: 65%;
+  width: 200px;
+  transform: translateX(-50%);
 }
 
+.button-group-left, .button-group-right {
+  clear: none;
+  margin: 0;
+}
+
+.button-group-left:hover, .button-group-left:active, .button-group-right:hover, .button-group-right:active {
+  border-color: #00848e;
+  background-color: #00848e;
+  color: white;
+}
+
+.button-group-left {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.button-group-right {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+  margin-left: -1px;
+}
+
+.button-group-selected, .button-group-selected:hover, .button-group-selected:active, .button-group-selected:focus {
+  color: white;
+  background-color: #00a1b2;
+  border-width: 0;
+  padding: 1px 18px;
+}
+
+/* Page layout */
 #logo {
   float: left;
   margin: 10px;
@@ -255,7 +297,8 @@ li {
 
 #made-in-detroit {
   position: fixed;
-  left: calc(50% - 55px);
+  left: 50%;
+  transform: translateX(-50%);
   bottom: 0;
   width: 110px;
   padding: 5px;
@@ -401,17 +444,24 @@ li {
 
 /* Configuration navbar */
 .navbar-wrapper {
-  margin: 0 auto;
   padding-top: 40px;
   clear: both;
-  width: 500px;
+  float: left;
+  margin-left: 50%;
+  transform: translateX(-50%);
 }
 
 .navbar-button {
   position: relative;
   float: left;
-  padding: 3px 14px 3px 25px;
+  padding: 3px 0px 3px 25px;;
   font-size: 16px;
+}
+
+@media screen and (min-width: 800px) {
+  .navbar-wrapper-wide {
+    width: 650px;
+  }
 }
 
 .navbar-button:hover {
@@ -438,4 +488,55 @@ li {
 
 .docs-link:active {
   color: #006bba;
+}
+
+/* Table */
+th {
+  background-color: white;
+  text-align: center;
+}
+
+th.name {
+  
+}
+
+th.email {
+  
+}
+
+th.admin {
+  
+}
+
+td {
+  padding: 10px;
+  text-align: left;
+}
+
+td.name {
+  
+}
+
+td.email {
+  
+}
+
+td.admin {
+  text-align: center;
+}
+
+.even {
+  background-color: white;
+}
+
+.odd {
+  background-color: grey;
+}
+
+.users-table {
+    margin: 35px 0;
+    float: left;
+    clear: both;
+    width: 100%;
+    font-size: 14px;
 }

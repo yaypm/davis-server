@@ -14,6 +14,45 @@ export class ConfigUsersComponent implements OnInit {
     submitButton: string = 'Save';
     isPasswordFocused: boolean = false;
     isPasswordMasked: boolean = true;
+    addUser: boolean = true;
+    users: any = [
+      {
+        name:
+        {
+          first: 'John',
+          last: 'Smith'
+        },
+        email: 'john.smith@example.com',
+        admin: false
+      },    
+      {
+        name:
+        {
+          first: 'Tom',
+          last: 'Green'
+        },
+        email: 'tom.green@example.com',
+        admin: true
+      },   
+      {
+        name:
+        {
+          first: 'Mike',
+          last: 'Johnson'
+        },
+        email: 'mike.johnson@example.com',
+        admin: false
+      },
+      {
+        name:
+        {
+          first: 'Lisa',
+          last: 'Lopez'
+        },
+        email: 'lisa.lopez@example.com',
+        admin: true
+      },   
+    ];
     
     constructor(public iDavis: DavisService, public router: Router) {}
     

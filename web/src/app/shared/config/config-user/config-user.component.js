@@ -19,6 +19,7 @@ var ConfigUserComponent = (function () {
         this.iConfig = iConfig;
         this.submitted = false;
         this.submitButton = (this.iDavis.isWizard) ? 'Continue' : 'Save';
+        this.submitButtonDefault = (this.iDavis.isWizard) ? 'Continue' : 'Save';
         this.isPasswordFocused = false;
         this.isPasswordMasked = true;
         this.isSelectOpened = false;
@@ -33,6 +34,8 @@ var ConfigUserComponent = (function () {
             this.iDavis.updateDavisUser(this.user)
                 .then(function (result) {
                 if (result.success) {
+                    _this.iDavis.values.original.user = _.cloneDeep(_this.user);
+                    _this.isDirty = false;
                     _this.iDavis.config['user'].success = true;
                     _this.submitButton = 'Save';
                 }
@@ -53,6 +56,7 @@ var ConfigUserComponent = (function () {
                 if (result.success) {
                     if (_this.iDavis.isWizard) {
                         _this.iDavis.values.original.user = _.cloneDeep(_this.user);
+                        _this.isDirty = false;
                         _this.iDavis.removeDavisUser(_this.iDavis.values.authenticate.email)
                             .then(function (res) {
                             if (res.success) {
@@ -64,25 +68,25 @@ var ConfigUserComponent = (function () {
                                     .then(function (response) {
                                     _this.iDavis.token = response.token;
                                     _this.iConfig.SelectView('dynatrace');
-                                    _this.submitButton = 'Continue';
+                                    _this.submitButton = _this.submitButtonDefault;
                                     sessionStorage.setItem('email', _this.iDavis.values.user.email);
                                     sessionStorage.setItem('token', response.token);
                                     sessionStorage.setItem('isAdmin', response.admin);
                                 }, function (error) {
                                     _this.iDavis.config['user'].success = false;
                                     _this.iDavis.config['user'].error = 'Sorry an error occurred, please try again.';
-                                    _this.submitButton = 'Continue';
+                                    _this.submitButton = _this.submitButtonDefault;
                                 });
                             }
                             else {
                                 _this.iDavis.config['user'].success = false;
                                 _this.iDavis.config['user'].error = res.message;
-                                _this.submitButton = 'Continue';
+                                _this.submitButton = _this.submitButtonDefault;
                             }
                         }, function (error) {
                             _this.iDavis.config['user'].success = false;
                             _this.iDavis.config['user'].error = 'Sorry an error occurred, please try again.';
-                            _this.submitButton = 'Continue';
+                            _this.submitButton = _this.submitButtonDefault;
                         });
                     }
                     else {
@@ -94,12 +98,12 @@ var ConfigUserComponent = (function () {
                     _this.iDavis.config['user'].error = result.message;
                     _this.iDavis.values.user.email = '';
                     _this.iDavis.values.user.password = '';
-                    _this.submitButton = 'Continue';
+                    _this.submitButton = _this.submitButtonDefault;
                 }
             }, function (error) {
                 _this.iDavis.config['user'].success = false;
                 _this.iDavis.config['user'].error = 'Sorry an error occurred, please try again.';
-                _this.submitButton = 'Continue';
+                _this.submitButton = _this.submitButtonDefault;
             });
         }
     };
@@ -116,6 +120,9 @@ var ConfigUserComponent = (function () {
     };
     ConfigUserComponent.prototype.ngOnInit = function () {
         var _this = this;
+        if (this.isNewUser) {
+            this.submitButtonDefault = 'Add User';
+        }
         this.iDavis.getTimezones()
             .then(function (response) {
             _this.iDavis.timezones = response.timezones;
@@ -128,9 +135,16 @@ var ConfigUserComponent = (function () {
         }, function (error) {
             _this.iDavis.config['user'].success = false;
             _this.iDavis.config['user'].error = 'Unable to get timezones, please try again later.';
+        })
+            .catch(function (err) {
+            if (err.includes('invalid token')) {
+                _this.iDavis.logOut();
+            }
         });
         setTimeout(function () {
-            document.getElementsByName('first')[0].focus();
+            if (document.getElementsByName('first')[0]) {
+                document.getElementsByName('first')[0].focus();
+            }
             _this.validate();
         }, 200);
     };

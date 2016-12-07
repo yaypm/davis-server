@@ -1,30 +1,31 @@
 <div class="page">
     <div class="content">
-        <div> 
-            <table>
-                <th>
-                    Name
-                </th>
-                <th>
-                    Email
-                </th>
-                <th>
-                    Administrator
-                </th>
-                <tr>
-                    <td>
-                        Woolf, Cory
-                    </td>
-                    <td>
-                        corywoolf@gmail.com
-                    </td>
-                    <td>
-                        &#x2713;
-                    </td>
-                </tr>
-            </table>
+        <div class="button-group-wrapper">
+            <button type="button" class="log-out config button-group-left" [class.button-group-selected]="addUser" (click)="addUser = true">Add User</button>
+            <button type="button" class="log-out config button-group-right" [class.button-group-selected]="!addUser" (click)="addUser = false">Edit User</button>
         </div>
-        <hr>
-        <config-user [isNewUser]="true" [isMyUser]="false"></config-user>
+        <table class="users-table" *ngIf="!addUser">
+            <th class="name">
+                Name
+            </th>
+            <th class="email">
+                Email
+            </th>
+            <th class="admin">
+                Admin
+            </th>
+            <tr>
+                <td class="name">
+                    Woolf, Cory
+                </td>
+                <td class="email">
+                    corywoolf@gmail.com
+                </td>
+                <td class="admin">
+                    &#x2713;
+                </td>
+            </tr>
+        </table>
+        <config-user *ngIf="addUser || iDavis.values.original.otherUser.first" [isNewUser]="addUser" [isMyUser]="false"></config-user>
     </div>
 </div>

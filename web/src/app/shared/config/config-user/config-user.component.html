@@ -91,14 +91,14 @@
                             (focus)="isPasswordFocused = true" 
                             (blur)="isPasswordFocused = false"
                             (keyup)="validate()"
-                            [required]="(iDavis.isWizard) ? '' : null">
+                            [required]="(isNewUser) ? '' : null">
                         <input *ngIf="!isPasswordMasked && !isMyUser" type="text" name="passwordText" class="input-button-input" 
                             placeholder="&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;" 
                             [(ngModel)]="iDavis.values.otherUser.password" 
                             (focus)="isPasswordFocused = true" 
                             (blur)="isPasswordFocused = false"
                             (keyup)="validate()"
-                            [required]="(iDavis.isWizard) ? '' : null">
+                            [required]="(isNewUser) ? '' : null">
                         <div class="input-button-button" (click)="isPasswordMasked = !isPasswordMasked">
                             <img class="input-button-img" [class.input-button-img-password-masked]="isPasswordMasked" src="/assets/img/eye.svg">
                         </div>
@@ -162,7 +162,7 @@
             </section>
             <section class="flex-container">
                 <div class="flex-item next">
-                    <a href="https://github.com/Dynatrace/davis-server/blob/master/docs/getting_started.md" target="_blank" class="docs-link">How to complete this step</a>
+                    <a href="https://github.com/Dynatrace/davis-server/blob/master/docs/getting_started.md" target="_blank" class="docs-link">{{ iDavis.helpLinkText }}</a>
                     <button type="submit" class="content-save-button" 
                         [attr.disabled]="(!form.valid || submitButton === 'Saving...' || !isDirty) ? true : null">
                         {{ submitButton }}

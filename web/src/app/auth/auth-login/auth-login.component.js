@@ -34,6 +34,7 @@ var AuthLoginComponent = (function () {
         this.submitted = false;
         this.loginError = null;
         this.password = '';
+        this.submitButton = 'Sign in';
         this.iDavis.titleGlobal = '';
     }
     // ------------------------------------------------------
@@ -42,21 +43,27 @@ var AuthLoginComponent = (function () {
     AuthLoginComponent.prototype.login = function (form) {
         var _this = this;
         this.submitted = true;
+        this.submitButton = 'Signing in...';
         this.iDavis.values.authenticate.email = form.value.email;
         this.iDavis.values.authenticate.password = form.value.password;
         this.iDavis.getJwtToken()
             .then(function (result) {
             if (result.success) {
+                _this.submitButton = 'Sign in';
                 _this.loginError = null;
                 _this.iDavis.token = result.token;
                 _this.iDavis.isAuthenticated = true;
                 _this.iDavis.isAdmin = result.admin;
+                sessionStorage.removeItem('email');
+                sessionStorage.removeItem('token');
+                sessionStorage.removeItem('isAdmin');
                 sessionStorage.setItem('email', form.value.email);
                 sessionStorage.setItem('token', result.token);
                 sessionStorage.setItem('isAdmin', result.admin);
                 _this.router.navigate(['/configuration']);
             }
             else {
+                _this.submitButton = 'Sign in';
                 _this.loginError = result.message;
                 _this.password = '';
             }

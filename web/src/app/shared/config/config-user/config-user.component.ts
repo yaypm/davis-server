@@ -17,6 +17,7 @@ export class ConfigUserComponent implements OnInit {
     
     submitted: boolean = false;
     submitButton: string = (this.iDavis.isWizard) ? 'Continue' : 'Save';
+    submitButtonDefault: string = (this.iDavis.isWizard) ? 'Continue' : 'Save';
     isPasswordFocused: boolean = false;
     isPasswordMasked: boolean = true;
     isSelectOpened: boolean = false;
@@ -25,8 +26,7 @@ export class ConfigUserComponent implements OnInit {
     
     constructor(
       public iDavis: DavisService,
-      public iConfig: ConfigService) {
-      }
+      public iConfig: ConfigService) {}
     
     doSubmit() {
       this.submitted = true;
@@ -37,6 +37,8 @@ export class ConfigUserComponent implements OnInit {
         this.iDavis.updateDavisUser(this.user)
           .then(result => {
               if (result.success) {
+                this.iDavis.values.original.user = _.cloneDeep(this.user);
+                this.isDirty = false;
                 this.iDavis.config['user'].success = true;
                 this.submitButton = 'Save';
               } else {
@@ -56,6 +58,7 @@ export class ConfigUserComponent implements OnInit {
               if (result.success) {
                 if (this.iDavis.isWizard) {
                   this.iDavis.values.original.user = _.cloneDeep(this.user);
+                  this.isDirty = false;
                   this.iDavis.removeDavisUser(this.iDavis.values.authenticate.email)
                     .then(res => {
                         if (res.success) {
@@ -65,12 +68,12 @@ export class ConfigUserComponent implements OnInit {
                             this.iDavis.values.authenticate.email = this.iDavis.values.user.email;
                             this.iDavis.values.authenticate.password = this.iDavis.values.user.password;
                             
-                             this.iDavis.getJwtToken()
+                            this.iDavis.getJwtToken()
                               .then( 
                                 response => {
                                   this.iDavis.token = response.token;
                                   this.iConfig.SelectView('dynatrace');
-                                  this.submitButton = 'Continue';
+                                  this.submitButton = this.submitButtonDefault;
                                   sessionStorage.setItem('email', this.iDavis.values.user.email);
                                   sessionStorage.setItem('token', response.token);
                                   sessionStorage.setItem('isAdmin', response.admin);
@@ -78,20 +81,20 @@ export class ConfigUserComponent implements OnInit {
                                 error => {
                                   this.iDavis.config['user'].success = false;
                                   this.iDavis.config['user'].error = 'Sorry an error occurred, please try again.';
-                                  this.submitButton = 'Continue';
+                                  this.submitButton = this.submitButtonDefault;
                                 }
                               );
                       
                         } else {
                           this.iDavis.config['user'].success = false;
                           this.iDavis.config['user'].error = res.message;
-                          this.submitButton = 'Continue';
+                          this.submitButton = this.submitButtonDefault;
                         }
                     },
                     error => {
                       this.iDavis.config['user'].success = false;
                       this.iDavis.config['user'].error = 'Sorry an error occurred, please try again.';
-                      this.submitButton = 'Continue';
+                      this.submitButton = this.submitButtonDefault;
                     });
                 } else {
                    this.iDavis.values.original.otherUser = _.cloneDeep(this.user);
@@ -101,13 +104,13 @@ export class ConfigUserComponent implements OnInit {
                 this.iDavis.config['user'].error = result.message;
                 this.iDavis.values.user.email = '';
                 this.iDavis.values.user.password = '';
-                this.submitButton = 'Continue';
+                this.submitButton = this.submitButtonDefault;
               }
             },
             error => {
               this.iDavis.config['user'].success = false;
               this.iDavis.config['user'].error = 'Sorry an error occurred, please try again.';
-              this.submitButton = 'Continue';
+              this.submitButton = this.submitButtonDefault;
             });
       }
     }
@@ -125,6 +128,9 @@ export class ConfigUserComponent implements OnInit {
     }
     
     ngOnInit() {
+      if (this.isNewUser) {
+        this.submitButtonDefault = 'Add User';
+      }
       this.iDavis.getTimezones()
         .then( 
           response => {
@@ -138,9 +144,16 @@ export class ConfigUserComponent implements OnInit {
           error => {
             this.iDavis.config['user'].success = false;
             this.iDavis.config['user'].error = 'Unable to get timezones, please try again later.';
+          })
+          .catch(err => {
+            if (err.includes('invalid token')) {
+              this.iDavis.logOut();
+            }
           });
       setTimeout(() => {
-        document.getElementsByName('first')[0].focus();
+        if (document.getElementsByName('first')[0]) {
+          document.getElementsByName('first')[0].focus();
+        }
         this.validate();
       }, 200);
     }

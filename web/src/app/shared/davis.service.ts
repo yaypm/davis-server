@@ -1,6 +1,9 @@
-import {Injectable} from '@angular/core';
-import { Http, Response } from '@angular/http';
+import {Injectable}                from '@angular/core';
+import { Router }                  from '@angular/router';
+import { Http, Response }          from '@angular/http';
 import { Headers, RequestOptions } from '@angular/http';
+
+declare var chrome: any;
 
 @Injectable()
 export class DavisService {
@@ -12,6 +15,8 @@ export class DavisService {
   timezones: any = [];
   isWizard: boolean = false;
   titleGlobal: string = '';
+  helpLinkText: string = 'How to complete this step';
+  isChromeExtensionInstalled: boolean = chrome.app.isInstalled;
 
   values: any = {
     authenticate: {
@@ -97,7 +102,16 @@ export class DavisService {
     }
   };
 
-  constructor (private http: Http) {
+  constructor (private http: Http, private router: Router) {}
+  
+  logOut(): void {
+    this.isAuthenticated = false;
+    this.isAdmin = false;
+    this.token = null;
+    sessionStorage.removeItem('email');
+    sessionStorage.removeItem('token');
+    sessionStorage.removeItem('isAdmin');
+    this.router.navigate(["/auth/login"]);
   }
 
   getJwtToken(): Promise<any> {
@@ -231,8 +245,8 @@ export class DavisService {
   }
 
   private extractData(res: Response) {
-      let body = res.json();
-      return body || {};
+    let body = res.json();
+    return body || {};
   }
 
   private handleError(error: Response | any) {
@@ -254,6 +268,16 @@ export class DavisService {
 
   windowOpen(url:string): void {
     window.open(url);
+  }
+  
+  addToChrome(): void {
+    chrome.webstore.install('https://chrome.google.com/webstore/detail/kighaljfkdkpbneahajiknoiinbckfpg', this.addToChomeSuccess, this.addToChomeFailure);
+  }
+  
+  addToChomeSuccess(): void {}
+  
+  addToChomeFailure(err: string): void {
+    window.open('https://chrome.google.com/webstore/detail/kighaljfkdkpbneahajiknoiinbckfpg');
   }
   
   clickElem(id: string): void {

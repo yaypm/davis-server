@@ -22,6 +22,7 @@ var common_1 = require("@angular/common");
 var forms_1 = require("@angular/forms");
 // Components
 var config_alexa_component_1 = require("./config-alexa/config-alexa.component");
+var config_chrome_component_1 = require("./config-chrome/config-chrome.component");
 var config_dynatrace_component_1 = require("./config-dynatrace/config-dynatrace.component");
 var config_slack_component_1 = require("./config-slack/config-slack.component");
 var config_user_component_1 = require("./config-user/config-user.component");
@@ -38,6 +39,7 @@ var ConfigModule = (function () {
         core_1.NgModule({
             declarations: [
                 config_alexa_component_1.ConfigAlexaComponent,
+                config_chrome_component_1.ConfigChromeComponent,
                 config_dynatrace_component_1.ConfigDynatraceComponent,
                 config_slack_component_1.ConfigSlackComponent,
                 config_user_component_1.ConfigUserComponent,
@@ -45,6 +47,7 @@ var ConfigModule = (function () {
             ],
             exports: [
                 config_alexa_component_1.ConfigAlexaComponent,
+                config_chrome_component_1.ConfigChromeComponent,
                 config_dynatrace_component_1.ConfigDynatraceComponent,
                 config_slack_component_1.ConfigSlackComponent,
                 config_user_component_1.ConfigUserComponent,

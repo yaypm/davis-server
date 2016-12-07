@@ -43,6 +43,16 @@ export class ConfigurationBaseComponent  {
     } else {
       this.iDavis.titleGlobal = 'Configure Davis';
     }
+    
+    this.iDavis.config['user'].success = null;
+    this.iDavis.config['user'].error = null;
+    this.iDavis.config['dynatrace'].success = null;
+    this.iDavis.config['dynatrace'].error = null;
+    this.iDavis.config['slack'].success = null;
+    this.iDavis.config['slack'].error = null;
+  
+    this.iDavis.helpLinkText = 'Help for these settings';  
+  
     this.iDavis.getDavisUser()
       .then(result => {
         if (result.success) {
@@ -54,6 +64,9 @@ export class ConfigurationBaseComponent  {
       })
       .catch(err => {
         this.iDavis.config['user'].error = err.message;
+        if (err.includes('invalid token')) {
+          this.iDavis.logOut();
+        }
       });
       
     this.iDavis.getDynatrace()
@@ -67,6 +80,9 @@ export class ConfigurationBaseComponent  {
       })
       .catch(err => {
         this.iDavis.config['dynatrace'].error = err.message;
+        if (err.includes('invalid token')) {
+          this.iDavis.logOut();
+        }
       });
       
     this.iDavis.getSlack()
@@ -81,6 +97,9 @@ export class ConfigurationBaseComponent  {
       })
       .catch(err => {
         this.iDavis.config['slack'].error = err.message;
+        if (err.includes('invalid token')) {
+          this.iDavis.logOut();
+        }
       });
   }
 }

@@ -30,15 +30,6 @@ var AppComponent = (function () {
         this.iDavis = iDavis;
         this.router = router;
     }
-    AppComponent.prototype.logOut = function () {
-        this.iDavis.isAuthenticated = false;
-        this.iDavis.isAdmin = false;
-        this.iDavis.token = null;
-        sessionStorage.removeItem('email');
-        sessionStorage.removeItem('token');
-        sessionStorage.removeItem('isAdmin');
-        this.router.navigate(["/auth/login"]);
-    };
     AppComponent = __decorate([
         core_1.Component({
             moduleId: module.id,
