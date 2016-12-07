@@ -1,12 +1,16 @@
-FROM mhart/alpine-node:6
+# FROM mhart/alpine-node:6
+FROM node:6-alpine
 
-WORKDIR /src
+RUN mkdir -p /opt/davis
+WORKDIR /opt/davis
 ADD . .
 
 # clean up build dependencies on the same RUN
 # this prevents the COW filesystem from bloating
 RUN apk add --no-cache make gcc g++ python git && \
-    npm install --production && \
+    npm install && \
+    cd web && npm install && \
+    npm run build:prod && cd ../ && \
     apk del make gcc g++ python git && \
     rm -rf /tmp /usr/share/man ~/.npm /var/cache/apk/*
 
