@@ -19,9 +19,9 @@ import { RouterModule }  from "@angular/router";
 import { AppComponent } from "./app.component";
 
 // Modules
-import { AuthModule }          from "./auth/auth.module";
-import { ConfigurationModule } from "./configuration/configuration.module";
-import { WizardModule }        from "./wizard/wizard.module";
+import { AuthModule }              from "./auth/auth.module";
+import { ConfigurationModule }     from "./configuration/configuration.module";
+import { WizardModule }            from "./wizard/wizard.module";
 
 // Routing
 import { AppRouting } from "./app.routing";
