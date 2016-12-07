@@ -8,7 +8,7 @@ phases:
       - sudo apt-get update
       - sudo apt-get install -y mongodb-org
       - mkdir data
-      - /bin/sh mongod --dbpath=data --nojournal --rest "$@" &
+      - nohup mongod --dbpath=data --nojournal &
   pre_build:
     commands:
       - echo "Pulling in Davis dependencies"
