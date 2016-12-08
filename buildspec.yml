@@ -21,8 +21,4 @@ phases:
       - echo Build completed on `date`
 artifacts:
   files:
-    - package.json
-    - gulpfile.js
-    - lib/**/*
-    - web/**/*
-    - bin/*
+    - coverage/**/*
