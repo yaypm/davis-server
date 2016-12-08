@@ -56,6 +56,22 @@ export class ConfigUserComponent implements OnInit {
         this.iDavis.addDavisUser(this.user)
           .then(result => {
               if (result.success) {
+                this.submitButton = this.submitButtonDefault;
+                this.iDavis.config['user'].success = true;
+                this.iDavis.config['user'].error = null;
+                this.iDavis.values.otherUser = {
+                  email: null,
+                  password: null,
+                  timezone: null,
+                  alexa_ids: null,
+                  name: {
+                      first: null,
+                      last: null
+                  },
+                  admin: false
+                };
+                this.iDavis.values.otherUser.timezone = this.iDavis.getTimezone();
+                this.iDavis.values.original.otherUser = _.cloneDeep(this.iDavis.values.otherUser);
                 if (this.iDavis.isWizard) {
                   this.iDavis.values.original.user = _.cloneDeep(this.user);
                   this.isDirty = false;
@@ -138,7 +154,7 @@ export class ConfigUserComponent implements OnInit {
             if (this.iDavis.isWizard) {
               this.iDavis.values.user.timezone = this.iDavis.getTimezone();
             } else if (this.isNewUser){
-               this.iDavis.values.otherUser.timezone = this.iDavis.getTimezone();
+              this.iDavis.values.otherUser.timezone = this.iDavis.getTimezone();
             }
           },
           error => {

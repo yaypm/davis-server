@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
 import { DavisService } from '../../davis.service';
+import * as _ from "lodash";
 
 @Component({
     moduleId: module.id,
@@ -15,54 +16,53 @@ export class ConfigUsersComponent implements OnInit {
     isPasswordFocused: boolean = false;
     isPasswordMasked: boolean = true;
     addUser: boolean = true;
-    users: any = [
-      {
-        name:
-        {
-          first: 'John',
-          last: 'Smith'
-        },
-        email: 'john.smith@example.com',
-        admin: false
-      },    
-      {
-        name:
-        {
-          first: 'Tom',
-          last: 'Green'
-        },
-        email: 'tom.green@example.com',
-        admin: true
-      },   
-      {
-        name:
-        {
-          first: 'Mike',
-          last: 'Johnson'
-        },
-        email: 'mike.johnson@example.com',
-        admin: false
-      },
-      {
-        name:
-        {
-          first: 'Lisa',
-          last: 'Lopez'
-        },
-        email: 'lisa.lopez@example.com',
-        admin: true
-      },   
-    ];
+    editUser: boolean = false;
+    users: any = [];
     
     constructor(public iDavis: DavisService, public router: Router) {}
     
-    doSubmit() {
-      this.submitted = true;
-      this.submitButton = 'Saving...';
+    addMode() {
+      this.iDavis.values.otherUser = {
+        email: null,
+        password: null,
+        timezone: null,
+        alexa_ids: null,
+        name: {
+            first: null,
+            last: null
+        },
+        admin: false
+      };
+      this.iDavis.values.otherUser.timezone = this.iDavis.getTimezone();
+      this.iDavis.values.original.otherUser = _.cloneDeep(this.iDavis.values.otherUser);
+    }
+    
+    editMode(user: any) {
+      this.editUser = true;
+      this.iDavis.values.original.otherUser = user;
+      this.iDavis.values.otherUser = _.cloneDeep(user);
+    }
+    
+    getUsers() {
+      this.iDavis.getDavisUsers()
+        .then( 
+          response => {
+            this.iDavis.values.users = response.users;
+            this.users = _.cloneDeep(response.users);
+          },
+          error => {
+            this.iDavis.config['users'].success = false;
+            this.iDavis.config['users'].error = 'Unable to get users, please try again later.';
+          })
+          .catch(err => {
+            if (err.includes('invalid token')) {
+              this.iDavis.logOut();
+            }
+          });
     }
     
     ngOnInit() {
-     
+      this.getUsers();
     }
 
 }

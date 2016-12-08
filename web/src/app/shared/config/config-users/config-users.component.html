@@ -1,31 +1,32 @@
 <div class="page">
     <div class="content">
         <div class="button-group-wrapper">
-            <button type="button" class="log-out config button-group-left" [class.button-group-selected]="addUser" (click)="addUser = true">Add User</button>
-            <button type="button" class="log-out config button-group-right" [class.button-group-selected]="!addUser" (click)="addUser = false">Edit User</button>
+            <button type="button" class="log-out config button-group-left" [class.button-group-selected]="addUser" (click)="addUser = true; editUser = false; addMode()">Add User</button>
+            <button type="button" class="log-out config button-group-right" [class.button-group-selected]="!addUser" (click)="addUser = false; editUser = false; getUsers()">Edit User</button>
         </div>
-        <table class="users-table" *ngIf="!addUser">
-            <th class="name">
+        <div class="users-table-filter-wrapper" *ngIf="!addUser && !editUser">
+            <input type="text" class="users-table-filter-input" placeholder="Filter by name">
+        </div>
+        <div class="users-table-th" *ngIf="!addUser && !editUser">
+            <div class="th th-name">
                 Name
-            </th>
-            <th class="email">
-                Email
-            </th>
-            <th class="admin">
+            </div>
+            <div class="th th-admin">
                 Admin
-            </th>
-            <tr>
-                <td class="name">
-                    Woolf, Cory
-                </td>
-                <td class="email">
-                    corywoolf@gmail.com
-                </td>
-                <td class="admin">
-                    &#x2713;
-                </td>
-            </tr>
-        </table>
-        <config-user *ngIf="addUser || iDavis.values.original.otherUser.first" [isNewUser]="addUser" [isMyUser]="false"></config-user>
+            </div>
+        </div>
+        <div class="users-table-wrapper" *ngIf="!addUser && !editUser">
+            <table class="users-table">
+                <tr *ngFor='let user of users; let odd = odd; let even = even;' (click)="editMode(user)">
+                    <td class="name" [class.even]="even" [class.odd]="odd">
+                        {{ user.name.last }}, {{ user.name.first }}
+                    </td>
+                    <td class="admin" [class.even]="even" [class.odd]="odd">
+                        {{ (user.admin) ? '&#x2713;' : '' }}
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <config-user *ngIf="addUser || iDavis.values.original.otherUser.first || editUser" [isNewUser]="addUser" [isMyUser]="false"></config-user>
     </div>
 </div>

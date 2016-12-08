@@ -46,7 +46,7 @@ var AppModule = (function () {
                 app_component_1.AppComponent
             ],
             declarations: [
-                app_component_1.AppComponent
+                app_component_1.AppComponent,
             ],
             imports: [
                 auth_module_1.AuthModule,

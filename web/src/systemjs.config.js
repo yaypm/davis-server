@@ -30,7 +30,7 @@
       },
       lodash: {
         defaultExtension: 'js'
-      }
+      },
     }
   });
 })(this);

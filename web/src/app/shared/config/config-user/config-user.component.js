@@ -54,6 +54,22 @@ var ConfigUserComponent = (function () {
             this.iDavis.addDavisUser(this.user)
                 .then(function (result) {
                 if (result.success) {
+                    _this.submitButton = _this.submitButtonDefault;
+                    _this.iDavis.config['user'].success = true;
+                    _this.iDavis.config['user'].error = null;
+                    _this.iDavis.values.otherUser = {
+                        email: null,
+                        password: null,
+                        timezone: null,
+                        alexa_ids: null,
+                        name: {
+                            first: null,
+                            last: null
+                        },
+                        admin: false
+                    };
+                    _this.iDavis.values.otherUser.timezone = _this.iDavis.getTimezone();
+                    _this.iDavis.values.original.otherUser = _.cloneDeep(_this.iDavis.values.otherUser);
                     if (_this.iDavis.isWizard) {
                         _this.iDavis.values.original.user = _.cloneDeep(_this.user);
                         _this.isDirty = false;

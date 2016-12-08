@@ -45,6 +45,7 @@ export class DavisService {
       },
       admin: false
     },
+    users: [],
     dynatrace: {
       url: null,
       token: null,
@@ -139,6 +140,16 @@ export class DavisService {
     let options = new RequestOptions({ headers: headers });
 
     return this.http.get(`/api/v1/system/users/${this.values.authenticate.email}`, options)
+      .toPromise()
+      .then(this.extractData)
+      .catch(this.handleError);
+  }
+  
+  getDavisUsers(): Promise<any> {
+    let headers = new Headers({ 'Content-Type': 'application/json', 'x-access-token': this.token });
+    let options = new RequestOptions({ headers: headers });
+
+    return this.http.get(`/api/v1/system/users`, options)
       .toPromise()
       .then(this.extractData)
       .catch(this.handleError);
