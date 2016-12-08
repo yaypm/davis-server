@@ -18,6 +18,7 @@ chai.should();
 describe('Express', () => {
   const adminemail = 'admin@localhost';
   const testemail = 'test@localhost';
+  const name = { first: 'test', last: 'user' };
 
   const password = 'changeme';
   const admin = true;
@@ -34,6 +35,7 @@ describe('Express', () => {
       .set('Content-Type', 'application/json')
       .send({
         email: adminemail,
+        name,
         password,
       })
       .then(res => {
@@ -48,6 +50,7 @@ describe('Express', () => {
       .set('Content-Type', 'application/json')
       .send({
         email: adminemail,
+        name,
         password: 'wrong',
       })
       .then(res => {
@@ -76,6 +79,7 @@ describe('Express', () => {
       .set('X-Access-Token', token)
       .send({
         password,
+        name,
         admin,
       })
       .then(res => {
@@ -89,6 +93,7 @@ describe('Express', () => {
       .set('Content-Type', 'application/json')
       .send({
         email: adminemail,
+        name,
         password,
       })
       .then(res => {
@@ -102,6 +107,7 @@ describe('Express', () => {
       .set('Content-Type', 'application/json')
       .send({
         email: testemail,
+        name,
         password,
       })
       .then(res => {
@@ -149,6 +155,7 @@ describe('Express', () => {
       .set('X-Access-Token', token)
       .send({
         password,
+        name,
         admin,
       })
       .then(res => {
