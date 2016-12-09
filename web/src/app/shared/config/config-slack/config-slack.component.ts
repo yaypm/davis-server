@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router }    from '@angular/router';
 
 // Services
 import { DavisService } from '../../davis.service';
@@ -19,7 +20,7 @@ export class ConfigSlackComponent implements OnInit {
     isPasswordMasked: boolean = true;
     isDirty: boolean = false;
     
-    constructor(public iDavis: DavisService) {
+    constructor(public iDavis: DavisService, public router: Router) {
         this.myURL = 'https://' + window.location.host;
         this.requestUri = `${this.myURL}/slack/receive`;
         this.iDavis.values.slack.redirectUri = `${this.myURL}/oauth`;
@@ -35,6 +36,7 @@ export class ConfigSlackComponent implements OnInit {
     }
     
     doSubmit() {
+      this.submitted = true;
       if (!this.iDavis.config['slack'].success && this.iDavis.values.slack.clientId && this.iDavis.values.slack.clientSecret) {
         this.submitButton = 'Saving...';
         this.iDavis.connectSlack()
@@ -63,7 +65,6 @@ export class ConfigSlackComponent implements OnInit {
             console.log(error);
             this.iDavis.config['slack'].success = false;
           });
-        this.submitted = true;
       } else {
         sessionStorage.setItem('wizard-finished', 'true');
         this.iDavis.windowLocation(this.myURL);

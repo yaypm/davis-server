@@ -333,11 +333,11 @@ button:focus {
 }
 
 #davis-logo {
-  float: left;
-  width: 80px;
-  border: 1px solid #00A6FB;
-  border-top-left-radius: 3px;
-  border-bottom-left-radius: 3px;
+  display: block;
+  position: relative;
+  margin: 0 auto;
+  margin-top: 80px;
+  width: 300px;
 }
 
 #davis-logo-text {

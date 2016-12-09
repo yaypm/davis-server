@@ -55,7 +55,7 @@
                         *ngIf="isMyUser"
                         [(ngModel)]="iDavis.values.user.email" 
                         (keyup)="validate()" 
-                        [attr.disabled]="(isNewUser) ? null : ''" required>
+                        [attr.disabled]="(iDavis.isWizard) ? null : ''" required>
                         
                     <!-- !isMyUser -->
                     <input type="email" name="email" 
@@ -138,13 +138,13 @@
                         [(ngModel)]="iDavis.values.user.admin"
                         [disabled]="true"
                         *ngIf="isMyUser"
-                        (keyup)="validate()">
+                        (click)="validate()">
                         
                     <!-- !isMyUser -->
                     <input type="checkbox" name="admin" 
                         [(ngModel)]="iDavis.values.otherUser.admin"
                         *ngIf="!isMyUser"
-                        (keyup)="validate()">
+                        (click)="validate()">
                 </div>
             </section>
             <section *ngIf="!iDavis.isWizard" class="flex-container">
