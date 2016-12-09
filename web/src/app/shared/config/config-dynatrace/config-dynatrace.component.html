@@ -1,0 +1,38 @@
+<div class="page">
+    <div *ngIf="iDavis.isWizard" class="step">
+        Step 2 of 4
+    </div>
+    <div *ngIf="iDavis.isWizard" class="title">
+        Connect to Dynatrace
+    </div>
+    <div class="content">
+        <form (ngSubmit)="doSubmit()" #form="ngForm">
+            <section *ngIf="iDavis.config['dynatrace'].success === false" class="flex-container">
+                <div class="flex-item full-width error">
+                    {{iDavis.config['dynatrace'].error}}
+                </div>
+            </section>
+            <section class="flex-container">
+                <div class="flex-item full-width">
+                    <label>Dynatrace Tenant URL</label>
+                    <input type="text" name="url" placeholder="https://qwefgmasd.live.dynatrace.com" [(ngModel)]="iDavis.values.dynatrace.url" (keyup)="validate()" required>
+                </div>
+            </section>
+            <section class="flex-container">
+                <div class="flex-item full-width">
+                    <label>Dynatrace API Token</label>
+                    <input type="text" name="token" placeholder="IYVTz0nBSkZdsQOhS7W3P" [(ngModel)]="iDavis.values.dynatrace.token" (keyup)="validate()" required>
+                </div>
+            </section>
+            <section class="flex-container">
+                <div class="flex-item next">
+                    <a href="https://github.com/Dynatrace/davis-server/blob/master/docs/getting_started.md" target="_blank" class="docs-link">{{ iDavis.helpLinkText }}</a>
+                    <button type="submit" class="content-save-button" 
+                        [attr.disabled]="(!form.valid || submitButton === 'Saving...' || !isDirty) ? true : null">
+                        {{ submitButton }}
+                    </button>
+                </div>
+            </section>
+        </form>
+    </div>
+</div>

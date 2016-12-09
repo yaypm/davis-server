@@ -55,7 +55,13 @@ Create a user
 
 ```
 {
-	"password": "12345"
+  "name": {
+    "first": "test",
+    "last": "user
+  },
+	"password": "12345",
+  "admin": false,
+  "timezone": "America/Detroit"
 }
 ```
 

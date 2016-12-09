@@ -2,6 +2,7 @@
 
 const chai = require('chai');
 const chaiAsPromised = require('chai-as-promised');
+const UserModel = require('../../lib/models/User');
 
 chai.use(chaiAsPromised);
 
@@ -15,6 +16,11 @@ describe('Users', () => {
 
   const email = 'testuser@dynatrace.com';
 
+  after(() => {
+    return users.createUser({ email: 'admin@localhost', password: 'changeme', name: { first: 'admin', last: 'user' }, admin: true })
+      .then(() => users.deleteUser(email));
+  });
+
   it('should return a list of timezones',
     () => users.getValidTimezones().should.contain('America/Detroit'));
 
@@ -25,7 +31,7 @@ describe('Users', () => {
     const alexaID = 'shouldExist';
 
     return davis.config.load()
-      .then(() => users.createUser( { email, password: 'test', admin: true }))
+      .then(() => users.createUser( { email, password: 'test', name: { first: 'admin', last: 'user' }, admin: true }))
       .then(() => users.updateUser(email, { alexa_ids: [alexaID] }))
       .then(() => users.validateAlexaUser(alexaID))
       .then(user => (user.email).should.equal(email));
@@ -36,7 +42,7 @@ describe('Users', () => {
 
   it('should successfully update the timezone',
     () => users.updateUser(email, { timezone: 'America/Detroit' }).should.eventually.be.resolved);
-  
+
   it('should create an internal user', () => {
     return davis.config.load()
       .then(() => users.getSystemUser())
