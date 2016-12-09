@@ -9,6 +9,7 @@ const merge = require('merge-stream');
 const update = require('gulp-update')();
 const uglify = require('gulp-uglify');
 const concat = require('gulp-concat');
+const rimraf = require('rimraf');
 
 gulp.task('update', () => {
   return gulp.watch('./package.json').on('change', (file) => {
@@ -16,7 +17,11 @@ gulp.task('update', () => {
   });
 });
 
-gulp.task('compile', () => {
+gulp.task('clean', function (cb) {
+    rimraf('./web/dist', cb);
+});
+
+gulp.task('compile', ['clean'], () => {
   const tsProject = tsc.createProject('tsconfig.json');
   const destinationFolder = 'web/dist';
 

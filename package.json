@@ -12,8 +12,9 @@
     "node": ">= 6.0.0"
   },
   "scripts": {
-    "prestart": "gulp compile",
-    "start": "node ./bin/davis-server",
+    "predev": "gulp compile",
+    "dev": "node ./bin/davis-server",
+    "start": "NODE_ENV=production node ./bin/davis-server",
     "test": "istanbul cover node_modules/mocha/bin/_mocha tests/all -- -R spec --recursive --timeout 10000",
     "debug-test": "mocha tests/all --debug-brk",
     "lint": "eslint lib && echo",
@@ -64,6 +65,7 @@
     "mocha": "^3.1.2",
     "nock": "^9.0.2",
     "protractor": "4.0.9",
+    "rimraf": "^2.5.4",
     "rollup": "^0.36.3",
     "rollup-plugin-commonjs": "^5.0.5",
     "rollup-plugin-node-resolve": "^2.0.0",
