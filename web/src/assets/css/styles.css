@@ -47,6 +47,10 @@ input[type=text]::-ms-input-placeholder, input[type=email]::-ms-input-placeholde
 	color: #d3d3d3;
 }
 
+.disabled {
+  background-color: #f2f2f2;
+}
+
 .input-button-wrapper {
   display: inline-flex;
   width: 100%;
@@ -239,14 +243,23 @@ button:focus {
   left: 100px;
 }
 
-.button-group-wrapper {
+.user-accounts-local-navbar {
+  display: inline-block;
   clear: both;
   float: left;
-  margin-top: 30px;
+  padding-top: 30px;
   padding-bottom: 30px;
-  margin-left: 65%;
-  width: 200px;
-  transform: translateX(-50%);
+}
+
+.button-group-wrapper {
+  display: inline-block;
+  position: relative;
+  float: left;
+  transform: translateX(84%);
+}
+
+.button-group-wrapper-with-back {
+  transform: translateX(67%);
 }
 
 .button-group-left, .button-group-right {
@@ -276,6 +289,15 @@ button:focus {
   background-color: #00a1b2;
   border-width: 0;
   padding: 1px 18px;
+}
+
+.button-back {
+  display: inline-block;
+  position: relative;
+  float: left;
+  width: 32px;
+  height: 32px;
+  cursor: pointer;
 }
 
 /* Page layout */
@@ -565,6 +587,16 @@ td.admin {
   width: 100%;
   font-size: 14px;
   border-collapse: collapse;
+}
+
+.users-table-filter {
+  width: 365px;
+  margin-left: 10px;
+}
+
+.users-table-filter.input-button-wrapper-focus {
+  border-width: 1px;
+  padding: 1px 12px 1px 1px;
 }
 
 .users-table-filter-wrapper {

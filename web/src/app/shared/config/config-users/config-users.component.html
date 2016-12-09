@@ -1,11 +1,24 @@
 <div class="page">
     <div class="content">
-        <div class="button-group-wrapper">
-            <button type="button" class="log-out config button-group-left" [class.button-group-selected]="addUser" (click)="addUser = true; editUser = false; addMode()">Add User</button>
-            <button type="button" class="log-out config button-group-right" [class.button-group-selected]="!addUser" (click)="addUser = false; editUser = false; getUsers()">Edit User</button>
+        <div class="user-accounts-local-navbar">
+            <img [src]="(hover) ? backImgHover : backImg" class="button-back" *ngIf="editUser" (mouseenter)="hover = true" (mouseleave)="hover = false" (click)="editUser = false">
+            <div class="button-group-wrapper" [class.button-group-wrapper-with-back]="editUser">
+                <button type="button" class="log-out config button-group-left" [class.button-group-selected]="addUser" (click)="addUser = true; editUser = false; addMode()">Add User</button>
+                <button type="button" class="log-out config button-group-right" [class.button-group-selected]="!addUser" (click)="addUser = false; editUser = false; getUsers()">Edit User</button>
+            </div>
         </div>
         <div class="users-table-filter-wrapper" *ngIf="!addUser && !editUser">
-            <input type="text" class="users-table-filter-input" placeholder="Filter by name">
+            <div class="input-button-wrapper users-table-filter" [class.input-button-wrapper-focus]="isFilterFocused">
+                <input #filter type="text" 
+                    class="users-table-filter-input input-button-input" 
+                    placeholder="Filter by name" 
+                    (keyup)="updateFilter(filter)"
+                    (focus)="isFilterFocused = true" 
+                    (blur)="isFilterFocused = false">
+                <div id="clearBtn" class="input-button-button" *ngIf="filter && filter.value.length > 0" (click)="filter.value = '';filterName = ''">
+                    <img class="input-button-img" [class.input-button-img-password-masked]="!isFilterFocused" src="/assets/img/clear.svg">
+                </div>
+            </div>
         </div>
         <div class="users-table-th" *ngIf="!addUser && !editUser">
             <div class="th th-name">
@@ -17,7 +30,7 @@
         </div>
         <div class="users-table-wrapper" *ngIf="!addUser && !editUser">
             <table class="users-table">
-                <tr *ngFor='let user of users; let odd = odd; let even = even;' (click)="editMode(user)">
+                <tr *ngFor='let user of users | filterUsersByName:filterName; let odd = odd; let even = even;' (click)="editMode(user)">
                     <td class="name" [class.even]="even" [class.odd]="odd">
                         {{ user.name.last }}, {{ user.name.first }}
                     </td>

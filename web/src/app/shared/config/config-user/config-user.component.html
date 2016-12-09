@@ -54,14 +54,17 @@
                         placeholder="john.smith@example.com" 
                         *ngIf="isMyUser"
                         [(ngModel)]="iDavis.values.user.email" 
-                        (keyup)="validate()" required>
+                        (keyup)="validate()" 
+                        [attr.disabled]="(isNewUser) ? null : ''" required>
                         
                     <!-- !isMyUser -->
                     <input type="email" name="email" 
                         placeholder="john.smith@example.com" 
                         *ngIf="!isMyUser"
                         [(ngModel)]="iDavis.values.otherUser.email" 
-                        (keyup)="validate()" required>
+                        (keyup)="validate()"
+                        [class.disabled]="!isNewUser"
+                        [attr.disabled]="(isNewUser) ? null : ''" required>
                 </div>
             </section>
             <section class="flex-container">

@@ -22,6 +22,7 @@ import { ConfigUsersComponent }     from "./config-users/config-users.component"
 
 // Services
 import { ConfigService } from "./config.service";
+import { FilterUsersByNamePipe } from './config-pipe/config.pipe';
 
 // ----------------------------------------------------------------------------
 // Module
@@ -34,6 +35,7 @@ import { ConfigService } from "./config.service";
     ConfigSlackComponent,
     ConfigUserComponent,
     ConfigUsersComponent,
+    FilterUsersByNamePipe,
   ],
   exports: [
     ConfigAlexaComponent,
@@ -42,6 +44,7 @@ import { ConfigService } from "./config.service";
     ConfigSlackComponent,
     ConfigUserComponent,
     ConfigUsersComponent,
+    FilterUsersByNamePipe,
   ],
   imports: [
     CommonModule,

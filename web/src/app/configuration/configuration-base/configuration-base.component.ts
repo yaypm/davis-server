@@ -57,6 +57,12 @@ export class ConfigurationBaseComponent  {
       .then(result => {
         if (result.success) {
           this.iDavis.values.user = result.user;
+          if (!result.user.name) {
+            this.iDavis.values.user.name = {first:'',last:''};
+          } else {
+            if (!result.user.name.first) this.iDavis.values.user.name.first = '';
+            if (!result.user.name.last) this.iDavis.values.user.name.last = '';
+          }
           this.iDavis.values.original.user = _.cloneDeep(this.iDavis.values.user);
         } else {
           this.iDavis.config['user'].error = result.message;

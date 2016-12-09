@@ -29,6 +29,7 @@ var config_user_component_1 = require("./config-user/config-user.component");
 var config_users_component_1 = require("./config-users/config-users.component");
 // Services
 var config_service_1 = require("./config.service");
+var config_pipe_1 = require('./config-pipe/config.pipe');
 // ----------------------------------------------------------------------------
 // Module
 // ----------------------------------------------------------------------------
@@ -44,6 +45,7 @@ var ConfigModule = (function () {
                 config_slack_component_1.ConfigSlackComponent,
                 config_user_component_1.ConfigUserComponent,
                 config_users_component_1.ConfigUsersComponent,
+                config_pipe_1.FilterUsersByNamePipe,
             ],
             exports: [
                 config_alexa_component_1.ConfigAlexaComponent,
@@ -52,6 +54,7 @@ var ConfigModule = (function () {
                 config_slack_component_1.ConfigSlackComponent,
                 config_user_component_1.ConfigUserComponent,
                 config_users_component_1.ConfigUsersComponent,
+                config_pipe_1.FilterUsersByNamePipe,
             ],
             imports: [
                 common_1.CommonModule,
