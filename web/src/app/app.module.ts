@@ -8,20 +8,20 @@
 // Imports
 // ----------------------------------------------------------------------------
 // Angular
-import { NgModule }      from "@angular/core";
-import { BrowserModule } from "@angular/platform-browser";
-import { FormsModule }   from "@angular/forms";
+import { NgModule }               from "@angular/core";
+import { BrowserModule }          from "@angular/platform-browser";
+import { FormsModule }            from "@angular/forms";
 import { HttpModule,
-         JsonpModule }   from "@angular/http";
-import { RouterModule }  from "@angular/router";
+         JsonpModule }            from "@angular/http";
+import { RouterModule }           from "@angular/router";
 
 // Components
 import { AppComponent } from "./app.component";
 
 // Modules
-import { AuthModule }          from "./auth/auth.module";
-import { ConfigurationModule } from "./configuration/configuration.module";
-import { WizardModule }        from "./wizard/wizard.module";
+import { AuthModule }              from "./auth/auth.module";
+import { ConfigurationModule }     from "./configuration/configuration.module";
+import { WizardModule }            from "./wizard/wizard.module";
 
 // Routing
 import { AppRouting } from "./app.routing";
@@ -39,7 +39,7 @@ import { DavisService } from "./shared/davis.service";
     AppComponent
   ],
   declarations: [
-    AppComponent
+    AppComponent,
   ],
   imports: [
     AuthModule,

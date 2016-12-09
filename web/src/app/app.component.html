@@ -4,6 +4,6 @@
 <div class="title-global">
     {{iDavis.titleGlobal}}
 </div>
-<button type="button" class="log-out" *ngIf="iDavis.isAuthenticated && !iDavis.isWizard" (click)="logOut()">Sign out</button>
+<button type="button" class="log-out" *ngIf="iDavis.isAuthenticated && !iDavis.isWizard" (click)="iDavis.logOut()">Sign out</button>
 <router-outlet></router-outlet>
 <div id="made-in-detroit">Made in Detroit</div>

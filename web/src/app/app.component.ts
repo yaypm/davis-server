@@ -26,14 +26,4 @@ import { DavisService } from "./shared/davis.service";
 
 export class AppComponent { 
   constructor(public iDavis: DavisService, public router: Router) {}
-  
-  logOut(): void {
-    this.iDavis.isAuthenticated = false;
-    this.iDavis.isAdmin = false;
-    this.iDavis.token = null;
-    sessionStorage.removeItem('email');
-    sessionStorage.removeItem('token');
-    sessionStorage.removeItem('isAdmin');
-    this.router.navigate(["/auth/login"]);
-  }
 }

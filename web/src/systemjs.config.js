@@ -18,7 +18,7 @@
 
       // Other libraries
       'rxjs': 'npm:rxjs',
-      'lodash': 'npm:lodash/lodash.min.js'
+      'lodash': 'npm:lodash/lodash.min.js',
     },
     packages: {
       app: {
@@ -30,7 +30,7 @@
       },
       lodash: {
         defaultExtension: 'js'
-      }
+      },
     }
   });
 })(this);

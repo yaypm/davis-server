@@ -19,12 +19,18 @@
             <section class="flex-container">
                 <div class="flex-item full-width">
                     <label>Password</label>
-                    <input type="password" name="password" placeholder="&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;" [(ngModel)]="password" required>
+                    <input type="password" name="password" 
+                        placeholder="&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;" 
+                        [(ngModel)]="password" required>
                 </div>
             </section>
             <section class="flex-container">
                 <div class="flex-item next">
-                    <button type="submit" class="content-save-button log-in">Sign in</button>
+                    <button type="submit" 
+                        class="content-save-button log-in"
+                        [attr.disabled]="(submitButton === 'Signing in...') ? '' : null">
+                        {{ submitButton }}
+                    </button>
                 </div>
             </section>
         </form>

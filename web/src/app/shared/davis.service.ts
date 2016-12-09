@@ -1,6 +1,9 @@
-import {Injectable} from '@angular/core';
-import { Http, Response } from '@angular/http';
+import {Injectable}                from '@angular/core';
+import { Router }                  from '@angular/router';
+import { Http, Response }          from '@angular/http';
 import { Headers, RequestOptions } from '@angular/http';
+
+declare var chrome: any;
 
 @Injectable()
 export class DavisService {
@@ -12,6 +15,8 @@ export class DavisService {
   timezones: any = [];
   isWizard: boolean = false;
   titleGlobal: string = '';
+  helpLinkText: string = 'How to complete this step';
+  isChromeExtensionInstalled: boolean = chrome.app.isInstalled;
 
   values: any = {
     authenticate: {
@@ -29,6 +34,18 @@ export class DavisService {
       },
       admin: false
     },
+    otherUser: {
+      email: null,
+      password: null,
+      timezone: null,
+      alexa_ids: null,
+      name: {
+          first: null,
+          last: null
+      },
+      admin: false
+    },
+    users: [],
     dynatrace: {
       url: null,
       token: null,
@@ -42,6 +59,7 @@ export class DavisService {
     },
     original: {
       user: {},
+      otherUser: {},
       dynatrace: {},
       slack: {}
     }
@@ -85,7 +103,16 @@ export class DavisService {
     }
   };
 
-  constructor (private http: Http) {
+  constructor (private http: Http, private router: Router) {}
+  
+  logOut(): void {
+    this.isAuthenticated = false;
+    this.isAdmin = false;
+    this.token = null;
+    sessionStorage.removeItem('email');
+    sessionStorage.removeItem('token');
+    sessionStorage.removeItem('isAdmin');
+    this.router.navigate(["/auth/login"]);
   }
 
   getJwtToken(): Promise<any> {
@@ -118,21 +145,31 @@ export class DavisService {
       .catch(this.handleError);
   }
   
-  updateDavisUser(): Promise<any> {
+  getDavisUsers(): Promise<any> {
     let headers = new Headers({ 'Content-Type': 'application/json', 'x-access-token': this.token });
     let options = new RequestOptions({ headers: headers });
 
-    return this.http.put(`/api/v1/system/users/${this.values.user.email}`, this.values.user, options)
+    return this.http.get(`/api/v1/system/users`, options)
+      .toPromise()
+      .then(this.extractData)
+      .catch(this.handleError);
+  }
+  
+  updateDavisUser(user: any): Promise<any> {
+    let headers = new Headers({ 'Content-Type': 'application/json', 'x-access-token': this.token });
+    let options = new RequestOptions({ headers: headers });
+
+    return this.http.put(`/api/v1/system/users/${user.email}`, user, options)
       .toPromise()
       .then(this.extractData)
       .catch(this.handleError);
   }
 
-  addDavisUser(): Promise<any> {
+  addDavisUser(user: any): Promise<any> {
     let headers = new Headers({ 'Content-Type': 'application/json', 'x-access-token': this.token });
     let options = new RequestOptions({ headers: headers });
 
-    return this.http.post(`/api/v1/system/users/${this.values.user.email}`, this.values.user, options)
+    return this.http.post(`/api/v1/system/users/${user.email}`, user, options)
       .toPromise()
       .then(this.extractData)
       .catch(this.handleError);
@@ -219,8 +256,8 @@ export class DavisService {
   }
 
   private extractData(res: Response) {
-      let body = res.json();
-      return body || {};
+    let body = res.json();
+    return body || {};
   }
 
   private handleError(error: Response | any) {
@@ -242,6 +279,16 @@ export class DavisService {
 
   windowOpen(url:string): void {
     window.open(url);
+  }
+  
+  addToChrome(): void {
+    chrome.webstore.install('https://chrome.google.com/webstore/detail/kighaljfkdkpbneahajiknoiinbckfpg', this.addToChomeSuccess, this.addToChomeFailure);
+  }
+  
+  addToChomeSuccess(): void {}
+  
+  addToChomeFailure(err: string): void {
+    window.open('https://chrome.google.com/webstore/detail/kighaljfkdkpbneahajiknoiinbckfpg');
   }
   
   clickElem(id: string): void {

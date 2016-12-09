@@ -26,6 +26,7 @@ export class AuthLoginComponent  {
   submitted: boolean = false;
   loginError: string = null;
   password: string = '';
+  submitButton: string = 'Sign in';
 
   // ------------------------------------------------------
   // Inject services
@@ -39,20 +40,26 @@ export class AuthLoginComponent  {
   // ------------------------------------------------------
   login(form: any) {
     this.submitted = true;
+    this.submitButton = 'Signing in...';
     this.iDavis.values.authenticate.email = form.value.email;
     this.iDavis.values.authenticate.password = form.value.password;
     this.iDavis.getJwtToken()
       .then(result => {
         if (result.success) {
+          this.submitButton = 'Sign in';
           this.loginError = null;
           this.iDavis.token = result.token;
           this.iDavis.isAuthenticated = true;
           this.iDavis.isAdmin = result.admin;
+          sessionStorage.removeItem('email');
+          sessionStorage.removeItem('token');
+          sessionStorage.removeItem('isAdmin');
           sessionStorage.setItem('email', form.value.email);
           sessionStorage.setItem('token', result.token);
           sessionStorage.setItem('isAdmin', result.admin);
           this.router.navigate(['/configuration']);
         } else {
+          this.submitButton = 'Sign in';
           this.loginError = result.message;
           this.password = '';
         }

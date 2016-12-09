@@ -1,5 +1,5 @@
 <button type="button" class="log-out config" *ngIf="showConfigureButton" (click)="showConfigureButton = false; iDavis.titleGlobal = 'Configure Davis'">Configure</button>
-<div class="navbar-wrapper" *ngIf="!showConfigureButton">
+<div class="navbar-wrapper" [class.navbar-wrapper-wide]="iDavis.isAdmin" *ngIf="!showConfigureButton">
     <div class="navbar-button" [class.navbar-button-selected]="iConfig.view === 'user'" (click)="iConfig.SelectView('user')">
         My Account
     </div>
@@ -12,8 +12,12 @@
     <div class="navbar-button" *ngIf="iDavis.isAdmin" [class.navbar-button-selected]="iConfig.view === 'slack'" (click)="iConfig.SelectView('slack')">
         Slack App
     </div>
+     <div *ngIf="!iDavis.isChromeExtensionInstalled" class="navbar-button" [class.navbar-button-selected]="iConfig.view === 'chrome'" (click)="iConfig.SelectView('chrome')">
+        Chrome Extension
+    </div>
 </div>
-<config-user *ngIf="iConfig.view === 'user' && !showConfigureButton" [isMyAccount]="true"></config-user>
+<config-user *ngIf="iConfig.view === 'user' && !showConfigureButton" [isNewUser]="false" [isMyUser]="true"></config-user>
 <config-users *ngIf="iConfig.view === 'users'"></config-users>
 <config-dynatrace *ngIf="iConfig.view === 'dynatrace'"></config-dynatrace>
 <config-slack *ngIf="iConfig.view === 'slack'"></config-slack>
+<config-chrome *ngIf="iConfig.view === 'chrome'"></config-chrome>

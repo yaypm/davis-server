@@ -14,7 +14,7 @@ export class ConfigSlackComponent implements OnInit {
     myURL: string = '';
     requestUri: string = '';
     submitted: boolean = false;
-    submitButton: string = (this.iDavis.isWizard) ? 'Skip' : 'Create Davis Slack Bot';
+    submitButton: string = (this.iDavis.isWizard) ? 'Skip and Finish' : 'Create Davis Slack Bot';
     isPasswordFocused: boolean = false;
     isPasswordMasked: boolean = true;
     isDirty: boolean = false;
