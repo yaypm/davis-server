@@ -29,6 +29,7 @@
             </div>
         </div>
         <div class="users-table-wrapper" *ngIf="!addUser && !editUser">
+            <h3 *ngIf="users && users.length < 1" style="text-align: center; opacity: 0.2">None</h3>
             <table class="users-table">
                 <tr *ngFor='let user of users | filterUsersByName:filterName; let odd = odd; let even = even;' (click)="editMode(user)">
                     <td class="name" [class.even]="even" [class.odd]="odd">

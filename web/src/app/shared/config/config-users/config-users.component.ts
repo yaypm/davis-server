@@ -56,6 +56,14 @@ export class ConfigUsersComponent implements OnInit {
             _.remove(this.iDavis.values.users, (user: any) => {
               return user.email === this.iDavis.values.user.email;
             });
+            this.iDavis.values.users.forEach( (user: any, index: number) => {
+              if (!user.name) {
+                this.iDavis.values.users[index].name = {first:'',last:''};
+              } else {
+                if (!user.name.first) this.iDavis.values.users[index].name.first = '';
+                if (!user.name.last) this.iDavis.values.users[index].name.last = '';
+              }
+            });
             this.users = _.cloneDeep(response.users);
           },
           error => {
