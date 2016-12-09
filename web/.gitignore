@@ -1,11 +1,6 @@
 typings
 node_modules
 
-src/*.js
-src/*.map
-src/**/*.js
-src/**/*.map
-
 #Log files
 logs
 *.log
@@ -18,5 +13,3 @@ logs
 
 #Built files
 ngfactory
-
-!/src/systemjs.config.js
