@@ -7,6 +7,11 @@
     </div>
     <div class="content">
         <form (ngSubmit)="doSubmit()" #form="ngForm">
+            <section *ngIf="iDavis.config['slack'].error" class="flex-container">
+                <div class="flex-item full-width error">
+                    {{ iDavis.config['slack'].error }}
+                </div>
+            </section>
             <section class="flex-container">
                 <div class="flex-item full-width">
                     <ul>

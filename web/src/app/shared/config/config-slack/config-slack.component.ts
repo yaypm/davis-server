@@ -36,6 +36,7 @@ export class ConfigSlackComponent implements OnInit {
     }
     
     doSubmit() {
+      this.submitted = true;
       if (!this.iDavis.config['slack'].success && this.iDavis.values.slack.clientId && this.iDavis.values.slack.clientSecret) {
         this.submitButton = 'Saving...';
         this.iDavis.connectSlack()
@@ -46,7 +47,6 @@ export class ConfigSlackComponent implements OnInit {
                   if (result.success) {
                         sessionStorage.setItem('wizard-finished', 'true');
                         this.iDavis.config['slack'].success = true;
-                        this.iDavis.windowLocation(this.myURL);
                       } else {
                         this.iDavis.config['slack'].success = false;
                         this.iDavis.config['slack'].error = result.message;
@@ -65,7 +65,6 @@ export class ConfigSlackComponent implements OnInit {
             console.log(error);
             this.iDavis.config['slack'].success = false;
           });
-        this.submitted = true;
       } else {
         sessionStorage.setItem('wizard-finished', 'true');
         this.iDavis.windowLocation(this.myURL);
