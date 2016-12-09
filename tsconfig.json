@@ -1,0 +1,25 @@
+{
+"compilerOptions": {
+"emitDecoratorMetadata": true,
+"experimentalDecorators": true,
+"module": "commonjs",
+"moduleResolution": "node",
+"noImplicitAny": true,
+"removeComments": false,
+"sourceMap": true,
+"suppressImplicitAnyIndexErrors": true,
+"target": "es5",
+"typeRoots": [
+"node_modules/@types/"
+]
+},
+"exclude": [
+"config",
+"dist",
+"ngfactory",
+"node_modules",
+"src/main.prod.ts",
+"tsconfig.prod.json",
+"typings"
+]
+}

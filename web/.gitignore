@@ -1,0 +1,15 @@
+typings
+node_modules
+
+#Log files
+logs
+*.log
+
+#IDE configuration files
+.vscode
+
+#OS X files
+.DS_Store
+
+#Built files
+ngfactory
