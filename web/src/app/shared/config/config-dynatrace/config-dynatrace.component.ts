@@ -22,6 +22,9 @@ export class ConfigDynatraceComponent implements OnInit {
   
   doSubmit() {
     this.submitButton = 'Saving...';
+    if (this.iDavis.values.dynatrace.url.slice(-1) === '/') {
+      this.iDavis.values.dynatrace.url = this.iDavis.values.dynatrace.url.substring(0, this.iDavis.values.dynatrace.url.length - 1);
+    }
     this.iDavis.connectDynatrace()
         .then(result => {
           if (result.success) {
@@ -29,7 +32,11 @@ export class ConfigDynatraceComponent implements OnInit {
             .then(res => {
               if (res.success) {
                 this.iDavis.config['dynatrace'].success = true;
-                this.iConfig.SelectView('alexa');
+                if (this.iDavis.isWizard) {
+                  this.iConfig.SelectView('alexa');
+                } else {
+                  this.submitButton = 'Save';
+                }
               } else {
                 this.iDavis.config['dynatrace'].success = false;
                 this.iDavis.config['dynatrace'].error = res.message;

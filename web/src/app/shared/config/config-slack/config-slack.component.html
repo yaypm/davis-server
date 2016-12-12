@@ -15,16 +15,19 @@
             <section class="flex-container">
                 <div class="flex-item full-width">
                     <ul>
-                        <li *ngIf="!iDavis.config['slack'].success">
+                        <li *ngIf="!iDavis.config['slack'].success || !iDavis.isWizard">
                             <button type="button" onclick="window.open('https://api.slack.com/apps')">Create Slack App</button>
                         </li>
-                        <li *ngIf="!iDavis.config['slack'].success">
+                        <li *ngIf="!iDavis.config['slack'].success || !iDavis.isWizard">
                             Copy and paste the Client ID and Client Secret from your Slack App's Basic Information page to the inputs below
                         </li>
-                        <li *ngIf="!iDavis.config['slack'].success">
+                        <li *ngIf="!iDavis.config['slack'].success || !iDavis.isWizard">
                             Copy and paste the Redirect URL and Request URL from below to the corresponding pages' inputs in your Slack App's configuration
                         </li>
-                        <li *ngIf="iDavis.config['slack'].success">
+                        <li *ngIf="!iDavis.config['slack'].success || !iDavis.isWizard">
+                            Create a new bot user within the "Bot Users" section and click the "Create Davis Slack Bot" button below
+                        </li>
+                        <li *ngIf="iDavis.config['slack'].success || !iDavis.isWizard">
                             Click the Add to Slack button below and follow the steps offered on Slack's site to finish
                         </li>
                     </ul>
@@ -78,7 +81,7 @@
                     </div>
                 </div>
             </section>
-            <section class="flex-container" *ngIf="iDavis.config['slack'].success">
+            <section class="flex-container" *ngIf="iDavis.config['slack'].success || !iDavis.isWizard">
                 <div class="flex-item next">
                     <a href="https://slack.com/oauth/authorize?scope=incoming-webhook,commands,bot&client_id={{ iDavis.values.slack.clientId }}">
                         <img class="slack-button" alt="Add to Slack" height="40" width="139" src="https://platform.slack-edge.com/img/add_to_slack.png"
