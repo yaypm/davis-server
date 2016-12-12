@@ -43,29 +43,30 @@ export class ConfigSlackComponent implements OnInit {
           .then(result => {
             if (result.success) {
               this.iDavis.startSlack()
-                .then(result => {
-                  if (result.success) {
-                        sessionStorage.setItem('wizard-finished', 'true');
-                        this.iDavis.config['slack'].success = true;
-                      } else {
-                        this.iDavis.config['slack'].success = false;
-                        this.iDavis.config['slack'].error = result.message;
-                      }
-                    },
-                    error => {
-                        console.log(error);
-                        this.iDavis.config['slack'].success = false;
-                    });
-                  } else {
-                    this.iDavis.config['slack'].success = false;
-                    this.iDavis.config['slack'].error = result.message;
-                  }
+                .then(
+                  result => {
+                    if (result.success) {
+                      sessionStorage.setItem('wizard-finished', 'true');
+                      this.iDavis.config['slack'].success = true;
+                    } else {
+                      this.iDavis.config['slack'].success = false;
+                      this.iDavis.config['slack'].error = result.message;
+                    }
+                  },
+                  error => {
+                      console.log(error);
+                      this.iDavis.config['slack'].success = false;
+                  });
+            } else {
+              this.iDavis.config['slack'].success = false;
+              this.iDavis.config['slack'].error = result.message;
+            }
           },
           error => {
             console.log(error);
             this.iDavis.config['slack'].success = false;
           });
-      } else {
+      } else if (this.iDavis.isWizard) {
         sessionStorage.setItem('wizard-finished', 'true');
         this.iDavis.windowLocation(this.myURL);
       }
