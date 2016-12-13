@@ -88,7 +88,7 @@ export class ConfigUserComponent implements OnInit {
                               .then( 
                                 response => {
                                   this.iDavis.token = response.token;
-                                  this.iConfig.SelectView('dynatrace');
+                                  this.iConfig.SelectView('alexa');
                                   this.submitButton = this.submitButtonDefault;
                                   sessionStorage.setItem('email', this.iDavis.values.user.email);
                                   sessionStorage.setItem('token', response.token);
