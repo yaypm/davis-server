@@ -17,7 +17,7 @@ import { Injectable } from "@angular/core";
 @Injectable()
 export class ConfigService {
   // Initialize view
-  view: string = "user";
+  view: string = "dynatrace";
 
   // ------------------------------------------------------
   // Select view in Wizard

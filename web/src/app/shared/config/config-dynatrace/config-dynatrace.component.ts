@@ -33,7 +33,7 @@ export class ConfigDynatraceComponent implements OnInit {
               if (res.success) {
                 this.iDavis.config['dynatrace'].success = true;
                 if (this.iDavis.isWizard) {
-                  this.iConfig.SelectView('alexa');
+                  this.iConfig.SelectView('user');
                 } else {
                   this.submitButton = 'Save';
                 }
