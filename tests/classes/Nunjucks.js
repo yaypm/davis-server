@@ -70,8 +70,8 @@ describe('Nunjucks', () => {
 
   it('should generate slack time objects', () => {
     const timezone = 'America/Detroit';
-    const startTime = moment('2016-01-01');
-    const stopTime = moment('2016-01-01').add(5, 'days');
+    const startTime = moment.unix(1451624400);
+    const stopTime = moment.unix(1451624400).add(5, 'days');
     const context = {
       user: { timezone },
       timeRange: {
