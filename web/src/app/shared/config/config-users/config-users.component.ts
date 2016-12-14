@@ -77,12 +77,30 @@ export class ConfigUsersComponent implements OnInit {
           });
     }
     
+    showUsers() {
+      this.getUsers();
+      this.addUser = false;
+      this.editUser = false;
+      this.iDavis.values.original.otherUser.first = null;
+    }
+    
     updateFilter(input: any) {
       this.filterName = input.value;
     }
     
     ngOnInit() {
       this.getUsers();
+      this.iDavis.values.otherUser = {
+        email: null,
+        password: null,
+        timezone: null,
+        alexa_ids: null,
+        name: {
+            first: null,
+            last: null
+        },
+        admin: false
+      };
     }
 
 }
