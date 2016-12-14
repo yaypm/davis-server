@@ -2,6 +2,8 @@ import {Injectable}                from '@angular/core';
 import { Router }                  from '@angular/router';
 import { Http, Response }          from '@angular/http';
 import { Headers, RequestOptions } from '@angular/http';
+import * as moment from 'moment';
+import * as momentz from 'moment-timezone';
 
 declare var chrome: any;
 
@@ -16,7 +18,7 @@ export class DavisService {
   isWizard: boolean = false;
   titleGlobal: string = '';
   helpLinkText: string = 'How to complete this step';
-  isChromeExtensionInstalled: boolean = chrome.app.isInstalled;
+  isChromeExtensionInstalled: boolean = (typeof chrome !== 'undefined') ? chrome.app.isInstalled : false;
 
   values: any = {
     authenticate: {
@@ -102,10 +104,34 @@ export class DavisService {
       success: null
     }
   };
+  
+  route_names: any = {
+    '/wizard': 'Setup',
+    '/configuration': 'Account settings',
+    '/auth/login': 'Sign in'
+  };
 
   constructor (private http: Http, private router: Router) {}
   
   logOut(): void {
+    
+    this.values.authenticate = {
+      email: null,
+      password: null
+    };
+    
+    this.values.user = {
+      email: null,
+      password: null,
+      timezone: null,
+      alexa_ids: null,
+      name: {
+          first: null,
+          last: null
+      },
+      admin: false
+    };
+    
     this.isAuthenticated = false;
     this.isAdmin = false;
     this.token = null;
@@ -272,6 +298,11 @@ export class DavisService {
     console.error(errMsg);
     return Promise.reject(errMsg);
   }
+  
+  generateError(name: string, message: any) {
+    this.config[name].success = false;
+    this.config[name].error = message || 'Sorry an error occurred, please try again.';
+  }
 
   windowLocation(url:string): void {
     window.location.assign(url);
@@ -282,7 +313,7 @@ export class DavisService {
   }
   
   addToChrome(): void {
-    chrome.webstore.install('https://chrome.google.com/webstore/detail/kighaljfkdkpbneahajiknoiinbckfpg', this.addToChomeSuccess, this.addToChomeFailure);
+    if (typeof chrome !== 'undefined') chrome.webstore.install('https://chrome.google.com/webstore/detail/kighaljfkdkpbneahajiknoiinbckfpg', this.addToChomeSuccess, this.addToChomeFailure);
   }
   
   addToChomeSuccess(): void {}
@@ -296,7 +327,7 @@ export class DavisService {
   }
 
   getTimezone(): string {
-    return Intl.DateTimeFormat().resolvedOptions().timeZone;
+    return momentz.tz.guess();
   }
 
 }

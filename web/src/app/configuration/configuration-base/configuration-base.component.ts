@@ -25,8 +25,6 @@ import * as _ from "lodash";
 
 export class ConfigurationBaseComponent  {
   
-  showConfigureButton: boolean = false;
-  
   // ------------------------------------------------------
   // Inject services
   // ------------------------------------------------------
@@ -36,14 +34,6 @@ export class ConfigurationBaseComponent  {
   // Initialize component
   // ------------------------------------------------------
   ngOnInit() {
-    if (sessionStorage.getItem('wizard-finished')) {
-      sessionStorage.removeItem('wizard-finished');
-      this.iDavis.titleGlobal = 'Great! It looks like we\'re all set now.';
-      this.showConfigureButton = true;
-    } else {
-      this.iDavis.titleGlobal = 'Configure Davis';
-    }
-    
     this.iConfig.SelectView('user');
     
     this.iDavis.config['user'].success = null;
@@ -67,11 +57,10 @@ export class ConfigurationBaseComponent  {
           }
           this.iDavis.values.original.user = _.cloneDeep(this.iDavis.values.user);
         } else {
-          this.iDavis.config['user'].error = result.message;
+          this.iDavis.generateError('user', result.message);
         }
       })
       .catch(err => {
-        this.iDavis.config['user'].error = err.message;
         if (err.includes('invalid token')) {
           this.iDavis.logOut();
         }
@@ -83,11 +72,10 @@ export class ConfigurationBaseComponent  {
           this.iDavis.values.dynatrace = result.dynatrace;
           this.iDavis.values.original.dynatrace = _.cloneDeep(this.iDavis.values.dynatrace);
         } else {
-          this.iDavis.config['dynatrace'].error = result.message;
+          this.iDavis.generateError('dynatrace', result.message);
         }
       })
       .catch(err => {
-        this.iDavis.config['dynatrace'].error = err.message;
         if (err.includes('invalid token')) {
           this.iDavis.logOut();
         }
@@ -100,11 +88,10 @@ export class ConfigurationBaseComponent  {
           this.iDavis.values.slack.enabled = true;
           this.iDavis.values.original.slack = _.cloneDeep(this.iDavis.values.slack);
         } else {
-          this.iDavis.config['slack'].error = result.message;
+          this.iDavis.generateError('slack', result.message);
         }
       })
       .catch(err => {
-        this.iDavis.config['slack'].error = err.message;
         if (err.includes('invalid token')) {
           this.iDavis.logOut();
         }

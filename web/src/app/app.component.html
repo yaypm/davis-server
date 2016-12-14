@@ -1,9 +1,123 @@
-<a href="https://github.com/Dynatrace/davis-server" target="_blank">
-  <img id="logo" src="/assets/img/Dynatrace_Logo_RGB_CPH_512x92px.png">
-</a>
-<div class="title-global">
-    {{iDavis.titleGlobal}}
+<!-- SVG defs -->
+<svg xmlns="http://www.w3.org/2000/svg" style="width:0; height:0; display: none;">
+<symbol id="arrow-up" viewBox="0 0 512 512">
+  <polygon points="446,322.8 270.8,147.5 241.2,147.5 66,322.8 107.7,364.5 256,216.2 404.3,364.5 "/>
+</symbol>
+</svg>
+<svg xmlns="http://www.w3.org/2000/svg" style="width:0; height:0; display: none;">
+<symbol id="arrow-down" viewBox="0 0 512 512">
+  <polygon points="66,189.246 241.242,364.489 270.763,364.489 446,189.246 404.258,147.511 256,295.763 107.748,147.511 "/>
+</symbol>
+</svg>
+<svg xmlns="http://www.w3.org/2000/svg" style="width:0; height:0; display: none;">
+<symbol id="back" viewBox="0 0 512 512">
+  <path d="M222,90l36.5,36.45L154.83,230.12H456l0,51.79H154.83L258.46,385.48,222,422,56,256Z" transform="translate(-56 -89.99)"/>
+</symbol>
+</svg>
+<svg xmlns="http://www.w3.org/2000/svg" style="width:0; height:0; display: none;">
+<symbol id="clear" viewBox="0 0 512 512">
+  <polygon points="420,137.2 374.8,92 256,210.7 137.2,92 92,137.2 210.7,256 92,374.8 137.2,420 256,301.3 374.8,420 420,374.8 301.3,256 "/>
+</symbol>
+</svg>
+<svg xmlns="http://www.w3.org/2000/svg" style="width:0; height:0; display: none;">
+<symbol id="cut" viewBox="0 0 512 512">
+  <path d="M454.1,146.1c0,0-97.1,45.3-165.3,77.1c31.8-68.1,77.1-165.3,77.1-165.3s-40.1-18.7-77.6,61.6c0,0-44.1,94.7-61.9,132.8c-0.8,0.4-1.4,0.6-1.8,0.8c-15,7-33.3,5.2-39.6-8.2c0,0,0,0,0,0c-14.1-30.2-53.3-41.8-87.5-25.8c-14.5,6.8-25.9,17.4-33,29.8c-9.6,16.7-11.6,36.4-3.5,53.8c14.1,30.2,53.3,41.8,87.5,25.8c0.4-0.2,1.1-0.5,1.1-0.5c11.1-5.2,33.5-12.9,54.7-20.4c-7.5,21.2-15.2,43.6-20.4,54.7c0,0-0.3,0.7-0.5,1.1c-16,34.2-4.4,73.4,25.8,87.5c17.4,8.1,37.1,6.1,53.8-3.5c12.3-7.1,23-18.4,29.8-33c16-34.2,4.4-73.4-25.8-87.5c0,0,0,0,0,0c-13.4-6.2-15.2-24.5-8.2-39.6c0.2-0.4,0.5-1.1,0.8-1.8c38.2-17.8,132.8-61.9,132.8-61.9C472.8,186.2,454.1,146.1,454.1,146.1z M150.2,280.7c-3.7,6.3-9.7,11.7-16.9,15.1c-8.4,3.9-17.8,4.8-25.8,2.5c-4.5-1.3-10.6-4.3-13.6-10.8c-1.3-2.8-3.7-10.4,2-20.4c3.7-6.3,9.7-11.7,16.9-15.1c15.8-7.4,33.8-3.6,39.4,8.3C153.5,263.1,155.9,270.7,150.2,280.7z M260,399.2c-3.4,7.3-8.7,13.3-15.1,16.9c-10,5.8-17.6,3.3-20.4,2c-6.5-3-9.4-9.1-10.8-13.6c-2.3-7.9-1.4-17.3,2.5-25.8c3.4-7.3,8.7-13.3,15.1-16.9c10-5.8,17.6-3.3,20.4-2C263.6,365.3,267.4,383.3,260,399.2z"/>
+</symbol>
+</svg>
+<svg xmlns="http://www.w3.org/2000/svg" style="width:0; height:0; display: none;">
+<symbol id="eye" viewBox="0 0 512 512">
+  <path fill-rule="evenodd" clip-rule="evenodd" d="M254.063,114.651C126.013,114.651,46,256.009,46,256.009s79.251,141.34,208.063,141.34c120.483,0,211.937-141.34,211.937-141.34S375.311,114.651,254.063,114.651z M255.2,358.867c-56.729,0-102.699-45.979-102.699-102.72c0-56.729,45.971-102.711,102.699-102.711c56.733,0,102.724,45.982,102.724,102.711C357.924,312.889,311.934,358.867,255.2,358.867z"/>
+	<path fill-rule="evenodd" clip-rule="evenodd" d="M255.832,204.812c28.239,0,51.126,22.887,51.126,51.122c0,28.234-22.887,51.121-51.126,51.121c-28.247,0-51.118-22.887-51.118-51.121C204.714,227.699,227.585,204.812,255.832,204.812z"/>
+</symbol>
+</svg>
+<svg xmlns="http://www.w3.org/2000/svg" style="width:0; height:0; display: none;">
+<symbol id="user" viewBox="0 0 512 512">
+  <path d="M161.905,160.087C161.905,108.119,204.039,66,256,66s94.095,42.119,94.095,94.087c0,51.961-42.134,94.087-94.095,94.087S161.905,212.048,161.905,160.087z"/>
+  <path d="M407.102,308.094c-0.571-18.458-15.675-33.25-34.266-33.25H139.165c-18.592,0-33.696,14.792-34.267,33.25h-0.053v103.588c0,18.955,15.363,34.318,34.319,34.318h34.326v-64.17h7.6V446h149.811v-64.17h7.601V446h34.334c18.955,0,34.318-15.363,34.318-34.318V308.094H407.102z"/>
+</symbol>
+</svg>
+
+<!-- Header -->
+<div class="nav has-no-secondary">
+  <a class="nav__brand" href="/">
+    <img class="nav__logo" src="https://help.dynatrace.com/assets/dynatrace-logo.svg" alt="dynatrace logo"/>
+  </a>
+  <div *ngIf="router.url !== '/auth/login'" class="nav__buttongroup">
+    <a class="nav__btn btn--icon" [class.nav__btn-highlighted]="isUserMenuVisible" (click)="toggleUserMenu()">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon icon--white icon--nav__btn">
+        <use xlink:href="#user"></use>
+      </svg>
+    </a>
+  </div>
+  <nav id="nav-bar-example1" class="nav__bar js-nav-toggle">
+  </nav>
 </div>
-<button type="button" class="log-out" *ngIf="iDavis.isAuthenticated && !iDavis.isWizard" (click)="iDavis.logOut()">Sign out</button>
+<div *ngIf="isUserMenuVisible" class="nav__user-menu">
+  <div *ngIf="iDavis.isAuthenticated && !iDavis.isWizard" class="nav__user-menu-name">
+    {{ iDavis.values.user.name.first }} {{ iDavis.values.user.name.last }}
+  </div>
+  <div *ngIf="iDavis.isAuthenticated && !iDavis.isWizard" class="nav__user-menu-email">
+    {{ iDavis.values.user.email }}
+  </div>
+  <div *ngIf="iDavis.isAuthenticated && !iDavis.isWizard" class="nav__user-menu-section-break"></div>
+  <div *ngIf="iDavis.isAuthenticated && !iDavis.isWizard" class="nav__user-menu-section-title">
+    Account
+  </div>
+  <div *ngIf="iDavis.isAuthenticated && !iDavis.isWizard" class="nav__user-menu-section-item-wrapper" (click)="router.navigate(['/configuration']); isUserMenuVisible = false">
+    <div class="nav__user-menu-section-item">
+      Account settings
+    </div>
+  </div>
+  <div *ngIf="iDavis.isAuthenticated && !iDavis.isWizard" class="nav__user-menu-section-break"></div>
+  <div *ngIf="iDavis.isWizard" class="nav__user-menu-section-break-half"></div>
+  <div class="nav__user-menu-section-title">
+    External
+  </div>
+  <div class="nav__user-menu-section-item-wrapper" (click)="iDavis.windowOpen('https://github.com/Dynatrace/davis-server/wiki/Getting%20Started'); isUserMenuVisible = false">
+    <div class="nav__user-menu-section-item">
+      Documentation
+    </div>
+  </div>
+  <div class="nav__user-menu-section-item-wrapper" (click)="iDavis.windowOpen('https://github.com/Dynatrace/davis-server/issues/new'); isUserMenuVisible = false">
+    <div class="nav__user-menu-section-item">
+      Report an issue
+    </div>
+  </div>
+  <div class="nav__user-menu-section-item-wrapper" (click)="iDavis.windowOpen('https://www.dynatrace.com/blog/'); isUserMenuVisible = false">
+    <div class="nav__user-menu-section-item">
+      Dynatrace blog
+    </div>
+  </div>
+  <div class="nav__user-menu-section-break"></div>
+  <div *ngIf="iDavis.isAuthenticated && !iDavis.isWizard" class="nav__user-menu-section-item-wrapper" (click)="iDavis.logOut(); isUserMenuVisible = false">
+    <div class="nav__user-menu-section-item">
+      Sign out
+    </div>
+  </div>
+  <div *ngIf="!iDavis.isAuthenticated && !iDavis.isWizard" class="nav__user-menu-section-item-wrapper" (click)="router.navigate(['/auth/login']); isUserMenuVisible = false">
+    <div class="nav__user-menu-section-item">
+      Sign in
+    </div>
+  </div>
+  <div *ngIf="!iDavis.isWizard" class="nav__user-menu-section-break"></div>
+</div>
+<div *ngIf="isUserMenuVisible" class="disable_screen" (click)="isUserMenuVisible = false">
+</div>
+<div *ngIf="router.url !== '/auth/login'">
+  <ul class="breadcrumbs">
+    <li class="breadcrumbs__item">
+      <a *ngIf="router.url !== '/davis'" class="breadcrumbs__link"
+        [class.disabled]="router.url === '/wizard' || router.url === '/auth/login' || true" 
+        (click)="(router.url !== '/wizard' && router.url !== '/auth/login') ? router.navigate(['/configuration']) : null">
+          davis
+      </a>
+      <span *ngIf="router.url === '/davis'" class="breadcrumbs__last">davis</span>
+    </li>
+    <li class="breadcrumbs__item" *ngIf="router.url !== '/davis'">
+      <span class="breadcrumbs__last">{{ iDavis.route_names[router.url] }}</span>
+    </li>
+  </ul>
+</div>
+
+<!-- Content -->
 <router-outlet></router-outlet>
-<div id="made-in-detroit">Made in Detroit</div>
