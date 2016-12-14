@@ -29,7 +29,7 @@ describe('Nunjucks', () => {
     const compact = nunjucks.renderString('{{ timeRange | friendlyTimeRange(user, true) }}', context);
 
     out.should.eql('between 01/01/2016 at 12:00 AM and 01/06/2016 at 12:00 AM');
-    compact.should.eql('01/01/2016 at 12:00 AM  - \\n01/06/2016 at 12:00 AM');
+    compact.should.eql('01/01/2016 at 12:00 AM - \\n01/06/2016 at 12:00 AM');
   });
 
   it('should recognize when the range goes past now', () => {
@@ -46,7 +46,7 @@ describe('Nunjucks', () => {
     const compact = nunjucks.renderString('{{ timeRange | friendlyTimeRange(user, true) }}', context);
 
     out.should.eql('between 01/01/2016 at 12:00 AM and now');
-    compact.should.contain('01/01/2016 at 12:00 AM  - today');
+    compact.should.contain('01/01/2016 at 12:00 AM - now');
   });
 
   it('should recognize when the range is in the same 24 hours', () => {
@@ -65,6 +65,24 @@ describe('Nunjucks', () => {
     const compact = nunjucks.renderString('{{ timeRange | friendlyTimeRange(user, true) }}', context);
 
     out.should.eql('between 01/01/2016 at 12:00 AM and 01/06/2016 at 12:00 AM');
-    compact.should.eql('01/01/2016 at 12:00 AM  - \\n01/06/2016 at 12:00 AM');
+    compact.should.eql('01/01/2016 at 12:00 AM - \\n01/06/2016 at 12:00 AM');
+  });
+
+  it('should generate slack time objects', () => {
+    const timezone = 'America/Detroit';
+    const startTime = moment('2016-01-01');
+    const stopTime = moment('2016-01-01').add(5, 'days');
+    const context = {
+      user: { timezone },
+      timeRange: {
+        startTime,
+        stopTime,
+      },
+    };
+    const out = nunjucks.renderString('{{ timeRange | friendlyTimeRange(user, false, "visual") }}', context);
+    const compact = nunjucks.renderString('{{ timeRange | friendlyTimeRange(user, true, "visual") }}', context);
+
+    out.should.eql('between <!date^1451624400^{date_short_pretty} {time}|01/01/2016> and <!date^1452056400^{date_short_pretty} {time}|01/06/2016>');
+    compact.should.eql('<!date^1451624400^{date_num} {time}|01/01/2016> - <!date^1452056400^{date_num} {time}|01/06/2016>');
   });
 });
