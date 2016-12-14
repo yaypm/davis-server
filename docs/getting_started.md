@@ -59,7 +59,7 @@ gpgkey=https://www.mongodb.org/static/pgp/server-3.2.asc" |
 sudo yum -y update && sudo yum install -y mongodb-org-server \
   mongodb-org-shell mongodb-org-tools git nginx python27-devel \
   nodejs npm
-git clone https://github.com/Dynatrace.com/davis-server.git
+git clone https://github.com/Dynatrace/davis-server.git
 cd davis-server
 npm install --production
 ```
@@ -69,7 +69,7 @@ On Ubuntu Linux:
 ```bash
 # ubuntu
 sudo apt-get install mongodb-server git nginx letsencrypt nodejs npm
-git clone https://github.com/Dynatrace.com/davis-server.git
+git clone https://github.com/Dynatrace/davis-server.git
 cd davis-server
 npm install --production
 ```
