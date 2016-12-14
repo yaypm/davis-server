@@ -1,15 +1,17 @@
 'use strict';
 
 const mongoose = require('mongoose');
+const BbPromise = require('bluebird');
 
-before(done => {
-  function clearDB() {
-    for (let i in mongoose.connection.collections) {
-      mongoose.connection.collections[i].remove();
-    }
-    return done();
+function clearDB() {
+  const colls = [];
+  for (let i in mongoose.connection.collections) {
+    colls.push(mongoose.connection.collections[i].remove());
   }
+  return BbPromise.all(colls);
+}
 
+before(() => {
   if (mongoose.connection.readyState === 0) {
     mongoose.connect('127.0.0.1:27017/davis-test', err => {
       if (err) {
@@ -22,9 +24,8 @@ before(done => {
   }
 });
 
-after(done => {
-  mongoose.disconnect();
-  return done();
+after(() => {
+  return mongoose.disconnect();
 });
 
 // require('./classes/Davis');
@@ -36,4 +37,5 @@ require('./classes/Decide');
 require('./classes/Nlp');
 require('./classes/ResponseBuilder');
 require('./classes/PluginManager');
+require('./classes/Nunjucks');
 require('./classes/Express');
