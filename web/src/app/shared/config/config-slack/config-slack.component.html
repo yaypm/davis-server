@@ -36,7 +36,7 @@
             <section class="flex-container" *ngIf="!iDavis.config['slack'].success">
                 <div class="flex-item full-width">
                     <label>Client ID</label>
-                    <input type="text" name="clientId" placeholder="2316109355.90688238946" [(ngModel)]="iDavis.values.slack.clientId" (keyup)="validate()">
+                    <input type="text" name="clientId" [(ngModel)]="iDavis.values.slack.clientId" (keyup)="validate()">
                 </div>
             </section>
             <section class="flex-container" *ngIf="!iDavis.config['slack'].success">
@@ -44,10 +44,10 @@
                     <label>Client Secret</label>
                     <div class="input-button-wrapper" [class.input-button-wrapper-focus]="isPasswordFocused">
                         <input *ngIf="isPasswordMasked" type="password" name="clientSecret" class="input-button-input" 
-                            placeholder="4c712f6d4fb2208ed389c33810a63df7" [(ngModel)]="iDavis.values.slack.clientSecret" 
+                            [(ngModel)]="iDavis.values.slack.clientSecret" 
                             (focus)="isPasswordFocused = true" (blur)="isPasswordFocused = false" (keyup)="validate()" [required]="(!iDavis.isWizard) ? '' : null">
                         <input *ngIf="!isPasswordMasked" type="text" name="clientSecretText" class="input-button-input" 
-                            placeholder="4c712f6d4fb2208ed389c33810a63df7" [(ngModel)]="iDavis.values.slack.clientSecret" 
+                            [(ngModel)]="iDavis.values.slack.clientSecret" 
                             (focus)="isPasswordFocused = true" (blur)="isPasswordFocused = false" (keyup)="validate()" [required]="(!iDavis.isWizard) ? '' : null">
                         <div class="input-button-button" (click)="isPasswordMasked = !isPasswordMasked">
                             <img class="input-button-img" [class.input-button-img-password-masked]="isPasswordMasked" src="/assets/img/eye.svg">
