@@ -5,15 +5,28 @@ const chaiHttp = require('chai-http');
 const chaiAsPromised = require('chai-as-promised');
 const Server = require('../../lib/server/Server');
 const Davis = require('../../lib/Davis');
+const mongoose = require('mongoose');
+const BbPromise = require('bluebird');
+const nock = require('nock');
 
 const davis = new Davis();
 const server = new Server(davis);
 const app = server.app;
 const users = davis.users;
+const aid = 'amzn1.ask.account.AHZZYDXEVM4U6Y3NLH4ZFWUNZJYADXOD2446HZ6GEN34PKEXFFL3KQZDBQVTTHI3ZKTBHIWTWJAYIE6SR5K42GGPHZYQZ5O6VITG2SNGQOYW227MO3SYJFSHTHKPHQL2SNSYTUZZLP46QKMPHZDASADII2IFDMW5I34X746FJQZXFTVQN2UK3JCZPDOPSKBSLLROOTOACAUPFGA';
+
+const alexa_payload_json = `{ "version": "1.0", "session": { "new": false, "sessionId": "amzn1.echo-api.session.abeee1a7-aee0-41e6-8192-e6faaed9f5ef", "application": { "applicationId": "amzn1.echo-sdk-ams.app.000000-d0ed-0000-ad00-000000d00ebe" }, "attributes": {}, "user": { "userId": "${aid}" } }, "request": { "type": "IntentRequest", "requestId": "amzn1.echo-api.request.6919844a-733e-4e89-893a-fdcb77e2ef0d", "timestamp": "2015-05-13T12:34:56Z", "intent": { "name": "", "slots": { "command": { "value": "Launch Davis" } } } } }`
+
+function genPayload(phrase) {
+  const alexa_payload = JSON.parse(alexa_payload_json);
+  alexa_payload.request.intent.slots.command.value = phrase;
+  return alexa_payload;
+}
 
 chai.use(chaiAsPromised);
 chai.use(chaiHttp);
 chai.should();
+
 
 describe('Express', () => {
   const adminemail = 'admin@localhost';
@@ -24,8 +37,32 @@ describe('Express', () => {
   const admin = true;
   let token;
 
+  after(() => nock.restore());
+
   before(() => {
-    return davis.config.load();
+    let m;
+    if (mongoose.connection.readyState === 0) {
+      m = mongoose.connect('127.0.0.1:27017/davis-test')
+        .catch((err) => { throw new Error('Not connected to MongoDB!') });
+    } else {
+      m = BbPromise.resolve();
+    }
+
+    return m.then(() => {
+      const colls = [];
+      for (let i in mongoose.connection.collections) {
+        colls.push(mongoose.connection.collections[i].remove());
+      }
+      return BbPromise.all(colls);
+    })
+    .then(() => davis.config.load())
+    .then(() => davis.users.createDefaultUser())
+    .then(() => davis.users.authenticateUser(adminemail, password))
+    .then(() => davis.pluginManager.loadCorePlugins())
+    .then(() => davis.pluginManager.loadUserPlugins(['./lib/plugins/debug/routingDebug']))
+    .then(res => {
+      token = res.token;
+    });
   });
 
   // POST /api/v1/authenticate
@@ -35,7 +72,6 @@ describe('Express', () => {
       .set('Content-Type', 'application/json')
       .send({
         email: adminemail,
-        name,
         password,
       })
       .then(res => {
@@ -67,7 +103,7 @@ describe('Express', () => {
       .set('Content-Type', 'application/json')
       .set('X-Access-Token', token)
       .then((res) => {
-        res.body.users.length.should.eql(2);
+        res.body.users.length.should.eql(1);
       });
   });
 
@@ -132,6 +168,7 @@ describe('Express', () => {
       .set('Content-Type', 'application/json')
       .send({
         timezone: 'America/Detroit',
+        alexa_ids: [aid],
       })
       .then((res) => {
         res.body.success.should.eql(true);
@@ -169,6 +206,231 @@ describe('Express', () => {
           .then((res) => {
             res.body.success.should.eql(true);
           });
+      });
+  });
+
+  it('Should get the current configuration', () => {
+    return chai.request(app)
+      .get('/api/v1/system/config')
+      .set('X-Access-Token', token)
+      .then(res => {
+        res.body.success.should.eql(true);
+      });
+  });
+
+  it('Should get the current configuration for each category', () => {
+    const p = ['dynatrace', 'slack', 'watson'].map(category => {
+      return chai.request(app)
+        .get(`/api/v1/system/config/${category}`)
+        .set('X-Access-Token', token)
+        .then(res => {
+          res.body.success.should.eql(true);
+        });
+    });
+    return BbPromise.all(p);
+  });
+
+  it('Should update configuration value', () => {
+    return chai.request(app)
+      .put('/api/v1/system/config/dynatrace')
+      .set('X-Access-Token', token)
+      .send({
+        strictSSL: false,
+      })
+      .then(res => {
+        res.body.success.should.eql(true);
+      });
+  });
+
+  it('Should launch davis on an alexa request', () => {
+    return chai.request(app)
+      .post('/alexa')
+      .set('X-Access-Token', token)
+      .send(genPayload('launch davis'))
+      .then(res => {
+        res.body.response.outputSpeech.should.have.property('ssml');
+        [
+          "<speak>What's up?</speak>",
+          '<speak>How can I be of service?</speak>',
+          '<speak>How can I help you?</speak>',
+        ].indexOf(res.body.response.outputSpeech.ssml)
+          .should.be.greaterThan(-1);
+      })
+  });
+
+  it('Should ask about a problem through alexa', () => {
+    return chai.request(app)
+      .post('/alexa')
+      .set('X-Access-Token', token)
+      .send(genPayload('what happened yesterday'))
+      .then(res => {
+        res.body.response.outputSpeech.should.have.property('ssml');
+        const contains = res.body.response.outputSpeech.ssml.includes('problem')
+          || res.body.response.outputSpeech.ssml.includes('issue');
+        contains.should.eql(true);
+     });
+  });
+
+  it('Should ask about a problem through rest', () => {
+    return chai.request(app)
+      .post('/api/v1/web')
+      .set('X-Access-Token', token)
+      .send({ phrase: 'What happened yesterday' })
+      .then(res => {
+        res.body.success.should.eql(true);
+        const contains = res.body.response.includes('problem')
+          || res.body.response.includes('issue');
+        contains.should.eql(true);
+      });
+  });
+
+  it('Should route to the first problem', () => {
+    return chai.request(app)
+      .post('/api/v1/web')
+      .set('X-Access-Token', token)
+      .send({ phrase: 'the first one' })
+      .then(res => {
+        res.body.success.should.eql(true);
+        const contains = res.body.response.includes('This problem');
+        contains.should.eql(true);
+      });
+  });
+
+  it('Should ask for help', () => {
+    return chai.request(app)
+      .post('/api/v1/web')
+      .set('X-Access-Token', token)
+      .send({ phrase: 'help' })
+      .then(res => {
+        res.body.success.should.eql(true);
+        const contains = res.body.response.includes('Sounds like you could use a little help');
+        contains.should.eql(true);
+      });
+  });
+
+  it('Should respond to version query', () => {
+    return chai.request(app)
+      .post('/api/v1/web')
+      .set('X-Access-Token', token)
+      .send({ phrase: 'which version' })
+      .then(res => {
+        res.body.success.should.eql(true);
+        const contains = res.body.response.includes("I'm Davis version");
+        contains.should.eql(true);
+      });
+  });
+
+  it('Debug routing one two three first middle last yes no all', () => {
+    return chai.request(app)
+      .post('/api/v1/web')
+      .set('X-Access-Token', token)
+      .send({ phrase: 'Debug routing intent' })
+      .then(res => {
+        res.body.success.should.eql(true);
+      })
+      .then(() => {
+        const routes = [];
+        routes.push(BbPromise.resolve()
+          .then(() => {
+            return chai.request(app)
+              .post('/api/v1/web')
+              .set('X-Access-Token', token)
+              .send({ phrase: 'the first one' })
+                .then(res => {
+                  res.body.success.should.eql(true);
+                  res.body.response.should.include('0');
+                });
+          }));
+        routes.push(BbPromise.resolve()
+          .then(() => {
+            return chai.request(app)
+              .post('/api/v1/web')
+              .set('X-Access-Token', token)
+              .send({ phrase: 'the second one' })
+                .then(res => {
+                  res.body.success.should.eql(true);
+                  res.body.response.should.include('1');
+                });
+          }));
+        routes.push(BbPromise.resolve()
+          .then(() => {
+            return chai.request(app)
+              .post('/api/v1/web')
+              .set('X-Access-Token', token)
+              .send({ phrase: 'the third one' })
+                .then(res => {
+                  res.body.success.should.eql(true);
+                  res.body.response.should.include('2');
+                });
+          }));
+        routes.push(BbPromise.resolve()
+          .then(() => {
+            return chai.request(app)
+              .post('/api/v1/web')
+              .set('X-Access-Token', token)
+              .send({ phrase: 'yes' })
+                .then(res => {
+                  res.body.success.should.eql(true);
+                  res.body.response.should.include('true');
+                });
+          }));
+        routes.push(BbPromise.resolve()
+          .then(() => {
+            return chai.request(app)
+              .post('/api/v1/web')
+              .set('X-Access-Token', token)
+              .send({ phrase: 'no' })
+                .then(res => {
+                  res.body.success.should.eql(true);
+                  res.body.response.should.include('false');
+                });
+          }));
+        routes.push(BbPromise.resolve()
+          .then(() => {
+            return chai.request(app)
+              .post('/api/v1/web')
+              .set('X-Access-Token', token)
+              .send({ phrase: 'the last one' })
+                .then(res => {
+                  res.body.success.should.eql(true);
+                  res.body.response.should.include('last');
+                });
+          }));
+        routes.push(BbPromise.resolve()
+          .then(() => {
+            return chai.request(app)
+              .post('/api/v1/web')
+              .set('X-Access-Token', token)
+              .send({ phrase: 'the middle one' })
+                .then(res => {
+                  res.body.success.should.eql(true);
+                  res.body.response.should.include('middle');
+                });
+          }));
+        routes.push(BbPromise.resolve()
+          .then(() => {
+            return chai.request(app)
+              .post('/api/v1/web')
+              .set('X-Access-Token', token)
+              .send({ phrase: 'all of them' })
+                .then(res => {
+                  res.body.success.should.eql(true);
+                  res.body.response.should.include('all');
+                });
+          }));
+        return BbPromise.all(routes);
+      });
+  });
+
+  it('Should calculate user activity', () => {
+    return chai.request(app)
+      .post('/api/v1/web')
+      .set('X-Access-Token', token)
+      .send({ phrase: 'user activity' })
+      .then(res => {
+        res.body.success.should.eql(true);
+        res.body.response.includes('In the last 24 hours').should.eql(true);
+        res.body.response.includes('The greatest load').should.eql(true);
       });
   });
 });

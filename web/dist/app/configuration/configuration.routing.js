@@ -1,2 +1,0 @@
-"use strict";var router_1=require("@angular/router"),configuration_base_component_1=require("./configuration-base/configuration-base.component"),config_guard_service_1=require("../auth/auth-guard/config-guard.service"),ConfigurationRoutes=[{path:"configuration",component:configuration_base_component_1.ConfigurationBaseComponent,canActivate:[config_guard_service_1.ConfigGuard]}];exports.ConfigurationRouting=router_1.RouterModule.forChild(ConfigurationRoutes);
-//# sourceMappingURL=../../maps/app/configuration/configuration.routing.js.map

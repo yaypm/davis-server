@@ -15,16 +15,19 @@
             <section class="flex-container">
                 <div class="flex-item full-width">
                     <ul>
-                        <li *ngIf="!iDavis.config['slack'].success">
+                        <li *ngIf="!iDavis.config['slack'].success || !iDavis.isWizard">
                             <button type="button" onclick="window.open('https://api.slack.com/apps')">Create Slack App</button>
                         </li>
-                        <li *ngIf="!iDavis.config['slack'].success">
+                        <li *ngIf="!iDavis.config['slack'].success || !iDavis.isWizard">
                             Copy and paste the Client ID and Client Secret from your Slack App's Basic Information page to the inputs below
                         </li>
-                        <li *ngIf="!iDavis.config['slack'].success">
+                        <li *ngIf="!iDavis.config['slack'].success || !iDavis.isWizard">
                             Copy and paste the Redirect URL and Request URL from below to the corresponding pages' inputs in your Slack App's configuration
                         </li>
-                        <li *ngIf="iDavis.config['slack'].success">
+                        <li *ngIf="!iDavis.config['slack'].success || !iDavis.isWizard">
+                            Create a new bot user within the "Bot Users" section and click the "Create Davis Slack Bot" button below
+                        </li>
+                        <li *ngIf="iDavis.config['slack'].success || !iDavis.isWizard">
                             Click the Add to Slack button below and follow the steps offered on Slack's site to finish
                         </li>
                     </ul>
@@ -33,7 +36,7 @@
             <section class="flex-container" *ngIf="!iDavis.config['slack'].success">
                 <div class="flex-item full-width">
                     <label>Client ID</label>
-                    <input type="text" name="clientId" placeholder="2316109355.90688238946" [(ngModel)]="iDavis.values.slack.clientId" (keyup)="validate()">
+                    <input type="text" name="clientId" [(ngModel)]="iDavis.values.slack.clientId" (keyup)="validate()">
                 </div>
             </section>
             <section class="flex-container" *ngIf="!iDavis.config['slack'].success">
@@ -41,10 +44,10 @@
                     <label>Client Secret</label>
                     <div class="input-button-wrapper" [class.input-button-wrapper-focus]="isPasswordFocused">
                         <input *ngIf="isPasswordMasked" type="password" name="clientSecret" class="input-button-input" 
-                            placeholder="4c712f6d4fb2208ed389c33810a63df7" [(ngModel)]="iDavis.values.slack.clientSecret" 
+                            [(ngModel)]="iDavis.values.slack.clientSecret" 
                             (focus)="isPasswordFocused = true" (blur)="isPasswordFocused = false" (keyup)="validate()" [required]="(!iDavis.isWizard) ? '' : null">
                         <input *ngIf="!isPasswordMasked" type="text" name="clientSecretText" class="input-button-input" 
-                            placeholder="4c712f6d4fb2208ed389c33810a63df7" [(ngModel)]="iDavis.values.slack.clientSecret" 
+                            [(ngModel)]="iDavis.values.slack.clientSecret" 
                             (focus)="isPasswordFocused = true" (blur)="isPasswordFocused = false" (keyup)="validate()" [required]="(!iDavis.isWizard) ? '' : null">
                         <div class="input-button-button" (click)="isPasswordMasked = !isPasswordMasked">
                             <img class="input-button-img" [class.input-button-img-password-masked]="isPasswordMasked" src="/assets/img/eye.svg">
@@ -78,7 +81,7 @@
                     </div>
                 </div>
             </section>
-            <section class="flex-container" *ngIf="iDavis.config['slack'].success">
+            <section class="flex-container" *ngIf="iDavis.config['slack'].success || !iDavis.isWizard">
                 <div class="flex-item next">
                     <a href="https://slack.com/oauth/authorize?scope=incoming-webhook,commands,bot&client_id={{ iDavis.values.slack.clientId }}">
                         <img class="slack-button" alt="Add to Slack" height="40" width="139" src="https://platform.slack-edge.com/img/add_to_slack.png"

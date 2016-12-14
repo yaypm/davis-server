@@ -1,5 +1,5 @@
 {
-    "text": "There were two infrastructure problems during the past week.",
+    "text": "There were two infrastructure problems {{ timeRange | friendlyTimeRange(user) }}.",
     "attachments": [
         {% for problem in problems %}
            {% include "lib/plugins/shared-templates/problem-summary/visual/default.nj" %}

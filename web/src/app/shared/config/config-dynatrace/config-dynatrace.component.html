@@ -1,6 +1,6 @@
 <div class="page">
     <div *ngIf="iDavis.isWizard" class="step">
-        Step 2 of 4
+        Step 1 of 4
     </div>
     <div *ngIf="iDavis.isWizard" class="title">
         Connect to Dynatrace
@@ -21,7 +21,17 @@
             <section class="flex-container">
                 <div class="flex-item full-width">
                     <label>Dynatrace API Token</label>
-                    <input type="text" name="token" placeholder="IYVTz0nBSkZdsQOhS7W3P" [(ngModel)]="iDavis.values.dynatrace.token" (keyup)="validate()" required>
+                    <div class="input-button-wrapper" [class.input-button-wrapper-focus]="isTokenFocused">
+                        <input *ngIf="isTokenMasked" type="password" name="token" class="input-button-input" 
+                            [(ngModel)]="iDavis.values.dynatrace.token" 
+                            (focus)="isTokenFocused = true" (blur)="isTokenFocused = false" (keyup)="validate()" required>
+                        <input *ngIf="!isTokenMasked" type="text" name="tokenText" class="input-button-input" 
+                            [(ngModel)]="iDavis.values.dynatrace.token" 
+                            (focus)="isTokenFocused = true" (blur)="isTokenFocused = false" (keyup)="validate()" required>
+                        <div class="input-button-button" (click)="isTokenMasked = !isTokenMasked">
+                            <img class="input-button-img" [class.input-button-img-password-masked]="isTokenMasked" src="/assets/img/eye.svg">
+                        </div>
+                    </div>
                 </div>
             </section>
             <section class="flex-container">

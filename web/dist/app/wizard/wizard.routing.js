@@ -1,2 +1,0 @@
-"use strict";var router_1=require("@angular/router"),wizard_base_component_1=require("./wizard-base/wizard-base.component"),wizard_guard_service_1=require("../auth/auth-guard/wizard-guard.service"),WizardRoutes=[{path:"",redirectTo:"/wizard",pathMatch:"full"},{path:"wizard",component:wizard_base_component_1.WizardBaseComponent,canActivate:[wizard_guard_service_1.WizardGuard]}];exports.WizardRouting=router_1.RouterModule.forChild(WizardRoutes);
-//# sourceMappingURL=../../maps/app/wizard/wizard.routing.js.map

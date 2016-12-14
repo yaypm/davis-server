@@ -21,7 +21,7 @@ gulp.task('clean', function (cb) {
     rimraf('./web/dist', cb);
 });
 
-gulp.task('compile', ['clean'], () => {
+gulp.task('compile:dev', ['clean'], () => {
   const tsProject = tsc.createProject('tsconfig.json');
   const destinationFolder = 'web/dist';
 
@@ -31,11 +31,7 @@ gulp.task('compile', ['clean'], () => {
     ])
     .pipe(sourcemaps.init())
       .pipe(tsProject())
-      .pipe(uglify())
-      //.pipe(gulp.dest(destinationFolder))
-      //.pipe(concat('all.min.js'))
-    .pipe(sourcemaps.write('/maps'))
-    //.pipe(rename({ extname: '.min.js' }))
+    .pipe(sourcemaps.write('/'))
     .pipe(gulp.dest(destinationFolder));
 
   const copy = gulp.src([
@@ -53,6 +49,34 @@ gulp.task('compile', ['clean'], () => {
   return merge(compiledTs, copy, assets);
 });
 
+gulp.task('compile:prod', ['clean'], () => {
+  const tsProject = tsc.createProject('tsconfig.json');
+  const destinationFolder = 'web/dist';
+
+  const compiledTs = gulp.src([
+    'web/src/**/*.ts',
+    '!web/src/main.prod.ts',
+    ])
+    .pipe(tsProject())
+    .pipe(uglify())
+    .pipe(gulp.dest(destinationFolder));
+
+  const copy = gulp.src([
+    'web/src/systemjs.config.js',
+    'web/src/**/*.html',
+    ])
+    .pipe(gulp.dest(destinationFolder));
+
+
+  const assets = gulp.src([
+    'web/src/assets/**/*',
+    ])
+    .pipe(gulp.dest(destinationFolder + '/assets'));
+
+  return merge(compiledTs, copy, assets);
+});
+
+
 gulp.task('test', ['update'], () =>
    gulp.src(['tests/all.js'], { read: false })
     .pipe(mocha({
@@ -66,9 +90,9 @@ gulp.task('test', ['update'], () =>
     })
 );
 
-gulp.task('watch', ['compile'], function() {
-    gulp.watch('web/src/**/*.ts', ['compile']);
-    gulp.watch('web/src/**/*.html', ['compile']);
+gulp.task('watch', ['compile:dev'], function() {
+    gulp.watch('web/src/**/*.ts', ['compile:dev']);
+    gulp.watch('web/src/**/*.html', ['compile:dev']);
 });
 
 gulp.task('default', ['compile', 'test']);

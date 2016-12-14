@@ -1,6 +1,6 @@
 <div class="page">
     <div *ngIf="iDavis.isWizard" class="step">
-        Step 1 of 4
+        Step 2 of 4
     </div>
     <div *ngIf="iDavis.isWizard" class="title">
         Create <span *ngIf="iDavis.values.user.admin">Administrator</span><span *ngIf="!iDavis.values.user.admin">User</span> Account
@@ -17,14 +17,12 @@
                     <label>First Name</label>
                     <!-- isMyUser -->
                     <input type="text" name="first" 
-                        placeholder="John" 
                         *ngIf="isMyUser"
                         [(ngModel)]="iDavis.values.user.name.first" 
                         (keyup)="validate()" required>
                         
                      <!-- !isMyUser -->
                     <input type="text" name="first" 
-                        placeholder="John" 
                         *ngIf="!isMyUser"
                         [(ngModel)]="iDavis.values.otherUser.name.first" 
                         (keyup)="validate()" required>
@@ -33,14 +31,12 @@
                     <label>Last Name</label>
                     <!-- isMyUser -->
                     <input type="text" name="last" 
-                        placeholder="Smith" 
                         *ngIf="isMyUser"
                         [(ngModel)]="iDavis.values.user.name.last" 
                         (keyup)="validate()" required>
                         
                     <!-- !isMyUser -->
                     <input type="text" name="last" 
-                        placeholder="Smith" 
                         *ngIf="!isMyUser"
                         [(ngModel)]="iDavis.values.otherUser.name.last" 
                         (keyup)="validate()" required>
@@ -51,7 +47,6 @@
                     <label>Email</label>
                     <!-- isMyUser -->
                     <input type="email" name="email" 
-                        placeholder="john.smith@example.com" 
                         *ngIf="isMyUser"
                         [(ngModel)]="iDavis.values.user.email" 
                         (keyup)="validate()" 
@@ -59,7 +54,6 @@
                         
                     <!-- !isMyUser -->
                     <input type="email" name="email" 
-                        placeholder="john.smith@example.com" 
                         *ngIf="!isMyUser"
                         [(ngModel)]="iDavis.values.otherUser.email" 
                         (keyup)="validate()"
@@ -73,14 +67,12 @@
                     <div class="input-button-wrapper" [class.input-button-wrapper-focus]="isPasswordFocused">
                         <!-- isMyUser -->
                         <input *ngIf="isPasswordMasked && isMyUser" type="password" name="password" class="input-button-input" 
-                            placeholder="&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;" 
                             [(ngModel)]="iDavis.values.user.password" 
                             (focus)="isPasswordFocused = true" 
                             (blur)="isPasswordFocused = false"
                             (keyup)="validate()"
                             [required]="(iDavis.isWizard) ? '' : null">
                         <input *ngIf="!isPasswordMasked && isMyUser" type="text" name="passwordText" class="input-button-input" 
-                            placeholder="&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;" 
                             [(ngModel)]="iDavis.values.user.password" 
                             (focus)="isPasswordFocused = true" 
                             (blur)="isPasswordFocused = false"
@@ -89,14 +81,12 @@
                             
                         <!-- !isMyUser -->
                         <input *ngIf="isPasswordMasked && !isMyUser" type="password" name="password" class="input-button-input" 
-                            placeholder="&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;" 
                             [(ngModel)]="iDavis.values.otherUser.password" 
                             (focus)="isPasswordFocused = true" 
                             (blur)="isPasswordFocused = false"
                             (keyup)="validate()"
                             [required]="(isNewUser) ? '' : null">
                         <input *ngIf="!isPasswordMasked && !isMyUser" type="text" name="passwordText" class="input-button-input" 
-                            placeholder="&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;" 
                             [(ngModel)]="iDavis.values.otherUser.password" 
                             (focus)="isPasswordFocused = true" 
                             (blur)="isPasswordFocused = false"
@@ -151,13 +141,13 @@
                 <div class="flex-item full-width">
                     <label>Alexa User ID</label>
                     <!-- isMyUser -->
-                    <input type="text" name="alexa" placeholder="amzn1.ask.account.AFP3ZWPOS2BGJR7OWZPO1SFXEQ..." 
+                    <input type="text" name="alexa" 
                         *ngIf="isMyUser"
                         [(ngModel)]="iDavis.values.user.alexa_ids"
                         (keyup)="validate()">
                         
                     <!-- !isMyUser -->
-                    <input type="text" name="alexa" placeholder="amzn1.ask.account.AFP3ZWPOS2BGJR7OWZPO1SFXEQ..." 
+                    <input type="text" name="alexa" 
                         *ngIf="!isMyUser"
                         [(ngModel)]="iDavis.values.otherUser.alexa_ids"
                         (keyup)="validate()">
