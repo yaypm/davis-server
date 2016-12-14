@@ -15,7 +15,7 @@ describe('Nunjucks', () => {
 
   it('should create friendly time ranges', () => {
     const timezone = 'America/Detroit';
-    const startTime = moment('2016-01-01').tz(timezone);
+    const startTime = moment('2016-01-01');
     const stopTime = moment('2016-01-01').add(5, 'days');
     const context = {
       user: { timezone },
@@ -37,8 +37,8 @@ describe('Nunjucks', () => {
     const context = {
       user: { timezone },
       timeRange: {
-        startTime: moment('2016-01-01').tz(timezone),
-        stopTime: moment().tz(timezone).add(1, 'week'),
+        startTime: moment('2016-01-01'),
+        stopTime: moment().add(1, 'week'),
       },
     };
 
@@ -51,7 +51,7 @@ describe('Nunjucks', () => {
 
   it('should recognize when the range is in the same 24 hours', () => {
     const timezone = 'America/Detroit';
-    const startTime = moment('2016-01-01').tz(timezone);
+    const startTime = moment('2016-01-01');
     const stopTime = moment('2016-01-01').add(5, 'days');
     const context = {
       user: { timezone },
