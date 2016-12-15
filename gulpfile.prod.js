@@ -10,7 +10,7 @@ const request = require('request');
 const dist = `dynatrace-davis-dist-${version}.tar`;
 
 gulp.task('get-dist', ['clean'], () =>
-  request(`https://dyladan.me/${dist}`)
+  request(`https://github.com/Dynatrace/davis-server/releases/download/v${version}/${dist}`)
     .pipe(source(dist))
     .pipe(untar())
     .pipe(gulp.dest('./web/dist')));
