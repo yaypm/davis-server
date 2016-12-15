@@ -15,7 +15,7 @@ const conventionalChangelog = require('gulp-conventional-changelog');
 const minimist = require('minimist');
 const tar = require('gulp-tar');
 const untar = require('gulp-untar');
-//const git = require('gulp-git');
+const git = require('gulp-git');
 //const github = require('gulp-github-release');
 const spawn = require('child_process').spawn;
 const source = require('vinyl-source-stream');
@@ -139,12 +139,12 @@ gulp.task('watch', ['compile:dev'], function() {
     gulp.watch('web/src/**/*.html', ['compile:dev']);
 });
 
-//gulp.task('commit', () =>
-  //const version = JSON.parse(fs.readFileSync('package.json')).version;
-  //gulp.src('.')
-    //.pipe(git.add())
-    //.pipe(git.commit(`[Prerelease] bump ${version}`))
-//);
+gulp.task('commit', () => {
+  const version = JSON.parse(fs.readFileSync('package.json')).version;
+  gulp.src('.')
+    .pipe(git.add())
+    .pipe(git.commit(`[Prerelease] bump ${version}`))
+});
 
 //gulp.task('checkout-master');
 //gulp.task('merge-dev');
