@@ -226,6 +226,19 @@ button:focus {
   right: -15px;
 }
 
+.content-delete-button {
+  float: left;
+  background-color: #c41121;
+}
+
+.content-delete-button:hover, .content-delete-button:focus {
+  background-color: #ab0c17;
+}
+
+.content-delete-button:active {
+  background-color: #93060e;
+}
+
 .warning {
   background-color: #d3571a;
 }

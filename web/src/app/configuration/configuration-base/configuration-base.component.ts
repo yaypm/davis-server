@@ -44,6 +44,8 @@ export class ConfigurationBaseComponent  {
       this.iDavis.titleGlobal = 'Configure Davis';
     }
     
+    this.iConfig.SelectView('user');
+    
     this.iDavis.config['user'].success = null;
     this.iDavis.config['user'].error = null;
     this.iDavis.config['dynatrace'].success = null;

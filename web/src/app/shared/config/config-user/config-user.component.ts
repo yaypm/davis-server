@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
 // Services
 import { ConfigService } from '../config.service';
@@ -14,6 +14,7 @@ export class ConfigUserComponent implements OnInit {
   
     @Input() isMyUser: boolean;
     @Input() isNewUser: boolean;
+    @Output() showUsersList: EventEmitter<any> = new EventEmitter();
     
     submitted: boolean = false;
     submitButton: string = (this.iDavis.isWizard) ? 'Continue' : 'Save';
@@ -22,6 +23,8 @@ export class ConfigUserComponent implements OnInit {
     isPasswordMasked: boolean = true;
     isSelectOpened: boolean = false;
     isDirty: boolean = false;
+    detectedTimezone: string = '';
+    confirmDeleteUser: boolean = false;
     user: any;
     
     constructor(
@@ -41,6 +44,9 @@ export class ConfigUserComponent implements OnInit {
                 this.isDirty = false;
                 this.iDavis.config['user'].success = true;
                 this.submitButton = 'Save';
+                if (!this.isMyUser) {
+                  this.showUsersList.emit();
+                }
               } else {
                 this.submitButton = 'Save';
                 this.iDavis.config['user'].success = false;
@@ -114,6 +120,7 @@ export class ConfigUserComponent implements OnInit {
                     });
                 } else {
                    this.iDavis.values.original.otherUser = _.cloneDeep(this.user);
+                   this.showUsersList.emit();
                 }
               } else {
                 this.iDavis.config['user'].success = false;
@@ -128,6 +135,31 @@ export class ConfigUserComponent implements OnInit {
               this.iDavis.config['user'].error = 'Sorry an error occurred, please try again.';
               this.submitButton = this.submitButtonDefault;
             });
+      }
+    }
+    
+    deleteUser(email: string) {
+      if (this.confirmDeleteUser) {
+        this.iDavis.removeDavisUser(email)
+          .then(result => {
+              if (result.success) {
+                this.isDirty = false;
+                this.iDavis.config['user'].success = true;
+                this.confirmDeleteUser = false;
+                this.showUsersList.emit();
+              } else {
+                this.confirmDeleteUser = false;
+                this.iDavis.config['user'].success = false;
+                this.iDavis.config['user'].error = result.message;
+              }
+            },
+            error => {
+              this.confirmDeleteUser = false;
+              this.iDavis.config['user'].success = false;
+              this.iDavis.config['user'].error = 'Sorry an error occurred, please try again.';
+            });
+      } else {
+        this.confirmDeleteUser = true;
       }
     }
     
@@ -150,6 +182,7 @@ export class ConfigUserComponent implements OnInit {
       this.iDavis.getTimezones()
         .then( 
           response => {
+            this.detectedTimezone = this.iDavis.getTimezone();
             this.iDavis.timezones = response.timezones;
             if (this.iDavis.isWizard) {
               this.iDavis.values.user.timezone = this.iDavis.getTimezone();

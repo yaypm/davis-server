@@ -9,7 +9,7 @@
         <form (ngSubmit)="doSubmit()" #form="ngForm">
             <section *ngIf="iDavis.config['user'].success === false" class="flex-container">
                 <div class="flex-item full-width error">
-                    {{iDavis.config['user'].error}}
+                    {{ iDavis.config['user'].error }}
                 </div>
             </section>
             <section class="flex-container">
@@ -98,7 +98,7 @@
                     </div>
                 </div>
                 <div class="flex-item half-width right-half">
-                    <label>Timezone</label>
+                    <label style="margin-top: -1px;">Timezone</label>
                     <!-- isMyUser -->
                     <select *ngIf="isMyUser" name="timezone" 
                         [(ngModel)]="iDavis.values.user.timezone"
@@ -120,21 +120,28 @@
                     </select>
                 </div>
             </section>
-            <section *ngIf="!iDavis.isWizard" class="flex-container">
-                <div class="flex-item full-width">
+            <section class="flex-container">
+                <div *ngIf="!iDavis.isWizard && iDavis.isAdmin" class="flex-item half-width" style="line-height: 32px;">
                     <label>Administrator</label>
                     <!-- isMyUser -->
-                    <input type="checkbox" name="admin" 
+                    <input type="checkbox" name="admin" style="margin-top: 10px; cursor: pointer;"
                         [(ngModel)]="iDavis.values.user.admin"
                         [disabled]="true"
                         *ngIf="isMyUser"
-                        (click)="validate()">
+                        (change)="validate()">
                         
                     <!-- !isMyUser -->
-                    <input type="checkbox" name="admin" 
+                    <input type="checkbox" name="admin" style="margin-top: 10px; cursor: pointer;"
                         [(ngModel)]="iDavis.values.otherUser.admin"
                         *ngIf="!isMyUser"
-                        (click)="validate()">
+                        (change)="validate()">
+                </div>
+                <div *ngIf="detectedTimezone && ((isMyUser && iDavis.values.user.timezone != detectedTimezone) 
+                    || (!isMyUser && iDavis.values.otherUser.timezone != detectedTimezone))" class="flex-item half-width">
+                    <button type="button" class="log-out config" style="float: right; margin: 0; margin-right: -15px; transform: none;"
+                        (click)="(isMyUser) ? iDavis.values.user.timezone = detectedTimezone : iDavis.values.otherUser.timezone = detectedTimezone; validate()">
+                        Detect Timezone
+                    </button>
                 </div>
             </section>
             <section *ngIf="!iDavis.isWizard" class="flex-container">
@@ -151,6 +158,15 @@
                         *ngIf="!isMyUser"
                         [(ngModel)]="iDavis.values.otherUser.alexa_ids"
                         (keyup)="validate()">
+                </div>
+            </section>
+            <section *ngIf="!iDavis.isWizard && !isMyUser && iDavis.isAdmin && !isNewUser" class="flex-container">
+                <div class="flex-item full-width">
+                    <button type="button" class="content-delete-button" 
+                        [attr.disabled]="(isMyUser) ? true : null"
+                        (click)="deleteUser(iDavis.values.otherUser.email)">
+                        {{ (confirmDeleteUser) ? 'Yes, I really want to delete ' + iDavis.values.otherUser.email : 'Delete User' }}
+                    </button>
                 </div>
             </section>
             <section class="flex-container">
