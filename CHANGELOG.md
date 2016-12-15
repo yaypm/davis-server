@@ -1,3 +1,13 @@
+<a name="0.4.1"></a>
+## [0.4.1](https://github.com/Dynatrace/davis-server/compare/v0.4.0...v0.4.1) (2016-12-15)
+
+
+### Bug Fixes
+
+* add heroku postbuild hook and remove postinstall that fails on npm install ([e144cfe](https://github.com/Dynatrace/davis-server/commit/e144cfe))
+
+
+
 <a name="0.4.0"></a>
 # [0.4.0](https://github.com/Dynatrace/davis-server/compare/v0.3.1...v0.4.0) (2016-12-15)
 

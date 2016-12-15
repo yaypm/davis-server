@@ -1,6 +1,6 @@
 {
   "name": "@dynatrace/davis",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "description": "Davis Server",
   "main": "./lib/Davis.js",
   "license": "MIT",
@@ -19,7 +19,7 @@
     "debug-test": "mocha tests/all --debug-brk",
     "lint": "eslint lib && echo",
     "jsdoc": "jsdoc -r lib",
-    "postinstall": "gulp --gulpfile gulpfile.prod.js get-dist"
+    "heroku-postbuild": "gulp --gulpfile gulpfile.prod.js get-dist"
   },
   "author": "",
   "devDependencies": {
