@@ -19,7 +19,7 @@
     "debug-test": "mocha tests/all --debug-brk",
     "lint": "eslint lib && echo",
     "jsdoc": "jsdoc -r lib",
-    "postinstall": "gulp --gulpfile gulpfile.prod.js get-dist"
+    "heroku-postbuild": "gulp --gulpfile gulpfile.prod.js get-dist"
   },
   "author": "",
   "devDependencies": {
