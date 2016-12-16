@@ -10,10 +10,10 @@ Welcome to Davis!  Davis provides several new, cutting edge mediums for interact
 We've tried to make the process of setting up and configuring Davis as simple as possible.  However, feel free to open an issue or <a href="mailto:davis@dynatrace.com">email</a> if any questions or feedback. For more information and documentation, make sure to check out [the wiki](https://github.com/Dynatrace/davis-server/wiki) or click on one of the following links
 
 ## Table of Contents
- - [Getting Started](https://github.com/Dynatrace/davis-server/wiki/Getting Started)
- - [Core Concepts](https://github.com/Dynatrace/davis-server/wiki/Core Concepts)
- - [Supported Phrases](https://github.com/Dynatrace/davis-server/wiki/Supported Phrases)
- - [Creating Custom Plugins](https://github.com/Dynatrace/davis-server/wiki/Creating Custom Plugins)
+ - [Getting Started](https://github.com/Dynatrace/davis-server/wiki/Getting%20Started)
+ - [Core Concepts](https://github.com/Dynatrace/davis-server/wiki/Core%20Concepts)
+ - [Supported Phrases](https://github.com/Dynatrace/davis-server/wiki/Supported%20Phrases)
+ - [Creating Custom Plugins](https://github.com/Dynatrace/davis-server/wiki/Creating%20Custom%20Plugins)
  - [Road Map](https://github.com/Dynatrace/davis-server/projects/2)
 
 ## Disclaimer
