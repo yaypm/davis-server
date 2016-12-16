@@ -15,8 +15,8 @@ describe('Nunjucks', () => {
 
   it('should create friendly time ranges', () => {
     const timezone = 'America/Detroit';
-    const startTime = moment('2016-01-01');
-    const stopTime = moment('2016-01-01').add(5, 'days');
+    const startTime = moment.tz('2016-01-01', timezone);
+    const stopTime = moment.tz('2016-01-01', timezone).add(5, 'days');
     const context = {
       user: { timezone },
       timeRange: {
@@ -37,8 +37,8 @@ describe('Nunjucks', () => {
     const context = {
       user: { timezone },
       timeRange: {
-        startTime: moment('2016-01-01'),
-        stopTime: moment().add(1, 'week'),
+        startTime: moment.tz('2016-01-01', timezone),
+        stopTime: moment().tz(timezone).add(1, 'week'),
       },
     };
 
@@ -50,11 +50,18 @@ describe('Nunjucks', () => {
   });
 
   it('should recognize when the range is in the same 24 hours', () => {
-    const timezone = 'America/Detroit';
-    const startTime = moment('2016-01-01');
-    const stopTime = moment('2016-01-01').add(5, 'days');
+    const startTime = moment('2016-01-01T00:00:00-05:00');
+    const stopTime = moment('2016-01-01T00:00:00-05:00').add(5, 'days');
     const context = {
-      user: { timezone },
+      user: { timezone: 'America/Detroit' },
+      timeRange: {
+        startTime,
+        stopTime,
+      },
+    };
+
+    const caliContext = {
+      user: { timezone: 'America/Los_Angeles' },
       timeRange: {
         startTime,
         stopTime,
@@ -62,10 +69,14 @@ describe('Nunjucks', () => {
     };
 
     const out = nunjucks.renderString('{{ timeRange | friendlyTimeRange(user) }}', context);
+    const outCali = nunjucks.renderString('{{ timeRange | friendlyTimeRange(user) }}', caliContext);
     const compact = nunjucks.renderString('{{ timeRange | friendlyTimeRange(user, true) }}', context);
+    const compactCali = nunjucks.renderString('{{ timeRange | friendlyTimeRange(user, true) }}', caliContext);
 
     out.should.eql('between 01/01/2016 at 12:00 AM and 01/06/2016 at 12:00 AM');
+    outCali.should.eql('between 12/31/2015 at 9:00 PM and 01/05/2016 at 9:00 PM');
     compact.should.eql('01/01/2016 at 12:00 AM - \\n01/06/2016 at 12:00 AM');
+    compactCali.should.eql('12/31/2015 at 9:00 PM - \\n01/05/2016 at 9:00 PM');
   });
 
   it('should generate slack time objects', () => {
