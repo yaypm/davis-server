@@ -16,29 +16,29 @@
                 <div class="flex-item half-width left-half">
                     <label>First Name</label>
                     <!-- isMyUser -->
-                    <input type="text" name="first" 
+                    <input type="text" name="first"
                         *ngIf="isMyUser"
-                        [(ngModel)]="iDavis.values.user.name.first" 
+                        [(ngModel)]="iDavis.values.user.name.first"
                         (keyup)="validate()" required>
-                        
+
                      <!-- !isMyUser -->
-                    <input type="text" name="first" 
+                    <input type="text" name="first"
                         *ngIf="!isMyUser"
-                        [(ngModel)]="iDavis.values.otherUser.name.first" 
+                        [(ngModel)]="iDavis.values.otherUser.name.first"
                         (keyup)="validate()" required>
                 </div>
                  <div class="flex-item half-width right-half">
                     <label>Last Name</label>
                     <!-- isMyUser -->
-                    <input type="text" name="last" 
+                    <input type="text" name="last"
                         *ngIf="isMyUser"
-                        [(ngModel)]="iDavis.values.user.name.last" 
+                        [(ngModel)]="iDavis.values.user.name.last"
                         (keyup)="validate()" required>
-                        
+
                     <!-- !isMyUser -->
-                    <input type="text" name="last" 
+                    <input type="text" name="last"
                         *ngIf="!isMyUser"
-                        [(ngModel)]="iDavis.values.otherUser.name.last" 
+                        [(ngModel)]="iDavis.values.otherUser.name.last"
                         (keyup)="validate()" required>
                 </div>
             </section>
@@ -46,16 +46,16 @@
                 <div class="flex-item full-width">
                     <label>Email</label>
                     <!-- isMyUser -->
-                    <input type="email" name="email" 
+                    <input type="email" name="email"
                         *ngIf="isMyUser"
-                        [(ngModel)]="iDavis.values.user.email" 
-                        (keyup)="validate()" 
+                        [(ngModel)]="iDavis.values.user.email"
+                        (keyup)="validate()"
                         [attr.disabled]="(iDavis.isWizard) ? null : ''" required>
-                        
+
                     <!-- !isMyUser -->
-                    <input type="email" name="email" 
+                    <input type="email" name="email"
                         *ngIf="!isMyUser"
-                        [(ngModel)]="iDavis.values.otherUser.email" 
+                        [(ngModel)]="iDavis.values.otherUser.email"
                         (keyup)="validate()"
                         [class.disabled]="!isNewUser"
                         [attr.disabled]="(isNewUser) ? null : ''" required>
@@ -66,29 +66,29 @@
                     <label>{{ (iDavis.isWizard || isNewUser) ? '' : 'Change ' }}Password</label>
                     <div class="input-button-wrapper" [class.input-button-wrapper-focus]="isPasswordFocused">
                         <!-- isMyUser -->
-                        <input *ngIf="isPasswordMasked && isMyUser" type="password" name="password" class="input-button-input" 
-                            [(ngModel)]="iDavis.values.user.password" 
-                            (focus)="isPasswordFocused = true" 
+                        <input *ngIf="isPasswordMasked && isMyUser" type="password" name="password" class="input-button-input"
+                            [(ngModel)]="iDavis.values.user.password"
+                            (focus)="isPasswordFocused = true"
                             (blur)="isPasswordFocused = false"
                             (keyup)="validate()"
                             [required]="(iDavis.isWizard) ? '' : null">
-                        <input *ngIf="!isPasswordMasked && isMyUser" type="text" name="passwordText" class="input-button-input" 
-                            [(ngModel)]="iDavis.values.user.password" 
-                            (focus)="isPasswordFocused = true" 
+                        <input *ngIf="!isPasswordMasked && isMyUser" type="text" name="passwordText" class="input-button-input"
+                            [(ngModel)]="iDavis.values.user.password"
+                            (focus)="isPasswordFocused = true"
                             (blur)="isPasswordFocused = false"
                             (keyup)="validate()"
                             [required]="(iDavis.isWizard) ? '' : null">
-                            
+
                         <!-- !isMyUser -->
-                        <input *ngIf="isPasswordMasked && !isMyUser" type="password" name="password" class="input-button-input" 
-                            [(ngModel)]="iDavis.values.otherUser.password" 
-                            (focus)="isPasswordFocused = true" 
+                        <input *ngIf="isPasswordMasked && !isMyUser" type="password" name="password" class="input-button-input"
+                            [(ngModel)]="iDavis.values.otherUser.password"
+                            (focus)="isPasswordFocused = true"
                             (blur)="isPasswordFocused = false"
                             (keyup)="validate()"
                             [required]="(isNewUser) ? '' : null">
-                        <input *ngIf="!isPasswordMasked && !isMyUser" type="text" name="passwordText" class="input-button-input" 
-                            [(ngModel)]="iDavis.values.otherUser.password" 
-                            (focus)="isPasswordFocused = true" 
+                        <input *ngIf="!isPasswordMasked && !isMyUser" type="text" name="passwordText" class="input-button-input"
+                            [(ngModel)]="iDavis.values.otherUser.password"
+                            (focus)="isPasswordFocused = true"
                             (blur)="isPasswordFocused = false"
                             (keyup)="validate()"
                             [required]="(isNewUser) ? '' : null">
@@ -100,21 +100,21 @@
                 <div class="flex-item half-width right-half">
                     <label style="margin-top: -1px;">Timezone</label>
                     <!-- isMyUser -->
-                    <select *ngIf="isMyUser" name="timezone" 
+                    <select *ngIf="isMyUser" name="timezone"
                         [(ngModel)]="iDavis.values.user.timezone"
                         (ngModelChange)="onTimezoneChange($event); validate()"
-                        [class.select-opened]="isSelectOpened" 
-                        (click)="isSelectOpened = !isSelectOpened" 
+                        [class.select-opened]="isSelectOpened"
+                        (click)="isSelectOpened = !isSelectOpened"
                         (blur)="isSelectOpened = false;" required>
                         <option *ngFor="let tz of iDavis.timezones" [value]="tz">{{tz}}</option>
                     </select>
-                    
+
                      <!-- !isMyUser -->
-                    <select *ngIf="!isMyUser" name="timezone" 
-                        [(ngModel)]="iDavis.values.otherUser.timezone" 
+                    <select *ngIf="!isMyUser" name="timezone"
+                        [(ngModel)]="iDavis.values.otherUser.timezone"
                         (ngModelChange)="onTimezoneChange($event); validate()"
-                        [class.select-opened]="isSelectOpened" 
-                        (click)="isSelectOpened = !isSelectOpened" 
+                        [class.select-opened]="isSelectOpened"
+                        (click)="isSelectOpened = !isSelectOpened"
                         (blur)="isSelectOpened = false;" required>
                         <option *ngFor="let tz of iDavis.timezones" [value]="tz">{{tz}}</option>
                     </select>
@@ -129,14 +129,14 @@
                         [disabled]="true"
                         *ngIf="isMyUser"
                         (change)="validate()">
-                        
+
                     <!-- !isMyUser -->
                     <input type="checkbox" name="admin" style="margin-top: 10px; cursor: pointer;"
                         [(ngModel)]="iDavis.values.otherUser.admin"
                         *ngIf="!isMyUser"
                         (change)="validate()">
                 </div>
-                <div *ngIf="detectedTimezone && ((isMyUser && iDavis.values.user.timezone != detectedTimezone) 
+                <div *ngIf="detectedTimezone && ((isMyUser && iDavis.values.user.timezone != detectedTimezone)
                     || (!isMyUser && iDavis.values.otherUser.timezone != detectedTimezone))" class="flex-item half-width">
                     <button type="button" class="log-out config" style="float: right; margin: 0; margin-right: -15px; transform: none;"
                         (click)="(isMyUser) ? iDavis.values.user.timezone = detectedTimezone : iDavis.values.otherUser.timezone = detectedTimezone; validate()">
@@ -148,13 +148,13 @@
                 <div class="flex-item full-width">
                     <label>Alexa User ID</label>
                     <!-- isMyUser -->
-                    <input type="text" name="alexa" 
+                    <input type="text" name="alexa"
                         *ngIf="isMyUser"
                         [(ngModel)]="iDavis.values.user.alexa_ids"
                         (keyup)="validate()">
-                        
+
                     <!-- !isMyUser -->
-                    <input type="text" name="alexa" 
+                    <input type="text" name="alexa"
                         *ngIf="!isMyUser"
                         [(ngModel)]="iDavis.values.otherUser.alexa_ids"
                         (keyup)="validate()">
@@ -162,7 +162,7 @@
             </section>
             <section *ngIf="!iDavis.isWizard && !isMyUser && iDavis.isAdmin && !isNewUser" class="flex-container">
                 <div class="flex-item full-width">
-                    <button type="button" class="content-delete-button" 
+                    <button type="button" class="content-delete-button"
                         [attr.disabled]="(isMyUser) ? true : null"
                         (click)="deleteUser(iDavis.values.otherUser.email)">
                         {{ (confirmDeleteUser) ? 'Yes, I really want to delete ' + iDavis.values.otherUser.email : 'Delete User' }}
@@ -171,8 +171,8 @@
             </section>
             <section class="flex-container">
                 <div class="flex-item next">
-                    <a href="https://github.com/Dynatrace/davis-server/blob/master/docs/getting_started.md" target="_blank" class="docs-link">{{ iDavis.helpLinkText }}</a>
-                    <button type="submit" class="content-save-button" 
+                    <a href="https://github.com/Dynatrace/davis-server/wiki/Getting%20Started" target="_blank" class="docs-link">{{ iDavis.helpLinkText }}</a>
+                    <button type="submit" class="content-save-button"
                         [attr.disabled]="(!form.valid || submitButton === 'Saving...' || !isDirty) ? true : null">
                         {{ submitButton }}
                     </button>

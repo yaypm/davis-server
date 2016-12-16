@@ -22,11 +22,11 @@
                 <div class="flex-item full-width">
                     <label>Dynatrace API Token</label>
                     <div class="input-button-wrapper" [class.input-button-wrapper-focus]="isTokenFocused">
-                        <input *ngIf="isTokenMasked" type="password" name="token" class="input-button-input" 
-                            [(ngModel)]="iDavis.values.dynatrace.token" 
+                        <input *ngIf="isTokenMasked" type="password" name="token" class="input-button-input"
+                            [(ngModel)]="iDavis.values.dynatrace.token"
                             (focus)="isTokenFocused = true" (blur)="isTokenFocused = false" (keyup)="validate()" required>
-                        <input *ngIf="!isTokenMasked" type="text" name="tokenText" class="input-button-input" 
-                            [(ngModel)]="iDavis.values.dynatrace.token" 
+                        <input *ngIf="!isTokenMasked" type="text" name="tokenText" class="input-button-input"
+                            [(ngModel)]="iDavis.values.dynatrace.token"
                             (focus)="isTokenFocused = true" (blur)="isTokenFocused = false" (keyup)="validate()" required>
                         <div class="input-button-button" (click)="isTokenMasked = !isTokenMasked">
                             <img class="input-button-img" [class.input-button-img-password-masked]="isTokenMasked" src="/assets/img/eye.svg">
@@ -36,8 +36,8 @@
             </section>
             <section class="flex-container">
                 <div class="flex-item next">
-                    <a href="https://github.com/Dynatrace/davis-server/blob/master/docs/getting_started.md" target="_blank" class="docs-link">{{ iDavis.helpLinkText }}</a>
-                    <button type="submit" class="content-save-button" 
+                    <a href="https://github.com/Dynatrace/davis-server/wiki/Getting%20Started" target="_blank" class="docs-link">{{ iDavis.helpLinkText }}</a>
+                    <button type="submit" class="content-save-button"
                         [attr.disabled]="(!form.valid || submitButton === 'Saving...' || !isDirty) ? true : null">
                         {{ submitButton }}
                     </button>

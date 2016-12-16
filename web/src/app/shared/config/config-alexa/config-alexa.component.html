@@ -15,16 +15,16 @@
             <section class="flex-container">
                 <div class="flex-item full-width">
                     <label>Alexa User ID</label>
-                    <input type="text" name="alexa" 
-                        [(ngModel)]="iDavis.values.user.alexa_ids" 
-                        (keyup)="validate()" 
+                    <input type="text" name="alexa"
+                        [(ngModel)]="iDavis.values.user.alexa_ids"
+                        (keyup)="validate()"
                         [required]="(submitButton === 'Save') ? '' : null">
                 </div>
             </section>
             <section class="flex-container">
                 <div class="flex-item next">
-                    <a href="https://github.com/Dynatrace/davis-server/blob/master/docs/setup/alexa.md" target="_blank" class="docs-link">{{ iDavis.helpLinkText }}</a>
-                    <button type="submit" class="content-save-button" 
+                    <a href="https://github.com/Dynatrace/davis-server/wiki/Setup%20Alexa" target="_blank" class="docs-link">{{ iDavis.helpLinkText }}</a>
+                    <button type="submit" class="content-save-button"
                         [class.warning]="submitButton === 'Skip'"
                         [attr.disabled]="(!form.valid || submitButton === 'Saving...' || (!isDirty && !iDavis.isWizard)) ? true : null">
                         {{ submitButton }}

@@ -43,11 +43,11 @@
                 <div class="flex-item full-width">
                     <label>Client Secret</label>
                     <div class="input-button-wrapper" [class.input-button-wrapper-focus]="isPasswordFocused">
-                        <input *ngIf="isPasswordMasked" type="password" name="clientSecret" class="input-button-input" 
-                            [(ngModel)]="iDavis.values.slack.clientSecret" 
+                        <input *ngIf="isPasswordMasked" type="password" name="clientSecret" class="input-button-input"
+                            [(ngModel)]="iDavis.values.slack.clientSecret"
                             (focus)="isPasswordFocused = true" (blur)="isPasswordFocused = false" (keyup)="validate()" [required]="(!iDavis.isWizard) ? '' : null">
-                        <input *ngIf="!isPasswordMasked" type="text" name="clientSecretText" class="input-button-input" 
-                            [(ngModel)]="iDavis.values.slack.clientSecret" 
+                        <input *ngIf="!isPasswordMasked" type="text" name="clientSecretText" class="input-button-input"
+                            [(ngModel)]="iDavis.values.slack.clientSecret"
                             (focus)="isPasswordFocused = true" (blur)="isPasswordFocused = false" (keyup)="validate()" [required]="(!iDavis.isWizard) ? '' : null">
                         <div class="input-button-button" (click)="isPasswordMasked = !isPasswordMasked">
                             <img class="input-button-img" [class.input-button-img-password-masked]="isPasswordMasked" src="/assets/img/eye.svg">
@@ -59,8 +59,8 @@
                 <div class="flex-item full-width">
                     <label>OAuth & Permissions - Redirect URL</label>
                     <div class="input-button-wrapper" [class.input-button-wrapper-focus]="isRedirectUriFocused">
-                        <input type="text" id="redirectUri" name="redirectUri" class="input-button-input" 
-                            [(ngModel)]="iDavis.values.slack.redirectUri" 
+                        <input type="text" id="redirectUri" name="redirectUri" class="input-button-input"
+                            [(ngModel)]="iDavis.values.slack.redirectUri"
                             (focus)="isRedirectUriFocused = true" (blur)="isRedirectUriFocused = false" (click)="iDavis.clickElem('redirectUriBtn')" readonly>
                         <div id="redirectUriBtn" class="input-button-button clipboard" data-clipboard-target="#redirectUri">
                             <img class="input-button-img" [class.input-button-img-password-masked]="!isRedirectUriFocused" src="/assets/img/cut.svg">
@@ -72,7 +72,7 @@
                 <div class="flex-item full-width">
                     <label>Interactive Messages - Request URL</label>
                     <div class="input-button-wrapper" [class.input-button-wrapper-focus]="isRequestUriFocused">
-                        <input type="text" id="requestUri" name="requestUri" class="input-button-input" 
+                        <input type="text" id="requestUri" name="requestUri" class="input-button-input"
                             [(ngModel)]="requestUri"
                             (focus)="isRequestUriFocused = true" (blur)="isRequestUriFocused = false" (click)="iDavis.clickElem('requestUriBtn')" readonly>
                         <div id="requestUriBtn" class="input-button-button clipboard" data-clipboard-target="#requestUri">
@@ -91,9 +91,9 @@
             </section>
             <section class="flex-container" *ngIf="!iDavis.config['slack'].success">
                 <div class="flex-item next">
-                    <a href="https://github.com/Dynatrace/davis-server/blob/master/docs/setup/slack.md" target="_blank" class="docs-link">{{ iDavis.helpLinkText }}</a>
-                    <button type="submit" class="content-save-button" 
-                        [class.warning]="submitButton === 'Skip and Finish' || submitButton === 'Skip'" 
+                    <a href="https://github.com/Dynatrace/davis-server/wiki/Setup%20Slack" target="_blank" class="docs-link">{{ iDavis.helpLinkText }}</a>
+                    <button type="submit" class="content-save-button"
+                        [class.warning]="submitButton === 'Skip and Finish' || submitButton === 'Skip'"
                         [attr.disabled]="(!form.valid || submitButton === 'Saving...' || (!isDirty && !iDavis.isWizard)) ? true : null">
                         {{ submitButton }}
                     </button>
