@@ -24,7 +24,7 @@ const request = require('request');
 
 const options = minimist(process.argv.slice(2), {
   string: 'semver',
-  default: { semver: 'patch' },
+  default: { semver: 'minor' },
 });
 
 gulp.task('github-release');
@@ -51,11 +51,9 @@ gulp.task('update', () => {
   });
 });
 
-gulp.task('pack', (done) => {
-  const pack = spawn('npm', ['pack', '.']);
-  pack.on('close', () => {
-    done();
-  });
+gulp.task('pack', ['compile:prod'], (done) => {
+  spawn('npm', ['pack', '.'])
+    .on('close', done);
 });
 
 gulp.task('make-release', ['compile:prod', 'pack'], () => {
@@ -139,18 +137,38 @@ gulp.task('watch', ['compile:dev'], function() {
     gulp.watch('web/src/**/*.html', ['compile:dev']);
 });
 
-gulp.task('commit', () => {
+gulp.task('commit', (done) => {
   const version = JSON.parse(fs.readFileSync('package.json')).version;
-  gulp.src('.')
-    .pipe(git.add())
-    .pipe(git.commit(`[Prerelease] bump ${version}`))
+  spawn('git', ['add', '.'])
+    .on('close', () => {
+      spawn('git', ['commit', '-m', `[Prerelease] bump ${version}`])
+        .on('close', done);
+    });
 });
 
-//gulp.task('checkout-master');
-//gulp.task('merge-dev');
+gulp.task('checkout-master', (done) => {
+  spawn('git', ['checkout', 'master'])
+    .on('close', done);
+});
+
+gulp.task('checkout-dev', (done) => {
+  spawn('git', ['checkout', 'dev'])
+    .on('close', done);
+});
+
+gulp.task('merge-master', (done) => {
+  spawn('git', ['merge', 'master'])
+    .on('close', done);
+});
+
+gulp.task('merge-dev', (done) => {
+  spawn('git', ['merge', 'dev'])
+    .on('close', done);
+});
+
 //gulp.task('push');
 //gulp.task('github-release');
 
-gulp.task('release', (cb) => {
-  runSequence('bump-version', 'changelog', 'make-release', cb);
+gulp.task('release-minor', (cb) => {
+  runSequence('checkout-master', 'merge-dev', 'bump-version', 'changelog', 'commit',  'make-release', 'checkout-dev', 'merge-master', cb);
 });
