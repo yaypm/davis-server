@@ -163,18 +163,18 @@ gulp.task('checkout-dev', (done) => {
 });
 
 gulp.task('merge-master', (done) => {
-  spawn('git', ['merge', 'master'])
+  spawn('git', ['merge', '--no-ff', 'master'])
     .on('close', done);
 });
 
 gulp.task('merge-dev', (done) => {
-  spawn('git', ['merge', 'dev'])
+  spawn('git', ['merge', '--no-ff', 'dev'])
     .on('close', done);
 });
 
 gulp.task('merge-branch', (done) => {
   if (!options.branch) cb('must specify a branch');
-  spawn('git', ['merge', options.branch])
+  spawn('git', ['merge', '--no-ff', options.branch])
     .on('close', done);
 });
 //gulp.task('push');
