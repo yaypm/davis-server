@@ -68,8 +68,9 @@ gulp.task('make-release', ['compile:prod', 'pack'], () => {
     .pipe(gulp.dest('./'));
 });
 
-gulp.task('github-release', ['make-release'], () =>
-  gulp.src([
+gulp.task('github-release', ['make-release'], () => {
+  const version = JSON.parse(fs.readFileSync('package.json')).version;
+  return gulp.src([
     `dynatrace-davis-dist-${version}.tar`,
     `dynatrace-davis-${version}.tgz`,
     ])
@@ -77,8 +78,8 @@ gulp.task('github-release', ['make-release'], () =>
       token: process.env.GITHUB_TOKEN,
       prerelease: true,
       manifest: JSON.parse(fs.readFileSync('package.json'))
-    }))
-);
+    }));
+});
 
 
 
@@ -171,6 +172,11 @@ gulp.task('checkout-master', (done) => {
 
 gulp.task('checkout-dev', (done) => {
   spawn('git', ['checkout', 'dev'])
+    .on('close', done);
+});
+
+gulp.task('checkout-branch', (done) => {
+  spawn('git', ['checkout', options.branch])
     .on('close', done);
 });
 
