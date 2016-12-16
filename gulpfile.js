@@ -16,7 +16,7 @@ const minimist = require('minimist');
 const tar = require('gulp-tar');
 const untar = require('gulp-untar');
 const git = require('gulp-git');
-//const github = require('gulp-github-release');
+const github = require('gulp-github-release');
 const spawn = require('child_process').spawn;
 const source = require('vinyl-source-stream');
 const request = require('request');
@@ -26,8 +26,6 @@ const options = minimist(process.argv.slice(2), {
   string: 'branch',
   default: { branch: '' },
 });
-
-gulp.task('github-release');
 
 gulp.task('changelog', () => {
   return gulp.src('CHANGELOG.md', {
@@ -69,6 +67,20 @@ gulp.task('make-release', ['compile:prod', 'pack'], () => {
     .pipe(tar(dist))
     .pipe(gulp.dest('./'));
 });
+
+gulp.task('github-release', ['make-release'], () =>
+  gulp.src([
+    `dynatrace-davis-dist-${version}.tar`,
+    `dynatrace-davis-${version}.tgz`,
+    ])
+    .pipe(github({
+      token: process.env.GITHUB_TOKEN,
+      prerelease: true,
+      manifest: JSON.parse(fs.readFileSync('package.json'))
+    }))
+);
+
+
 
 gulp.task('clean', function (cb) {
     rimraf('./web/dist', cb);
@@ -177,14 +189,48 @@ gulp.task('merge-branch', (done) => {
   spawn('git', ['merge', '--no-ff', options.branch])
     .on('close', done);
 });
-//gulp.task('push');
-//gulp.task('github-release');
+
+gulp.task('pull', (done) => {
+  spawn('git', ['pull'])
+    .on('close', done);
+});
+
+gulp.task('push', (done) => {
+  spawn('git', ['push'])
+    .on('close', done);
+});
 
 gulp.task('release-minor', (cb) => {
-  runSequence('checkout-master', 'merge-dev', 'bump-version', 'changelog', 'commit',  'make-release', 'checkout-dev', 'merge-master', cb);
+  runSequence(
+    'checkout-master',
+    'pull',
+    'merge-dev',
+    'bump-version',
+    'changelog',
+    'commit',
+    'push',
+    'github-release',
+    'checkout-dev',
+    'merge-master',
+    'push',
+    cb);
 });
 
 gulp.task('release-patch', (cb) => {
   if (!options.branch) cb('must specify a branch');
-  runSequence('checkout-master', 'merge-branch', 'patch-version', 'changelog', 'commit',  'make-release', 'checkout-dev', 'merge-branch', cb);
+  runSequence(
+    'checkout-master',
+    'pull',
+    'checkout-branch',
+    'patch-version',
+    'changelog',
+    'commit',
+    'checkout-master',
+    'merge-branch',
+    'push',
+    'github-release',
+    'checkout-dev',
+    'merge-branch',
+    'push',
+    cb);
 });
