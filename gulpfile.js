@@ -23,8 +23,8 @@ const request = require('request');
 
 
 const options = minimist(process.argv.slice(2), {
-  string: 'semver',
-  default: { semver: 'minor' },
+  string: 'branch',
+  default: { branch: '' },
 });
 
 gulp.task('github-release');
@@ -41,7 +41,13 @@ gulp.task('changelog', () => {
 
 gulp.task('bump-version', () => {
   return gulp.src(['package.json'])
-    .pipe(bump({ type: options.semver }))
+    .pipe(bump({ type: 'minor' }))
+    .pipe(gulp.dest('./'));
+});
+
+gulp.task('patch-version', () => {
+  return gulp.src(['package.json'])
+    .pipe(bump({ type: 'patch' }))
     .pipe(gulp.dest('./'));
 });
 
@@ -166,9 +172,19 @@ gulp.task('merge-dev', (done) => {
     .on('close', done);
 });
 
+gulp.task('merge-branch', (done) => {
+  if (!options.branch) cb('must specify a branch');
+  spawn('git', ['merge', options.branch])
+    .on('close', done);
+});
 //gulp.task('push');
 //gulp.task('github-release');
 
 gulp.task('release-minor', (cb) => {
   runSequence('checkout-master', 'merge-dev', 'bump-version', 'changelog', 'commit',  'make-release', 'checkout-dev', 'merge-master', cb);
+});
+
+gulp.task('release-patch', (cb) => {
+  if (!options.branch) cb('must specify a branch');
+  runSequence('checkout-master', 'merge-branch', 'patch-version', 'changelog', 'commit',  'make-release', 'checkout-dev', 'merge-branch', cb);
 });
