@@ -433,4 +433,15 @@ describe('Express', () => {
         res.body.response.visual.text.includes('The greatest load').should.eql(true);
       });
   });
+
+  it('Should get timezones', () => chai.request(app)
+    .get('/api/v1/system/users/timezones')
+    .set('X-Access-Token', token)
+    .then(res => {
+      res.body.timezones.should.include("America/Detroit");
+      res.body.timezones.should.include("Etc/UTC");
+      res.body.timezones.should.include("Europe/Vienna");
+      res.body.timezones.should.include("America/New_York");
+    })
+  );
 });
