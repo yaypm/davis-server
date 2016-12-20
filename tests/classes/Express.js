@@ -279,9 +279,7 @@ describe('Express', () => {
       .send({ phrase: 'What happened yesterday' })
       .then(res => {
         res.body.success.should.eql(true);
-        const contains = res.body.response.visual.text.includes('problem')
-          || res.body.response.visual.text.includes('issue');
-        contains.should.eql(true);
+        res.body.intents.should.eql(['problem']);
       });
   });
 
@@ -292,8 +290,7 @@ describe('Express', () => {
       .send({ phrase: 'the first one' })
       .then(res => {
         res.body.success.should.eql(true);
-        const contains = res.body.response.visual.text.includes('This problem');
-        contains.should.eql(true);
+        res.body.intents.should.eql(['routing', 'problemDetails']);
       });
   });
 
@@ -304,8 +301,7 @@ describe('Express', () => {
       .send({ phrase: 'help' })
       .then(res => {
         res.body.success.should.eql(true);
-        const contains = res.body.response.visual.text.includes('Sounds like you could use a little help');
-        contains.should.eql(true);
+        res.body.intents.should.eql(['help']);
       });
   });
 
@@ -316,8 +312,7 @@ describe('Express', () => {
       .send({ phrase: 'which version' })
       .then(res => {
         res.body.success.should.eql(true);
-        const contains = res.body.response.visual.text.includes("I'm Davis version");
-        contains.should.eql(true);
+        res.body.intents.should.eql(['davisVersion']);
       });
   });
 
@@ -328,6 +323,7 @@ describe('Express', () => {
       .send({ phrase: 'Debug routing intent' })
       .then(res => {
         res.body.success.should.eql(true);
+        res.body.intents.should.eql(['startRoutingDebug']);
       })
       .then(() => {
         const routes = [];
@@ -430,8 +426,20 @@ describe('Express', () => {
       .send({ phrase: 'user activity' })
       .then(res => {
         res.body.success.should.eql(true);
+        res.body.intents.should.eql(['userActivity']);
         res.body.response.visual.text.includes('In the last 24 hours').should.eql(true);
         res.body.response.visual.text.includes('The greatest load').should.eql(true);
+      });
+  });
+
+  it('Should route to lastProblem', () => {
+    return chai.request(app)
+      .post('/api/v1/web')
+      .set('X-Access-Token', token)
+      .send({ phrase: 'what was my most recent issue' })
+      .then(res => {
+        res.body.success.should.eql(true);
+        res.body.intents.should.eql(['lastProblem', 'problemDetails']);
       });
   });
 
