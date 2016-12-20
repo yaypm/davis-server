@@ -15,12 +15,12 @@
     "predev": "gulp compile:dev",
     "dev": "node ./bin/davis-server",
     "start": "node ./bin/davis-server",
+    "migrate": "migrate",
     "test": "istanbul cover node_modules/mocha/bin/_mocha tests/all -- -R spec --recursive --timeout 10000",
     "debug-test": "mocha tests/all --debug-brk",
     "lint": "eslint lib && echo",
     "jsdoc": "jsdoc -r lib",
-    "heroku-postbuild": "gulp --gulpfile gulpfile.prod.js get-dist",
-    "prestart": "migrate -d mongodb://localhost/davis up --es6"
+    "heroku-postbuild": "gulp --gulpfile gulpfile.prod.js get-dist"
   },
   "author": "",
   "devDependencies": {
