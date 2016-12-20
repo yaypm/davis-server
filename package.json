@@ -19,7 +19,8 @@
     "debug-test": "mocha tests/all --debug-brk",
     "lint": "eslint lib && echo",
     "jsdoc": "jsdoc -r lib",
-    "heroku-postbuild": "gulp --gulpfile gulpfile.prod.js get-dist"
+    "heroku-postbuild": "gulp --gulpfile gulpfile.prod.js get-dist",
+    "prestart": "migrate -d mongodb://localhost/davis up --es6"
   },
   "author": "",
   "devDependencies": {
@@ -110,6 +111,7 @@
     "gulp-untar": "0.0.5",
     "jsonwebtoken": "^7.2.1",
     "lodash": "^4.17.2",
+    "migrate-mongoose": "^3.2.1",
     "moment-round": "^1.0.1",
     "moment-timezone": "^0.5.10",
     "mongoose": "^4.7.2",
