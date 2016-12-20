@@ -14,12 +14,8 @@ const bump = require('gulp-bump');
 const conventionalChangelog = require('gulp-conventional-changelog');
 const minimist = require('minimist');
 const tar = require('gulp-tar');
-const untar = require('gulp-untar');
-const git = require('gulp-git');
 const github = require('gulp-github-release');
 const spawn = require('child_process').spawn;
-const source = require('vinyl-source-stream');
-const request = require('request');
 
 
 const options = minimist(process.argv.slice(2), {
@@ -27,33 +23,33 @@ const options = minimist(process.argv.slice(2), {
   default: { branch: '' },
 });
 
-gulp.task('changelog', () => {
-  return gulp.src('CHANGELOG.md', {
-    buffer: false
+gulp.task('changelog', () =>
+  gulp.src('CHANGELOG.md', {
+    buffer: false,
   })
     .pipe(conventionalChangelog({
       preset: 'angular',
     }))
-    .pipe(gulp.dest('./'));
-});
+    .pipe(gulp.dest('./'))
+);
 
-gulp.task('bump-version', () => {
-  return gulp.src(['package.json'])
+gulp.task('bump-version', () =>
+  gulp.src(['package.json'])
     .pipe(bump({ type: 'minor' }))
-    .pipe(gulp.dest('./'));
-});
+    .pipe(gulp.dest('./'))
+);
 
-gulp.task('patch-version', () => {
-  return gulp.src(['package.json'])
+gulp.task('patch-version', () =>
+  gulp.src(['package.json'])
     .pipe(bump({ type: 'patch' }))
-    .pipe(gulp.dest('./'));
-});
+    .pipe(gulp.dest('./'))
+);
 
-gulp.task('update', () => {
-  return gulp.watch('./package.json').on('change', (file) => {
+gulp.task('update', () =>
+  gulp.watch('./package.json').on('change', (file) => {
     update.write(file);
-  });
-});
+  })
+);
 
 gulp.task('pack', ['compile:prod'], (done) => {
   spawn('npm', ['pack', '.'])
@@ -73,18 +69,17 @@ gulp.task('github-release', ['make-release'], () => {
   return gulp.src([
     `dynatrace-davis-dist-${version}.tar`,
     `dynatrace-davis-${version}.tgz`,
-    ])
+  ])
     .pipe(github({
       token: process.env.GITHUB_TOKEN,
       prerelease: true,
-      manifest: JSON.parse(fs.readFileSync('package.json'))
+      manifest: JSON.parse(fs.readFileSync('package.json')),
     }));
 });
 
 
-
-gulp.task('clean', function (cb) {
-    rimraf('./web/dist', cb);
+gulp.task('clean', (cb) => {
+  rimraf('./web/dist', cb);
 });
 
 gulp.task('compile:dev', ['clean'], () => {
@@ -94,7 +89,7 @@ gulp.task('compile:dev', ['clean'], () => {
   const compiledTs = gulp.src([
     'web/src/**/*.ts',
     '!web/src/main.prod.ts',
-    ])
+  ])
     .pipe(sourcemaps.init())
       .pipe(tsProject())
     .pipe(sourcemaps.write('/'))
@@ -103,14 +98,14 @@ gulp.task('compile:dev', ['clean'], () => {
   const copy = gulp.src([
     'web/src/systemjs.config.js',
     'web/src/**/*.html',
-    ])
+  ])
     .pipe(gulp.dest(destinationFolder));
 
 
   const assets = gulp.src([
     'web/src/assets/**/*',
-    ])
-    .pipe(gulp.dest(destinationFolder + '/assets'));
+  ])
+    .pipe(gulp.dest(`${destinationFolder}/assets`));
 
   return merge(compiledTs, copy, assets);
 });
@@ -122,7 +117,7 @@ gulp.task('compile:prod', ['clean'], () => {
   const compiledTs = gulp.src([
     'web/src/**/*.ts',
     '!web/src/main.prod.ts',
-    ])
+  ])
     .pipe(tsProject())
     .pipe(uglify())
     .pipe(gulp.dest(destinationFolder));
@@ -130,14 +125,14 @@ gulp.task('compile:prod', ['clean'], () => {
   const copy = gulp.src([
     'web/src/systemjs.config.js',
     'web/src/**/*.html',
-    ])
+  ])
     .pipe(gulp.dest(destinationFolder));
 
 
   const assets = gulp.src([
     'web/src/assets/**/*',
-    ])
-    .pipe(gulp.dest(destinationFolder + '/assets'));
+  ])
+    .pipe(gulp.dest(`${destinationFolder}/assets`));
 
   return merge(compiledTs, copy, assets);
 });
@@ -151,9 +146,9 @@ gulp.task('test', () =>
     }))
 );
 
-gulp.task('watch', ['compile:dev'], function() {
-    gulp.watch('web/src/**/*.ts', ['compile:dev']);
-    gulp.watch('web/src/**/*.html', ['compile:dev']);
+gulp.task('watch', ['compile:dev'], () => {
+  gulp.watch('web/src/**/*.ts', ['compile:dev']);
+  gulp.watch('web/src/**/*.html', ['compile:dev']);
 });
 
 gulp.task('commit', (done) => {
@@ -190,10 +185,10 @@ gulp.task('merge-dev', (done) => {
     .on('close', done);
 });
 
-gulp.task('merge-branch', (done) => {
+gulp.task('merge-branch', (cb) => {
   if (!options.branch) cb('must specify a branch');
   spawn('git', ['merge', '--no-ff', options.branch])
-    .on('close', done);
+    .on('close', cb);
 });
 
 gulp.task('pull', (done) => {
