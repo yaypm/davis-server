@@ -8,6 +8,7 @@ const Davis = require('../../lib/Davis');
 const mongoose = require('mongoose');
 const BbPromise = require('bluebird');
 const nock = require('nock');
+const applicationEntities = require('../mock_data/dynatrace/applicationEntities.json');
 
 const davis = new Davis();
 const server = new Server(davis);
@@ -37,7 +38,7 @@ describe('Express', () => {
   const admin = true;
   let token;
 
-  after(() => nock.restore());
+  afterEach(() => nock.restore());
 
   before(() => {
     let m;
@@ -444,4 +445,20 @@ describe('Express', () => {
       res.body.timezones.should.include("America/New_York");
     })
   );
+
+  it('Should get all aliases', () => {
+    nock(davis.config.getDynatraceUrl())
+      .get('/api/v1/entity/applications')
+      .query(true)
+      .reply(200, applicationEntities);
+
+    return davis.pluginManager.loadEntities()
+      .then(() =>
+        chai.request(app)
+          .get('/api/v1/system/aliases')
+          .set('X-Access-Token', token))
+      .then(res => {
+        res.body.applications.length.should.eql(8);
+      });
+  });
 });
