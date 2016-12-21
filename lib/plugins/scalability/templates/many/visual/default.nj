@@ -1,5 +1,5 @@
 {
-    "text": "{{ timeRange | friendlyTimeRange(user) | capitalizeFirstCharacter}}, there were a number of infrastructure related problems detected. I've gone ahead and ranked them based on impact for you.",
+    "text": "{{ timeRange | friendlyTimeRange(user) | capitalizeFirstCharacter}}, there were {{ totalProblemCount }} infrastructure related problems detected. I've gone ahead and ranked them based on impact for you.",
     "attachments": [
         {% for i in range(0, 3) %}
            {% include "lib/plugins/shared-templates/problem-summary/visual/default.nj" %}{%- if not loop.last %},{% endif %}
