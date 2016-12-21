@@ -1,1 +1,1 @@
-{{ timeRange | friendlyTimeRange(user) | capitalizeFirstCharacter }}, there were {{ problems.length }} infrastructure related problems detected. I've gone ahead and ranked them based on impact for you. {% include "lib/plugins/shared-templates/top-three-problems.nj" %}
+{{ timeRange | friendlyTimeRange(user) | capitalizeFirstCharacter }}, there were {{ totalProblemCount }} infrastructure related problems detected. I've gone ahead and ranked them based on impact for you. {% include "lib/plugins/shared-templates/top-three-problems.nj" %}
