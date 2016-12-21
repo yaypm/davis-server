@@ -7,8 +7,8 @@ const Server = require('../../lib/server/Server');
 const Davis = require('../../lib/Davis');
 const mongoose = require('mongoose');
 const BbPromise = require('bluebird');
-const nock = require('nock');
 const applicationEntities = require('../mock_data/dynatrace/applicationEntities.json');
+const AliasModel = require('../../lib/models/Aliases');
 
 const davis = new Davis();
 const server = new Server(davis);
@@ -38,7 +38,6 @@ describe('Express', () => {
   const admin = true;
   let token;
 
-  afterEach(() => nock.restore());
 
   before(() => {
     let m;
@@ -455,18 +454,23 @@ describe('Express', () => {
   );
 
   it('Should get all aliases', () => {
-    nock(davis.config.getDynatraceUrl())
-      .get('/api/v1/entity/applications')
-      .query(true)
-      .reply(200, applicationEntities);
-
-    return davis.pluginManager.loadEntities()
+    return new AliasModel({
+      name: "My Web App",
+      category: "applications",
+      entityId: "QWERTY",
+      display: {
+        audible: "My web app",
+        visual: "My Web App",
+      },
+      aliases: ["appweb", "davisweb"],
+    }).save()
       .then(() =>
         chai.request(app)
           .get('/api/v1/system/aliases')
-          .set('X-Access-Token', token))
-      .then(res => {
-        res.body.applications.length.should.eql(8);
-      });
+          .set('X-Access-Token', token)
+          .then(res => {
+            res.body.applications.length.should.eql(1);
+            res.body.applications[0].name.should.eql("My Web App");
+          }));
   });
 });
