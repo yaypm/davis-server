@@ -17,15 +17,15 @@
                     "type": "button"
                 },
                 {
-                    "name":"problemDetails",
+                    "name":"2",
                     "text": "Second",
                     "value": "2",
                     "type": "button"
                 },
                 {
-                    "name":"problemDetails",
+                    "name":"3",
                     "text": "Third",
-                    "value": "_problemDetails:{{ problems[2].id }}",
+                    "value": "3",
                     "type": "button"
                 },
                 {
