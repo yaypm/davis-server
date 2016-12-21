@@ -94,6 +94,6 @@ describe('Nunjucks', () => {
     const compact = nunjucks.renderString('{{ timeRange | friendlyTimeRange(user, true, "visual") }}', context);
 
     out.should.eql('between <!date^1451624400^{date_short_pretty} {time}|01/01/2016> and <!date^1452056400^{date_short_pretty} {time}|01/06/2016>');
-    compact.should.eql('<!date^1451624400^{date_num} {time}|01/01/2016> - <!date^1452056400^{date_num} {time}|01/06/2016>');
+    compact.should.eql('<!date^1451624400^{date_short_pretty} {time}|01/01/2016> -\\n<!date^1452056400^{date_short_pretty} {time}|01/06/2016>');
   });
 });
