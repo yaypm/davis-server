@@ -25,5 +25,11 @@ import { DavisService } from "./shared/davis.service";
 })
 
 export class AppComponent { 
+  isUserMenuVisible: boolean = false;
+
   constructor(public iDavis: DavisService, public router: Router) {}
+  
+  toggleUserMenu() {
+    this.isUserMenuVisible = !this.isUserMenuVisible;
+  }
 }

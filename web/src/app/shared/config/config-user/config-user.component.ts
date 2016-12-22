@@ -95,10 +95,10 @@ export class ConfigUserComponent implements OnInit {
                                 response => {
                                   this.iDavis.token = response.token;
                                   this.iConfig.SelectView('alexa');
-                                  this.submitButton = this.submitButtonDefault;
                                   sessionStorage.setItem('email', this.iDavis.values.user.email);
                                   sessionStorage.setItem('token', response.token);
                                   sessionStorage.setItem('isAdmin', response.admin);
+                                  this.submitButton = this.submitButtonDefault;
                                 },
                                 error => {
                                   this.iDavis.config['user'].success = false;

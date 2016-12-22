@@ -7,7 +7,8 @@ const Server = require('../../lib/server/Server');
 const Davis = require('../../lib/Davis');
 const mongoose = require('mongoose');
 const BbPromise = require('bluebird');
-const nock = require('nock');
+const applicationEntities = require('../mock_data/dynatrace/applicationEntities.json');
+const AliasModel = require('../../lib/models/Aliases');
 
 const davis = new Davis();
 const server = new Server(davis);
@@ -37,7 +38,6 @@ describe('Express', () => {
   const admin = true;
   let token;
 
-  after(() => nock.restore());
 
   before(() => {
     let m;
@@ -278,9 +278,7 @@ describe('Express', () => {
       .send({ phrase: 'What happened yesterday' })
       .then(res => {
         res.body.success.should.eql(true);
-        const contains = res.body.response.includes('problem')
-          || res.body.response.includes('issue');
-        contains.should.eql(true);
+        res.body.intents.should.eql(['problem']);
       });
   });
 
@@ -291,8 +289,7 @@ describe('Express', () => {
       .send({ phrase: 'the first one' })
       .then(res => {
         res.body.success.should.eql(true);
-        const contains = res.body.response.includes('This problem');
-        contains.should.eql(true);
+        res.body.intents.should.eql(['routing', 'problemDetails']);
       });
   });
 
@@ -303,8 +300,7 @@ describe('Express', () => {
       .send({ phrase: 'help' })
       .then(res => {
         res.body.success.should.eql(true);
-        const contains = res.body.response.includes('Sounds like you could use a little help');
-        contains.should.eql(true);
+        res.body.intents.should.eql(['help']);
       });
   });
 
@@ -315,8 +311,7 @@ describe('Express', () => {
       .send({ phrase: 'which version' })
       .then(res => {
         res.body.success.should.eql(true);
-        const contains = res.body.response.includes("I'm Davis version");
-        contains.should.eql(true);
+        res.body.intents.should.eql(['davisVersion']);
       });
   });
 
@@ -327,6 +322,7 @@ describe('Express', () => {
       .send({ phrase: 'Debug routing intent' })
       .then(res => {
         res.body.success.should.eql(true);
+        res.body.intents.should.eql(['startRoutingDebug']);
       })
       .then(() => {
         const routes = [];
@@ -338,7 +334,7 @@ describe('Express', () => {
               .send({ phrase: 'the first one' })
                 .then(res => {
                   res.body.success.should.eql(true);
-                  res.body.response.should.include('0');
+                  res.body.response.visual.text.should.include('0');
                 });
           }));
         routes.push(BbPromise.resolve()
@@ -349,7 +345,7 @@ describe('Express', () => {
               .send({ phrase: 'the second one' })
                 .then(res => {
                   res.body.success.should.eql(true);
-                  res.body.response.should.include('1');
+                  res.body.response.visual.text.should.include('1');
                 });
           }));
         routes.push(BbPromise.resolve()
@@ -360,7 +356,7 @@ describe('Express', () => {
               .send({ phrase: 'the third one' })
                 .then(res => {
                   res.body.success.should.eql(true);
-                  res.body.response.should.include('2');
+                  res.body.response.visual.text.should.include('2');
                 });
           }));
         routes.push(BbPromise.resolve()
@@ -371,7 +367,7 @@ describe('Express', () => {
               .send({ phrase: 'yes' })
                 .then(res => {
                   res.body.success.should.eql(true);
-                  res.body.response.should.include('true');
+                  res.body.response.visual.text.should.include('true');
                 });
           }));
         routes.push(BbPromise.resolve()
@@ -382,7 +378,7 @@ describe('Express', () => {
               .send({ phrase: 'no' })
                 .then(res => {
                   res.body.success.should.eql(true);
-                  res.body.response.should.include('false');
+                  res.body.response.visual.text.should.include('false');
                 });
           }));
         routes.push(BbPromise.resolve()
@@ -393,7 +389,7 @@ describe('Express', () => {
               .send({ phrase: 'the last one' })
                 .then(res => {
                   res.body.success.should.eql(true);
-                  res.body.response.should.include('last');
+                  res.body.response.visual.text.should.include('last');
                 });
           }));
         routes.push(BbPromise.resolve()
@@ -404,7 +400,7 @@ describe('Express', () => {
               .send({ phrase: 'the middle one' })
                 .then(res => {
                   res.body.success.should.eql(true);
-                  res.body.response.should.include('middle');
+                  res.body.response.visual.text.should.include('middle');
                 });
           }));
         routes.push(BbPromise.resolve()
@@ -415,7 +411,7 @@ describe('Express', () => {
               .send({ phrase: 'all of them' })
                 .then(res => {
                   res.body.success.should.eql(true);
-                  res.body.response.should.include('all');
+                  res.body.response.visual.text.should.include('all');
                 });
           }));
         return BbPromise.all(routes);
@@ -429,8 +425,52 @@ describe('Express', () => {
       .send({ phrase: 'user activity' })
       .then(res => {
         res.body.success.should.eql(true);
-        res.body.response.includes('In the last 24 hours').should.eql(true);
-        res.body.response.includes('The greatest load').should.eql(true);
+        res.body.intents.should.eql(['userActivity']);
+        res.body.response.visual.text.includes('In the last 24 hours').should.eql(true);
+        res.body.response.visual.text.includes('The greatest load').should.eql(true);
       });
+  });
+
+  it('Should route to lastProblem', () => {
+    return chai.request(app)
+      .post('/api/v1/web')
+      .set('X-Access-Token', token)
+      .send({ phrase: 'what was my most recent issue' })
+      .then(res => {
+        res.body.success.should.eql(true);
+        res.body.intents.should.eql(['lastProblem', 'problemDetails']);
+      });
+  });
+
+  it('Should get timezones', () => chai.request(app)
+    .get('/api/v1/system/users/timezones')
+    .set('X-Access-Token', token)
+    .then(res => {
+      res.body.timezones.should.include("America/Detroit");
+      res.body.timezones.should.include("Etc/UTC");
+      res.body.timezones.should.include("Europe/Vienna");
+      res.body.timezones.should.include("America/New_York");
+    })
+  );
+
+  it('Should get all aliases', () => {
+    return new AliasModel({
+      name: "My Web App",
+      category: "applications",
+      entityId: "QWERTY",
+      display: {
+        audible: "My web app",
+        visual: "My Web App",
+      },
+      aliases: ["appweb", "davisweb"],
+    }).save()
+      .then(() =>
+        chai.request(app)
+          .get('/api/v1/system/aliases')
+          .set('X-Access-Token', token)
+          .then(res => {
+            res.body.applications.length.should.eql(1);
+            res.body.applications[0].name.should.eql("My Web App");
+          }));
   });
 });

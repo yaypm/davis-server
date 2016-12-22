@@ -19,9 +19,10 @@ export class ConfigSlackComponent implements OnInit {
     isPasswordFocused: boolean = false;
     isPasswordMasked: boolean = true;
     isDirty: boolean = false;
+    isSecretMasked: boolean = true;
     
     constructor(public iDavis: DavisService, public router: Router) {
-        this.myURL = 'https://' + window.location.host;
+        this.myURL = `${window.location.protocol}//${window.location.host}`;
         this.requestUri = `${this.myURL}/slack/receive`;
         this.iDavis.values.slack.redirectUri = `${this.myURL}/oauth`;
     }
@@ -35,6 +36,10 @@ export class ConfigSlackComponent implements OnInit {
       this.isDirty = !_.isEqual(this.iDavis.values.slack, this.iDavis.values.original.slack);
     }
     
+    resetSubmitButton() {
+      this.submitButton = (this.iDavis.isWizard) ? 'Skip and Finish' : 'Create Davis Slack Bot';
+    }
+    
     doSubmit() {
       this.submitted = true;
       if (!this.iDavis.config['slack'].success && this.iDavis.values.slack.clientId && this.iDavis.values.slack.clientSecret) {
@@ -42,33 +47,41 @@ export class ConfigSlackComponent implements OnInit {
         this.iDavis.connectSlack()
           .then(result => {
             if (result.success) {
-              this.iDavis.startSlack()
-                .then(
-                  result => {
-                    if (result.success) {
-                      sessionStorage.setItem('wizard-finished', 'true');
-                      this.iDavis.config['slack'].success = true;
-                    } else {
-                      this.iDavis.config['slack'].success = false;
-                      this.iDavis.config['slack'].error = result.message;
-                    }
-                  },
-                  error => {
-                      console.log(error);
-                      this.iDavis.config['slack'].success = false;
-                  });
+              return this.iDavis.startSlack();
             } else {
-              this.iDavis.config['slack'].success = false;
-              this.iDavis.config['slack'].error = result.message;
+              this.iDavis.generateError('slack', result.message);
+              this.resetSubmitButton();
             }
           },
           error => {
             console.log(error);
-            this.iDavis.config['slack'].success = false;
+            this.iDavis.generateError('slack', null);
+            this.resetSubmitButton();
+          })
+          .then(result => {
+            if (result.success) {
+              this.iDavis.config['slack'].success = true;
+              this.iDavis.windowLocation(`https://slack.com/oauth/authorize?scope=incoming-webhook,commands,bot&client_id=${this.iDavis.values.slack.clientId}`);
+            } else {
+              this.iDavis.generateError('slack', result.message);
+              this.resetSubmitButton();
+            }
+          },
+          error => {
+            console.log(error);
+            this.iDavis.generateError('slack', null);
+            this.resetSubmitButton();
+          })
+          .catch(err => {
+            if (err.includes('invalid token')) {
+              this.iDavis.logOut();
+            }
           });
       } else if (this.iDavis.isWizard) {
-        sessionStorage.setItem('wizard-finished', 'true');
-        this.iDavis.windowLocation(this.myURL);
+        this.iDavis.isWizard = false;
+        this.iDavis.isAdmin = true;
+        this.iDavis.isAuthenticated = true;
+        this.router.navigate(['/configuration']);
       }
     }
     

@@ -19,6 +19,36 @@ export class ConfigAlexaComponent implements OnInit {
     public iDavis: DavisService,
     public iConfig: ConfigService) { }
 
+  doSubmit() {
+    if (this.iDavis.values.user.alexa_ids) {
+      this.submitButton = 'Saving...';
+      this.iDavis.connectAlexa()
+        .then(result => {
+          if (result.success) {
+            this.iDavis.config['alexa'].success = true;
+            this.iConfig.SelectView('slack');
+          } else {
+            this.iDavis.generateError('alexa', result.message);
+            this.resetSubmitButton();
+          }
+        },
+        error => {
+          console.log(error);
+          this.iDavis.generateError('alexa', null);
+          this.resetSubmitButton();
+        })
+        .catch(err => {
+          if (err.includes('invalid token')) {
+            this.iDavis.logOut();
+          }
+        });
+    } else {
+      this.iConfig.SelectView('slack');
+    }
+
+    this.submitted = true;
+  }
+  
   validate() {
     if (this.iDavis.values.user.alexa_ids) {
       this.submitButton = 'Continue';
@@ -27,24 +57,9 @@ export class ConfigAlexaComponent implements OnInit {
     }
     this.isDirty = !_.isEqual(this.iDavis.values.user, this.iDavis.values.original.user);
   }
-
-  doSubmit() {
-    if (this.iDavis.values.user.alexa_ids) {
-      this.submitButton = 'Saving...';
-      this.iDavis.connectAlexa()
-        .then(result => {
-          this.iDavis.config['alexa'].success = true;
-          this.iConfig.SelectView('slack');
-        },
-        error => {
-          console.log(error);
-          this.iDavis.config['alexa'].success = false;
-        });
-    } else {
-      this.iConfig.SelectView('slack');
-    }
-
-    this.submitted = true;
+  
+  resetSubmitButton() {
+    this.submitButton = (this.iDavis.isWizard) ? 'Continue' : 'Save';
   }
   
   ngOnInit() {

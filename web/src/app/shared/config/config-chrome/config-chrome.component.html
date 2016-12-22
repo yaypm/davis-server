@@ -1,16 +1,18 @@
-<div class="page">
-    <div class="content">
-        <section class="flex-container">
-            <div class="flex-item full-width">
-                <button type="button" class="log-out config" style="margin-left: 50%; margin-top: 25px; transform: translateX(-50%)"
-                    (click)="iDavis.addToChrome()">
-                    Add to Chrome
-                </button>
-                <a href="https://github.com/Dynatrace/davis-server/wiki/Setup%20Chrome%20Extension"
-                    target="_blank" class="docs-link" style="margin-left: 50%; margin-top: 25px; transform: translateX(-50%)">
-                    {{ iDavis.helpLinkText }}
-                </a>
-            </div>
-        </section>
+<div class="layout is-flex has-islands">
+  <div class="island--full-width" style="margin: 0px 0px 16px 0px; padding: 0">
+    <div class="config-title">
+      Chrome Extension
     </div>
+  </div>
+  <div class="island--full-width" style="margin: 16px 0px 16px 0px; padding: 0">
+    <button type="button" class="btn btn--secondary" (click)="iDavis.addToChrome()">
+        Add to Chrome
+    </button>
+  </div>
+  <div class="island--full-width" style="margin: 16px 0px 16px 0px; padding: 0">
+    <a href="https://github.com/Dynatrace/davis-server/wiki/Setup%20Chrome%20Extension">
+      {{ iDavis.helpLinkText }}
+    </a>
+  </div>
 </div>
+   

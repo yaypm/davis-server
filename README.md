@@ -14,7 +14,6 @@ We've tried to make the process of setting up and configuring Davis as simple as
  - [Core Concepts](https://github.com/Dynatrace/davis-server/wiki/Core%20Concepts)
  - [Supported Phrases](https://github.com/Dynatrace/davis-server/wiki/Supported%20Phrases)
  - [Creating Custom Plugins](https://github.com/Dynatrace/davis-server/wiki/Creating%20Custom%20Plugins)
- - [Road Map](https://github.com/Dynatrace/davis-server/projects/2)
 
 ## Disclaimer
 This software is experimental and currently NOT SUPPORTED by Dynatrace.
