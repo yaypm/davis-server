@@ -5,6 +5,8 @@ import { Router }    from '@angular/router';
 import { DavisService } from '../../davis.service';
 import * as _ from "lodash";
 
+declare var Clipboard:any;
+
 @Component({
     moduleId: module.id,
     selector: 'config-slack',
