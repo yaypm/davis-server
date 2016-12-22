@@ -11,6 +11,7 @@
 import { Component } from '@angular/core';
 import { Router }    from '@angular/router';
 import { DavisService } from '../../shared/davis.service';
+import * as _ from "lodash";
 
 // ----------------------------------------------------------------------------
 // Class
@@ -57,11 +58,30 @@ export class AuthLoginComponent  {
           sessionStorage.setItem('email', form.value.email);
           sessionStorage.setItem('token', result.token);
           sessionStorage.setItem('isAdmin', result.admin);
-          this.router.navigate(['/configuration']);
+          return this.iDavis.getDavisUser();
         } else {
           this.submitButton = 'Sign in';
           this.loginError = result.message;
           this.password = '';
+        }
+      })
+      .then(result => {
+        if (result.success) {
+          this.iDavis.values.user = result.user;
+          if (!result.user.name) {
+            this.iDavis.values.user.name = {first:'',last:''};
+          } else {
+            if (!result.user.name.first) this.iDavis.values.user.name.first = '';
+            if (!result.user.name.last) this.iDavis.values.user.name.last = '';
+          }
+          this.iDavis.values.original.user = _.cloneDeep(this.iDavis.values.user);
+          this.router.navigate(['/configuration']);
+        } else {
+          this.iDavis.generateError('user', result.message);        }
+      })
+      .catch(err => {
+        if (err.includes('invalid token')) {
+          this.iDavis.logOut();
         }
       });
   }

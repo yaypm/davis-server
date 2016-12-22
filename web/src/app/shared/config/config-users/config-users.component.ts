@@ -50,31 +50,30 @@ export class ConfigUsersComponent implements OnInit {
     
     getUsers() {
       this.iDavis.getDavisUsers()
-        .then( 
-          response => {
-            this.iDavis.values.users = response.users;
-            _.remove(this.iDavis.values.users, (user: any) => {
-              return user.email === this.iDavis.values.user.email;
-            });
-            this.iDavis.values.users.forEach( (user: any, index: number) => {
-              if (!user.name) {
-                this.iDavis.values.users[index].name = {first:'',last:''};
-              } else {
-                if (!user.name.first) this.iDavis.values.users[index].name.first = '';
-                if (!user.name.last) this.iDavis.values.users[index].name.last = '';
-              }
-            });
-            this.users = _.cloneDeep(response.users);
-          },
-          error => {
-            this.iDavis.config['users'].success = false;
-            this.iDavis.config['users'].error = 'Unable to get users, please try again later.';
-          })
-          .catch(err => {
-            if (err.includes('invalid token')) {
-              this.iDavis.logOut();
+        .then(response => {
+          this.iDavis.values.users = response.users;
+          _.remove(this.iDavis.values.users, (user: any) => {
+            return user.email === this.iDavis.values.user.email;
+          });
+          this.iDavis.values.users.forEach( (user: any, index: number) => {
+            if (!user.name) {
+              this.iDavis.values.users[index].name = {first:'',last:''};
+            } else {
+              if (!user.name.first) this.iDavis.values.users[index].name.first = '';
+              if (!user.name.last) this.iDavis.values.users[index].name.last = '';
             }
           });
+          this.users = _.cloneDeep(response.users);
+        },
+        error => {
+          console.log(error);
+          this.iDavis.generateError('users', null);
+        })
+        .catch(err => {
+          if (err.includes('invalid token')) {
+            this.iDavis.logOut();
+          }
+        });
     }
     
     showUsers() {

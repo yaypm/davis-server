@@ -28,6 +28,6 @@ export class WizardBaseComponent {
   // Inject services
   // ------------------------------------------------------
   constructor(public iConfig: ConfigService, public iDavis: DavisService) { 
-    this.iDavis.titleGlobal = 'Setup Davis';
+    this.iDavis.titleGlobal = 'Setup';
   }
 }

@@ -19,6 +19,8 @@
       // Other libraries
       'rxjs': 'npm:rxjs',
       'lodash': 'npm:lodash/lodash.min.js',
+      'moment': 'npm:moment/min/moment.min.js',
+      'moment-timezone': 'npm:moment-timezone/builds/moment-timezone-with-data-2010-2020.min.js',
     },
     packages: {
       app: {
@@ -29,6 +31,12 @@
         defaultExtension: 'js'
       },
       lodash: {
+        defaultExtension: 'js'
+      },
+      moment: {
+        defaultExtension: 'js'
+      },
+      'moment-timezone': {
         defaultExtension: 'js'
       },
     }

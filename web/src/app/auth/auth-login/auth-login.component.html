@@ -1,35 +1,32 @@
-<div class="page">
-    <img src="./assets/img/davis-logo.png" id="davis-logo">
-    <div class="content content-auth">
-        <form (ngSubmit)="login(form)" #form="ngForm">
-            <section *ngIf="loginError" class="flex-container">
-                <div class="flex-item full-width error">
-                    {{loginError}}
-                </div>
-            </section>
-            <section class="flex-container">
-                <div class="flex-item full-width">
-                    <label>Email</label>
-                    <input type="email" name="email" placeholder="john.smith@example.com" ngModel autofocus required>
-                </div>
-            </section>
-            <section class="flex-container">
-                <div class="flex-item full-width">
-                    <label>Password</label>
-                    <input type="password" name="password" 
-                        placeholder="&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;" 
-                        [(ngModel)]="password" required>
-                </div>
-            </section>
-            <section class="flex-container">
-                <div class="flex-item next">
-                    <button type="submit" 
-                        class="content-save-button log-in"
-                        [attr.disabled]="(submitButton === 'Signing in...') ? '' : null">
-                        {{ submitButton }}
-                    </button>
-                </div>
-            </section>
-        </form>
-    </div>
+<div class="layout is-flex has-islands">
+  <div class="island--full-width island--center island--login" [class.island--login-error]="loginError">
+    <form (ngSubmit)="login(form)" #form="ngForm">
+      <div class="island island--login-row">
+        <img src="/assets/images/davis-logo.png" class="davis-logo">
+      </div>
+      <div *ngIf="loginError" class="island island--login-row island--error">
+           {{ loginError }}
+      </div> 
+      <div class="island island--login-row">
+        <label for="email" class="label">
+          Email
+        </label>
+        <input type="email" name="email" class="inputfield" 
+          id="email" ngModel autofocus required/>
+      </div>
+      <div class="island island--login-row">
+        <label for="password" class="label">
+          Password
+        </label>
+        <input type="password" name="password" class="inputfield" 
+          id="password" ngModel required/>
+      </div>
+      <div class="island island--login-row">
+        <button type="submit" role="button" class="btn btn--primary btn--submit"
+          [attr.disabled]="(!form.valid || submitButton === 'Signing in...') ? '' : null">
+            {{ submitButton }}
+        </button>
+      </div>
+    </form>
+  </div>
 </div>

@@ -1,46 +1,58 @@
-<div class="page">
-    <div class="content">
-        <div class="user-accounts-local-navbar">
-            <img [src]="(hover) ? backImgHover : backImg" class="button-back" *ngIf="editUser" (mouseenter)="hover = true" (mouseleave)="hover = false" (click)="editUser = false">
-            <div class="button-group-wrapper" [class.button-group-wrapper-with-back]="editUser">
-                <button type="button" class="log-out config button-group-left" [class.button-group-selected]="addUser" (click)="addUser = true; editUser = false; addMode()">Add User</button>
-                <button type="button" class="log-out config button-group-right" [class.button-group-selected]="!addUser" (click)="addUser = false; editUser = false; getUsers()">Edit User</button>
-            </div>
-        </div>
-        <div class="users-table-filter-wrapper" *ngIf="!addUser && !editUser">
-            <div class="input-button-wrapper users-table-filter" [class.input-button-wrapper-focus]="isFilterFocused">
-                <input #filter type="text" 
-                    class="users-table-filter-input input-button-input" 
-                    placeholder="Filter by name" 
-                    (keyup)="updateFilter(filter)"
-                    (focus)="isFilterFocused = true" 
-                    (blur)="isFilterFocused = false">
-                <div id="clearBtn" class="input-button-button" *ngIf="filter && filter.value.length > 0" (click)="filter.value = '';filterName = ''">
-                    <img class="input-button-img" [class.input-button-img-password-masked]="!isFilterFocused" src="/assets/img/clear.svg">
-                </div>
-            </div>
-        </div>
-        <div class="users-table-th" *ngIf="!addUser && !editUser">
-            <div class="th th-name">
-                Name
-            </div>
-            <div class="th th-admin">
-                Admin
-            </div>
-        </div>
-        <div class="users-table-wrapper" *ngIf="!addUser && !editUser">
-            <h3 *ngIf="users && users.length < 1" style="text-align: center; opacity: 0.2">None</h3>
-            <table class="users-table">
-                <tr *ngFor='let user of users | filterUsersByName:filterName; let odd = odd; let even = even;' (click)="editMode(user)">
-                    <td class="name" [class.even]="even" [class.odd]="odd">
-                        {{ user.name.last }}, {{ user.name.first }}
-                    </td>
-                    <td class="admin" [class.even]="even" [class.odd]="odd">
-                        {{ (user.admin) ? '&#x2713;' : '' }}
-                    </td>
-                </tr>
-            </table>
-        </div>
-        <config-user *ngIf="addUser || iDavis.values.original.otherUser.first || editUser" [isNewUser]="addUser" [isMyUser]="false" (showUsersList)="showUsers()"></config-user>
+<div class="layout is-flex has-islands" style="max-width: 440px">
+  <div class="island--full-width island--full-width-sidebar island--left">
+    <div class="config-title">
+      User Accounts
     </div>
+    <a href="https://github.com/Dynatrace/davis-server/wiki/Getting%20Started" target="_blank" class="config-help">
+      {{ iDavis.helpLinkText }}
+    </a>
+  </div>
+  <div class="island--full-width island--full-width-sidebar island--center island--left" style="padding-top: 32px">
+    <div class="tabs">
+      <button class="tab" [class.is-active]="addUser" (click)="addUser = true; editUser = false; addMode()">Add User</button>
+      <button class="tab" [class.is-active]="!addUser" (click)="addUser = false; editUser = false; getUsers()">Edit User</button>
+    </div>
+  </div>         
+  <div *ngIf="!addUser && !editUser" class="island--full-width island--full-width-sidebar island--center island--left">     
+    <div class="input-button-wrapper" [class.input-button-wrapper-focus]="isFilterFocused" style="margin-top: -5px; margin-bottom: 15px">
+        <input #filter type="text" 
+            class="users-table-filter-input input-button-input"
+            placeholder="Filter by name" 
+            (keyup)="updateFilter(filter)"
+            (focus)="isFilterFocused = true" 
+            (blur)="isFilterFocused = false">
+        <div id="clearBtn" class="input-button-button" *ngIf="filter && filter.value.length > 0" (click)="filter.value = '';filterName = ''">
+            <svg class="icon icon--black icon--input-button-img" [class.input-button-img-password-masked]="!isFilterFocused">
+              <use xlink:href="#clear"></use>
+            </svg>
+        </div>
+    </div>
+    <table *ngIf="!addUser && !editUser" class="table">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Admin</th>
+        </tr>
+      </thead>
+    </table>
+    <div class="island--scrollable-table">
+      <table *ngIf="!addUser && !editUser" class="table">
+        <tbody>
+          <tr *ngFor='let user of users | filterUsersByName:filterName' (click)="editMode(user)">
+            <td>
+                  {{ user.name.last }}, {{ user.name.first }}
+            </td>
+            <td>
+                {{ (user.admin) ? '&#x2713;' : '' }}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h3 *ngIf="users && users.length < 1" style="text-align: center; opacity: 0.2">None</h3>
+  </div>
 </div>
+<svg *ngIf="editUser" class="icon--back" (click)="editUser = false">
+  <use xlink:href="#back"></use>
+</svg>
+<config-user *ngIf="addUser || iDavis.values.original.otherUser.first || editUser" [isNewUser]="addUser" [isMyUser]="false" (showUsersList)="showUsers()"></config-user>

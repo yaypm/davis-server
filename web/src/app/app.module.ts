@@ -21,6 +21,7 @@ import { AppComponent } from "./app.component";
 // Modules
 import { AuthModule }              from "./auth/auth.module";
 import { ConfigurationModule }     from "./configuration/configuration.module";
+import { DavisModule }             from "./davis/davis.module";
 import { WizardModule }            from "./wizard/wizard.module";
 
 // Routing
@@ -28,6 +29,7 @@ import { AppRouting } from "./app.routing";
 
 // Services
 import { ConfigGuard }  from "./auth/auth-guard/config-guard.service";
+import { DavisGuard }   from "./auth/auth-guard/davis-guard.service";
 import { WizardGuard }  from "./auth/auth-guard/wizard-guard.service";
 import { DavisService } from "./shared/davis.service";
 
@@ -46,6 +48,7 @@ import { DavisService } from "./shared/davis.service";
     AppRouting,
     BrowserModule,
     ConfigurationModule,
+    DavisModule,
     FormsModule,
     HttpModule,
     JsonpModule,
@@ -54,6 +57,7 @@ import { DavisService } from "./shared/davis.service";
   ],
   providers: [
     ConfigGuard,
+    DavisGuard,
     WizardGuard,
     DavisService,
   ],
