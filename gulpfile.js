@@ -17,6 +17,7 @@ const tar = require('gulp-tar');
 const github = require('gulp-github-release');
 const spawn = require('child_process').spawn;
 
+require('dotenv').config();
 
 const options = minimist(process.argv.slice(2), {
   string: 'branch',
@@ -30,29 +31,47 @@ gulp.task('changelog', () =>
     .pipe(conventionalChangelog({
       preset: 'angular',
     }))
-    .pipe(gulp.dest('./'))
-);
+    .pipe(gulp.dest('./')));
 
 gulp.task('bump-version', () =>
   gulp.src(['package.json'])
     .pipe(bump({ type: 'minor' }))
-    .pipe(gulp.dest('./'))
-);
+    .pipe(gulp.dest('./')));
 
 gulp.task('patch-version', () =>
   gulp.src(['package.json'])
     .pipe(bump({ type: 'patch' }))
-    .pipe(gulp.dest('./'))
-);
+    .pipe(gulp.dest('./')));
 
 gulp.task('update', () =>
   gulp.watch('./package.json').on('change', (file) => {
     update.write(file);
-  })
-);
+  }));
 
 gulp.task('pack', ['compile:prod'], (done) => {
-  spawn('npm', ['pack', '.'])
+  if (/^win/.test(process.platform)) {
+    return spawn('cmd.exe', ['/c', 'npm.cmd', 'pack', '.'])
+      .on('close', done);
+  }
+  return spawn('npm', ['pack', '.'])
+    .on('close', done);
+});
+
+gulp.task('npminstall', (done) => {
+  if (/^win/.test(process.platform)) {
+    return spawn('cmd.exe', ['/c', 'npm.cmd', 'install'])
+      .on('close', done);
+  }
+  return spawn('npm', ['install'])
+    .on('close', done);
+});
+
+gulp.task('npmupdate', (done) => {
+  if (/^win/.test(process.platform)) {
+    return spawn('cmd.exe', ['/c', 'npm.cmd', 'update'])
+      .on('close', done);
+  }
+  return spawn('npm', ['update'])
     .on('close', done);
 });
 
@@ -143,8 +162,7 @@ gulp.task('test', () =>
     .pipe(mocha({
       reporter: 'spec',
       timeout: 20000,
-    }))
-);
+    })));
 
 gulp.task('watch', ['compile:dev'], () => {
   gulp.watch('web/src/**/*.ts', ['compile:dev']);
@@ -202,10 +220,14 @@ gulp.task('push', (done) => {
 });
 
 gulp.task('release-minor', (cb) => {
+  if (!process.env.GITHUB_TOKEN) throw new Error('must set GITHUB_TOKEN env variable');
   runSequence(
     'checkout-master',
     'pull',
     'merge-dev',
+    'npminstall',
+    'npmupdate',
+    'test',
     'bump-version',
     'changelog',
     'commit',
@@ -218,7 +240,8 @@ gulp.task('release-minor', (cb) => {
 });
 
 gulp.task('release-patch', (cb) => {
-  if (!options.branch) cb('must specify a branch');
+  if (!options.branch) throw new Error('must specify a branch');
+  if (!process.env.GITHUB_TOKEN) throw new Error('must set GITHUB_TOKEN env variable');
   runSequence(
     'checkout-master',
     'pull',
@@ -228,6 +251,9 @@ gulp.task('release-patch', (cb) => {
     'commit',
     'checkout-master',
     'merge-branch',
+    'npminstall',
+    'npmupdate',
+    'test',
     'push',
     'github-release',
     'checkout-dev',

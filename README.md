@@ -15,9 +15,14 @@ We've tried to make the process of setting up and configuring Davis as simple as
  - [Supported Phrases](https://github.com/Dynatrace/davis-server/wiki/Supported%20Phrases)
  - [Creating Custom Plugins](https://github.com/Dynatrace/davis-server/wiki/Creating%20Custom%20Plugins)
 
+## Update Davis
+It's highly recommended to keep Davis up to date.  We'll do our best to support seamless updates and follow the [semantic versioning](http://semver.org/) scheme.
+ - [Change Log](CHANGELOG.md)
+ - [Perform an Update](https://github.com/Dynatrace/davis-server/wiki/Update)
+
 ## Disclaimer
 This software is experimental and currently NOT SUPPORTED by Dynatrace.
-Please use at your own risk. You can contact the author via Github issues.
+Please use at your own risk. You can contact the author via Github [issues](https://github.com/Dynatrace/davis-server/issues).
 
 ## License
 Licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
