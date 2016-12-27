@@ -30,6 +30,11 @@ const WizardRoutes: Routes = [
     component: WizardBaseComponent,
     canActivate: [WizardGuard],
   },
+  {
+    path: '**', 
+    component: WizardBaseComponent,
+    canActivate: [WizardGuard],
+  },
 ];
 
 // ----------------------------------------------------------------------------
