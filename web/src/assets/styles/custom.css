@@ -350,3 +350,100 @@ select:focus {
 @media (min-width: 701px) {
   .hide-lg {
     display: none; } }
+    
+/* Spinner */
+.spinner {
+  width: 80px;
+  height: 80px;
+  margin: 0 auto;
+  margin-top: 30%;
+  -webkit-animation: rotate-all 1s linear infinite;
+  animation: rotate-all 1s linear infinite;}
+
+.right-side,
+.left-side {
+  width: 50%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  overflow: hidden;}
+
+.right-side {
+  right: 0;}
+
+.bar {
+  width: 100%;
+  height: 100%;
+  border-radius: 200px 0 0 200px;
+  border: 4px solid #898989;
+  position: relative;}
+  
+.right-side .bar {
+  border-radius: 0 200px 200px 0;
+  border-left: none;
+  -webkit-transform: rotate(-10deg);
+          transform: rotate(-10deg);
+  -webkit-transform-origin: left center;
+          transform-origin: left center;
+  -webkit-animation: rotate-right 0.75s linear infinite alternate;
+          animation: rotate-right 0.75s linear infinite alternate;}
+          
+.left-side .bar {
+  border-right: none;
+  -webkit-transform: rotate(10deg);
+          transform: rotate(10deg);
+  -webkit-transform-origin: right center;
+          transform-origin: right center;
+  -webkit-animation: rotate-left 0.75s linear infinite alternate;
+          animation: rotate-left 0.75s linear infinite alternate;}
+
+.green {
+  border-color: #B2CC21;}
+
+@-webkit-keyframes rotate-left {
+  to {
+    -webkit-transform: rotate(-30deg);
+            transform: rotate(-30deg);}
+  from {
+    -webkit-transform: rotate(-175deg);
+            transform: rotate(-175deg);} }
+
+@keyframes rotate-left {
+  to {
+    -webkit-transform: rotate(-30deg);
+            transform: rotate(-30deg);}
+  from {
+    -webkit-transform: rotate(-175deg);
+            transform: rotate(-175deg);} }
+            
+@-webkit-keyframes rotate-right {
+  from {
+    -webkit-transform: rotate(175deg);
+            transform: rotate(175deg);}
+  to {
+    -webkit-transform: rotate(30deg);
+            transform: rotate(30deg);} }
+            
+@keyframes rotate-right {
+  from {
+    -webkit-transform: rotate(175deg);
+            transform: rotate(175deg);}
+  to {
+    -webkit-transform: rotate(30deg);
+            transform: rotate(30deg);} }
+            
+@-webkit-keyframes rotate-all {
+  from {
+    -webkit-transform: rotate(0deg);
+            transform: rotate(0deg);}
+  to {
+    -webkit-transform: rotate(360deg);
+            transform: rotate(360deg);} }
+            
+@keyframes rotate-all {
+  from {
+    -webkit-transform: rotate(0deg);
+            transform: rotate(0deg);}
+  to {
+    -webkit-transform: rotate(360deg);
+            transform: rotate(360deg);} }
