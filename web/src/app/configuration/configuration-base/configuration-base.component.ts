@@ -8,7 +8,7 @@
 // Imports
 // ----------------------------------------------------------------------------
 // Angular
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router }    from '@angular/router';
 import { ConfigService } from '../../shared/config/config.service';
 import { DavisService } from '../../shared/davis.service';
@@ -23,7 +23,7 @@ import * as _ from "lodash";
   templateUrl: './configuration-base.component.html',
 })
 
-export class ConfigurationBaseComponent  {
+export class ConfigurationBaseComponent implements OnInit {
   
   // ------------------------------------------------------
   // Inject services

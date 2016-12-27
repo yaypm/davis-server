@@ -92,5 +92,6 @@ export class ConfigSlackComponent implements OnInit {
         document.getElementsByName('clientId')[0].focus();
         new Clipboard('.clipboard');
       }, 200);
+      this.validate();
     }
 }
