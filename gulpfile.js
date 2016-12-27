@@ -17,6 +17,7 @@ const tar = require('gulp-tar');
 const github = require('gulp-github-release');
 const spawn = require('child_process').spawn;
 
+require('dotenv').config();
 
 const options = minimist(process.argv.slice(2), {
   string: 'branch',
