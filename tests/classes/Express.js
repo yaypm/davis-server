@@ -60,9 +60,7 @@ describe('Express', () => {
     .then(() => davis.users.authenticateUser(adminemail, password))
     .then(() => davis.pluginManager.loadCorePlugins())
     .then(() => davis.pluginManager.loadUserPlugins(['./lib/plugins/debug/routingDebug']))
-    .then(res => {
-      token = res.token;
-    });
+    .then(() => davis.pluginManager.train());
   });
 
   // POST /api/v1/authenticate
