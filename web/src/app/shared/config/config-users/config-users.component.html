@@ -7,7 +7,7 @@
       {{ iDavis.helpLinkText }}
     </a>
   </div>
-  <div class="island--full-width island--full-width-sidebar island--center island--left" style="padding-top: 32px">
+  <div class="island--full-width island--full-width-sidebar island--center island--left" style="padding-top: 20px">
     <div class="tabs">
       <button class="tab" [class.is-active]="addUser" (click)="addUser = true; editUser = false; addMode()">Add User</button>
       <button class="tab" [class.is-active]="!addUser" (click)="addUser = false; editUser = false; getUsers()">Edit User</button>
@@ -49,7 +49,7 @@
         </tbody>
       </table>
     </div>
-    <h3 *ngIf="users && users.length < 1" style="text-align: center; opacity: 0.2">None</h3>
+    <h3 *ngIf="(users | filterUsersByName:filterName).length < 1" style="text-align: center; opacity: 0.2">None</h3>
   </div>
 </div>
 <svg *ngIf="editUser" class="icon--back" (click)="editUser = false">

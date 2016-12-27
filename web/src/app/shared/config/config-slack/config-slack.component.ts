@@ -88,6 +88,7 @@ export class ConfigSlackComponent implements OnInit {
     }
     
     ngOnInit() {
+      this.iDavis.isBreadcrumbsVisible = true;
       setTimeout(() => {
         document.getElementsByName('clientId')[0].focus();
         new Clipboard('.clipboard');

@@ -72,11 +72,15 @@ form {
   max-height: 500px;
   overflow-y: auto;}
   
+.island--my-account {
+  padding: 0;}
+  
 .island--user-accounts {
   margin-top: -30px;
   padding: 0;}
   
-.island--useer-accounts-error {
+.island--user-accounts-error {
+  max-width: 600px;
   margin-bottom: 32px;
   padding: 16px;}
 
@@ -264,7 +268,7 @@ select {
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
-  background: white url("/assets/images/arrow-down.svg") no-repeat 94% center;
+  background: white url("/assets/images/arrow-down.svg") no-repeat calc(100% - 8px) center;
   background-size: 16px 16px;
   cursor: pointer;}
 
@@ -273,7 +277,7 @@ select:focus {
   box-shadow: 0 0 0 2px rgba(204, 204, 204, 0.8);}
 
 .select-opened {
-  background: white url("/assets/images/arrow-up.svg") no-repeat 94% center;
+  background: white url("/assets/images/arrow-up.svg") no-repeat calc(100% - 8px) center;
   background-size: 16px 16px;}
   
 /* Scrollbar */
@@ -310,8 +314,7 @@ select:focus {
     margin:0;}
     
   .layout--half--small.layout--half {
-    flex-basis: 50%;}
-}
+    flex-basis: 50%;} }
 
 /* Button Colors */
 .btn--warning {
@@ -342,3 +345,8 @@ select:focus {
 .table tr:first-child:hover td, .table tr:nth-child(n):hover td{
   cursor: pointer;
   background-color: #e0f4fc;}
+  
+/* Trumps */
+@media (min-width: 701px) {
+  .hide-lg {
+    display: none; } }

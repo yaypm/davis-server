@@ -34,6 +34,7 @@ export class ConfigurationBaseComponent implements OnInit {
   // Initialize component
   // ------------------------------------------------------
   ngOnInit() {
+    this.iDavis.isBreadcrumbsVisible = true;
     this.iConfig.SelectView('user');
     
     this.iDavis.config['user'].success = null;

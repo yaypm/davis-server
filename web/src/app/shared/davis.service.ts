@@ -19,6 +19,8 @@ export class DavisService {
   titleGlobal: string = '';
   helpLinkText: string = 'How to complete this step';
   isChromeExtensionInstalled: boolean = (typeof chrome !== 'undefined') ? chrome.app.isInstalled : false;
+  isBreadcrumbsVisible: boolean = false;
+  isSidebarVisible: boolean = false;
 
   values: any = {
     authenticate: {

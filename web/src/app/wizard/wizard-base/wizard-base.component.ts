@@ -33,6 +33,7 @@ export class WizardBaseComponent implements OnInit {
   }
   
   ngOnInit() {
+    this.iDavis.isBreadcrumbsVisible = true;
     this.iDavis.getDavisConfiguration()
       .then(result => {
         if (result.success) {

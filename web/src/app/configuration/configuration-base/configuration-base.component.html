@@ -1,18 +1,18 @@
 <div class="layout is-flex">
-  <nav class="sidebar hide-sm">
-    <a class="sidebar__item" [class.is-active]="iConfig.view === 'user'" (click)="iConfig.SelectView('user')">
+  <nav class="sidebar hide-sm" [class.hide-sm]="!iDavis.isSidebarVisible">
+    <a class="sidebar__item" [class.is-active]="iConfig.view === 'user'" (click)="iConfig.SelectView('user'); iDavis.isSidebarVisible = false">
       <span class="sidebar__headline">My Account</span>
     </a>
-    <a *ngIf="iDavis.isAdmin" class="sidebar__item" [class.is-active]="iConfig.view === 'users'" (click)="iConfig.SelectView('users')">
+    <a *ngIf="iDavis.isAdmin" class="sidebar__item" [class.is-active]="iConfig.view === 'users'" (click)="iConfig.SelectView('users'); iDavis.isSidebarVisible = false">
       <span class="sidebar__headline">User Accounts</span>
     </a>
-    <a *ngIf="iDavis.isAdmin" class="sidebar__item" [class.is-active]="iConfig.view === 'dynatrace'" (click)="iConfig.SelectView('dynatrace')">
+    <a *ngIf="iDavis.isAdmin" class="sidebar__item" [class.is-active]="iConfig.view === 'dynatrace'" (click)="iConfig.SelectView('dynatrace'); iDavis.isSidebarVisible = false">
       <span class="sidebar__headline">Dynatrace</span>
     </a>
-    <a *ngIf="iDavis.isAdmin" class="sidebar__item" [class.is-active]="iConfig.view === 'slack'" (click)="iConfig.SelectView('slack')">
+    <a *ngIf="iDavis.isAdmin" class="sidebar__item" [class.is-active]="iConfig.view === 'slack'" (click)="iConfig.SelectView('slack'); iDavis.isSidebarVisible = false">
       <span class="sidebar__headline">Slack App</span>
     </a>
-    <a *ngIf="!iDavis.isChromeExtensionInstalled" class="sidebar__item" [class.is-active]="iConfig.view === 'chrome'" (click)="iConfig.SelectView('chrome')">
+    <a *ngIf="!iDavis.isChromeExtensionInstalled" class="sidebar__item" [class.is-active]="iConfig.view === 'chrome'" (click)="iConfig.SelectView('chrome'); iDavis.isSidebarVisible = false">
       <span class="sidebar__headline">Chrome Extension</span>
     </a>
   </nav>

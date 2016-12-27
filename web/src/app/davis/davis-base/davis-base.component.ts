@@ -32,5 +32,7 @@ export class DavisBaseComponent  {
   // ------------------------------------------------------
   // Initialize component
   // ------------------------------------------------------
-  ngOnInit() {}
+  ngOnInit() {
+    this.iDavis.isBreadcrumbsVisible = true;
+  }
 }

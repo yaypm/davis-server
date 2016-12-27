@@ -8,7 +8,7 @@
 // Imports
 // ----------------------------------------------------------------------------
 // Angular
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router }    from '@angular/router';
 import { DavisService } from '../../shared/davis.service';
 import * as _ from "lodash";
@@ -22,7 +22,7 @@ import * as _ from "lodash";
   templateUrl: './auth-login.component.html',
 })
 
-export class AuthLoginComponent  {
+export class AuthLoginComponent  implements OnInit {
   // Initialize form submission
   submitted: boolean = false;
   loginError: string = null;
@@ -84,6 +84,10 @@ export class AuthLoginComponent  {
           this.iDavis.logOut();
         }
       });
+  }
+  
+  ngOnInit() {
+    this.iDavis.isBreadcrumbsVisible = false;
   }
 
 }
