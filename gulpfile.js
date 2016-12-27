@@ -57,6 +57,24 @@ gulp.task('pack', ['compile:prod'], (done) => {
     .on('close', done);
 });
 
+gulp.task('npminstall', (done) => {
+  if (/^win/.test(process.platform)) {
+    return spawn('cmd.exe', ['/c', 'npm.cmd', 'install'])
+      .on('close', done);
+  }
+  return spawn('npm', ['install'])
+    .on('close', done);
+});
+
+gulp.task('npmupdate', (done) => {
+  if (/^win/.test(process.platform)) {
+    return spawn('cmd.exe', ['/c', 'npm.cmd', 'update'])
+      .on('close', done);
+  }
+  return spawn('npm', ['update'])
+    .on('close', done);
+});
+
 gulp.task('make-release', ['compile:prod', 'pack'], () => {
   const version = JSON.parse(fs.readFileSync('package.json')).version;
   const dist = `dynatrace-davis-dist-${version}.tar`;
@@ -202,10 +220,14 @@ gulp.task('push', (done) => {
 });
 
 gulp.task('release-minor', (cb) => {
+  if (!process.env.GITHUB_TOKEN) throw new Error('must set GITHUB_TOKEN env variable');
   runSequence(
     'checkout-master',
     'pull',
     'merge-dev',
+    'npminstall',
+    'npmupdate',
+    'test',
     'bump-version',
     'changelog',
     'commit',
@@ -218,7 +240,8 @@ gulp.task('release-minor', (cb) => {
 });
 
 gulp.task('release-patch', (cb) => {
-  if (!options.branch) cb('must specify a branch');
+  if (!options.branch) throw new Error('must specify a branch');
+  if (!process.env.GITHUB_TOKEN) throw new Error('must set GITHUB_TOKEN env variable');
   runSequence(
     'checkout-master',
     'pull',
@@ -228,6 +251,8 @@ gulp.task('release-patch', (cb) => {
     'commit',
     'checkout-master',
     'merge-branch',
+    'npminstall',
+    'npmupdate',
     'test',
     'push',
     'github-release',
