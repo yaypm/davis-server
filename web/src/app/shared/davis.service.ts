@@ -161,6 +161,16 @@ export class DavisService {
       .catch(this.handleError);
   }
   
+  getDavisConfiguration(): Promise<any> {
+    let headers = new Headers({ 'Content-Type': 'application/json', 'x-access-token': this.token });
+    let options = new RequestOptions({ headers: headers });
+
+    return this.http.get(`/api/v1/system/config/`, options)
+      .toPromise()
+      .then(this.extractData)
+      .catch(this.handleError);
+  }
+  
   getDavisUser(): Promise<any> {
     let headers = new Headers({ 'Content-Type': 'application/json', 'x-access-token': this.token });
     let options = new RequestOptions({ headers: headers });

@@ -76,6 +76,8 @@ export class ConfigDynatraceComponent implements OnInit {
     document.getElementsByName('url')[0].focus();
     if (window.location.protocol === 'http') {
       this.iDavis.config['dynatrace'].error = 'Warning, please note that "https://" is required for Davis to interact with Alexa, Slack, and Watson APIs!';
+      this.iDavis.config['dynatrace'].success = false;
     }
+    this.validate();
   }
 }
