@@ -30,29 +30,29 @@ gulp.task('changelog', () =>
     .pipe(conventionalChangelog({
       preset: 'angular',
     }))
-    .pipe(gulp.dest('./'))
-);
+    .pipe(gulp.dest('./')));
 
 gulp.task('bump-version', () =>
   gulp.src(['package.json'])
     .pipe(bump({ type: 'minor' }))
-    .pipe(gulp.dest('./'))
-);
+    .pipe(gulp.dest('./')));
 
 gulp.task('patch-version', () =>
   gulp.src(['package.json'])
     .pipe(bump({ type: 'patch' }))
-    .pipe(gulp.dest('./'))
-);
+    .pipe(gulp.dest('./')));
 
 gulp.task('update', () =>
   gulp.watch('./package.json').on('change', (file) => {
     update.write(file);
-  })
-);
+  }));
 
 gulp.task('pack', ['compile:prod'], (done) => {
-  spawn('npm', ['pack', '.'])
+  if (/^win/.test(process.platform)) {
+    return spawn('cmd.exe', ['/c', 'npm.cmd', 'pack', '.'])
+      .on('close', done);
+  }
+  return spawn('npm', ['pack', '.'])
     .on('close', done);
 });
 
@@ -143,8 +143,7 @@ gulp.task('test', () =>
     .pipe(mocha({
       reporter: 'spec',
       timeout: 20000,
-    }))
-);
+    })));
 
 gulp.task('watch', ['compile:dev'], () => {
   gulp.watch('web/src/**/*.ts', ['compile:dev']);
@@ -228,6 +227,7 @@ gulp.task('release-patch', (cb) => {
     'commit',
     'checkout-master',
     'merge-branch',
+    'test',
     'push',
     'github-release',
     'checkout-dev',
