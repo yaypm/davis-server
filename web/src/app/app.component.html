@@ -121,8 +121,8 @@
   <ul class="breadcrumbs">
     <li class="breadcrumbs__item">
       <a *ngIf="router.url !== '/davis'" class="breadcrumbs__link"
-        [class.disabled]="router.url === '/wizard' || router.url === '/auth/login' || true" 
-        (click)="(router.url !== '/wizard' && router.url !== '/auth/login') ? router.navigate(['/configuration']) : null">
+        [class.disabled]="router.url === '/wizard' || router.url === '/auth/login'" 
+        (click)="(router.url !== '/wizard' && router.url !== '/auth/login') ? router.navigate(['/davis']) : null">
           davis
       </a>
       <span *ngIf="router.url === '/davis'" class="breadcrumbs__last">davis</span>

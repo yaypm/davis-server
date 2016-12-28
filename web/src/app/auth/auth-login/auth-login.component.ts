@@ -10,6 +10,7 @@
 // Angular
 import { Component, OnInit }            from '@angular/core';
 import { Router, NavigationExtras }     from '@angular/router';
+import { ConfigService }                from '../../shared/config/config.service';
 import { DavisService }                 from '../../shared/davis.service';
 import * as _                           from "lodash";
 
@@ -31,8 +32,8 @@ export class AuthLoginComponent  implements OnInit {
   // ------------------------------------------------------
   // Inject services
   // ------------------------------------------------------
-  constructor(public iDavis: DavisService, public router: Router) {
-    this.iDavis.titleGlobal = '';
+  constructor(public iDavis: DavisService, public iConfig: ConfigService, public router: Router) {
+    this.iConfig.titleGlobal = '';
   }
 
   // ------------------------------------------------------
@@ -81,10 +82,10 @@ export class AuthLoginComponent  implements OnInit {
           this.iDavis.values.original.user = _.cloneDeep(this.iDavis.values.user);
           this.router.navigate(['/configuration'], navigationExtras);
         } else {
-          this.iDavis.generateError('user', result.message);        }
+          this.iConfig.generateError('user', result.message);        }
       })
       .catch(err => {
-        if (err.includes('invalid token')) {
+        if (JSON.stringify(err).includes('invalid token')) {
           this.iDavis.logOut();
         }
       });
