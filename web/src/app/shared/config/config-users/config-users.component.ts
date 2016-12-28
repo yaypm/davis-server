@@ -1,6 +1,7 @@
 import { Component, OnInit, Pipe, PipeTransform } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
+import { ConfigService } from '../config.service';
 import { DavisService } from '../../davis.service';
 import * as _ from "lodash";
 
@@ -22,10 +23,10 @@ export class ConfigUsersComponent implements OnInit {
     backImgHover: string = '/assets/img/back-hover.svg';
     filterName: string = '';
     
-    constructor(public iDavis: DavisService, public router: Router) {}
+    constructor(public iDavis: DavisService, public iConfig: ConfigService, public router: Router) {}
     
     addMode() {
-      this.iDavis.values.otherUser = {
+      this.iConfig.values.otherUser = {
         email: null,
         password: null,
         timezone: null,
@@ -36,41 +37,41 @@ export class ConfigUsersComponent implements OnInit {
         },
         admin: false
       };
-      this.iDavis.values.otherUser.timezone = this.iDavis.getTimezone();
-      this.iDavis.values.original.otherUser = _.cloneDeep(this.iDavis.values.otherUser);
+      this.iConfig.values.otherUser.timezone = this.iDavis.getTimezone();
+      this.iConfig.values.original.otherUser = _.cloneDeep(this.iConfig.values.otherUser);
       this.filterName = '';
     }
     
     editMode(user: any) {
       this.editUser = true;
-      this.iDavis.values.original.otherUser = user;
-      this.iDavis.values.otherUser = _.cloneDeep(user);
+      this.iConfig.values.original.otherUser = user;
+      this.iConfig.values.otherUser = _.cloneDeep(user);
       this.filterName = '';
     }
     
     getUsers() {
-      this.iDavis.getDavisUsers()
+      this.iConfig.getDavisUsers()
         .then(response => {
-          this.iDavis.values.users = response.users;
-          _.remove(this.iDavis.values.users, (user: any) => {
+          this.iConfig.values.users = response.users;
+          _.remove(this.iConfig.values.users, (user: any) => {
             return user.email === this.iDavis.values.user.email;
           });
-          this.iDavis.values.users.forEach( (user: any, index: number) => {
+          this.iConfig.values.users.forEach( (user: any, index: number) => {
             if (!user.name) {
-              this.iDavis.values.users[index].name = {first:'',last:''};
+              this.iConfig.values.users[index].name = {first:'',last:''};
             } else {
-              if (!user.name.first) this.iDavis.values.users[index].name.first = '';
-              if (!user.name.last) this.iDavis.values.users[index].name.last = '';
+              if (!user.name.first) this.iConfig.values.users[index].name.first = '';
+              if (!user.name.last) this.iConfig.values.users[index].name.last = '';
             }
           });
           this.users = _.cloneDeep(response.users);
         },
         error => {
           console.log(error);
-          this.iDavis.generateError('users', null);
+          this.iConfig.generateError('users', null);
         })
         .catch(err => {
-          if (err.includes('invalid token')) {
+          if (JSON.stringify(err).includes('invalid token')) {
             this.iDavis.logOut();
           }
         });
@@ -80,7 +81,7 @@ export class ConfigUsersComponent implements OnInit {
       this.getUsers();
       this.addUser = false;
       this.editUser = false;
-      this.iDavis.values.original.otherUser.first = null;
+      this.iConfig.values.original.otherUser.first = null;
     }
     
     updateFilter(input: any) {
@@ -89,7 +90,7 @@ export class ConfigUsersComponent implements OnInit {
     
     ngOnInit() {
       this.getUsers();
-      this.iDavis.values.otherUser = {
+      this.iConfig.values.otherUser = {
         email: null,
         password: null,
         timezone: null,

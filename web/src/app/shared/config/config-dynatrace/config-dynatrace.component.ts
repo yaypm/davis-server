@@ -13,7 +13,7 @@ import * as _ from "lodash";
 export class ConfigDynatraceComponent implements OnInit {
 
   submitted: boolean = false;
-  submitButton: string = (this.iDavis.isWizard) ? 'Continue' : 'Save';
+  submitButton: string = (this.iConfig.isWizard) ? 'Continue' : 'Save';
   isTokenMasked: boolean = true;
   isDirty: boolean = false;
     
@@ -24,59 +24,59 @@ export class ConfigDynatraceComponent implements OnInit {
   doSubmit() {
     this.submitted = true;
     this.submitButton = 'Saving...';
-    if (this.iDavis.values.dynatrace.url.slice(-1) === '/') {
-      this.iDavis.values.dynatrace.url = this.iDavis.values.dynatrace.url.substring(0, this.iDavis.values.dynatrace.url.length - 1);
+    if (this.iConfig.values.dynatrace.url.slice(-1) === '/') {
+      this.iConfig.values.dynatrace.url = this.iConfig.values.dynatrace.url.substring(0, this.iConfig.values.dynatrace.url.length - 1);
     }
-    this.iDavis.connectDynatrace()
+    this.iConfig.connectDynatrace()
       .then(result => {
         if (result.success) {
-           return this.iDavis.validateDynatrace();
+           return this.iConfig.validateDynatrace();
         } else {
-          this.iDavis.generateError('dynatrace', result.message);
+          this.iConfig.generateError('dynatrace', result.message);
           this.resetSubmitButton();
         }
       },
       error => {
-        this.iDavis.generateError('dynatrace', null);
+        this.iConfig.generateError('dynatrace', null);
         this.resetSubmitButton();
       })
       .then(result => {
         if (result.success) {
-          this.iDavis.config['dynatrace'].success = true;
-          if (this.iDavis.isWizard) {
-            this.iConfig.SelectView('user');
+          this.iConfig.status['dynatrace'].success = true;
+          if (this.iConfig.isWizard) {
+            this.iConfig.selectView('user');
           } else {
             this.submitButton = 'Save';
           }
         } else {
-          this.iDavis.generateError('dynatrace', result.message);
+          this.iConfig.generateError('dynatrace', result.message);
           this.resetSubmitButton();
         }
       },
       err => {
-        this.iDavis.generateError('dynatrace', null);
+        this.iConfig.generateError('dynatrace', null);
         this.resetSubmitButton();
       })
       .catch(err => {
-        if (err.includes('invalid token')) {
+        if (JSON.stringify(err).includes('invalid token')) {
           this.iDavis.logOut();
         }
       });
   }
   
   validate() {
-    this.isDirty = !_.isEqual(this.iDavis.values.dynatrace, this.iDavis.values.original.dynatrace);
+    this.isDirty = !_.isEqual(this.iConfig.values.dynatrace, this.iConfig.values.original.dynatrace);
   }
   
   resetSubmitButton() {
-    this.submitButton = (this.iDavis.isWizard) ? 'Continue' : 'Save';
+    this.submitButton = (this.iConfig.isWizard) ? 'Continue' : 'Save';
   }
     
   ngOnInit() {
     document.getElementsByName('url')[0].focus();
     if (window.location.protocol === 'http') {
-      this.iDavis.config['dynatrace'].error = 'Warning, please note that "https://" is required for Davis to interact with Alexa, Slack, and Watson APIs!';
-      this.iDavis.config['dynatrace'].success = false;
+      this.iConfig.status['dynatrace'].error = 'Warning, please note that "https://" is required for Davis to interact with Alexa, Slack, and Watson APIs!';
+      this.iConfig.status['dynatrace'].success = false;
     }
     this.validate();
   }

@@ -17,6 +17,7 @@ import { Router, CanActivate,
 
 // Services
 import { DavisService }           from '../../shared/davis.service';
+import { ConfigService }          from '../../shared/config/config.service';
 
 // ----------------------------------------------------------------------------
 // Class
@@ -27,6 +28,7 @@ export class WizardGuard implements CanActivate {
   // Inject services
   // ------------------------------------------------------
   constructor(
+    public iConfig: ConfigService,
     public iDavis: DavisService,
     public router: Router) { }
 
@@ -34,7 +36,7 @@ export class WizardGuard implements CanActivate {
   // Check if default user is created before routing
   // ------------------------------------------------------
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<boolean> | boolean {
-    if (!this.iDavis.isWizard && !this.iDavis.token) {
+    if (!this.iConfig.isWizard && !this.iDavis.token) {
       return this.CheckUser();
     } else {
       return true;
@@ -61,20 +63,20 @@ export class WizardGuard implements CanActivate {
   // ------------------------------------------------------
   CheckUserResponse(response: any) {
     if (response.success) {
-      this.iDavis.isWizard = true;
+      this.iConfig.isWizard = true;
       this.iDavis.token = response.token;
       this.iDavis.values.user.admin = true;
       return true;
     } else if (sessionStorage.getItem('token')) {
-      this.iDavis.isWizard = false;
+      this.iConfig.isWizard = false;
       this.iDavis.token = sessionStorage.getItem('token');
       this.iDavis.isAuthenticated = true;
       this.iDavis.isAdmin = sessionStorage.getItem('isAdmin') === 'true';
       this.iDavis.values.authenticate.email = sessionStorage.getItem('email');
-      this.router.navigate(['/configuration']);
+      this.router.navigate(['/davis']);
       return true;
     } else {
-      this.iDavis.isWizard = false;
+      this.iConfig.isWizard = false;
       this.router.navigate(['/auth/login']);
       return false;
     }
@@ -84,7 +86,7 @@ export class WizardGuard implements CanActivate {
   // Handle check user error
   // ------------------------------------------------------
   CheckUserError(error: any) {
-    this.iDavis.isWizard = false;
+    this.iConfig.isWizard = false;
     this.router.navigate(['/auth/login']);
     return false;
   }

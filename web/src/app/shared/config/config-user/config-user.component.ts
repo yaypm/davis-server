@@ -17,8 +17,8 @@ export class ConfigUserComponent implements OnInit {
     @Output() showUsersList: EventEmitter<any> = new EventEmitter();
     
     submitted: boolean = false;
-    submitButton: string = (this.iDavis.isWizard) ? 'Continue' : 'Save';
-    submitButtonDefault: string = (this.iDavis.isWizard) ? 'Continue' : 'Save';
+    submitButton: string = (this.iConfig.isWizard) ? 'Continue' : 'Save';
+    submitButtonDefault: string = (this.iConfig.isWizard) ? 'Continue' : 'Save';
     isPasswordFocused: boolean = false;
     isPasswordMasked: boolean = true;
     isSelectOpened: boolean = false;
@@ -34,38 +34,38 @@ export class ConfigUserComponent implements OnInit {
     doSubmit() {
       this.submitted = true;
       this.submitButton = 'Saving...';
-      this.user = (!this.iDavis.isWizard && !this.isMyUser) ? this.iDavis.values.otherUser : this.iDavis.values.user;
+      this.user = (!this.iConfig.isWizard && !this.isMyUser) ? this.iConfig.values.otherUser : this.iDavis.values.user;
       
-      if ((!this.iDavis.isWizard && !this.isNewUser) || (!this.iDavis.isWizard && this.isMyUser)) {
-        this.iDavis.updateDavisUser(this.user)
+      if ((!this.iConfig.isWizard && !this.isNewUser) || (!this.iConfig.isWizard && this.isMyUser)) {
+        this.iConfig.updateDavisUser(this.user)
           .then(result => {
               if (result.success) {
-                this.iDavis.values.original.user = _.cloneDeep(this.user);
+                this.iConfig.values.original.user = _.cloneDeep(this.user);
                 this.isDirty = false;
-                this.iDavis.config['user'].success = true;
+                this.iConfig.status['user'].success = true;
                 this.submitButton = 'Save';
                 if (!this.isMyUser) {
                   this.showUsersList.emit();
                 }
               } else {
                 this.submitButton = 'Save';
-                this.iDavis.config['user'].success = false;
-                this.iDavis.config['user'].error = result.message;
+                this.iConfig.status['user'].success = false;
+                this.iConfig.status['user'].error = result.message;
               }
             },    
             error => {
               this.submitButton = 'Save';
-              this.iDavis.config['user'].success = false;
-              this.iDavis.config['user'].error = 'Sorry an error occurred, please try again.';
+              this.iConfig.status['user'].success = false;
+              this.iConfig.status['user'].error = 'Sorry an error occurred, please try again.';
             });
       } else {
-        this.iDavis.addDavisUser(this.user)
+        this.iConfig.addDavisUser(this.user)
           .then(result => {
               if (result.success) {
                 this.submitButton = this.submitButtonDefault;
-                this.iDavis.config['user'].success = true;
-                this.iDavis.config['user'].error = null;
-                this.iDavis.values.otherUser = {
+                this.iConfig.status['user'].success = true;
+                this.iConfig.status['user'].error = null;
+                this.iConfig.values.otherUser = {
                   email: null,
                   password: null,
                   timezone: null,
@@ -76,15 +76,15 @@ export class ConfigUserComponent implements OnInit {
                   },
                   admin: false
                 };
-                this.iDavis.values.otherUser.timezone = this.iDavis.getTimezone();
-                this.iDavis.values.original.otherUser = _.cloneDeep(this.iDavis.values.otherUser);
-                if (this.iDavis.isWizard) {
-                  this.iDavis.values.original.user = _.cloneDeep(this.user);
+                this.iConfig.values.otherUser.timezone = this.iDavis.getTimezone();
+                this.iConfig.values.original.otherUser = _.cloneDeep(this.iConfig.values.otherUser);
+                if (this.iConfig.isWizard) {
+                  this.iConfig.values.original.user = _.cloneDeep(this.user);
                   this.isDirty = false;
-                  this.iDavis.removeDavisUser(this.iDavis.values.authenticate.email)
+                  this.iConfig.removeDavisUser(this.iDavis.values.authenticate.email)
                     .then(res => {
                         if (res.success) {
-                          this.iDavis.config['user'].success = true;
+                          this.iConfig.status['user'].success = true;
                         
                             // Authenticate new user, update token
                             this.iDavis.values.authenticate.email = this.iDavis.values.user.email;
@@ -94,45 +94,45 @@ export class ConfigUserComponent implements OnInit {
                               .then( 
                                 response => {
                                   this.iDavis.token = response.token;
-                                  this.iConfig.SelectView('alexa');
+                                  this.iConfig.selectView('alexa');
                                   sessionStorage.setItem('email', this.iDavis.values.user.email);
                                   sessionStorage.setItem('token', response.token);
                                   sessionStorage.setItem('isAdmin', response.admin);
                                   this.submitButton = this.submitButtonDefault;
                                 },
                                 error => {
-                                  this.iDavis.config['user'].success = false;
-                                  this.iDavis.config['user'].error = 'Sorry an error occurred, please try again.';
+                                  this.iConfig.status['user'].success = false;
+                                  this.iConfig.status['user'].error = 'Sorry an error occurred, please try again.';
                                   this.submitButton = this.submitButtonDefault;
                                 }
                               );
                       
                         } else {
-                          this.iDavis.config['user'].success = false;
-                          this.iDavis.config['user'].error = res.message;
+                          this.iConfig.status['user'].success = false;
+                          this.iConfig.status['user'].error = res.message;
                           this.submitButton = this.submitButtonDefault;
                         }
                     },
                     error => {
-                      this.iDavis.config['user'].success = false;
-                      this.iDavis.config['user'].error = 'Sorry an error occurred, please try again.';
+                      this.iConfig.status['user'].success = false;
+                      this.iConfig.status['user'].error = 'Sorry an error occurred, please try again.';
                       this.submitButton = this.submitButtonDefault;
                     });
                 } else {
-                   this.iDavis.values.original.otherUser = _.cloneDeep(this.user);
+                   this.iConfig.values.original.otherUser = _.cloneDeep(this.user);
                    this.showUsersList.emit();
                 }
               } else {
-                this.iDavis.config['user'].success = false;
-                this.iDavis.config['user'].error = result.message;
+                this.iConfig.status['user'].success = false;
+                this.iConfig.status['user'].error = result.message;
                 this.iDavis.values.user.email = '';
                 this.iDavis.values.user.password = '';
                 this.submitButton = this.submitButtonDefault;
               }
             },
             error => {
-              this.iDavis.config['user'].success = false;
-              this.iDavis.config['user'].error = 'Sorry an error occurred, please try again.';
+              this.iConfig.status['user'].success = false;
+              this.iConfig.status['user'].error = 'Sorry an error occurred, please try again.';
               this.submitButton = this.submitButtonDefault;
             });
       }
@@ -140,23 +140,23 @@ export class ConfigUserComponent implements OnInit {
     
     deleteUser(email: string) {
       if (this.confirmDeleteUser) {
-        this.iDavis.removeDavisUser(email)
+        this.iConfig.removeDavisUser(email)
           .then(result => {
               if (result.success) {
                 this.isDirty = false;
-                this.iDavis.config['user'].success = true;
+                this.iConfig.status['user'].success = true;
                 this.confirmDeleteUser = false;
                 this.showUsersList.emit();
               } else {
                 this.confirmDeleteUser = false;
-                this.iDavis.config['user'].success = false;
-                this.iDavis.config['user'].error = result.message;
+                this.iConfig.status['user'].success = false;
+                this.iConfig.status['user'].error = result.message;
               }
             },
             error => {
               this.confirmDeleteUser = false;
-              this.iDavis.config['user'].success = false;
-              this.iDavis.config['user'].error = 'Sorry an error occurred, please try again.';
+              this.iConfig.status['user'].success = false;
+              this.iConfig.status['user'].error = 'Sorry an error occurred, please try again.';
             });
       } else {
         this.confirmDeleteUser = true;
@@ -164,14 +164,14 @@ export class ConfigUserComponent implements OnInit {
     }
     
     validate() {
-      this.isDirty = (this.isMyUser) ? !_.isEqual(this.iDavis.values.user, this.iDavis.values.original.user) : !_.isEqual(this.iDavis.values.otherUser, this.iDavis.values.original.otherUser);
+      this.isDirty = (this.isMyUser) ? !_.isEqual(this.iDavis.values.user, this.iConfig.values.original.user) : !_.isEqual(this.iConfig.values.otherUser, this.iConfig.values.original.otherUser);
     }
     
     onTimezoneChange(tz: string) {
       if (this.isMyUser) {
          this.iDavis.values.user.timezone = tz;
       } else {
-         this.iDavis.values.otherUser.timezone = tz;
+         this.iConfig.values.otherUser.timezone = tz;
       }
     }
     
@@ -179,23 +179,23 @@ export class ConfigUserComponent implements OnInit {
       if (this.isNewUser) {
         this.submitButtonDefault = 'Add User';
       }
-      this.iDavis.getTimezones()
+      this.iConfig.getTimezones()
         .then( 
           response => {
             this.detectedTimezone = this.iDavis.getTimezone();
-            this.iDavis.timezones = response.timezones;
-            if (this.iDavis.isWizard) {
+            this.iConfig.timezones = response.timezones;
+            if (this.iConfig.isWizard) {
               this.iDavis.values.user.timezone = this.iDavis.getTimezone();
             } else if (this.isNewUser){
-              this.iDavis.values.otherUser.timezone = this.iDavis.getTimezone();
+              this.iConfig.values.otherUser.timezone = this.iDavis.getTimezone();
             }
           },
           error => {
-            this.iDavis.config['user'].success = false;
-            this.iDavis.config['user'].error = 'Unable to get timezones, please try again later.';
+            this.iConfig.status['user'].success = false;
+            this.iConfig.status['user'].error = 'Unable to get timezones, please try again later.';
           })
           .catch(err => {
-            if (err.includes('invalid token')) {
+            if (JSON.stringify(err).includes('invalid token')) {
               this.iDavis.logOut();
             }
           });

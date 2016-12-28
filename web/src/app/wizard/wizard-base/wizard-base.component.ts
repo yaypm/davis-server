@@ -29,18 +29,18 @@ export class WizardBaseComponent implements OnInit {
   // Inject services
   // ------------------------------------------------------
   constructor(public iConfig: ConfigService, public iDavis: DavisService) { 
-    this.iDavis.titleGlobal = 'Setup';
+    this.iConfig.titleGlobal = 'Setup';
   }
   
   ngOnInit() {
     this.iDavis.isBreadcrumbsVisible = true;
-    this.iDavis.getDavisConfiguration()
+    this.iConfig.getDavisConfiguration()
       .then(result => {
         if (result.success) {
-          this.iDavis.values.dynatrace.url = result.config.dynatrace.url;
-          this.iDavis.values.dynatrace.token = result.config.dynatrace.token;
-          this.iDavis.values.slack.clientId = result.config.slack.clientId;
-          this.iDavis.values.slack.clientSecret = result.config.slack.clientSecret;
+          this.iConfig.values.dynatrace.url = result.config.dynatrace.url;
+          this.iConfig.values.dynatrace.token = result.config.dynatrace.token;
+          this.iConfig.values.slack.clientId = result.config.slack.clientId;
+          this.iConfig.values.slack.clientSecret = result.config.slack.clientSecret;
         }
       });
   }

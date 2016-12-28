@@ -12,7 +12,7 @@ import * as _ from "lodash";
 })
 export class ConfigAlexaComponent implements OnInit {
   submitted: boolean = false;
-  submitButton: string = (this.iDavis.isWizard) ? 'Skip' : 'Save';
+  submitButton: string = (this.iConfig.isWizard) ? 'Skip' : 'Save';
   isDirty: boolean = false;
 
   constructor(
@@ -22,28 +22,28 @@ export class ConfigAlexaComponent implements OnInit {
   doSubmit() {
     if (this.iDavis.values.user.alexa_ids) {
       this.submitButton = 'Saving...';
-      this.iDavis.connectAlexa()
+      this.iConfig.connectAlexa()
         .then(result => {
           if (result.success) {
-            this.iDavis.config['alexa'].success = true;
-            this.iConfig.SelectView('slack');
+            this.iConfig.status['alexa'].success = true;
+            this.iConfig.selectView('slack');
           } else {
-            this.iDavis.generateError('alexa', result.message);
+            this.iConfig.generateError('alexa', result.message);
             this.resetSubmitButton();
           }
         },
         error => {
           console.log(error);
-          this.iDavis.generateError('alexa', null);
+          this.iConfig.generateError('alexa', null);
           this.resetSubmitButton();
         })
         .catch(err => {
-          if (err.includes('invalid token')) {
+          if (JSON.stringify(err).includes('invalid token')) {
             this.iDavis.logOut();
           }
         });
     } else {
-      this.iConfig.SelectView('slack');
+      this.iConfig.selectView('slack');
     }
 
     this.submitted = true;
@@ -55,11 +55,11 @@ export class ConfigAlexaComponent implements OnInit {
     } else {
       this.submitButton = 'Skip';
     }
-    this.isDirty = !_.isEqual(this.iDavis.values.user, this.iDavis.values.original.user);
+    this.isDirty = !_.isEqual(this.iDavis.values.user, this.iConfig.values.original.user);
   }
   
   resetSubmitButton() {
-    this.submitButton = (this.iDavis.isWizard) ? 'Continue' : 'Save';
+    this.submitButton = (this.iConfig.isWizard) ? 'Continue' : 'Save';
   }
   
   ngOnInit() {
