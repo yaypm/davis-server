@@ -5,8 +5,6 @@ import { Headers, RequestOptions } from '@angular/http';
 import * as moment from 'moment';
 import * as momentz from 'moment-timezone';
 
-declare var chrome: any;
-
 @Injectable()
 export class DavisService {
 
@@ -18,7 +16,6 @@ export class DavisService {
   isWizard: boolean = false;
   titleGlobal: string = '';
   helpLinkText: string = 'How to complete this step';
-  isChromeExtensionInstalled: boolean = (typeof chrome !== 'undefined') ? chrome.app.isInstalled : false;
   isBreadcrumbsVisible: boolean = false;
   isSidebarVisible: boolean = false;
 
@@ -325,12 +322,6 @@ export class DavisService {
   }
   
   addToChrome(): void {
-    if (typeof chrome !== 'undefined') chrome.webstore.install('https://chrome.google.com/webstore/detail/kighaljfkdkpbneahajiknoiinbckfpg', this.addToChomeSuccess, this.addToChomeFailure);
-  }
-  
-  addToChomeSuccess(): void {}
-  
-  addToChomeFailure(err: string): void {
     window.open('https://chrome.google.com/webstore/detail/kighaljfkdkpbneahajiknoiinbckfpg');
   }
   

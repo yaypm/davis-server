@@ -9,7 +9,8 @@
 // Imports
 // ----------------------------------------------------------------------------
 // Angular
-import { Injectable } from "@angular/core";
+import { Injectable }   from "@angular/core";
+import { Location }     from '@angular/common';
 
 // ----------------------------------------------------------------------------
 // Class
@@ -18,11 +19,17 @@ import { Injectable } from "@angular/core";
 export class ConfigService {
   // Initialize view
   view: string = "dynatrace";
+  
+  // ------------------------------------------------------
+  // Inject services
+  // ------------------------------------------------------
+  constructor(public location: Location) { }
 
   // ------------------------------------------------------
   // Select view in Wizard
   // ------------------------------------------------------
   SelectView(newView: string) {
     this.view = newView;
+    this.location.go(`/configuration#${newView}`);
   }
 }

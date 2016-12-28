@@ -8,12 +8,15 @@
 // Imports
 // ----------------------------------------------------------------------------
 // Angular
-import { Injectable } from '@angular/core';
+import { Injectable }             from '@angular/core';
 import { Router, CanActivate,
-         ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
+         ActivatedRouteSnapshot, 
+         RouterStateSnapshot, 
+         NavigationExtras 
+}                                 from '@angular/router';
 
 // Services
-import { DavisService } from '../../shared/davis.service';
+import { DavisService }           from '../../shared/davis.service';
 
 // ----------------------------------------------------------------------------
 // Class
@@ -42,6 +45,7 @@ export class WizardGuard implements CanActivate {
   // Check if defult user exists
   // ------------------------------------------------------
   CheckUser(): Promise<any> {
+    
     // Set default user attributes
     this.iDavis.values.authenticate.email = 'admin@localhost';
     this.iDavis.values.authenticate.password = 'changeme';

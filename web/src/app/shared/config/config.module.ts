@@ -22,7 +22,8 @@ import { ConfigUsersComponent }     from "./config-users/config-users.component"
 
 // Services
 import { ConfigService } from "./config.service";
-import { FilterUsersByNamePipe } from './config-pipe/config.pipe';
+import { FilterUsersByNamePipe } from './config-users-pipe/config-users.pipe';
+import { FilterSidebarItemsByAdminPipe } from './config-sidebar-pipe/config-sidebar.pipe';
 
 // ----------------------------------------------------------------------------
 // Module
@@ -36,6 +37,7 @@ import { FilterUsersByNamePipe } from './config-pipe/config.pipe';
     ConfigUserComponent,
     ConfigUsersComponent,
     FilterUsersByNamePipe,
+    FilterSidebarItemsByAdminPipe,
   ],
   exports: [
     ConfigAlexaComponent,
@@ -45,6 +47,7 @@ import { FilterUsersByNamePipe } from './config-pipe/config.pipe';
     ConfigUserComponent,
     ConfigUsersComponent,
     FilterUsersByNamePipe,
+    FilterSidebarItemsByAdminPipe,
   ],
   imports: [
     CommonModule,

@@ -8,11 +8,13 @@
 // Imports
 // ----------------------------------------------------------------------------
 // Angular
-import { Component, OnInit } from '@angular/core';
-import { Router }    from '@angular/router';
-import { ConfigService } from '../../shared/config/config.service';
-import { DavisService } from '../../shared/davis.service';
-import * as _ from "lodash";
+import { Component, OnInit, Pipe, PipeTransform }   from '@angular/core';
+import { Location }                                 from '@angular/common';
+import { Router, ActivatedRoute }                   from '@angular/router';
+import { Observable }                               from 'rxjs/Observable';
+import { ConfigService }                            from '../../shared/config/config.service';
+import { DavisService }                             from '../../shared/davis.service';
+import * as _                                       from "lodash";
 
 // ----------------------------------------------------------------------------
 // Class
@@ -20,22 +22,66 @@ import * as _ from "lodash";
 @Component({
   moduleId:    module.id,
   selector:    'configuration-base',
+  providers: [Location],
   templateUrl: './configuration-base.component.html',
 })
 
 export class ConfigurationBaseComponent implements OnInit {
+  sidebarItems: any = {
+    user: {
+      key:  'user',
+      name: 'My Account',
+      admin: false,
+    },
+    users: {
+      key: 'users',
+      name: 'User Accounts',
+      admin: true,
+    },
+    dynatrace: {
+      key: 'dynatrace',
+      name: 'Dynatrace',
+      admin: true,
+    },
+    slack: {
+      key: 'slack',
+      name: 'Slack App',
+      admin: true,
+    },
+    chrome: {
+      key: 'chrome',
+      name: 'Chrome Extension',
+      admin: false,
+    },
+  };
   
   // ------------------------------------------------------
   // Inject services
   // ------------------------------------------------------
-  constructor(public router: Router, public iConfig: ConfigService, public iDavis: DavisService) { }
+  constructor(
+    public router: Router, 
+    public route: ActivatedRoute, 
+    public location: Location,
+    public iConfig: ConfigService, 
+    public iDavis: DavisService
+  ) { }
 
   // ------------------------------------------------------
   // Initialize component
   // ------------------------------------------------------
   ngOnInit() {
     this.iDavis.isBreadcrumbsVisible = true;
-    this.iConfig.SelectView('user');
+     
+    this.route
+      .fragment
+      .map(fragment => fragment || 'None')
+      .subscribe(value => {
+        if (this.sidebarItems[value]) {
+          this.iConfig.SelectView(value);
+        } else {
+          this.iConfig.SelectView('user');
+        }
+      });
     
     this.iDavis.config['user'].success = null;
     this.iDavis.config['user'].error = null;

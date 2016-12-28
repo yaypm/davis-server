@@ -8,10 +8,10 @@
 // Imports
 // ----------------------------------------------------------------------------
 // Angular
-import { Component, OnInit } from '@angular/core';
-import { Router }    from '@angular/router';
-import { DavisService } from '../../shared/davis.service';
-import * as _ from "lodash";
+import { Component, OnInit }            from '@angular/core';
+import { Router, NavigationExtras }     from '@angular/router';
+import { DavisService }                 from '../../shared/davis.service';
+import * as _                           from "lodash";
 
 // ----------------------------------------------------------------------------
 // Class
@@ -40,6 +40,11 @@ export class AuthLoginComponent  implements OnInit {
   // Initialize component
   // ------------------------------------------------------
   login(form: any) {
+    
+    let navigationExtras: NavigationExtras = {
+      preserveFragment: true
+    };
+    
     this.submitted = true;
     this.submitButton = 'Signing in...';
     this.iDavis.values.authenticate.email = form.value.email;
@@ -75,7 +80,7 @@ export class AuthLoginComponent  implements OnInit {
             if (!result.user.name.last) this.iDavis.values.user.name.last = '';
           }
           this.iDavis.values.original.user = _.cloneDeep(this.iDavis.values.user);
-          this.router.navigate(['/configuration']);
+          this.router.navigate(['/configuration'], navigationExtras);
         } else {
           this.iDavis.generateError('user', result.message);        }
       })
