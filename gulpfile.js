@@ -219,6 +219,26 @@ gulp.task('push', (done) => {
     .on('close', done);
 });
 
+gulp.task('npm-publish', ['compile:prod'], (done) => {
+  if (/^win/.test(process.platform)) {
+    return spawn('cmd.exe', ['/c', 'npm.cmd', 'publish'])
+      .on('close', done);
+  }
+  return spawn('npm', ['publish'])
+    .on('close', done);
+});
+
+gulp.task('publish', (cb) => {
+  runSequence(
+    'checkout-master',
+    'pull',
+    'npminstall',
+    'npmupdate',
+    'test',
+    'npm-publish',
+    cb);
+});
+
 gulp.task('release-minor', (cb) => {
   if (!process.env.GITHUB_TOKEN) throw new Error('must set GITHUB_TOKEN env variable');
   runSequence(
