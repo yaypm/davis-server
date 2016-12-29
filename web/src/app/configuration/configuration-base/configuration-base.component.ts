@@ -20,7 +20,6 @@ import * as _                                       from "lodash";
 // Class
 // ----------------------------------------------------------------------------
 @Component({
-  moduleId:    module.id,
   selector:    'configuration-base',
   providers: [Location],
   templateUrl: './configuration-base.component.html',
@@ -54,15 +53,15 @@ export class ConfigurationBaseComponent implements OnInit {
       admin: false,
     },
   };
-  
+
   // ------------------------------------------------------
   // Inject services
   // ------------------------------------------------------
   constructor(
-    public router: Router, 
-    public route: ActivatedRoute, 
+    public router: Router,
+    public route: ActivatedRoute,
     public location: Location,
-    public iConfig: ConfigService, 
+    public iConfig: ConfigService,
     public iDavis: DavisService
   ) { }
 
@@ -71,7 +70,7 @@ export class ConfigurationBaseComponent implements OnInit {
   // ------------------------------------------------------
   ngOnInit() {
     this.iDavis.isBreadcrumbsVisible = true;
-     
+
     this.route
       .fragment
       .map(fragment => fragment || 'None')
@@ -82,6 +81,7 @@ export class ConfigurationBaseComponent implements OnInit {
           this.iConfig.selectView('user');
         }
       });
+<<<<<<< HEAD
     
     this.iConfig.status['user'].success = null;
     this.iConfig.status['user'].error = null;
@@ -92,6 +92,18 @@ export class ConfigurationBaseComponent implements OnInit {
   
     this.iConfig.helpLinkText = 'Help for these settings';  
   
+=======
+
+    this.iDavis.config['user'].success = null;
+    this.iDavis.config['user'].error = null;
+    this.iDavis.config['dynatrace'].success = null;
+    this.iDavis.config['dynatrace'].error = null;
+    this.iDavis.config['slack'].success = null;
+    this.iDavis.config['slack'].error = null;
+
+    this.iDavis.helpLinkText = 'Help for these settings';
+
+>>>>>>> webpack
     this.iDavis.getDavisUser()
       .then(result => {
         if (result.success) {

@@ -20,12 +20,11 @@ import { DavisService } from "./shared/davis.service";
 // Class
 // ----------------------------------------------------------------------------
 @Component({
-  moduleId:    module.id,
   selector:    "davis",
   templateUrl: "./app.component.html",
 })
 
-export class AppComponent { 
+export class AppComponent {
   isUserMenuVisible: boolean = false;
 
   constructor(public iConfig: ConfigService, public iDavis: DavisService, public router: Router) {}

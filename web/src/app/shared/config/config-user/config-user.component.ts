@@ -6,16 +6,15 @@ import { DavisService } from '../../davis.service';
 import * as _ from "lodash";
 
 @Component({
-    moduleId: module.id,
     selector: 'config-user',
     templateUrl: './config-user.component.html',
 })
 export class ConfigUserComponent implements OnInit {
-  
+
     @Input() isMyUser: boolean;
     @Input() isNewUser: boolean;
     @Output() showUsersList: EventEmitter<any> = new EventEmitter();
-    
+
     submitted: boolean = false;
     submitButton: string = (this.iConfig.isWizard) ? 'Continue' : 'Save';
     submitButtonDefault: string = (this.iConfig.isWizard) ? 'Continue' : 'Save';
@@ -26,11 +25,11 @@ export class ConfigUserComponent implements OnInit {
     detectedTimezone: string = '';
     confirmDeleteUser: boolean = false;
     user: any;
-    
+
     constructor(
       public iDavis: DavisService,
       public iConfig: ConfigService) {}
-    
+
     doSubmit() {
       this.submitted = true;
       this.submitButton = 'Saving...';
@@ -52,7 +51,7 @@ export class ConfigUserComponent implements OnInit {
                 this.iConfig.status['user'].success = false;
                 this.iConfig.status['user'].error = result.message;
               }
-            },    
+            },
             error => {
               this.submitButton = 'Save';
               this.iConfig.status['user'].success = false;
@@ -84,14 +83,19 @@ export class ConfigUserComponent implements OnInit {
                   this.iConfig.removeDavisUser(this.iDavis.values.authenticate.email)
                     .then(res => {
                         if (res.success) {
+<<<<<<< HEAD
                           this.iConfig.status['user'].success = true;
                         
+=======
+                          this.iDavis.config['user'].success = true;
+
+>>>>>>> webpack
                             // Authenticate new user, update token
                             this.iDavis.values.authenticate.email = this.iDavis.values.user.email;
                             this.iDavis.values.authenticate.password = this.iDavis.values.user.password;
-                            
+
                             this.iDavis.getJwtToken()
-                              .then( 
+                              .then(
                                 response => {
                                   this.iDavis.token = response.token;
                                   this.iConfig.selectView('alexa');
@@ -106,7 +110,7 @@ export class ConfigUserComponent implements OnInit {
                                   this.submitButton = this.submitButtonDefault;
                                 }
                               );
-                      
+
                         } else {
                           this.iConfig.status['user'].success = false;
                           this.iConfig.status['user'].error = res.message;
@@ -137,7 +141,7 @@ export class ConfigUserComponent implements OnInit {
             });
       }
     }
-    
+
     deleteUser(email: string) {
       if (this.confirmDeleteUser) {
         this.iConfig.removeDavisUser(email)
@@ -162,11 +166,11 @@ export class ConfigUserComponent implements OnInit {
         this.confirmDeleteUser = true;
       }
     }
-    
+
     validate() {
       this.isDirty = (this.isMyUser) ? !_.isEqual(this.iDavis.values.user, this.iConfig.values.original.user) : !_.isEqual(this.iConfig.values.otherUser, this.iConfig.values.original.otherUser);
     }
-    
+
     onTimezoneChange(tz: string) {
       if (this.isMyUser) {
          this.iDavis.values.user.timezone = tz;
@@ -174,13 +178,18 @@ export class ConfigUserComponent implements OnInit {
          this.iConfig.values.otherUser.timezone = tz;
       }
     }
-    
+
     ngOnInit() {
       if (this.isNewUser) {
         this.submitButtonDefault = 'Add User';
       }
+<<<<<<< HEAD
       this.iConfig.getTimezones()
         .then( 
+=======
+      this.iDavis.getTimezones()
+        .then(
+>>>>>>> webpack
           response => {
             this.detectedTimezone = this.iDavis.getTimezone();
             this.iConfig.timezones = response.timezones;

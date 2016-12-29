@@ -6,7 +6,6 @@ import { DavisService } from '../../davis.service';
 import * as _ from "lodash";
 
 @Component({
-  moduleId: module.id,
   selector: 'config-dynatrace',
   templateUrl: './config-dynatrace.component.html',
 })
@@ -16,11 +15,11 @@ export class ConfigDynatraceComponent implements OnInit {
   submitButton: string = (this.iConfig.isWizard) ? 'Continue' : 'Save';
   isTokenMasked: boolean = true;
   isDirty: boolean = false;
-    
+
   constructor(
     public iDavis: DavisService,
     public iConfig: ConfigService) { }
-  
+
   doSubmit() {
     this.submitted = true;
     this.submitButton = 'Saving...';
@@ -63,15 +62,15 @@ export class ConfigDynatraceComponent implements OnInit {
         }
       });
   }
-  
+
   validate() {
     this.isDirty = !_.isEqual(this.iConfig.values.dynatrace, this.iConfig.values.original.dynatrace);
   }
-  
+
   resetSubmitButton() {
     this.submitButton = (this.iConfig.isWizard) ? 'Continue' : 'Save';
   }
-    
+
   ngOnInit() {
     document.getElementsByName('url')[0].focus();
     if (window.location.protocol === 'http') {

@@ -9,7 +9,6 @@ import * as _ from "lodash";
 declare var Clipboard:any;
 
 @Component({
-    moduleId: module.id,
     selector: 'config-slack',
     templateUrl: './config-slack.component.html',
 })
@@ -29,7 +28,7 @@ export class ConfigSlackComponent implements OnInit {
         this.requestUri = `${this.myURL}/slack/receive`;
         this.iConfig.values.slack.redirectUri = `${this.myURL}/oauth`;
     }
-  
+
     validate() {
       if (this.iConfig.values.slack.clientId && this.iConfig.values.slack.clientSecret) {
           this.submitButton = 'Create Davis Slack Bot';
@@ -38,11 +37,11 @@ export class ConfigSlackComponent implements OnInit {
       }
       this.isDirty = !_.isEqual(this.iConfig.values.slack, this.iConfig.values.original.slack);
     }
-    
+
     resetSubmitButton() {
       this.submitButton = (this.iConfig.isWizard) ? 'Skip and Finish' : 'Create Davis Slack Bot';
     }
-    
+
     doSubmit() {
       this.submitted = true;
       if (!this.iConfig.status['slack'].success && this.iConfig.values.slack.clientId && this.iConfig.values.slack.clientSecret) {
@@ -87,7 +86,7 @@ export class ConfigSlackComponent implements OnInit {
         this.router.navigate(['/configuration']);
       }
     }
-    
+
     ngOnInit() {
       this.iDavis.isBreadcrumbsVisible = true;
       setTimeout(() => {

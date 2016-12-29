@@ -6,12 +6,11 @@ import { DavisService } from '../../davis.service';
 import * as _ from "lodash";
 
 @Component({
-    moduleId: module.id,
     selector: 'config-users',
     templateUrl: './config-users.component.html',
 })
 export class ConfigUsersComponent implements OnInit {
-    
+
     submitted: boolean = false;
     submitButton: string = 'Save';
     isPasswordFocused: boolean = false;
@@ -41,14 +40,14 @@ export class ConfigUsersComponent implements OnInit {
       this.iConfig.values.original.otherUser = _.cloneDeep(this.iConfig.values.otherUser);
       this.filterName = '';
     }
-    
+
     editMode(user: any) {
       this.editUser = true;
       this.iConfig.values.original.otherUser = user;
       this.iConfig.values.otherUser = _.cloneDeep(user);
       this.filterName = '';
     }
-    
+
     getUsers() {
       this.iConfig.getDavisUsers()
         .then(response => {
@@ -76,18 +75,18 @@ export class ConfigUsersComponent implements OnInit {
           }
         });
     }
-    
+
     showUsers() {
       this.getUsers();
       this.addUser = false;
       this.editUser = false;
       this.iConfig.values.original.otherUser.first = null;
     }
-    
+
     updateFilter(input: any) {
       this.filterName = input.value;
     }
-    
+
     ngOnInit() {
       this.getUsers();
       this.iConfig.values.otherUser = {
