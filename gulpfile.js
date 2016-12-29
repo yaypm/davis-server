@@ -1,14 +1,13 @@
 'use strict';
 
 const gulp = require('gulp');
+const webpack = require('webpack-stream');
+const wp = require('webpack');
 const fs = require('fs');
 const runSequence = require('run-sequence');
 const mocha = require('gulp-spawn-mocha');
-const tsc = require('gulp-typescript');
-const sourcemaps = require('gulp-sourcemaps');
 const merge = require('merge-stream');
 const update = require('gulp-update')();
-const uglify = require('gulp-uglify');
 const rimraf = require('rimraf');
 const bump = require('gulp-bump');
 const conventionalChangelog = require('gulp-conventional-changelog');
@@ -16,6 +15,7 @@ const minimist = require('minimist');
 const tar = require('gulp-tar');
 const github = require('gulp-github-release');
 const spawn = require('child_process').spawn;
+const wpconfig = require('./webpack.config.js');
 
 require('dotenv').config({ silent: true });
 
@@ -101,21 +101,14 @@ gulp.task('clean', (cb) => {
   rimraf('./web/dist', cb);
 });
 
-gulp.task('compile:dev', ['clean'], () => {
-  const tsProject = tsc.createProject('tsconfig.json');
+function compile(config) {
   const destinationFolder = 'web/dist';
 
-  const compiledTs = gulp.src([
-    'web/src/**/*.ts',
-    '!web/src/main.prod.ts',
-  ])
-    .pipe(sourcemaps.init())
-      .pipe(tsProject())
-    .pipe(sourcemaps.write('/'))
-    .pipe(gulp.dest(destinationFolder));
+  const compiledTs = gulp.src('web/src/main.ts')
+    .pipe(webpack(config))
+    .pipe(gulp.dest('web/dist/'));
 
   const copy = gulp.src([
-    'web/src/systemjs.config.js',
     'web/src/**/*.html',
   ])
     .pipe(gulp.dest(destinationFolder));
@@ -127,35 +120,17 @@ gulp.task('compile:dev', ['clean'], () => {
     .pipe(gulp.dest(`${destinationFolder}/assets`));
 
   return merge(compiledTs, copy, assets);
+}
+gulp.task('compile', ['compile:prod']);
+gulp.task('compile:dev', ['compile:prod']);
+gulp.task('compile:prod', () => {
+  wpconfig.plugins.push(new wp.optimize.UglifyJsPlugin());
+  return compile(wpconfig);
 });
-
-gulp.task('compile:prod', ['clean'], () => {
-  const tsProject = tsc.createProject('tsconfig.json');
-  const destinationFolder = 'web/dist';
-
-  const compiledTs = gulp.src([
-    'web/src/**/*.ts',
-    '!web/src/main.prod.ts',
-  ])
-    .pipe(tsProject())
-    .pipe(uglify())
-    .pipe(gulp.dest(destinationFolder));
-
-  const copy = gulp.src([
-    'web/src/systemjs.config.js',
-    'web/src/**/*.html',
-  ])
-    .pipe(gulp.dest(destinationFolder));
-
-
-  const assets = gulp.src([
-    'web/src/assets/**/*',
-  ])
-    .pipe(gulp.dest(`${destinationFolder}/assets`));
-
-  return merge(compiledTs, copy, assets);
+gulp.task('watch', () => {
+  wpconfig.watch = true;
+  return compile(wpconfig);
 });
-
 
 gulp.task('test', () =>
    gulp.src(['tests/all.js'], { read: false })
@@ -163,11 +138,6 @@ gulp.task('test', () =>
       reporter: 'spec',
       timeout: 20000,
     })));
-
-gulp.task('watch', ['compile:dev'], () => {
-  gulp.watch('web/src/**/*.ts', ['compile:dev']);
-  gulp.watch('web/src/**/*.html', ['compile:dev']);
-});
 
 gulp.task('commit', (done) => {
   const version = JSON.parse(fs.readFileSync('package.json')).version;
@@ -242,6 +212,7 @@ gulp.task('publish', (cb) => {
 gulp.task('release-minor', (cb) => {
   if (!process.env.GITHUB_TOKEN) throw new Error('must set GITHUB_TOKEN env variable');
   runSequence(
+    'clean',
     'checkout-master',
     'pull',
     'merge-dev',
@@ -263,6 +234,7 @@ gulp.task('release-patch', (cb) => {
   if (!options.branch) throw new Error('must specify a branch');
   if (!process.env.GITHUB_TOKEN) throw new Error('must set GITHUB_TOKEN env variable');
   runSequence(
+    'clean',
     'checkout-master',
     'pull',
     'checkout-branch',

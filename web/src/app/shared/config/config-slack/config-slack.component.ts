@@ -8,7 +8,6 @@ import * as _ from "lodash";
 declare var Clipboard:any;
 
 @Component({
-    moduleId: module.id,
     selector: 'config-slack',
     templateUrl: './config-slack.component.html',
 })
@@ -22,13 +21,13 @@ export class ConfigSlackComponent implements OnInit {
     isPasswordMasked: boolean = true;
     isDirty: boolean = false;
     isSecretMasked: boolean = true;
-    
+
     constructor(public iDavis: DavisService, public router: Router) {
         this.myURL = `${window.location.protocol}//${window.location.host}`;
         this.requestUri = `${this.myURL}/slack/receive`;
         this.iDavis.values.slack.redirectUri = `${this.myURL}/oauth`;
     }
-  
+
     validate() {
       if (this.iDavis.values.slack.clientId && this.iDavis.values.slack.clientSecret) {
           this.submitButton = 'Create Davis Slack Bot';
@@ -37,11 +36,11 @@ export class ConfigSlackComponent implements OnInit {
       }
       this.isDirty = !_.isEqual(this.iDavis.values.slack, this.iDavis.values.original.slack);
     }
-    
+
     resetSubmitButton() {
       this.submitButton = (this.iDavis.isWizard) ? 'Skip and Finish' : 'Create Davis Slack Bot';
     }
-    
+
     doSubmit() {
       this.submitted = true;
       if (!this.iDavis.config['slack'].success && this.iDavis.values.slack.clientId && this.iDavis.values.slack.clientSecret) {
@@ -86,7 +85,7 @@ export class ConfigSlackComponent implements OnInit {
         this.router.navigate(['/configuration']);
       }
     }
-    
+
     ngOnInit() {
       this.iDavis.isBreadcrumbsVisible = true;
       setTimeout(() => {
