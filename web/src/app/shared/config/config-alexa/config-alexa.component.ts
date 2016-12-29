@@ -6,7 +6,6 @@ import { DavisService }  from '../../davis.service';
 import * as _ from "lodash";
 
 @Component({
-  moduleId: module.id,
   selector: 'config-alexa',
   templateUrl: './config-alexa.component.html',
 })
@@ -48,7 +47,7 @@ export class ConfigAlexaComponent implements OnInit {
 
     this.submitted = true;
   }
-  
+
   validate() {
     if (this.iDavis.values.user.alexa_ids) {
       this.submitButton = 'Continue';
@@ -57,11 +56,11 @@ export class ConfigAlexaComponent implements OnInit {
     }
     this.isDirty = !_.isEqual(this.iDavis.values.user, this.iDavis.values.original.user);
   }
-  
+
   resetSubmitButton() {
     this.submitButton = (this.iDavis.isWizard) ? 'Continue' : 'Save';
   }
-  
+
   ngOnInit() {
     document.getElementsByName('alexa')[0].focus();
   }

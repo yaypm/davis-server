@@ -19,7 +19,6 @@ import * as _ from "lodash";
 // Class
 // ----------------------------------------------------------------------------
 @Component({
-  moduleId:    module.id,
   selector:    "wizard-base",
   templateUrl: "./wizard-base.component.html",
 })
@@ -28,10 +27,10 @@ export class WizardBaseComponent implements OnInit {
   // ------------------------------------------------------
   // Inject services
   // ------------------------------------------------------
-  constructor(public iConfig: ConfigService, public iDavis: DavisService) { 
+  constructor(public iConfig: ConfigService, public iDavis: DavisService) {
     this.iDavis.titleGlobal = 'Setup';
   }
-  
+
   ngOnInit() {
     this.iDavis.isBreadcrumbsVisible = true;
     this.iDavis.getDavisConfiguration()

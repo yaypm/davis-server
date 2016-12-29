@@ -5,12 +5,11 @@ import { DavisService } from '../../davis.service';
 import * as _ from "lodash";
 
 @Component({
-    moduleId: module.id,
     selector: 'config-users',
     templateUrl: './config-users.component.html',
 })
 export class ConfigUsersComponent implements OnInit {
-    
+
     submitted: boolean = false;
     submitButton: string = 'Save';
     isPasswordFocused: boolean = false;
@@ -21,9 +20,9 @@ export class ConfigUsersComponent implements OnInit {
     backImg: string = '/assets/img/back.svg';
     backImgHover: string = '/assets/img/back-hover.svg';
     filterName: string = '';
-    
+
     constructor(public iDavis: DavisService, public router: Router) {}
-    
+
     addMode() {
       this.iDavis.values.otherUser = {
         email: null,
@@ -40,14 +39,14 @@ export class ConfigUsersComponent implements OnInit {
       this.iDavis.values.original.otherUser = _.cloneDeep(this.iDavis.values.otherUser);
       this.filterName = '';
     }
-    
+
     editMode(user: any) {
       this.editUser = true;
       this.iDavis.values.original.otherUser = user;
       this.iDavis.values.otherUser = _.cloneDeep(user);
       this.filterName = '';
     }
-    
+
     getUsers() {
       this.iDavis.getDavisUsers()
         .then(response => {
@@ -75,18 +74,18 @@ export class ConfigUsersComponent implements OnInit {
           }
         });
     }
-    
+
     showUsers() {
       this.getUsers();
       this.addUser = false;
       this.editUser = false;
       this.iDavis.values.original.otherUser.first = null;
     }
-    
+
     updateFilter(input: any) {
       this.filterName = input.value;
     }
-    
+
     ngOnInit() {
       this.getUsers();
       this.iDavis.values.otherUser = {
