@@ -1051,15 +1051,16 @@ li > ol {
   width: 0;
   height: 0;
   border: 18px solid transparent;
+  border-right: 0;
   position: absolute;
-  right: -19px;
+  right: -1px;
   margin-top: -3px;
   border-left-color: #00a1b2;
   border-left-width: 8px;
   z-index: 3; }
 
 .breadcrumbs__link:before {
-  right: -21px;
+  right: -3px;
   border-left-color: #00b9cc;
   z-index: 2; }
 
@@ -1713,8 +1714,8 @@ li > ol {
   font-size: 14px;
   padding-right: 20px; }
 
-.theme--dark .checkbox__label,
-.checkbox__label.theme--dark {
+.checkbox__label.theme--dark,
+.theme--dark .checkbox__label {
   color: #fff; }
 
 .checkbox__label:before {
@@ -1727,8 +1728,8 @@ li > ol {
   left: 0;
   box-sizing: border-box; }
 
-.theme--dark .checkbox__label:before,
-.checkbox__label.theme--dark:before {
+.checkbox__label.theme--dark:before,
+.theme--dark .checkbox__label:before {
   border: solid 2px #fff; }
 
 .checkbox__label:after {
@@ -1743,8 +1744,8 @@ li > ol {
   margin-left: 2px;
   display: none; }
 
-.theme--dark .checkbox__label:after,
-.checkbox__label.theme--dark:after {
+.checkbox__label.theme--dark:after,
+.theme--dark .checkbox__label:after {
   background-image: url(/assets/images/icons/Icons_file_003_Checkmark_white.svg); }
 
 .checkbox__label > icon {
@@ -1761,14 +1762,14 @@ li > ol {
 .checkbox__label:hover:before {
   border-color: #00848e; }
 
-.theme--dark .checkbox__label:hover:before,
-.checkbox__label.theme--dark:hover:before {
+.checkbox__label.theme--dark:hover:before,
+.theme--dark .checkbox__label:hover:before {
   border-color: #fff;
   background-color: rgba(255, 255, 255, 0.2); }
 
 .checkbox:checked + .checkbox__label:after,
-.checkbox:checked + .theme--dark .checkbox__label:after,
-.checkbox:checked + .checkbox__label.theme--dark:after {
+.checkbox:checked + .checkbox__label.theme--dark:after,
+.theme--dark .checkbox:checked + .checkbox__label:after {
   display: block; }
 
 .checkbox:focus + .checkbox__label:before {
@@ -1776,7 +1777,7 @@ li > ol {
 
 .checkbox[disabled] + .checkbox__label,
 .checkbox[disabled] + .checkbox__label.theme--dark,
-.checkbox[disabled] + .theme--dark .checkbox__label {
+.theme--dark .checkbox[disabled] + .checkbox__label {
   color: #ccc;
   cursor: default; }
 
@@ -1785,8 +1786,8 @@ li > ol {
   background-color: transparent; }
 
 .checkbox[disabled] + .checkbox__label:after,
-.checkbox[disabled] + .theme--dark .checkbox__label:after,
-.checkbox[disabled] + .checkbox__label.theme--dark:after {
+.checkbox[disabled] + .checkbox__label.theme--dark:after,
+.theme--dark .checkbox[disabled] + .checkbox__label:after {
   display: none; }
 
 .checkbox[disabled]:checked + .checkbox__label:before {
@@ -1810,6 +1811,10 @@ li > ol {
           user-select: none;
   display: inline-block; }
 
+.radio__label.theme--dark,
+.theme--dark .radio__label {
+  color: #fff; }
+
 .radio__caption {
   font-family: "BerninaSans", "Open Sans", sans-serif;
   font-size: 14px;
@@ -1829,7 +1834,13 @@ li > ol {
   border-radius: 50%;
   border: solid 2px #00a1b2; }
 
-.radio__label:after {
+.radio__label.theme--dark:before,
+.theme--dark .radio__label:before {
+  border: solid 2px #fff; }
+
+.radio__label:after,
+.radio__label.theme--dark:after,
+.theme--dark .radio__label:after {
   content: " ";
   position: absolute;
   top: 0;
@@ -1838,7 +1849,6 @@ li > ol {
   width: 10px;
   height: 10px;
   border-radius: 50%;
-  background-color: tranparent;
   margin-left: 5px;
   margin-top: 5px; }
 
@@ -1856,20 +1866,34 @@ li > ol {
 .radio__label:hover:before {
   border-color: #00848e; }
 
+.radio__label.theme--dark:hover:before,
+.theme--dark .radio__label:hover:before {
+  border-color: #fff;
+  background-color: rgba(255, 255, 255, 0.2); }
+
 .radio:checked + .radio__label:after {
   background-color: #00a1b2; }
+
+.radio:checked + .radio__label.theme--dark:after,
+.theme--dark .radio:checked + .radio__label:after {
+  background-color: #fff; }
 
 .radio:focus + .radio__label:before {
   box-shadow: 0 0 0 2px rgba(204, 204, 204, 0.8); }
 
-.radio[disabled] + .radio__label {
+.radio[disabled] + .radio__label,
+.radio[disabled] + .radio__label.theme--dark,
+.theme--dark .radio[disabled] + .radio__label {
   color: #ccc;
   cursor: default; }
 
 .radio[disabled] + .radio__label:before {
-  border-color: #ccc; }
+  border-color: #ccc;
+  background-color: transparent; }
 
-.radio[disabled] + .radio__label:after {
+.radio[disabled] + .radio__label:after,
+.radio[disabled] + .radio__label.theme--dark:after,
+.theme--dark .radio[disabled] + .radio__label:after {
   display: none; }
 
 .radio[disabled]:checked + .radio__label:before {

@@ -13,6 +13,7 @@ import { Router } from "@angular/router";
 
 // Third party
 import "./rxjs-operators";
+import { ConfigService } from "./shared/config/config.service";
 import { DavisService } from "./shared/davis.service";
 
 // ----------------------------------------------------------------------------
@@ -27,7 +28,7 @@ import { DavisService } from "./shared/davis.service";
 export class AppComponent { 
   isUserMenuVisible: boolean = false;
 
-  constructor(public iDavis: DavisService, public router: Router) {}
+  constructor(public iConfig: ConfigService, public iDavis: DavisService, public router: Router) {}
   
   toggleUserMenu() {
     this.isUserMenuVisible = !this.isUserMenuVisible;
