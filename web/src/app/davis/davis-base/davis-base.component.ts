@@ -8,10 +8,10 @@
 // Imports
 // ----------------------------------------------------------------------------
 // Angular
-import { Component } from '@angular/core';
-import { Router }    from '@angular/router';
-import { DavisService } from '../../shared/davis.service';
-import * as _ from "lodash";
+import { Component, OnInit }      from '@angular/core';
+import { Router }                 from '@angular/router';
+import { DavisService }           from '../../shared/davis.service';
+import * as _                     from "lodash";
 
 // ----------------------------------------------------------------------------
 // Class
@@ -21,8 +21,10 @@ import * as _ from "lodash";
   templateUrl: './davis-base.component.html',
 })
 
-export class DavisBaseComponent  {
-
+export class DavisBaseComponent implements OnInit {
+  
+  isDavisInputFocused: boolean = false;
+  
   // ------------------------------------------------------
   // Inject services
   // ------------------------------------------------------
@@ -31,6 +33,11 @@ export class DavisBaseComponent  {
   // ------------------------------------------------------
   // Initialize component
   // ------------------------------------------------------
+  
+  doSubmit() {
+    
+  }
+  
   ngOnInit() {
     this.iDavis.isBreadcrumbsVisible = true;
   }

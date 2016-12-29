@@ -30,6 +30,7 @@ export class DavisService {
       },
       admin: false
     },
+    davisInput: '',
   };
   
   route_names: any = {

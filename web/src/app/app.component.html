@@ -67,23 +67,23 @@
   </nav>
 </div>
 <div *ngIf="isUserMenuVisible" class="nav__user-menu">
-  <div *ngIf="iDavis.isAuthenticated && !iDavis.isWizard" class="nav__user-menu-name">
+  <div *ngIf="iDavis.isAuthenticated && !iConfig.isWizard" class="nav__user-menu-name">
     {{ iDavis.values.user.name.first }} {{ iDavis.values.user.name.last }}
   </div>
-  <div *ngIf="iDavis.isAuthenticated && !iDavis.isWizard" class="nav__user-menu-email">
+  <div *ngIf="iDavis.isAuthenticated && !iConfig.isWizard" class="nav__user-menu-email">
     {{ iDavis.values.user.email }}
   </div>
-  <div *ngIf="iDavis.isAuthenticated && !iDavis.isWizard" class="nav__user-menu-section-break"></div>
-  <div *ngIf="iDavis.isAuthenticated && !iDavis.isWizard" class="nav__user-menu-section-title">
+  <div *ngIf="iDavis.isAuthenticated && !iConfig.isWizard" class="nav__user-menu-section-break"></div>
+  <div *ngIf="iDavis.isAuthenticated && !iConfig.isWizard" class="nav__user-menu-section-title">
     Account
   </div>
-  <div *ngIf="iDavis.isAuthenticated && !iDavis.isWizard" class="nav__user-menu-section-item-wrapper" (click)="router.navigate(['/configuration']); isUserMenuVisible = false">
+  <div *ngIf="iDavis.isAuthenticated && !iConfig.isWizard" class="nav__user-menu-section-item-wrapper" (click)="router.navigate(['/configuration']); isUserMenuVisible = false">
     <div class="nav__user-menu-section-item">
       Account settings
     </div>
   </div>
-  <div *ngIf="iDavis.isAuthenticated && !iDavis.isWizard" class="nav__user-menu-section-break"></div>
-  <div *ngIf="iDavis.isWizard" class="nav__user-menu-section-break-half"></div>
+  <div *ngIf="iDavis.isAuthenticated && !iConfig.isWizard" class="nav__user-menu-section-break"></div>
+  <div *ngIf="iConfig.isWizard" class="nav__user-menu-section-break-half"></div>
   <div class="nav__user-menu-section-title">
     External
   </div>
@@ -103,17 +103,17 @@
     </div>
   </div>
   <div class="nav__user-menu-section-break"></div>
-  <div *ngIf="iDavis.isAuthenticated && !iDavis.isWizard" class="nav__user-menu-section-item-wrapper" (click)="iDavis.logOut(); isUserMenuVisible = false">
+  <div *ngIf="iDavis.isAuthenticated && !iConfig.isWizard" class="nav__user-menu-section-item-wrapper" (click)="iDavis.logOut(); isUserMenuVisible = false">
     <div class="nav__user-menu-section-item">
       Sign out
     </div>
   </div>
-  <div *ngIf="!iDavis.isAuthenticated && !iDavis.isWizard" class="nav__user-menu-section-item-wrapper" (click)="router.navigate(['/auth/login']); isUserMenuVisible = false">
+  <div *ngIf="!iDavis.isAuthenticated && !iConfig.isWizard" class="nav__user-menu-section-item-wrapper" (click)="router.navigate(['/auth/login']); isUserMenuVisible = false">
     <div class="nav__user-menu-section-item">
       Sign in
     </div>
   </div>
-  <div *ngIf="!iDavis.isWizard" class="nav__user-menu-section-break"></div>
+  <div *ngIf="!iConfig.isWizard" class="nav__user-menu-section-break"></div>
 </div>
 <div *ngIf="isUserMenuVisible" class="disable_screen" (click)="isUserMenuVisible = false">
 </div>
@@ -121,8 +121,8 @@
   <ul class="breadcrumbs">
     <li class="breadcrumbs__item">
       <a *ngIf="router.url !== '/davis'" class="breadcrumbs__link"
-        [class.disabled]="router.url === '/wizard' || router.url === '/auth/login'" 
-        (click)="(router.url !== '/wizard' && router.url !== '/auth/login') ? router.navigate(['/davis']) : null">
+        [class.disabled]="router.url === '/wizard'" 
+        (click)="(router.url !== '/wizard') ? router.navigate(['/davis']) : null">
           davis
       </a>
       <span *ngIf="router.url === '/davis'" class="breadcrumbs__last">davis</span>
