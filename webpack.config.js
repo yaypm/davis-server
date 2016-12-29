@@ -21,7 +21,6 @@ const webpackConfig = {
       {
         // your Angular Async Route paths relative to this root directory
       }),
-    new webpack.optimize.UglifyJsPlugin(),
   ],
 
   module: {

@@ -2,6 +2,7 @@
 
 const gulp = require('gulp');
 const webpack = require('webpack-stream');
+const wp = require('webpack');
 const fs = require('fs');
 const runSequence = require('run-sequence');
 const mocha = require('gulp-spawn-mocha');
@@ -122,7 +123,10 @@ function compile(config) {
 }
 gulp.task('compile', ['compile:prod']);
 gulp.task('compile:dev', ['compile:prod']);
-gulp.task('compile:prod', () => compile(wpconfig));
+gulp.task('compile:prod', () => {
+  wpconfig.plugins.push(new wp.optimize.UglifyJsPlugin());
+  return compile(wpconfig);
+});
 gulp.task('watch', () => {
   wpconfig.watch = true;
   return compile(wpconfig);
@@ -208,6 +212,7 @@ gulp.task('publish', (cb) => {
 gulp.task('release-minor', (cb) => {
   if (!process.env.GITHUB_TOKEN) throw new Error('must set GITHUB_TOKEN env variable');
   runSequence(
+    'clean',
     'checkout-master',
     'pull',
     'merge-dev',
@@ -229,6 +234,7 @@ gulp.task('release-patch', (cb) => {
   if (!options.branch) throw new Error('must specify a branch');
   if (!process.env.GITHUB_TOKEN) throw new Error('must set GITHUB_TOKEN env variable');
   runSequence(
+    'clean',
     'checkout-master',
     'pull',
     'checkout-branch',
