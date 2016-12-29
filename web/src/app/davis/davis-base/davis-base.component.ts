@@ -17,13 +17,12 @@ import * as _ from "lodash";
 // Class
 // ----------------------------------------------------------------------------
 @Component({
-  moduleId:    module.id,
   selector:    'davis-base',
   templateUrl: './davis-base.component.html',
 })
 
 export class DavisBaseComponent  {
-  
+
   // ------------------------------------------------------
   // Inject services
   // ------------------------------------------------------

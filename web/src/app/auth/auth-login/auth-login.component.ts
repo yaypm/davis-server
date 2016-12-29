@@ -17,7 +17,6 @@ import * as _                           from "lodash";
 // Class
 // ----------------------------------------------------------------------------
 @Component({
-  moduleId:    module.id,
   selector:    'auth-login',
   templateUrl: './auth-login.component.html',
 })
@@ -40,11 +39,11 @@ export class AuthLoginComponent  implements OnInit {
   // Initialize component
   // ------------------------------------------------------
   login(form: any) {
-    
+
     let navigationExtras: NavigationExtras = {
       preserveFragment: true
     };
-    
+
     this.submitted = true;
     this.submitButton = 'Signing in...';
     this.iDavis.values.authenticate.email = form.value.email;
@@ -90,7 +89,7 @@ export class AuthLoginComponent  implements OnInit {
         }
       });
   }
-  
+
   ngOnInit() {
     this.iDavis.isBreadcrumbsVisible = false;
   }
