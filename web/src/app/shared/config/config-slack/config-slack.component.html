@@ -93,11 +93,11 @@
             OAuth & Permissions - Redirect URL
           </label>
           <div class="input-button-wrapper" [class.input-button-wrapper-focus]="isRedirectUriFocused">
-              <input type="text" id="redirectUri" name="redirectUri" class="input-button-input" 
+              <input #redirectUri type="text" id="redirectUri" name="redirectUri" class="input-button-input" 
                   [(ngModel)]="iConfig.values.slack.redirectUri" 
                   (focus)="isRedirectUriFocused = true" (blur)="isRedirectUriFocused = false" (click)="iDavis.clickElem('redirectUriBtn')" readonly>
               
-              <div id="redirectUriBtn" class="input-button-button clipboard" [ngxClipboard]="redirectUri">
+              <div id="redirectUriBtn" class="input-button-button clipboard" data-clipboard-target="#redirectUri">
                 <svg class="icon icon--black icon--input-button-img" [class.input-button-img-password-masked]="!isRedirectUriFocused">
                   <use xlink:href="#cut"></use>
                 </svg>
@@ -113,7 +113,7 @@
                   [(ngModel)]="requestUri"
                   (focus)="isRequestUriFocused = true" (blur)="isRequestUriFocused = false" (click)="iDavis.clickElem('requestUriBtn')" readonly>
   
-              <div id="requestUriBtn" class="input-button-button clipboard" [ngxClipboard]="requestUri">
+              <div id="requestUriBtn" class="input-button-button clipboard" data-clipboard-target="#requestUri">
                 <svg class="icon icon--black icon--input-button-img" [class.input-button-img-password-masked]="!isRequestUriFocused">
                   <use xlink:href="#cut"></use>
                 </svg>

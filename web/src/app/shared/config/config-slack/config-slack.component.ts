@@ -5,6 +5,7 @@ import { Router }    from '@angular/router';
 import { ConfigService } from '../config.service';
 import { DavisService } from '../../davis.service';
 import * as _ from "lodash";
+import * as Clipboard from 'clipboard';
 
 @Component({
     selector: 'config-slack',
@@ -89,6 +90,7 @@ export class ConfigSlackComponent implements OnInit {
       this.iDavis.isBreadcrumbsVisible = true;
       setTimeout(() => {
         document.getElementsByName('clientId')[0].focus();
+        new Clipboard('.clipboard');
       }, 200);
       this.validate();
     }
