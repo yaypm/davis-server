@@ -83,13 +83,8 @@ export class ConfigUserComponent implements OnInit {
                   this.iConfig.removeDavisUser(this.iDavis.values.authenticate.email)
                     .then(res => {
                         if (res.success) {
-<<<<<<< HEAD
-                          this.iDavis.config['user'].success = true;
-
-=======
                           this.iConfig.status['user'].success = true;
                         
->>>>>>> Moved config related parameters and methods from davis.service to config.service #56
                             // Authenticate new user, update token
                             this.iDavis.values.authenticate.email = this.iDavis.values.user.email;
                             this.iDavis.values.authenticate.password = this.iDavis.values.user.password;
@@ -183,13 +178,9 @@ export class ConfigUserComponent implements OnInit {
       if (this.isNewUser) {
         this.submitButtonDefault = 'Add User';
       }
-<<<<<<< HEAD
-      this.iDavis.getTimezones()
-        .then(
-=======
+
       this.iConfig.getTimezones()
         .then( 
->>>>>>> Moved config related parameters and methods from davis.service to config.service #56
           response => {
             this.detectedTimezone = this.iDavis.getTimezone();
             this.iConfig.timezones = response.timezones;
