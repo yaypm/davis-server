@@ -10,6 +10,8 @@
 // Angular
 import { Injectable }             from "@angular/core";
 import { Router, CanActivate,
+         ActivatedRoute, 
+         NavigationExtras,
          ActivatedRouteSnapshot, 
          RouterStateSnapshot 
 }                                 from "@angular/router";
@@ -23,6 +25,11 @@ import { ConfigService }          from '../../shared/config/config.service';
 // ----------------------------------------------------------------------------
 @Injectable()
 export class ConfigGuard implements CanActivate {
+  
+  navigationExtras: NavigationExtras = {
+    preserveFragment: false //This may need to be set to true in the future, possible Angular bug
+  };
+  
   // ------------------------------------------------------
   // Inject services
   // ------------------------------------------------------
@@ -34,7 +41,12 @@ export class ConfigGuard implements CanActivate {
   // ------------------------------------------------------
   // Check if default user is created before routing
   // ------------------------------------------------------
-  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<boolean> | boolean {
+  canActivate(actRoute: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<boolean> | boolean {
+    if (window.location.hash) {
+      this.navigationExtras.fragment = window.location.hash.replace('#', '');
+    } else if (window.location.pathname.includes('configuration')) {
+      this.navigationExtras.fragment = 'configuration';
+    }
     if (!this.iConfig.isWizard && !this.iDavis.token) {
       return this.CheckUser();
     } else {
@@ -77,7 +89,7 @@ export class ConfigGuard implements CanActivate {
       return true;
     } else {
       this.iConfig.isWizard = false;
-      this.router.navigate(["/auth/login"]);
+      this.router.navigate(["/auth/login"], this.navigationExtras);
       return false;
     }
   }
@@ -87,7 +99,7 @@ export class ConfigGuard implements CanActivate {
   // ------------------------------------------------------
   CheckUserError(error: any) {
     this.iConfig.isWizard = false;
-    this.router.navigate(["/auth/login"]);
+    this.router.navigate(["/auth/login"], this.navigationExtras);
     return false;
   }
 }

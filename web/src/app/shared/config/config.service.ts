@@ -93,7 +93,7 @@ export class ConfigService {
   // ------------------------------------------------------
   selectView(newView: string) {
     this.view = newView;
-    this.location.go(`/configuration#${newView}`);
+    this.location.go(`/${ (this.isWizard) ? 'wizard' : 'configuration'}#${newView}`);
   }
   
   generateError(name: string, message: any) {
