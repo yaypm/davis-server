@@ -97,7 +97,7 @@
                   [(ngModel)]="iConfig.values.slack.redirectUri" 
                   (focus)="isRedirectUriFocused = true" (blur)="isRedirectUriFocused = false" (click)="iDavis.clickElem('redirectUriBtn')" readonly>
               
-              <div id="redirectUriBtn" class="input-button-button clipboard" data-clipboard-target="#redirectUri">
+              <div id="redirectUriBtn" class="input-button-button clipboard" [ngxClipboard]="redirectUri">
                 <svg class="icon icon--black icon--input-button-img" [class.input-button-img-password-masked]="!isRedirectUriFocused">
                   <use xlink:href="#cut"></use>
                 </svg>
@@ -113,7 +113,7 @@
                   [(ngModel)]="requestUri"
                   (focus)="isRequestUriFocused = true" (blur)="isRequestUriFocused = false" (click)="iDavis.clickElem('requestUriBtn')" readonly>
   
-              <div id="requestUriBtn" class="input-button-button clipboard" data-clipboard-target="#requestUri">
+              <div id="requestUriBtn" class="input-button-button clipboard" [ngxClipboard]="requestUri">
                 <svg class="icon icon--black icon--input-button-img" [class.input-button-img-password-masked]="!isRequestUriFocused">
                   <use xlink:href="#cut"></use>
                 </svg>

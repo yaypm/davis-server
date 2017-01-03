@@ -20,6 +20,7 @@ import { AppComponent } from "./app.component";
 
 // Modules
 import { AuthModule }              from "./auth/auth.module";
+import { ClipboardModule }         from "ngx-clipboard";
 import { ConfigurationModule }     from "./configuration/configuration.module";
 import { DavisModule }             from "./davis/davis.module";
 import { WizardModule }            from "./wizard/wizard.module";
@@ -47,6 +48,7 @@ import { DavisService } from "./shared/davis.service";
     AuthModule,
     AppRouting,
     BrowserModule,
+    ClipboardModule,
     ConfigurationModule,
     DavisModule,
     FormsModule,

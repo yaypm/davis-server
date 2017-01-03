@@ -81,7 +81,6 @@ export class ConfigurationBaseComponent implements OnInit {
           this.iConfig.selectView('user');
         }
       });
-<<<<<<< HEAD
     
     this.iConfig.status['user'].success = null;
     this.iConfig.status['user'].error = null;
@@ -92,18 +91,6 @@ export class ConfigurationBaseComponent implements OnInit {
   
     this.iConfig.helpLinkText = 'Help for these settings';  
   
-=======
-
-    this.iDavis.config['user'].success = null;
-    this.iDavis.config['user'].error = null;
-    this.iDavis.config['dynatrace'].success = null;
-    this.iDavis.config['dynatrace'].error = null;
-    this.iDavis.config['slack'].success = null;
-    this.iDavis.config['slack'].error = null;
-
-    this.iDavis.helpLinkText = 'Help for these settings';
-
->>>>>>> webpack
     this.iDavis.getDavisUser()
       .then(result => {
         if (result.success) {
