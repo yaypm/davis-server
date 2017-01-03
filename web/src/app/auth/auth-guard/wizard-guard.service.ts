@@ -12,7 +12,7 @@ import { Injectable }             from '@angular/core';
 import { Router, CanActivate,
          ActivatedRouteSnapshot, 
          RouterStateSnapshot, 
-         NavigationExtras 
+         NavigationExtras
 }                                 from '@angular/router';
 
 // Services
@@ -24,6 +24,11 @@ import { ConfigService }          from '../../shared/config/config.service';
 // ----------------------------------------------------------------------------
 @Injectable()
 export class WizardGuard implements CanActivate {
+  
+  navigationExtras: NavigationExtras = {
+    preserveFragment: false //This may need to be set to true in the future, possible Angular bug
+  };
+  
   // ------------------------------------------------------
   // Inject services
   // ------------------------------------------------------
@@ -36,6 +41,9 @@ export class WizardGuard implements CanActivate {
   // Check if default user is created before routing
   // ------------------------------------------------------
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<boolean> | boolean {
+    if (window.location.hash) {
+      this.navigationExtras.fragment = window.location.hash.replace('#', '');
+    }
     if (!this.iConfig.isWizard && !this.iDavis.token) {
       return this.CheckUser();
     } else {
@@ -77,7 +85,7 @@ export class WizardGuard implements CanActivate {
       return true;
     } else {
       this.iConfig.isWizard = false;
-      this.router.navigate(['/auth/login']);
+      this.router.navigate(["/auth/login"], this.navigationExtras);
       return false;
     }
   }
@@ -87,7 +95,7 @@ export class WizardGuard implements CanActivate {
   // ------------------------------------------------------
   CheckUserError(error: any) {
     this.iConfig.isWizard = false;
-    this.router.navigate(['/auth/login']);
+    this.router.navigate(["/auth/login"], this.navigationExtras);
     return false;
   }
 }
