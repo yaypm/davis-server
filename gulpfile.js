@@ -6,7 +6,6 @@ const wp = require('webpack');
 const fs = require('fs');
 const runSequence = require('run-sequence');
 const mocha = require('gulp-spawn-mocha');
-const merge = require('merge-stream');
 const update = require('gulp-update')();
 const rimraf = require('rimraf');
 const bump = require('gulp-bump');
@@ -17,8 +16,9 @@ const github = require('gulp-github-release');
 const spawn = require('child_process').spawn;
 const wpconfig = require('./webpack.config.js');
 
-require('dotenv').config();
+require('dotenv').config({ silent: true });
 
+const destinationFolder = 'web/dist';
 const options = minimist(process.argv.slice(2), {
   string: 'branch',
   default: { branch: '' },
@@ -101,35 +101,34 @@ gulp.task('clean', (cb) => {
   rimraf('./web/dist', cb);
 });
 
-function compile(config) {
-  const destinationFolder = 'web/dist';
+gulp.task('copy', ['copy:html', 'copy:assets']);
+gulp.task('copy:html', () =>
+  gulp.src('web/src/**/*.html').pipe(gulp.dest(destinationFolder)));
+gulp.task('copy:assets', () =>
+  gulp.src('web/src/assets/**/*').pipe(gulp.dest(`${destinationFolder}/assets`)));
 
-  const compiledTs = gulp.src('web/src/main.ts')
+function compile(config) {
+  return gulp.src('web/src/main.ts')
     .pipe(webpack(config))
     .pipe(gulp.dest('web/dist/'));
-
-  const copy = gulp.src([
-    'web/src/**/*.html',
-  ])
-    .pipe(gulp.dest(destinationFolder));
-
-
-  const assets = gulp.src([
-    'web/src/assets/**/*',
-  ])
-    .pipe(gulp.dest(`${destinationFolder}/assets`));
-
-  return merge(compiledTs, copy, assets);
 }
+
 gulp.task('compile', ['compile:prod']);
-gulp.task('compile:dev', ['compile:prod']);
-gulp.task('compile:prod', () => {
+gulp.task('compile:dev', ['copy'], () => compile(wpconfig));
+gulp.task('compile:prod', ['copy'], () => {
   wpconfig.plugins.push(new wp.optimize.UglifyJsPlugin());
   return compile(wpconfig);
 });
-gulp.task('watch', () => {
+
+gulp.task('watch', ['copy'], () => {
   wpconfig.watch = true;
-  return compile(wpconfig);
+  wpconfig.stats = wpconfig.stats || {};
+  wpconfig.stats.errorDetails = true;
+  compile(wpconfig);
+  return gulp.watch([
+    'web/src/**/*.html',
+    'web/src/assets/**/*',
+  ], ['copy']);
 });
 
 gulp.task('test', () =>

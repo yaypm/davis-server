@@ -40,6 +40,9 @@ const webpackConfig = {
     ],
   },
 
+  stats: {
+    errorDetails: true,
+  },
 };
 
 
