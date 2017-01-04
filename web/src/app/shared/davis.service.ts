@@ -30,7 +30,6 @@ export class DavisService {
       },
       admin: false
     },
-    davisInput: '',
   };
   
   route_names: any = {
@@ -83,6 +82,16 @@ export class DavisService {
     let options = new RequestOptions({ headers: headers });
 
     return this.http.get(`/api/v1/system/users/${this.values.authenticate.email}`, options)
+      .toPromise()
+      .then(this.extractData)
+      .catch(this.handleError);
+  }
+  
+  askDavis(phrase: string) {
+    let headers = new Headers({ 'Content-Type': 'application/json', 'x-access-token': this.token });
+    let options = new RequestOptions({ headers: headers });
+
+    return this.http.post(`/api/v1/web`, { phrase: phrase, timezone: this.values.user.timezone }, options)
       .toPromise()
       .then(this.extractData)
       .catch(this.handleError);

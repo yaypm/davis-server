@@ -24,7 +24,38 @@ import * as _                     from "lodash";
 
 export class DavisBaseComponent implements OnInit {
   
+  davisInput: string = '';
+  davisOutput: string = '';
+  davisMode: any;
+  modes: any = {
+    listening: {
+      title: 'Listening...',
+      name: 'listening'
+    },
+    processing: {
+      title: 'Processing...',
+      name: 'processing'
+    },
+    sleeping: {
+      title: 'Say "Hey davis" to wake me',
+      name: 'sleeping'
+    },
+    silent: {
+      title: 'Launch phrase disabled, click mic to wake me',
+      name: 'silent'
+    },
+    chat: {
+      title: 'Chat',
+      name: 'chat'
+    },
+    noMic: {
+      title: 'Chat - No mic detected',
+      name: 'Say "Hey davis" to wake me'
+    }
+  };
+  placeholder: string = 'Did anything happen last night?';
   isDavisInputFocused: boolean = false;
+  isDavisListening: boolean = false;
   
   // ------------------------------------------------------
   // Inject services
@@ -36,11 +67,26 @@ export class DavisBaseComponent implements OnInit {
   // ------------------------------------------------------
   
   doSubmit() {
+    this.iDavis.askDavis(this.davisInput)
+      .then(result => {this.davisOutput = result.response.visual.text;})
+      .catch(err => {console.log(err)});
+  }
+  
+  toggleListening(isListening: boolean) {
+    this.isDavisListening = isListening;
     
+    if (this.isDavisListening && !this.isDavisInputFocused) {
+      this.davisMode = this.modes.listening;
+    } else if (this.isDavisInputFocused) {
+      this.davisMode = this.modes.chat; 
+    } else {
+      this.davisMode = this.modes.silent;
+    }
   }
   
   ngOnInit() {
     this.iDavis.isBreadcrumbsVisible = true;
+    this.davisMode = this.modes.chat;
     
     if (!this.iDavis.values.user.email) {
       this.iDavis.getDavisUser()

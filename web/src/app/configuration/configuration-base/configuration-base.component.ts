@@ -101,7 +101,7 @@ export class ConfigurationBaseComponent implements OnInit {
             if (!result.user.name.first) this.iDavis.values.user.name.first = '';
             if (!result.user.name.last) this.iDavis.values.user.name.last = '';
           }
-          this.iDavis.values.original.user = _.cloneDeep(this.iDavis.values.user);
+          this.iConfig.values.original.user = _.cloneDeep(this.iDavis.values.user);
         } else {
           this.iConfig.generateError('user', result.message);
         }
