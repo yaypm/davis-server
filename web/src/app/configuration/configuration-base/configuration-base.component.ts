@@ -107,9 +107,7 @@ export class ConfigurationBaseComponent implements OnInit {
         }
       })
       .catch(err => {
-        if (JSON.stringify(err).includes('invalid token')) {
-          this.iDavis.logOut();
-        }
+        console.log(err);
       });
       
     this.iConfig.getDynatrace()

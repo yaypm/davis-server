@@ -19,6 +19,7 @@ export class ConfigAlexaComponent implements OnInit {
     public iConfig: ConfigService) { }
 
   doSubmit() {
+    this.submitted = true;
     if (this.iDavis.values.user.alexa_ids) {
       this.submitButton = 'Saving...';
       this.iConfig.connectAlexa()
@@ -44,8 +45,6 @@ export class ConfigAlexaComponent implements OnInit {
     } else {
       this.iConfig.selectView('slack');
     }
-
-    this.submitted = true;
   }
 
   validate() {

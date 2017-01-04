@@ -195,7 +195,7 @@ export class ConfigService {
     let headers = new Headers({ 'Content-Type': 'application/json', 'x-access-token': this.iDavis.token });
     let options = new RequestOptions({ headers: headers });
 
-    return this.http.put(`/api/v1/system/users/${this.values.user.email}`, { alexa_ids: this.values.user.alexa_ids }, options)
+    return this.http.put(`/api/v1/system/users/${this.iDavis.values.user.email}`, { alexa_ids: this.iDavis.values.user.alexa_ids }, options)
       .toPromise()
       .then(this.iDavis.extractData)
       .catch(this.iDavis.handleError);
