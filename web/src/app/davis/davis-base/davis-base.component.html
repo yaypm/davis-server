@@ -1,20 +1,25 @@
 <form (ngSubmit)="doSubmit()" #form="ngForm">
   <div class="layout is-flex has-islands">
     <div class="island island--center" style="padding: 16px; min-height: 600px">
+      {{ davisOutput }}
     </div>
   </div>
   <div class="layout is-flex has-islands">
     <div class="island island--center" style="padding: 16px">         
       <label for="davisInput" class="label">
-        Chat Mode
+        {{ davisMode.title }}
       </label>
       <div class="input-button-wrapper" [class.input-button-wrapper-focus]="isDavisInputFocused">
-        <input type="text" id="davisInput" name="davisInput" class="input-button-input" 
-          ngModel
-          (focus)="isDavisInputFocused = true" (blur)="isDavisInputFocused = false">
+        <input type="text" id="davisInput" 
+          name="davisInput" class="input-button-input" 
+          [(ngModel)]="davisInput"
+          [attr.placeholder]="placeholder"
+          (keyup.enter)="doSubmit()"
+          (focus)="isDavisInputFocused = true; toggleListening(false)"
+          (blur)="isDavisInputFocused = false">
         
-        <div class="input-button-button">
-          <svg class="icon icon--black icon--input-button-img" [class.input-button-img-password-masked]="!isDavisInputFocused">
+        <div *ngIf="false" class="input-button-button" (click)="toggleListening(!isDavisListening)">
+          <svg class="icon icon--black icon--input-button-img" [class.input-button-img-password-masked]="isDavisInputFocused || !isDavisListening">
             <use xlink:href="#mic"></use>
           </svg>
         </div>

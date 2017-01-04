@@ -82,7 +82,7 @@ export class ConfigSlackComponent implements OnInit {
         this.iConfig.isWizard = false;
         this.iDavis.isAdmin = true;
         this.iDavis.isAuthenticated = true;
-        this.router.navigate(['/configuration']);
+        this.router.navigate(['/davis']);
       }
     }
 
