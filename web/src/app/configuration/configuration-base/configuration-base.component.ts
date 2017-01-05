@@ -109,13 +109,8 @@ export class ConfigurationBaseComponent implements OnInit {
       .catch(err => {
         console.log(err);
       });
-<<<<<<< HEAD
-
-    this.iDavis.getDynatrace()
-=======
       
     this.iConfig.getDynatrace()
->>>>>>> Moved config related parameters and methods from davis.service to config.service #56
       .then(result => {
         if (result.success) {
           this.iConfig.values.dynatrace = result.dynatrace;
@@ -129,13 +124,8 @@ export class ConfigurationBaseComponent implements OnInit {
           this.iDavis.logOut();
         }
       });
-<<<<<<< HEAD
-
-    this.iDavis.getSlack()
-=======
       
     this.iConfig.getSlack()
->>>>>>> Moved config related parameters and methods from davis.service to config.service #56
       .then(result => {
         if (result.success) {
           this.iConfig.values.slack = result.slack;
