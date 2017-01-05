@@ -1,39 +1,38 @@
 // ============================================================================
-// Davis - MODULE
+// Shared davis - MODULE
 //
-// This module handles all functionality for the Davis section
+// This module handles all functionality for the davis components
 // ============================================================================
 
 // ----------------------------------------------------------------------------
 //  Imports
 // ----------------------------------------------------------------------------
 // Angular
-import { NgModule }               from "@angular/core";
-import { CommonModule }           from "@angular/common";
-import { FormsModule }            from '@angular/forms';
+import { NgModule }                 from "@angular/core";
+import { CommonModule }             from "@angular/common";
+import { FormsModule }              from "@angular/forms";
 
 // Components
-import { DavisBaseComponent } from "./davis-base/davis-base.component";
+import { DavisCardComponent }       from "./davis-card/davis-card.component";
 
-// Routes
-import { DavisRouting } from "./davis.routing";
-
-// Modules
-import { SharedDavisModule }      from '../shared/davis/shared-davis.module';
+// Services
 
 // ----------------------------------------------------------------------------
 // Module
 // ----------------------------------------------------------------------------
 @NgModule({
   declarations: [
-   DavisBaseComponent,
+    DavisCardComponent,
+  ],
+  exports: [
+    DavisCardComponent,
   ],
   imports: [
     CommonModule,
-    DavisRouting,
     FormsModule,
-    SharedDavisModule,
-  ]
+  ],
+  providers: [
+  ],
 })
 
-export class DavisModule { }
+export class SharedDavisModule { }

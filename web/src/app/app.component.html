@@ -51,93 +51,115 @@
   <path d="M356,172h-4c-4.4,0-8,3.6-8,8v78c0,38.7-31.3,70-70,70h-36c-38.7,0-70-31.3-70-70v-78c0-4.4-3.6-8-8-8h-4  c-15.5,0-28,12.5-28,28v58c0,60.1,48.2,108.9,108,110v72h-44c-11,0-20,9-20,20v8h168v-8c0-11-9-20-20-20h-44v-72  c59.8-1.1,108-49.9,108-110v-58C384,184.5,371.5,172,356,172z"/>
 </symbol>
 </svg>
+<svg xmlns="http://www.w3.org/2000/svg" style="width:0; height:0; display: none;">
+<symbol id="davis" viewBox="0 0 512 512">
+  <g xmlns="http://www.w3.org/2000/svg">
+	<path d="M312.425,297.628c-6.221,0-106.631,0-112.852,0c-27.202,0-42.082,10.711-36.931,43.027   c4.831,30.303,14.522,61.479,18.067,73.537c6.763,23.012,27.693,31.81,51.675,31.81h47.229c23.985,0,44.912-8.798,51.674-31.81   c3.545-12.059,13.236-43.234,18.068-73.537C354.512,308.339,339.627,297.628,312.425,297.628z"/>
+	<g>
+		<g>
+			<path d="M390.592,168.456c0-56.584-3.874-102.457-60.45-102.457c-2.521,0-141.481,0-147.465,0     c-56.576,0-60.45,45.873-60.45,102.449s-13.17,102.449,43.405,102.449c6.205,0,174.817,0,177.293,0     C399.501,270.897,390.592,225.024,390.592,168.456z M170.777,159.925c0-15.688,12.721-28.404,28.409-28.404     c15.688,0,28.408,12.717,28.408,28.404c0,15.697-12.721,28.414-28.408,28.414C183.498,188.339,170.777,175.622,170.777,159.925z      M255.999,232.888c-23.336,0-42.253-7.873-42.253-17.576h84.51C298.256,225.015,279.34,232.888,255.999,232.888z      M312.816,188.339c-15.688,0-28.408-12.717-28.408-28.414c0-15.688,12.721-28.404,28.408-28.404s28.408,12.717,28.408,28.404     C341.225,175.622,328.504,188.339,312.816,188.339z"/>
+		</g>
+		<g>
+			<path d="M414.596,127.884l-14.527-6.232c2.147,15.621,2.151,32.066,2.151,46.805     c0,6.916,0.134,13.707,0.267,20.281c0.179,8.896,0.337,17.445,0.146,25.533l12.767-5.168c3.092-2.205,5.613-6.975,5.613-10.602     v-61.262C421.012,133.61,418.12,129.399,414.596,127.884z"/>
+			<path d="M109.893,195.37c0.346-8.68,0.708-17.65,0.708-26.922c0-14.855,0.008-31.443,2.209-47.18l-15.404,6.615     c-3.525,1.516-6.417,5.727-6.417,9.355v61.262c0,3.627,2.518,8.396,5.605,10.602l12.717,5.145     C109.39,208.187,109.631,201.888,109.893,195.37z"/>
+		</g>
+	</g>
+	<g>
+		<path d="M364.122,383.974c6.94-8.888,16.341-25.018,9.804-42.711c-2.264-6.125-2.463-9.188-0.066-11.043    c3.732-2.889,8.572,0.906,12.305,5.059c19.687,21.863,34.68,58.441,19.25,82.109c-5.189,7.957-13.449,13.941-23.619,13.941    c-14.905,0-26.985-12.084-26.985-26.99C354.81,396.2,360.331,388.836,364.122,383.974z"/>
+		<path d="M147.876,383.974c-6.94-8.888-16.341-25.018-9.804-42.711c2.264-6.125,2.464-9.188,0.066-11.043    c-3.732-2.889-8.571,0.906-12.305,5.059c-19.687,21.863-34.68,58.441-19.249,82.109c5.188,7.957,13.448,13.941,23.618,13.941    c14.906,0,26.986-12.084,26.986-26.99C157.189,396.2,151.667,388.836,147.876,383.974z"/>
+	</g>
+</g>
+</symbol>
+</svg>
 
 <!-- Header -->
-<div class="nav has-no-secondary">
-  <a class="nav__brand" href="/">
-    <img class="nav__logo" src="https://help.dynatrace.com/assets/dynatrace-logo.svg" alt="dynatrace logo"/>
-  </a>
-  <div *ngIf="iDavis.isBreadcrumbsVisible" class="nav__buttongroup">
-    <a class="nav__btn btn--icon" [class.nav__btn-highlighted]="isUserMenuVisible" (click)="toggleUserMenu(); iDavis.isSidebarVisible = false">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon icon--white icon--nav__btn">
-        <use xlink:href="#user"></use>
-      </svg>
+<div style="position: fixed; width: 100%; top: 0; z-index: 1000">
+  <div class="nav has-no-secondary">
+    <a class="nav__brand" href="/">
+      <img class="nav__logo" src="https://help.dynatrace.com/assets/dynatrace-logo.svg" alt="dynatrace logo"/>
     </a>
-    <a class="nav__btn btn--icon hide-lg" [class.nav__btn-highlighted]="iDavis.isSidebarVisible" (click)="isUserMenuVisible = false; iDavis.isSidebarVisible = !iDavis.isSidebarVisible">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon icon--white icon--nav__btn">
-        <use xlink:href="#sidebar"></use>
-      </svg>
-    </a>
-  </div>
-  <nav class="nav__bar js-nav-toggle">
-  </nav>
-</div>
-<div *ngIf="isUserMenuVisible" class="nav__user-menu">
-  <div *ngIf="iDavis.isAuthenticated && !iConfig.isWizard" class="nav__user-menu-name">
-    {{ iDavis.values.user.name.first }} {{ iDavis.values.user.name.last }}
-  </div>
-  <div *ngIf="iDavis.isAuthenticated && !iConfig.isWizard" class="nav__user-menu-email">
-    {{ iDavis.values.user.email }}
-  </div>
-  <div *ngIf="iDavis.isAuthenticated && !iConfig.isWizard" class="nav__user-menu-section-break"></div>
-  <div *ngIf="iDavis.isAuthenticated && !iConfig.isWizard" class="nav__user-menu-section-title">
-    Account
-  </div>
-  <div *ngIf="iDavis.isAuthenticated && !iConfig.isWizard" class="nav__user-menu-section-item-wrapper" (click)="router.navigate(['/configuration']); isUserMenuVisible = false">
-    <div class="nav__user-menu-section-item">
-      Account settings
-    </div>
-  </div>
-  <div *ngIf="iDavis.isAuthenticated && !iConfig.isWizard" class="nav__user-menu-section-break"></div>
-  <div *ngIf="iConfig.isWizard" class="nav__user-menu-section-break-half"></div>
-  <div class="nav__user-menu-section-title">
-    External
-  </div>
-  <div class="nav__user-menu-section-item-wrapper" (click)="iDavis.windowOpen('https://github.com/Dynatrace/davis-server/wiki/Getting%20Started'); isUserMenuVisible = false">
-    <div class="nav__user-menu-section-item">
-      Documentation
-    </div>
-  </div>
-  <div class="nav__user-menu-section-item-wrapper" (click)="iDavis.windowOpen('https://github.com/Dynatrace/davis-server/issues/new'); isUserMenuVisible = false">
-    <div class="nav__user-menu-section-item">
-      Report an issue
-    </div>
-  </div>
-  <div class="nav__user-menu-section-item-wrapper" (click)="iDavis.windowOpen('https://www.dynatrace.com/blog/'); isUserMenuVisible = false">
-    <div class="nav__user-menu-section-item">
-      Dynatrace blog
-    </div>
-  </div>
-  <div class="nav__user-menu-section-break"></div>
-  <div *ngIf="iDavis.isAuthenticated && !iConfig.isWizard" class="nav__user-menu-section-item-wrapper" (click)="iDavis.logOut(); isUserMenuVisible = false">
-    <div class="nav__user-menu-section-item">
-      Sign out
-    </div>
-  </div>
-  <div *ngIf="!iDavis.isAuthenticated && !iConfig.isWizard" class="nav__user-menu-section-item-wrapper" (click)="router.navigate(['/auth/login']); isUserMenuVisible = false">
-    <div class="nav__user-menu-section-item">
-      Sign in
-    </div>
-  </div>
-  <div *ngIf="!iConfig.isWizard" class="nav__user-menu-section-break"></div>
-</div>
-<div *ngIf="isUserMenuVisible" class="disable_screen" (click)="isUserMenuVisible = false">
-</div>
-<div *ngIf="iDavis.isBreadcrumbsVisible">
-  <ul class="breadcrumbs">
-    <li class="breadcrumbs__item">
-      <a *ngIf="router.url !== '/davis'" class="breadcrumbs__link"
-        [class.disabled]="router.url === '/wizard'" 
-        (click)="(router.url !== '/wizard') ? router.navigate(['/davis']) : null">
-          davis
+    <div *ngIf="iDavis.isBreadcrumbsVisible" class="nav__buttongroup">
+      <a class="nav__btn btn--icon" [class.nav__btn-highlighted]="isUserMenuVisible" (click)="toggleUserMenu(); iDavis.isSidebarVisible = false">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon icon--white icon--nav__btn">
+          <use xlink:href="#user"></use>
+        </svg>
       </a>
-      <span *ngIf="router.url === '/davis'" class="breadcrumbs__last">davis</span>
-    </li>
-    <li class="breadcrumbs__item" *ngIf="router.url !== '/davis'">
-      <span class="breadcrumbs__last">{{ iDavis.route_names[router.url] }}</span>
-    </li>
-  </ul>
+      <a *ngIf="router.url.includes('/configuration')" class="nav__btn btn--icon hide-lg" (click)="isUserMenuVisible = false; iDavis.isSidebarVisible = !iDavis.isSidebarVisible">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon icon--white icon--nav__btn">
+          <use xlink:href="#sidebar"></use>
+        </svg>
+      </a>
+    </div>
+    <nav class="nav__bar js-nav-toggle">
+    </nav>
+  </div>
+  <div *ngIf="isUserMenuVisible" class="nav__user-menu">
+    <div *ngIf="iDavis.isAuthenticated && !iConfig.isWizard" class="nav__user-menu-name">
+      {{ iDavis.values.user.name.first }} {{ iDavis.values.user.name.last }}
+    </div>
+    <div *ngIf="iDavis.isAuthenticated && !iConfig.isWizard" class="nav__user-menu-email">
+      {{ iDavis.values.user.email }}
+    </div>
+    <div *ngIf="iDavis.isAuthenticated && !iConfig.isWizard" class="nav__user-menu-section-break"></div>
+    <div *ngIf="iDavis.isAuthenticated && !iConfig.isWizard" class="nav__user-menu-section-title">
+      Account
+    </div>
+    <div *ngIf="iDavis.isAuthenticated && !iConfig.isWizard" class="nav__user-menu-section-item-wrapper" (click)="router.navigate(['/configuration']); isUserMenuVisible = false">
+      <div class="nav__user-menu-section-item">
+        Account settings
+      </div>
+    </div>
+    <div *ngIf="iDavis.isAuthenticated && !iConfig.isWizard" class="nav__user-menu-section-break"></div>
+    <div *ngIf="iConfig.isWizard" class="nav__user-menu-section-break-half"></div>
+    <div class="nav__user-menu-section-title">
+      External
+    </div>
+    <div class="nav__user-menu-section-item-wrapper" (click)="iDavis.windowOpen('https://github.com/Dynatrace/davis-server/wiki/Getting%20Started'); isUserMenuVisible = false">
+      <div class="nav__user-menu-section-item">
+        Documentation
+      </div>
+    </div>
+    <div class="nav__user-menu-section-item-wrapper" (click)="iDavis.windowOpen('https://github.com/Dynatrace/davis-server/issues/new'); isUserMenuVisible = false">
+      <div class="nav__user-menu-section-item">
+        Report an issue
+      </div>
+    </div>
+    <div class="nav__user-menu-section-item-wrapper" (click)="iDavis.windowOpen('https://www.dynatrace.com/blog/'); isUserMenuVisible = false">
+      <div class="nav__user-menu-section-item">
+        Dynatrace blog
+      </div>
+    </div>
+    <div class="nav__user-menu-section-break"></div>
+    <div *ngIf="iDavis.isAuthenticated && !iConfig.isWizard" class="nav__user-menu-section-item-wrapper" (click)="iDavis.logOut(); isUserMenuVisible = false">
+      <div class="nav__user-menu-section-item">
+        Sign out
+      </div>
+    </div>
+    <div *ngIf="!iDavis.isAuthenticated && !iConfig.isWizard" class="nav__user-menu-section-item-wrapper" (click)="router.navigate(['/auth/login']); isUserMenuVisible = false">
+      <div class="nav__user-menu-section-item">
+        Sign in
+      </div>
+    </div>
+    <div *ngIf="!iConfig.isWizard" class="nav__user-menu-section-break"></div>
+  </div>
+  <div *ngIf="isUserMenuVisible" class="disable_screen" (click)="isUserMenuVisible = false">
+  </div>
+  <div *ngIf="iDavis.isBreadcrumbsVisible">
+    <ul class="breadcrumbs">
+      <li class="breadcrumbs__item">
+        <a *ngIf="router.url !== '/davis'" class="breadcrumbs__link"
+          [class.disabled]="router.url === '/wizard'" 
+          (click)="(router.url !== '/wizard') ? router.navigate(['/davis']) : null">
+            davis
+        </a>
+        <span *ngIf="router.url === '/davis'" class="breadcrumbs__last">davis</span>
+      </li>
+      <li class="breadcrumbs__item" *ngIf="router.url !== '/davis'">
+        <span class="breadcrumbs__last">{{ iDavis.route_names[router.url] }}</span>
+      </li>
+    </ul>
+  </div>
 </div>
-
+<div style="width: 100%; height: 74px;"></div>
 <!-- Content -->
 <router-outlet></router-outlet>

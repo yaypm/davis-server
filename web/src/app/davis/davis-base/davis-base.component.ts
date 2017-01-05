@@ -10,9 +10,8 @@
 // Angular
 import { Component, OnInit }      from '@angular/core';
 import { Router }                 from '@angular/router';
-import { ConfigService }          from '../../shared/config/config.service';
 import { DavisService }           from '../../shared/davis.service';
-import * as _                     from "lodash";
+import * as _                     from 'lodash';
 
 // ----------------------------------------------------------------------------
 // Class
@@ -60,16 +59,31 @@ export class DavisBaseComponent implements OnInit {
   // ------------------------------------------------------
   // Inject services
   // ------------------------------------------------------
-  constructor(public router: Router, public iConfig: ConfigService, public iDavis: DavisService) { }
+  constructor(public router: Router, public iDavis: DavisService) { }
 
   // ------------------------------------------------------
   // Initialize component
   // ------------------------------------------------------
   
   doSubmit() {
-    this.iDavis.askDavis(this.davisInput)
-      .then(result => {this.davisOutput = result.response.visual.text;})
-      .catch(err => {console.log(err)});
+    let phrase = this.davisInput;
+    if (phrase.length > 0) {
+      this.addToConvo({visual: {text: phrase}}, false);
+      this.iDavis.windowScrollBottom();
+      this.davisInput = '';
+      this.iDavis.askDavis(phrase)
+        .then(result => {
+          this.addToConvo(result.response, true);
+          setTimeout(() => {
+            this.iDavis.windowScrollBottom();
+          }, 100);
+        }).catch(err => {console.log(err)});
+    }
+  }
+  
+  addToConvo(message: any, isDavis: boolean) {
+    message.isDavis = isDavis;
+    this.iDavis.conversation.push(message);
   }
   
   toggleListening(isListening: boolean) {
@@ -86,7 +100,7 @@ export class DavisBaseComponent implements OnInit {
   
   ngOnInit() {
     this.iDavis.isBreadcrumbsVisible = true;
-    this.davisMode = this.modes.chat;
+    this.davisMode = this.modes.noMic;
     
     if (!this.iDavis.values.user.email) {
       this.iDavis.getDavisUser()
@@ -101,7 +115,7 @@ export class DavisBaseComponent implements OnInit {
             }
             this.iDavis.values.original.user = _.cloneDeep(this.iDavis.values.user);
           } else {
-            this.iConfig.generateError('user', result.message);
+            console.log(result.message);
           }
         })
         .catch(err => {

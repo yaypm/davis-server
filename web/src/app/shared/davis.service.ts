@@ -2,8 +2,9 @@ import {Injectable}                from '@angular/core';
 import { Router }                  from '@angular/router';
 import { Http, Response }          from '@angular/http';
 import { Headers, RequestOptions } from '@angular/http';
-import * as moment from 'moment';
-import * as momentz from 'moment-timezone';
+import * as moment                 from 'moment';
+import * as momentz                from 'moment-timezone';
+import * as $                      from 'jquery';
 
 @Injectable()
 export class DavisService {
@@ -31,6 +32,8 @@ export class DavisService {
       admin: false
     },
   };
+  
+  conversation: Array<any> = [];
   
   route_names: any = {
     '/wizard': 'Setup',
@@ -121,6 +124,11 @@ export class DavisService {
 
   windowOpen(url:string): void {
     window.open(url);
+  }
+  
+  windowScrollBottom(): void {
+    // window.scrollTo(0, document.body.scrollHeight);
+    $("html, body").animate({ scrollTop: $(document).height() }, "slow");
   }
   
   addToChrome(): void {

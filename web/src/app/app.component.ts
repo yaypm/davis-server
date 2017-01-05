@@ -8,14 +8,14 @@
 // Imports
 // ----------------------------------------------------------------------------
 // Angular
-import { Http, Headers }      from '@angular/http';
-import { Component }          from "@angular/core";
-import { Router }             from "@angular/router";
+import { Http, Headers }        from '@angular/http';
+import { Component }            from "@angular/core";
+import { Router }               from "@angular/router";
 
 // Third party
 import "./rxjs-operators";
-import { ConfigService }      from "./shared/config/config.service";
-import { DavisService }       from "./shared/davis.service";
+import { ConfigService }        from "./shared/config/config.service";
+import { DavisService }         from "./shared/davis.service";
 
 declare var dT_ : any;
 
@@ -28,6 +28,7 @@ declare var dT_ : any;
 })
 
 export class AppComponent {
+   
   isUserMenuVisible: boolean = false;
 
   constructor(

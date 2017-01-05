@@ -71,6 +71,14 @@ const defaultConfig = {
     clearImmediate: false,
     setImmediate: false,
   },
+  
+  plugins: [
+    new webpack.ProvidePlugin({
+      jQuery: 'jquery',
+      $: 'jquery',
+      jquery: 'jquery'
+    })
+  ],
 };
 
 
