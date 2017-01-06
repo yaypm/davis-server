@@ -14,6 +14,7 @@ export class DavisService {
 
   token: string;
   isBreadcrumbsVisible: boolean = false;
+  isUserMenuVisible: boolean = false;
   
   values: any = {
     authenticate: {
@@ -42,6 +43,24 @@ export class DavisService {
 
   constructor (private http: Http, private router: Router) {}
   
+  goToPage(location: string): void {
+    if (this.router.url !== '/wizard') {
+      
+      if (location === '/davis') {
+        this.windowScrollBottom(1);
+      } else {
+        this.windowScrollTop();
+      }
+      
+      this.router.navigate([location]);
+      this.isUserMenuVisible = false;
+    }
+  }
+  
+  toggleUserMenu(): void {
+    this.isUserMenuVisible = !this.isUserMenuVisible;
+  }
+  
   logOut(): void {
     
     this.values.authenticate = {
@@ -61,12 +80,14 @@ export class DavisService {
       admin: false,
     };
     
+    this.isUserMenuVisible = false;
     this.isAuthenticated = false;
     this.isAdmin = false;
     this.token = null;
     sessionStorage.removeItem('email');
     sessionStorage.removeItem('token');
     sessionStorage.removeItem('isAdmin');
+    this.windowScrollTop();
     this.router.navigate(["/auth/login"]);
   }
 
@@ -123,12 +144,16 @@ export class DavisService {
   }
 
   windowOpen(url:string): void {
+    this.isUserMenuVisible = false;
     window.open(url);
   }
   
-  windowScrollBottom(): void {
-    // window.scrollTo(0, document.body.scrollHeight);
-    $("html, body").animate({ scrollTop: $(document).height() }, "slow");
+  windowScrollTop(): void {
+    window.scrollTo(0, 0);
+  }
+  
+  windowScrollBottom(speed: any): void {
+    $("html, body").animate({ scrollTop: $(document).height() }, speed);
   }
   
   addToChrome(): void {

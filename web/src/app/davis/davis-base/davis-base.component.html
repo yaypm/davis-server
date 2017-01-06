@@ -28,7 +28,7 @@
             (blur)="isDavisInputFocused = false"
             [attr.autofocus]="davisMode.name === 'noMic'">
           
-          <div *ngIf="davisMode.name === 'noMic'" class="input-button-button" (click)="toggleListening(!isDavisListening)">
+          <div *ngIf="davisMode.name !== 'noMic'" class="input-button-button" (click)="toggleListening(!isDavisListening)">
             <svg class="icon icon--black icon--input-button-img" [class.input-button-img-password-masked]="isDavisInputFocused || !isDavisListening">
               <use xlink:href="#mic"></use>
             </svg>
