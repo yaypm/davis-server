@@ -31,7 +31,7 @@
       <thead>
         <tr>
           <th>Name</th>
-          <th>Admin</th>
+          <th style="width: 100px">Admin</th>
         </tr>
       </thead>
     </table>
@@ -40,10 +40,10 @@
         <tbody>
           <tr *ngFor='let user of users | filterUsersByName:filterName' (click)="editMode(user)">
             <td>
-                  {{ user.name.last }}, {{ user.name.first }}
+              {{ user.name.last }}, {{ user.name.first }}
             </td>
-            <td>
-                {{ (user.admin) ? '&#x2713;' : '' }}
+            <td style="width: 100px">
+              {{ (user.admin) ? '&#x2713;' : null }}
             </td>
           </tr>
         </tbody>
