@@ -124,6 +124,7 @@ export class ConfigUserComponent implements OnInit {
               } else {
                 this.iConfig.status['user'].success = false;
                 this.iConfig.status['user'].error = result.message;
+
                 this.submitButton = this.submitButtonDefault;
               }
             },

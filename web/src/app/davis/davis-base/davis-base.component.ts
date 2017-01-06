@@ -9,8 +9,9 @@
 // ----------------------------------------------------------------------------
 // Angular
 import { Component, OnInit, 
-         AfterViewInit }       from '@angular/core';
+         AfterViewInit }          from '@angular/core';
 import { Router }                 from '@angular/router';
+import { ConfigService }          from '../../shared/config/config.service';
 import { DavisService }           from '../../shared/davis.service';
 import * as _                     from 'lodash';
 
@@ -61,7 +62,7 @@ export class DavisBaseComponent implements OnInit, AfterViewInit {
   // ------------------------------------------------------
   // Inject services
   // ------------------------------------------------------
-  constructor(public router: Router, public iDavis: DavisService) { }
+  constructor(public router: Router, public iConfig: ConfigService, public iDavis: DavisService) { }
 
   // ------------------------------------------------------
   // Initialize component
