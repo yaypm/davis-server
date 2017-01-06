@@ -1,27 +1,27 @@
 <form (ngSubmit)="doSubmit()" #form="ngForm">
 <div class="layout is-flex has-islands">
-  <div class="island--full-width" [class.island--full-width-sidebar]="!iDavis.isWizard">
+  <div class="island--full-width" [class.island--full-width-sidebar]="!iConfig.isWizard">
     <div class="config-title">
       Connect to Slack App
     </div>
-    <div *ngIf="iDavis.isWizard" class="wizard-step-number">
+    <div *ngIf="iConfig.isWizard" class="wizard-step-number">
       Step 4 of 4
     </div>
     <a href="https://github.com/Dynatrace/davis-server/wiki/Setup%20Slack" target="_blank" class="config-help">
-      {{ iDavis.helpLinkText }}
+      {{ iConfig.helpLinkText }}
     </a>
   </div>
-  <div *ngIf="iDavis.config['slack'].success === false" class="island--full-width island--error" [class.island--full-width-sidebar]="!iDavis.isWizard">
-    {{ iDavis.config['slack'].error }}
+  <div *ngIf="iConfig.status['slack'].success === false" class="island--full-width island--error" [class.island--full-width-sidebar]="!iConfig.isWizard">
+    {{ iConfig.status['slack'].error }}
   </div>
   <div class="layout is-flex has-islands island--half">
     <div class="layout__container layout--half">
-      <div class="island" [class.island--sidebar-left]="!iDavis.isWizard">
+      <div class="island" [class.island--sidebar-left]="!iConfig.isWizard">
         <div class="island island--full">
           <ul class="list" 
-            *ngIf="iDavis.isWizard || isDirty 
-              || !iDavis.values.slack.clientId || !iDavis.values.slack.clientSecret 
-              || iDavis.values.slack.clientId.length < 1 || iDavis.values.slack.clientSecret.length < 1">
+            *ngIf="iConfig.isWizard || isDirty 
+              || !iConfig.values.slack.clientId || !iConfig.values.slack.clientSecret 
+              || iConfig.values.slack.clientId.length < 1 || iConfig.values.slack.clientSecret.length < 1">
             <li>
               <a href="https://api.slack.com/apps" target="_blank">
                 Create a new Slack App on Slack's website
@@ -41,9 +41,9 @@
             </li>
           </ul>
           <ul class="list"  
-            *ngIf="!iDavis.isWizard && !isDirty && form.valid 
-              && (iDavis.values.slack.clientId && iDavis.values.slack.clientId.length > 1)
-              && (iDavis.values.slack.clientSecret && iDavis.values.slack.clientSecret.length > 1)">
+            *ngIf="!iConfig.isWizard && !isDirty && form.valid 
+              && (iConfig.values.slack.clientId && iConfig.values.slack.clientId.length > 1)
+              && (iConfig.values.slack.clientSecret && iConfig.values.slack.clientSecret.length > 1)">
             <li>
               It appears that this davis Slack App instance has already been added to at least one Slack team. 
               If you would like to add davis to another team or your authentication tokens were revoked, please follow the steps below. 
@@ -63,23 +63,23 @@
       </div>
     </div>
     <div class="layout__container layout--half">
-      <div class="island" [class.island--sidebar-right]="!iDavis.isWizard">
-        <div class="island island--full" *ngIf="!iDavis.config['slack'].success">
+      <div class="island" [class.island--sidebar-right]="!iConfig.isWizard">
+        <div class="island island--full" *ngIf="!iConfig.status['slack'].success">
           <label for="clientId" class="label">
             Client ID
           </label>
-          <input type="text" id="clientId" class="inputfield" name="clientId" [(ngModel)]="iDavis.values.slack.clientId" (keyup)="validate()">
+          <input type="text" id="clientId" class="inputfield" name="clientId" [(ngModel)]="iConfig.values.slack.clientId" (keyup)="validate()">
         </div>
-        <div class="island island--full" *ngIf="!iDavis.config['slack'].success">           
+        <div class="island island--full" *ngIf="!iConfig.status['slack'].success">           
           <label for="clientSecret" class="label">
             Client Secret
           </label>
           <div class="input-button-wrapper" [class.input-button-wrapper-focus]="isSecretFocused">
             <input *ngIf="isSecretMasked" type="password" name="clientSecret" id="clientSecret" class="input-button-input" 
-                [(ngModel)]="iDavis.values.slack.clientSecret" 
+                [(ngModel)]="iConfig.values.slack.clientSecret" 
                 (focus)="isSecretFocused = true" (blur)="isSecretFocused = false" (keyup)="validate()">
             <input *ngIf="!isSecretMasked" type="text" name="clientSecretText" id="clientSecret" class="input-button-input" 
-                [(ngModel)]="iDavis.values.slack.clientSecret" (focus)="isSecretFocused = true" (blur)="isSecretFocused = false" (keyup)="validate()">
+                [(ngModel)]="iConfig.values.slack.clientSecret" (focus)="isSecretFocused = true" (blur)="isSecretFocused = false" (keyup)="validate()">
             
             <div class="input-button-button" (click)="isSecretMasked = !isSecretMasked">
               <svg class="icon icon--black icon--input-button-img" [class.input-button-img-password-masked]="isSecretMasked">
@@ -88,13 +88,13 @@
             </div>
           </div>
         </div>
-        <div class="island island--full" *ngIf="!iDavis.config['slack'].success">         
+        <div class="island island--full" *ngIf="!iConfig.status['slack'].success">         
           <label for="redirectUri" class="label">
             OAuth & Permissions - Redirect URL
           </label>
           <div class="input-button-wrapper" [class.input-button-wrapper-focus]="isRedirectUriFocused">
-              <input type="text" id="redirectUri" name="redirectUri" class="input-button-input" 
-                  [(ngModel)]="iDavis.values.slack.redirectUri" 
+              <input #redirectUri type="text" id="redirectUri" name="redirectUri" class="input-button-input" 
+                  [(ngModel)]="iConfig.values.slack.redirectUri" 
                   (focus)="isRedirectUriFocused = true" (blur)="isRedirectUriFocused = false" (click)="iDavis.clickElem('redirectUriBtn')" readonly>
               
               <div id="redirectUriBtn" class="input-button-button clipboard" data-clipboard-target="#redirectUri">
@@ -104,7 +104,7 @@
               </div>
           </div>
         </div>      
-        <div class="island island--full" *ngIf="!iDavis.config['slack'].success">
+        <div class="island island--full" *ngIf="!iConfig.status['slack'].success">
           <label for="requestUri" class="label">
             Interactive Messages - Request URL
           </label>
@@ -121,25 +121,25 @@
           </div>
         </div>
         <div class="island island--full island--submit" 
-          *ngIf="!iDavis.isWizard && !isDirty && form.valid 
-            && (iDavis.values.slack.clientId && iDavis.values.slack.clientId.length > 1)
-            && (iDavis.values.slack.clientSecret && iDavis.values.slack.clientSecret.length > 1)">
-          <a href="https://slack.com/oauth/authorize?scope=incoming-webhook,commands,bot&client_id={{ iDavis.values.slack.clientId }}" 
+          *ngIf="!iConfig.isWizard && !isDirty && form.valid 
+            && (iConfig.values.slack.clientId && iConfig.values.slack.clientId.length > 1)
+            && (iConfig.values.slack.clientSecret && iConfig.values.slack.clientSecret.length > 1)">
+          <a href="https://slack.com/oauth/authorize?scope=incoming-webhook,commands,bot&client_id={{ iConfig.values.slack.clientId }}" 
             style="display: block; margin: 0 auto; width: 139px">
             <img class="slack-button" alt="Add to Slack" height="40" width="139" src="https://platform.slack-edge.com/img/add_to_slack.png"
               srcset="https://platform.slack-edge.com/img/add_to_slack.png 1x, https://platform.slack-edge.com/img/add_to_slack@2x.png 2x" />
           </a>
         </div>
-        <div class="island island--full island--submit" *ngIf="!iDavis.config['slack'].success 
-          && (iDavis.isWizard || isDirty || !iDavis.values.slack.clientId || iDavis.values.slack.clientId.length < 2)">
+        <div class="island island--full island--submit" *ngIf="!iConfig.status['slack'].success 
+          && (iConfig.isWizard || isDirty || !iConfig.values.slack.clientId || iConfig.values.slack.clientId.length < 2)">
           <button type="submit" class="btn btn--primary btn--submit"
             [class.btn--warning]="submitButton === 'Skip and Finish'" 
             [attr.disabled]="
-              (((!iDavis.values.slack.clientId || !iDavis.values.slack.clientSecret) && !iDavis.isWizard) 
-                || (iDavis.values.slack.clientId && iDavis.values.slack.clientId.length < 23 && !iDavis.isWizard) 
-                || (iDavis.values.slack.clientSecret && iDavis.values.slack.clientSecret.length < 32 && !iDavis.isWizard) 
+              (((!iConfig.values.slack.clientId || !iConfig.values.slack.clientSecret) && !iConfig.isWizard) 
+                || (iConfig.values.slack.clientId && iConfig.values.slack.clientId.length < 23 && !iConfig.isWizard) 
+                || (iConfig.values.slack.clientSecret && iConfig.values.slack.clientSecret.length < 32 && !iConfig.isWizard) 
                 || submitButton === 'Saving...' 
-                || (!isDirty && !iDavis.isWizard)) ? true : null">
+                || (!isDirty && !iConfig.isWizard)) ? true : null">
             {{ submitButton }}
           </button>
         </div>

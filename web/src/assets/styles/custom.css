@@ -96,11 +96,16 @@ form {
   width: 380px;
   height: 380px;}
 
-.island--login-error {
-  height: 410px;}
-
 .island--login-row {
   padding: 8px 16px;}
+  
+.island--login-error {
+  margin: 12px 28px;
+  font-size: 14px;
+  padding: 8px 11px;}
+  
+.island--login-error-height {
+  height: 410px;}
 
 .icon--back {
   cursor: pointer;
@@ -123,7 +128,7 @@ form {
   position: absolute;
   top: 44px;
   right: 0;
-  z-index: 100;
+  z-index: 1000;
   width: 320px;
   color: white;
   background-color: #525252;}
@@ -192,12 +197,12 @@ form {
   margin: 0 auto;}
   
 .disable_screen {
-  position:absolute;
+  position: fixed;
   top: 44px;
   left: 0;
-  z-index: 99;
+  z-index: 999;
   width: 100%;
-  height: calc(100% - 44px);;
+  height: calc(100% - 44px);
   background-color: rgba(0, 0, 0, 0.3);}
   
 /* Input field with inline button */
@@ -244,7 +249,10 @@ input[type=text].input-button-input:focus, input[type=email].input-button-input:
   opacity: 0.3;}
   
 input:invalid {
-    box-shadow: none;}
+  box-shadow: none;}
+    
+input:-webkit-autofill {
+  -webkit-box-shadow: 0 0 0px 1000px white inset;}
   
 /* Checkbox */
 .checkbox__caption {
@@ -303,7 +311,7 @@ select:focus {
 ::-webkit-scrollbar-track {
   border: 0px none #ffffff;
   border-radius: 50px;
-  background-color: white;}
+  background-color: transparent;}
 
 ::-webkit-scrollbar-corner {
   background: transparent;}
@@ -356,7 +364,7 @@ select:focus {
   width: 80px;
   height: 80px;
   margin: 0 auto;
-  margin-top: 30%;
+  margin-top: 275px;
   -webkit-animation: rotate-all 1s linear infinite;
   animation: rotate-all 1s linear infinite;}
 
@@ -447,3 +455,130 @@ select:focus {
   to {
     -webkit-transform: rotate(360deg);
             transform: rotate(360deg);} }
+            
+/* Chat styling */
+.island--davisInput {
+  position: fixed; 
+  bottom: 0; 
+  padding: 0; 
+  margin: 0;
+  background-color: white;  
+}
+
+.island--davisInput-border {
+  border-top: 0;
+  padding: 16px;
+  padding-bottom: 30px;
+  bottom-left-border-radius: 0; 
+  bottom-right-border-radius: 0;
+}
+
+.island--davisInput-border-full-width {
+  border-top: 2px solid #f8f8f8;
+  bottom-left-border-radius: 0; 
+  bottom-right-border-radius: 0;
+}
+
+.icon--davis {
+  width: 25px; 
+  height: 25px;
+}
+
+.island--isDavis {
+  background-color: white;
+}
+
+.island--isUser {
+  background-color: #e0f4fc;
+}
+
+.circle-left {
+  position: absolute;
+  margin-top: -23px;
+  margin-left: -7px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: #00a1b2;
+  color: white;
+  font-size: 16px;
+  padding-top: 8px;
+  text-align: center; }
+  
+.triangle-left {}
+
+.circle-right {
+  position: absolute;
+  margin-top: -23px;
+  margin-left: calc(100% - 32px);
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: #6d6d6d;
+  color: white;
+  font-size: 16px;
+  padding-top: 9px;
+  text-align: center; }
+  
+.triangle-right {}
+    
+@media (min-width: 750px) {
+  
+  .island--davisInput {
+    background-color: transparent;  
+  }
+  
+  .island--davisInput-border {
+    border-top: 2px solid #f8f8f8;
+  }
+  
+  .island--davisInput-border-full-width {
+    border-top: 0;
+  }
+  
+  .icon--davis {
+    margin-top: 1px;
+    width: 35px; 
+    height: 35px;
+  }
+
+  .circle-left {
+    position: absolute; 
+    margin-top: 0px; 
+    margin-left: -72px; 
+    width: 56px; 
+    height: 56px; 
+    font-size: 25px; 
+    padding-top: 10px; }
+  
+  .triangle-left {
+    position: absolute;
+    width: 0;
+  	height: 0;
+  	margin-top: 20px;
+  	margin-left: -10px;
+  	border-top: 10px solid transparent;
+  	border-bottom: 10px solid transparent;
+  	border-right: 10px solid white; }
+    
+  .circle-right {
+    position: absolute; 
+    margin-top: 0px; 
+    margin-left: 616px; 
+    width: 56px; 
+    height: 56px; 
+    font-size: 25px; 
+    padding-top: 10px; } 
+    
+  .triangle-right {
+    position: absolute;
+    width: 0;
+  	height: 0;
+  	margin-top: 20px;
+  	margin-left: 600px;
+  	border-top: 10px solid transparent;
+  	border-bottom: 10px solid transparent;
+  	border-left: 10px solid #e0f4fc; } }
+    
+form.card-form {
+  min-height: 0; }

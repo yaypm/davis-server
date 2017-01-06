@@ -10,10 +10,13 @@
 // Angular
 import { Injectable } from "@angular/core";
 import { Router, CanActivate,
-         ActivatedRouteSnapshot, RouterStateSnapshot } from "@angular/router";
+         ActivatedRouteSnapshot, 
+         RouterStateSnapshot 
+}                                 from "@angular/router";
 
 // Services
-import { DavisService } from "../../shared/davis.service";
+import { DavisService }           from "../../shared/davis.service";
+import { ConfigService }          from '../../shared/config/config.service';
 
 // ----------------------------------------------------------------------------
 // Class
@@ -24,6 +27,7 @@ export class DavisGuard implements CanActivate {
   // Inject services
   // ------------------------------------------------------
   constructor(
+    public iConfig: ConfigService,
     public iDavis: DavisService,
     public router: Router) {}
 
@@ -31,7 +35,7 @@ export class DavisGuard implements CanActivate {
   // Check if default user is created before routing
   // ------------------------------------------------------
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<boolean> | boolean {
-    if (!this.iDavis.isWizard && !this.iDavis.token) {
+    if (!this.iConfig.isWizard && !this.iDavis.token) {
       return this.CheckUser();
     } else {
       return true;
@@ -57,7 +61,7 @@ export class DavisGuard implements CanActivate {
   // ------------------------------------------------------
   CheckUserResponse(response: any) {
     if (response.success) {
-      this.iDavis.isWizard = true;
+      this.iConfig.isWizard = true;
       this.iDavis.token = response.token;
       this.iDavis.values.user.admin = true;
       this.router.navigate(["/wizard"]);
@@ -65,14 +69,14 @@ export class DavisGuard implements CanActivate {
     } else if (sessionStorage.getItem('token') 
         && sessionStorage.getItem('isAdmin')
         && sessionStorage.getItem('email')) {
-      this.iDavis.isWizard = false;
+      this.iConfig.isWizard = false;
       this.iDavis.token = sessionStorage.getItem('token'); 
       this.iDavis.isAuthenticated = true;
       this.iDavis.isAdmin = sessionStorage.getItem('isAdmin') === 'true';
       this.iDavis.values.authenticate.email = sessionStorage.getItem('email');
       return true;
     } else {
-      this.iDavis.isWizard = false;
+      this.iConfig.isWizard = false;
       this.router.navigate(["/auth/login"]);
       return false;
     }
@@ -82,7 +86,7 @@ export class DavisGuard implements CanActivate {
   // Handle check user error
   // ------------------------------------------------------
   CheckUserError(error: any) {
-    this.iDavis.isWizard = false;
+    this.iConfig.isWizard = false;
     this.router.navigate(["/auth/login"]);
     return false;
   }

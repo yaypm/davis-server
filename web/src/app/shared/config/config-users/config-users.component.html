@@ -4,7 +4,7 @@
       User Accounts
     </div>
     <a href="https://github.com/Dynatrace/davis-server/wiki/Getting%20Started" target="_blank" class="config-help">
-      {{ iDavis.helpLinkText }}
+      {{ iConfig.helpLinkText }}
     </a>
   </div>
   <div class="island--full-width island--full-width-sidebar island--center island--left" style="padding-top: 20px">
@@ -55,4 +55,4 @@
 <svg *ngIf="editUser" class="icon--back" (click)="editUser = false">
   <use xlink:href="#back"></use>
 </svg>
-<config-user *ngIf="addUser || iDavis.values.original.otherUser.first || editUser" [isNewUser]="addUser" [isMyUser]="false" (showUsersList)="showUsers()"></config-user>
+<config-user *ngIf="addUser || iConfig.values.original.otherUser.first || editUser" [isNewUser]="addUser" [isMyUser]="false" (showUsersList)="showUsers()"></config-user>

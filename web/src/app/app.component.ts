@@ -8,12 +8,16 @@
 // Imports
 // ----------------------------------------------------------------------------
 // Angular
-import { Component } from "@angular/core";
-import { Router } from "@angular/router";
+import { Http, Headers }        from '@angular/http';
+import { Component }            from "@angular/core";
+import { Router }               from "@angular/router";
 
 // Third party
 import "./rxjs-operators";
-import { DavisService } from "./shared/davis.service";
+import { ConfigService }        from "./shared/config/config.service";
+import { DavisService }         from "./shared/davis.service";
+
+declare var dT_ : any;
 
 // ----------------------------------------------------------------------------
 // Class
@@ -24,10 +28,20 @@ import { DavisService } from "./shared/davis.service";
 })
 
 export class AppComponent {
+   
   isUserMenuVisible: boolean = false;
 
-  constructor(public iDavis: DavisService, public router: Router) {}
-
+  constructor(
+    public iConfig: ConfigService, 
+    public iDavis: DavisService, 
+    public http: Http,
+    public router: Router) {
+      // Dynatrace Angular2 instrumentation (optional)
+      if(typeof dT_!='undefined' && dT_.initAngularNg){
+        dT_.initAngularNg(http, Headers);
+      }
+    }
+  
   toggleUserMenu() {
     this.isUserMenuVisible = !this.isUserMenuVisible;
   }

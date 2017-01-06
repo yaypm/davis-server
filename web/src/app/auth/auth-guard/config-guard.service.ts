@@ -8,30 +8,46 @@
 // Imports
 // ----------------------------------------------------------------------------
 // Angular
-import { Injectable } from "@angular/core";
+import { Injectable }             from "@angular/core";
 import { Router, CanActivate,
-         ActivatedRouteSnapshot, RouterStateSnapshot } from "@angular/router";
+         ActivatedRoute, 
+         NavigationExtras,
+         ActivatedRouteSnapshot, 
+         RouterStateSnapshot 
+}                                 from "@angular/router";
 
 // Services
-import { DavisService } from "../../shared/davis.service";
+import { DavisService }           from "../../shared/davis.service";
+import { ConfigService }          from '../../shared/config/config.service';
 
 // ----------------------------------------------------------------------------
 // Class
 // ----------------------------------------------------------------------------
 @Injectable()
 export class ConfigGuard implements CanActivate {
+  
+  navigationExtras: NavigationExtras = {
+    preserveFragment: false //This may need to be set to true in the future, possible Angular bug
+  };
+  
   // ------------------------------------------------------
   // Inject services
   // ------------------------------------------------------
   constructor(
+    public iConfig: ConfigService,
     public iDavis: DavisService,
     public router: Router) {}
 
   // ------------------------------------------------------
   // Check if default user is created before routing
   // ------------------------------------------------------
-  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<boolean> | boolean {
-    if (!this.iDavis.isWizard && !this.iDavis.token) {
+  canActivate(actRoute: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<boolean> | boolean {
+    if (window.location.hash) {
+      this.navigationExtras.fragment = window.location.hash.replace('#', '');
+    } else if (window.location.pathname.includes('configuration')) {
+      this.navigationExtras.fragment = 'configuration';
+    }
+    if (!this.iConfig.isWizard && !this.iDavis.token) {
       return this.CheckUser();
     } else {
       return true;
@@ -57,7 +73,7 @@ export class ConfigGuard implements CanActivate {
   // ------------------------------------------------------
   CheckUserResponse(response: any) {
     if (response.success) {
-      this.iDavis.isWizard = true;
+      this.iConfig.isWizard = true;
       this.iDavis.token = response.token;
       this.iDavis.values.user.admin = true;
       this.router.navigate(["/wizard"]);
@@ -65,15 +81,15 @@ export class ConfigGuard implements CanActivate {
     } else if (sessionStorage.getItem('token') 
         && sessionStorage.getItem('isAdmin')
         && sessionStorage.getItem('email')) {
-      this.iDavis.isWizard = false;
+      this.iConfig.isWizard = false;
       this.iDavis.token = sessionStorage.getItem('token'); 
       this.iDavis.isAuthenticated = true;
       this.iDavis.isAdmin = sessionStorage.getItem('isAdmin') === 'true';
       this.iDavis.values.authenticate.email = sessionStorage.getItem('email');
       return true;
     } else {
-      this.iDavis.isWizard = false;
-      this.router.navigate(["/auth/login"]);
+      this.iConfig.isWizard = false;
+      this.router.navigate(["/auth/login"], this.navigationExtras);
       return false;
     }
   }
@@ -82,8 +98,8 @@ export class ConfigGuard implements CanActivate {
   // Handle check user error
   // ------------------------------------------------------
   CheckUserError(error: any) {
-    this.iDavis.isWizard = false;
-    this.router.navigate(["/auth/login"]);
+    this.iConfig.isWizard = false;
+    this.router.navigate(["/auth/login"], this.navigationExtras);
     return false;
   }
 }

@@ -2,8 +2,9 @@ import {Injectable}                from '@angular/core';
 import { Router }                  from '@angular/router';
 import { Http, Response }          from '@angular/http';
 import { Headers, RequestOptions } from '@angular/http';
-import * as moment from 'moment';
-import * as momentz from 'moment-timezone';
+import * as moment                 from 'moment';
+import * as momentz                from 'moment-timezone';
+import * as $                      from 'jquery';
 
 @Injectable()
 export class DavisService {
@@ -12,13 +13,8 @@ export class DavisService {
   isAuthenticated: boolean = false;
 
   token: string;
-  timezones: any = [];
-  isWizard: boolean = false;
-  titleGlobal: string = '';
-  helpLinkText: string = 'How to complete this step';
   isBreadcrumbsVisible: boolean = false;
-  isSidebarVisible: boolean = false;
-
+  
   values: any = {
     authenticate: {
       email: null,
@@ -35,79 +31,13 @@ export class DavisService {
       },
       admin: false
     },
-    otherUser: {
-      email: null,
-      password: null,
-      timezone: null,
-      alexa_ids: null,
-      name: {
-          first: null,
-          last: null
-      },
-      admin: false
-    },
-    users: [],
-    dynatrace: {
-      url: null,
-      token: null,
-      strictSSL: true
-    },
-    slack: {
-      enabled: true,
-      clientId: null,
-      clientSecret: null,
-      redirectUri: null
-    },
-    original: {
-      user: {},
-      otherUser: {},
-      dynatrace: {},
-      slack: {}
-    }
   };
-
-  config: any = {
-    user: {
-      title: 'My Account',
-      name: 'user',
-      path: 'src/config-user',
-      error: null,
-      success: null
-    },
-    users: {
-      title: 'User Accounts',
-      name: 'users',
-      path: 'src/config-users',
-      error: null,
-      success: null
-    },
-    dynatrace: {
-      title: 'Let\'s connect to Dynatrace!',
-      name: 'dynatrace',
-      path: 'src/config-dynatrace',
-      error: null,
-      success: null
-    },
-    alexa: {
-      title: 'Alexa',
-      name: 'alexa',
-      path: 'src/config-alexa',
-      error: null,
-      success: null
-    },
-    slack: {
-      title: 'Slack App',
-      name: 'slack',
-      path: 'src/config-slack',
-      error: null,
-      success: null
-    }
-  };
+  
+  conversation: Array<any> = [];
   
   route_names: any = {
     '/wizard': 'Setup',
     '/configuration': 'Account settings',
-    '/auth/login': 'Sign in'
   };
 
   constructor (private http: Http, private router: Router) {}
@@ -116,7 +46,7 @@ export class DavisService {
     
     this.values.authenticate = {
       email: null,
-      password: null
+      password: null,
     };
     
     this.values.user = {
@@ -128,7 +58,7 @@ export class DavisService {
           first: null,
           last: null
       },
-      admin: false
+      admin: false,
     };
     
     this.isAuthenticated = false;
@@ -149,26 +79,6 @@ export class DavisService {
       .then(this.extractData)
       .catch(this.handleError);
   }
-
-  getTimezones(): Promise<any> {
-    let headers = new Headers({ 'Content-Type': 'application/json', 'x-access-token': this.token });
-    let options = new RequestOptions({ headers: headers });
-
-    return this.http.get('/api/v1/system/users/timezones', options)
-      .toPromise()
-      .then(this.extractData)
-      .catch(this.handleError);
-  }
-  
-  getDavisConfiguration(): Promise<any> {
-    let headers = new Headers({ 'Content-Type': 'application/json', 'x-access-token': this.token });
-    let options = new RequestOptions({ headers: headers });
-
-    return this.http.get(`/api/v1/system/config/`, options)
-      .toPromise()
-      .then(this.extractData)
-      .catch(this.handleError);
-  }
   
   getDavisUser(): Promise<any> {
     let headers = new Headers({ 'Content-Type': 'application/json', 'x-access-token': this.token });
@@ -180,122 +90,22 @@ export class DavisService {
       .catch(this.handleError);
   }
   
-  getDavisUsers(): Promise<any> {
+  askDavis(phrase: string) {
     let headers = new Headers({ 'Content-Type': 'application/json', 'x-access-token': this.token });
     let options = new RequestOptions({ headers: headers });
 
-    return this.http.get(`/api/v1/system/users`, options)
-      .toPromise()
-      .then(this.extractData)
-      .catch(this.handleError);
-  }
-  
-  updateDavisUser(user: any): Promise<any> {
-    let headers = new Headers({ 'Content-Type': 'application/json', 'x-access-token': this.token });
-    let options = new RequestOptions({ headers: headers });
-
-    return this.http.put(`/api/v1/system/users/${user.email}`, user, options)
+    return this.http.post(`/api/v1/web`, { phrase: phrase, timezone: this.values.user.timezone }, options)
       .toPromise()
       .then(this.extractData)
       .catch(this.handleError);
   }
 
-  addDavisUser(user: any): Promise<any> {
-    let headers = new Headers({ 'Content-Type': 'application/json', 'x-access-token': this.token });
-    let options = new RequestOptions({ headers: headers });
-
-    return this.http.post(`/api/v1/system/users/${user.email}`, user, options)
-      .toPromise()
-      .then(this.extractData)
-      .catch(this.handleError);
-  }
-
-  removeDavisUser(email: string): Promise<any> {
-    let headers = new Headers({ 'Content-Type': 'application/json', 'x-access-token': this.token });
-    let options = new RequestOptions({ headers: headers });
-
-    return this.http.delete(`/api/v1/system/users/${email}`, options)
-      .toPromise()
-      .then(this.extractData)
-      .catch(this.handleError);
-  }
-
-  getDynatrace(): Promise<any> {
-    let headers = new Headers({ 'Content-Type': 'application/json', 'x-access-token': this.token } );
-    let options = new RequestOptions({ headers: headers });
-
-    return this.http.get('/api/v1/system/config/dynatrace', options)
-      .toPromise()
-      .then(this.extractData)
-      .catch(this.handleError);
-  }
-  
-  connectDynatrace(): Promise<any> {
-    let headers = new Headers({ 'Content-Type': 'application/json', 'x-access-token': this.token } );
-    let options = new RequestOptions({ headers: headers });
-
-    return this.http.put('/api/v1/system/config/dynatrace', this.values.dynatrace, options)
-      .toPromise()
-      .then(this.extractData)
-      .catch(this.handleError);
-  }
-
-  validateDynatrace(): Promise<any> {
-    let headers = new Headers({ 'Content-Type': 'application/json', 'x-access-token': this.token } );
-    let options = new RequestOptions({ headers: headers });
-
-    return this.http.get('/api/v1/system/config/dynatrace/validate', options)
-      .toPromise()
-      .then(this.extractData)
-      .catch(this.handleError);
-  }
-
-  connectAlexa(): Promise<any> {
-    let headers = new Headers({ 'Content-Type': 'application/json', 'x-access-token': this.token });
-    let options = new RequestOptions({ headers: headers });
-
-    return this.http.put(`/api/v1/system/users/${this.values.user.email}`, { alexa_ids: this.values.user.alexa_ids }, options)
-      .toPromise()
-      .then(this.extractData)
-      .catch(this.handleError);
-  }
-  
-  getSlack(): Promise<any> {
-    let headers = new Headers({ 'Content-Type': 'application/json', 'x-access-token': this.token });
-    let options = new RequestOptions({ headers: headers });
-
-    return this.http.get('/api/v1/system/config/slack', options)
-      .toPromise()
-      .then(this.extractData)
-      .catch(this.handleError);
-  }
-
-  connectSlack(): Promise<any> {
-    let headers = new Headers({ 'Content-Type': 'application/json', 'x-access-token': this.token });
-    let options = new RequestOptions({ headers: headers });
-
-    return this.http.put('/api/v1/system/config/slack', this.values.slack, options)
-      .toPromise()
-      .then(this.extractData)
-      .catch(this.handleError);
-  }
-  
-  startSlack(): Promise<any> {
-    let headers = new Headers({ 'Content-Type': 'application/json', 'x-access-token': this.token });
-    let options = new RequestOptions({ headers: headers });
-
-    return this.http.post('/api/v1/system/slack/start', {}, options)
-      .toPromise()
-      .then(this.extractData)
-      .catch(this.handleError);
-  }
-
-  private extractData(res: Response) {
+  extractData(res: Response): any {
     let body = res.json();
     return body || {};
   }
 
-  private handleError(error: Response | any) {
+  handleError(error: Response | any): any {
     let errMsg: string;
     if (error instanceof Response) {
       const body = error.json() || '';
@@ -307,11 +117,6 @@ export class DavisService {
     console.error(errMsg);
     return Promise.reject(errMsg);
   }
-  
-  generateError(name: string, message: any) {
-    this.config[name].success = false;
-    this.config[name].error = message || 'Sorry an error occurred, please try again.';
-  }
 
   windowLocation(url:string): void {
     window.location.assign(url);
@@ -319,6 +124,11 @@ export class DavisService {
 
   windowOpen(url:string): void {
     window.open(url);
+  }
+  
+  windowScrollBottom(): void {
+    // window.scrollTo(0, document.body.scrollHeight);
+    $("html, body").animate({ scrollTop: $(document).height() }, "slow");
   }
   
   addToChrome(): void {

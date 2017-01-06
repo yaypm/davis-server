@@ -2,30 +2,30 @@
     "attachments": [
         {
             "fallback": "It looks like {{ totalProblemCount }} problems occurred {{ timeRange | friendlyTimeRange(user, false, "visual") }} affecting {{ appname }}. {% if totalProblemCount > 3 %}After giving it some thought, here are my top three problems.{% endif %}",
-            "text": "It looks like <{{ problems | buildProblemsUrl(timeRange) }}|{{ totalProblemCount }} problems> occurred {{ timeRange | friendlyTimeRange(user, false, "visual") }} affecting {{ appname }}. {% if totalProblemCount > 3 %}After giving it some thought, here are my top three problems.{% endif %}"  
+            "text": "It looks like <{{ problems | buildProblemsUrl(timeRange) }}|{{ totalProblemCount }} problems> occurred {{ timeRange | friendlyTimeRange(user, false, "visual") }} affecting {{ appname }}. {% if totalProblemCount > 3 %}After giving it some thought, here are my top three problems.{% endif %}"
         },
         {% for i in range(0, 3) %}
            {% include "lib/plugins/shared-templates/problem-summary/visual/default.nj" %}{%- if not loop.last %},{% endif %}
         {%- endfor %}
         ,{
-            "callback_id": "problem_past_many",
+            "callback_id": "problemDetails",
             "actions": [
                 {
                     "name":"1",
                     "text": "First",
-                    "value": "1",
+                    "value": "{{ problems[0].id }}",
                     "type": "button"
                 },
                 {
                     "name":"2",
                     "text": "Second",
-                    "value": "2",
+                    "value": "{{ problems[1].id }}",
                     "type": "button"
                 },
                 {
                     "name":"3",
                     "text": "Third",
-                    "value": "3",
+                    "value": "{{ problems[2].id }}",
                     "type": "button"
                 },
                 {
