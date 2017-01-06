@@ -28,8 +28,6 @@ declare var dT_ : any;
 })
 
 export class AppComponent {
-   
-  isUserMenuVisible: boolean = false;
 
   constructor(
     public iConfig: ConfigService, 
@@ -37,12 +35,9 @@ export class AppComponent {
     public http: Http,
     public router: Router) {
       // Dynatrace Angular2 instrumentation (optional)
-      if(typeof dT_!='undefined' && dT_.initAngularNg){
-        dT_.initAngularNg(http, Headers);
-      }
+      // if(typeof dT_!='undefined' && dT_.initAngularNg){
+      //   dT_.initAngularNg(http, Headers);
+      // }
     }
-  
-  toggleUserMenu() {
-    this.isUserMenuVisible = !this.isUserMenuVisible;
-  }
+
 }

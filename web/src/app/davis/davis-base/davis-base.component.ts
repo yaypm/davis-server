@@ -8,7 +8,8 @@
 // Imports
 // ----------------------------------------------------------------------------
 // Angular
-import { Component, OnInit }      from '@angular/core';
+import { Component, OnInit, 
+         AfterViewInit }       from '@angular/core';
 import { Router }                 from '@angular/router';
 import { DavisService }           from '../../shared/davis.service';
 import * as _                     from 'lodash';
@@ -21,7 +22,7 @@ import * as _                     from 'lodash';
   templateUrl: './davis-base.component.html',
 })
 
-export class DavisBaseComponent implements OnInit {
+export class DavisBaseComponent implements OnInit, AfterViewInit {
   
   davisInput: string = '';
   davisOutput: string = '';
@@ -48,8 +49,9 @@ export class DavisBaseComponent implements OnInit {
       name: 'chat'
     },
     noMic: {
-      title: 'Chat - No mic detected',
-      name: 'Say "Hey davis" to wake me'
+      // title: 'Chat - No mic detected',
+      title: 'Chat',
+      name: 'noMic'
     }
   };
   placeholder: string = 'Did anything happen last night?';
@@ -68,16 +70,16 @@ export class DavisBaseComponent implements OnInit {
   doSubmit() {
     let phrase = this.davisInput;
     if (phrase.length > 0) {
-      this.addToConvo({visual: {text: phrase}}, false);
-      this.iDavis.windowScrollBottom();
+      this.addToConvo( { visual: { text: phrase } }, false);
+      this.iDavis.windowScrollBottom('slow');
       this.davisInput = '';
       this.iDavis.askDavis(phrase)
         .then(result => {
           this.addToConvo(result.response, true);
           setTimeout(() => {
-            this.iDavis.windowScrollBottom();
+            this.iDavis.windowScrollBottom('slow');
           }, 100);
-        }).catch(err => {console.log(err)});
+        }).catch(err => { console.log(err) });
     }
   }
   
@@ -89,12 +91,14 @@ export class DavisBaseComponent implements OnInit {
   toggleListening(isListening: boolean) {
     this.isDavisListening = isListening;
     
-    if (this.isDavisListening && !this.isDavisInputFocused) {
-      this.davisMode = this.modes.listening;
-    } else if (this.isDavisInputFocused) {
-      this.davisMode = this.modes.chat; 
-    } else {
-      this.davisMode = this.modes.silent;
+    if (this.davisMode !== this.modes.noMic) {
+      if (this.isDavisListening && !this.isDavisInputFocused) {
+        this.davisMode = this.modes.listening;
+      } else if (this.isDavisInputFocused) {
+        this.davisMode = this.modes.chat; 
+      } else {
+        this.davisMode = this.modes.silent;
+      }
     }
   }
   
@@ -123,6 +127,12 @@ export class DavisBaseComponent implements OnInit {
             this.iDavis.logOut();
           }
         });
+    }
+  }
+  
+  ngAfterViewInit() {
+    if (this.iDavis.conversation.length > 0) {
+      window.scrollTo(0,document.body.scrollHeight);
     }
   }
 }

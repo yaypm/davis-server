@@ -124,8 +124,6 @@ export class ConfigUserComponent implements OnInit {
               } else {
                 this.iConfig.status['user'].success = false;
                 this.iConfig.status['user'].error = result.message;
-                this.iDavis.values.user.email = '';
-                this.iDavis.values.user.password = '';
                 this.submitButton = this.submitButtonDefault;
               }
             },
