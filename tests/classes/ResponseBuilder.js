@@ -18,7 +18,7 @@ describe('ResponseBuilder', () => {
     const e2 = new Exchange(davis, { id: 'testuser', timezone: 'America/Detroit' });
     const e3 = new Exchange(davis, { id: 'testuser', timezone: 'America/Detroit' });
 
-    const p1 = e1.start('what happened yesterday with testapp', 'alexa')
+    const p1 = e1.start('what happened yesterday with testapp', 'alexa', 'test')
       .then(e => {
         e.response({
           text: 'test response.',
@@ -28,7 +28,7 @@ describe('ResponseBuilder', () => {
         return davis.pluginManager.responseBuilder.build(e);
       });
 
-    const p2 = e2.start('what happened yesterday with testapp', 'alexa')
+    const p2 = e2.start('what happened yesterday with testapp', 'alexa', 'test')
       .then(e => {
         e.response({
           say: 'test response.',
@@ -38,7 +38,7 @@ describe('ResponseBuilder', () => {
         return davis.pluginManager.responseBuilder.build(e);
       });
 
-    const p3 = e3.start('what happened yesterday with testapp', 'alexa')
+    const p3 = e3.start('what happened yesterday with testapp', 'alexa', 'test')
       .then(e => {
         e.response({
           show: {
@@ -72,7 +72,7 @@ describe('ResponseBuilder', () => {
     const e2 = new Exchange(davis, { id: 'testuser', timezone: 'America/Detroit' });
     const e3 = new Exchange(davis, { id: 'testuser', timezone: 'America/Detroit' });
 
-    const p1 = e1.start('what happened yesterday with testapp', 'alexa')
+    const p1 = e1.start('what happened yesterday with testapp', 'alexa', 'test')
       .then(e => {
 
         e.addTemplateContext({
@@ -87,7 +87,7 @@ describe('ResponseBuilder', () => {
         return davis.pluginManager.responseBuilder.build(e);
       });
 
-    const p2 = e2.start('what happened yesterday with testapp', 'alexa')
+    const p2 = e2.start('what happened yesterday with testapp', 'alexa', 'test')
       .then(e => {
         e.addTemplateContext({
           variable: "response",
@@ -100,7 +100,7 @@ describe('ResponseBuilder', () => {
         return davis.pluginManager.responseBuilder.build(e);
       });
 
-    const p3 = e3.start('what happened yesterday with testapp', 'alexa')
+    const p3 = e3.start('what happened yesterday with testapp', 'alexa', 'test')
       .then(e => {
         e.addTemplateContext({
           variable: "response",
@@ -134,7 +134,7 @@ describe('ResponseBuilder', () => {
     const e2 = new Exchange(davis, { id: 'testuser', timezone: 'America/Detroit' });
     const e3 = new Exchange(davis, { id: 'testuser', timezone: 'America/Detroit' });
 
-    const p1 = e1.start('what happened yesterday with testapp', 'alexa')
+    const p1 = e1.start('what happened yesterday with testapp', 'alexa', 'test')
       .then(e => {
         e.response({
           text: 'test response.',
@@ -144,7 +144,7 @@ describe('ResponseBuilder', () => {
         return davis.pluginManager.responseBuilder.build(e);
       });
 
-    const p2 = e2.start('what happened yesterday with testapp', 'alexa')
+    const p2 = e2.start('what happened yesterday with testapp', 'alexa', 'test')
       .then(e => {
         e.response({
           say: 'test response.',
@@ -154,7 +154,7 @@ describe('ResponseBuilder', () => {
         return davis.pluginManager.responseBuilder.build(e);
       });
 
-    const p3 = e3.start('what happened yesterday with testapp', 'alexa')
+    const p3 = e3.start('what happened yesterday with testapp', 'alexa', 'test')
       .then(e => {
         e.response({
           show: {

@@ -37,7 +37,7 @@ describe('Nlp', () => {
   nlp.train();
 
   const exchange = new Exchange(davis, { id: 'testuser', timezone: 'America/Detroit' });
-  const started = exchange.start('what happened yesterday with testapp', 'alexa')
+  const started = exchange.start('what happened yesterday with testapp', 'alexa', 'test')
             .then(e => nlp.process(e));
 
   it('should create with apps', () => {

@@ -64,7 +64,7 @@ describe('PluginManager', () => {
 
   it('should run intents', () => {
     return new Exchange(davis, { id: 'testuser', timezone: 'America/Detroit' })
-      .start('test', 'alexa')
+      .start('test', 'alexa', 'test')
       .then(e => davis.pluginManager.run(e, 'mockIntent'))
       .then(e => e.tested.should.equal(true));
   });
