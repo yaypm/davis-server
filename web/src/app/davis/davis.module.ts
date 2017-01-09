@@ -32,10 +32,7 @@ import { SharedDavisModule }      from '../shared/davis/shared-davis.module';
     CommonModule,
     DavisRouting,
     FormsModule,
-<<<<<<< HEAD
     SharedDavisModule,
-=======
->>>>>>> 58383a12a776e0a623415edca0df2949f9581a9f
   ]
 })
 
