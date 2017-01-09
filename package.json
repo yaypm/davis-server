@@ -20,7 +20,9 @@
     "lint": "eslint lib && echo",
     "jsdoc": "jsdoc -r lib",
     "publish": "gulp publish",
-    "heroku-postbuild": "gulp --gulpfile heroku.gulpfile.js get-dist"
+    "heroku-postbuild": "gulp --gulpfile heroku.gulpfile.js get-dist",
+    "precompile:watch": "gulp clean",
+    "compile:watch": "webpack --watch --display-error-details --progress"
   },
   "author": "",
   "devDependencies": {
