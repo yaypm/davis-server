@@ -11,19 +11,19 @@
             "callback_id": "problemDetails",
             "actions": [
                 {
-                    "name":"1",
+                    "name":"First",
                     "text": "First",
                     "value": "{{ problems[0].id }}",
                     "type": "button"
                 },
                 {
-                    "name":"2",
+                    "name":"Second",
                     "text": "Second",
                     "value": "{{ problems[1].id }}",
                     "type": "button"
                 },
                 {
-                    "name":"3",
+                    "name":"Third",
                     "text": "Third",
                     "value": "{{ problems[2].id }}",
                     "type": "button"
