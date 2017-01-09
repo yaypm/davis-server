@@ -150,8 +150,8 @@
         </div>
       </div>
       <div class="layout is-flex has-islands island--half">
-        <div class="layout__container layout--half layout--half--small" [class.checkbox--admin]="!iConfig.isWizard && iConfig.isAdmin">
-          <div class="island island--half island--half--left" style="padding-top: 14px;" *ngIf="!iConfig.isWizard && iConfig.isAdmin">  
+        <div class="layout__container layout--half layout--half--small" [class.checkbox--admin]="!iConfig.isWizard && iDavis.isAdmin">
+          <div class="island island--half island--half--left" style="padding-top: 14px;" *ngIf="!iConfig.isWizard && iDavis.isAdmin">  
           
             <!-- isMyUser -->
             <input type="checkbox" class="checkbox" id="admin" name="admin"
@@ -199,7 +199,7 @@
             [(ngModel)]="iConfig.values.otherUser.alexa_ids"
             (keyup)="validate()">
       </div>
-      <div class="island island--full" *ngIf="!iConfig.isWizard && !isMyUser && iConfig.isAdmin && !isNewUser">
+      <div class="island island--full" *ngIf="!iConfig.isWizard && !isMyUser && iDavis.isAdmin && !isNewUser">
         <button type="button" class="btn btn--secondary btn--secondary--delete"
             [attr.disabled]="(isMyUser) ? true : null"
             (click)="deleteUser(iConfig.values.otherUser.email)">

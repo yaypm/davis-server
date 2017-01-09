@@ -75,16 +75,16 @@
 <!-- Header -->
 <div style="position: fixed; width: 100%; top: 0; z-index: 1000">
   <div class="nav has-no-secondary">
-    <a class="nav__brand" href="/">
+    <a class="nav__brand" (click)="iDavis.goToPage('/davis')">
       <img class="nav__logo" src="https://help.dynatrace.com/assets/dynatrace-logo.svg" alt="dynatrace logo"/>
     </a>
-    <div *ngIf="iDavis.isBreadcrumbsVisible" class="nav__buttongroup">
-      <a class="nav__btn btn--icon" [class.nav__btn-highlighted]="isUserMenuVisible" (click)="toggleUserMenu(); iDavis.isSidebarVisible = false">
+    <div class="nav__buttongroup">
+      <a class="nav__btn btn--icon" [class.nav__btn-highlighted]="iDavis.isUserMenuVisible" (click)="iDavis.toggleUserMenu(); iDavis.isSidebarVisible = false">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon icon--white icon--nav__btn">
           <use xlink:href="#user"></use>
         </svg>
       </a>
-      <a *ngIf="router.url.includes('/configuration')" class="nav__btn btn--icon hide-lg" (click)="isUserMenuVisible = false; iDavis.isSidebarVisible = !iDavis.isSidebarVisible">
+      <a *ngIf="router.url.includes('/configuration')" class="nav__btn btn--icon hide-lg" (click)="iDavis.isUserMenuVisible = false; iDavis.isSidebarVisible = !iDavis.isSidebarVisible">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon icon--white icon--nav__btn">
           <use xlink:href="#sidebar"></use>
         </svg>
@@ -93,7 +93,7 @@
     <nav class="nav__bar js-nav-toggle">
     </nav>
   </div>
-  <div *ngIf="isUserMenuVisible" class="nav__user-menu">
+  <div *ngIf="iDavis.isUserMenuVisible" class="nav__user-menu">
     <div *ngIf="iDavis.isAuthenticated && !iConfig.isWizard" class="nav__user-menu-name">
       {{ iDavis.values.user.name.first }} {{ iDavis.values.user.name.last }}
     </div>
@@ -104,52 +104,52 @@
     <div *ngIf="iDavis.isAuthenticated && !iConfig.isWizard" class="nav__user-menu-section-title">
       Account
     </div>
-    <div *ngIf="iDavis.isAuthenticated && !iConfig.isWizard" class="nav__user-menu-section-item-wrapper" (click)="router.navigate(['/configuration']); isUserMenuVisible = false">
+    <div *ngIf="iDavis.isAuthenticated && !iConfig.isWizard" class="nav__user-menu-section-item-wrapper" (click)="iDavis.goToPage('/configuration')">
       <div class="nav__user-menu-section-item">
         Account settings
       </div>
     </div>
-    <div *ngIf="iDavis.isAuthenticated && !iConfig.isWizard" class="nav__user-menu-section-break"></div>
+    <div class="nav__user-menu-section-break" [class.nav__user-menu-section-break-small]="!iDavis.isAuthenticated || iConfig.isWizard"></div>
     <div *ngIf="iConfig.isWizard" class="nav__user-menu-section-break-half"></div>
     <div class="nav__user-menu-section-title">
       External
     </div>
-    <div class="nav__user-menu-section-item-wrapper" (click)="iDavis.windowOpen('https://github.com/Dynatrace/davis-server/wiki/Getting%20Started'); isUserMenuVisible = false">
+    <div class="nav__user-menu-section-item-wrapper" (click)="iDavis.windowOpen('https://github.com/Dynatrace/davis-server/wiki/Getting%20Started')">
       <div class="nav__user-menu-section-item">
         Documentation
       </div>
     </div>
-    <div class="nav__user-menu-section-item-wrapper" (click)="iDavis.windowOpen('https://github.com/Dynatrace/davis-server/issues/new'); isUserMenuVisible = false">
+    <div class="nav__user-menu-section-item-wrapper" (click)="iDavis.windowOpen('https://github.com/Dynatrace/davis-server/issues/new')">
       <div class="nav__user-menu-section-item">
         Report an issue
       </div>
     </div>
-    <div class="nav__user-menu-section-item-wrapper" (click)="iDavis.windowOpen('https://www.dynatrace.com/blog/'); isUserMenuVisible = false">
+    <div class="nav__user-menu-section-item-wrapper" (click)="iDavis.windowOpen('https://github.com/Dynatrace/davis-server/blob/master/CHANGELOG.md')">
+      <div class="nav__user-menu-section-item">
+        What's new?
+      </div>
+    </div>
+    <div class="nav__user-menu-section-item-wrapper" (click)="iDavis.windowOpen('https://www.dynatrace.com/blog/')">
       <div class="nav__user-menu-section-item">
         Dynatrace blog
       </div>
     </div>
-    <div class="nav__user-menu-section-break"></div>
-    <div *ngIf="iDavis.isAuthenticated && !iConfig.isWizard" class="nav__user-menu-section-item-wrapper" (click)="iDavis.logOut(); isUserMenuVisible = false">
+    <div class="nav__user-menu-section-break" [class.nav__user-menu-section-break-small]="!iDavis.isAuthenticated || iConfig.isWizard"></div>
+    <div *ngIf="iDavis.isAuthenticated && !iConfig.isWizard" class="nav__user-menu-section-item-wrapper" (click)="iDavis.logOut()">
       <div class="nav__user-menu-section-item">
         Sign out
       </div>
     </div>
-    <div *ngIf="!iDavis.isAuthenticated && !iConfig.isWizard" class="nav__user-menu-section-item-wrapper" (click)="router.navigate(['/auth/login']); isUserMenuVisible = false">
-      <div class="nav__user-menu-section-item">
-        Sign in
-      </div>
-    </div>
-    <div *ngIf="!iConfig.isWizard" class="nav__user-menu-section-break"></div>
+    <div class="nav__user-menu-section-break" [class.nav__user-menu-section-break-small]="!iDavis.isAuthenticated || iConfig.isWizard"></div>
   </div>
-  <div *ngIf="isUserMenuVisible" class="disable_screen" (click)="isUserMenuVisible = false">
+  <div *ngIf="iDavis.isUserMenuVisible" class="disable_screen" (click)="iDavis.isUserMenuVisible = false">
   </div>
   <div *ngIf="iDavis.isBreadcrumbsVisible">
     <ul class="breadcrumbs">
       <li class="breadcrumbs__item">
         <a *ngIf="router.url !== '/davis'" class="breadcrumbs__link"
           [class.disabled]="router.url === '/wizard'" 
-          (click)="(router.url !== '/wizard') ? router.navigate(['/davis']) : null">
+          (click)="iDavis.goToPage('/davis')">
             davis
         </a>
         <span *ngIf="router.url === '/davis'" class="breadcrumbs__last">davis</span>
@@ -159,6 +159,7 @@
       </li>
     </ul>
   </div>
+
 </div>
 <div style="width: 100%; height: 74px;"></div>
 <!-- Content -->
