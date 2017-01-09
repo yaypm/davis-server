@@ -9,11 +9,12 @@
 // Imports
 // ----------------------------------------------------------------------------
 // Angular
-import { Injectable }   from "@angular/core";
-import { Location }     from '@angular/common';
-import { Http, Response }          from '@angular/http';
-import { Headers, RequestOptions } from '@angular/http';
-import { DavisService } from '../davis.service';
+import { Injectable }               from "@angular/core";
+import { Location }                 from '@angular/common';
+import { Http, Response }           from '@angular/http';
+import { Headers, RequestOptions }  from '@angular/http';
+import { DavisService }             from '../davis.service';
+import { DavisModel }               from '../models/davis.model';
 
 // ----------------------------------------------------------------------------
 // Class
@@ -27,61 +28,8 @@ export class ConfigService {
   titleGlobal: string = '';
   isWizard: boolean = false;
   isSidebarVisible: boolean = false;
-  
-  status: any = {
-    user: {
-      error: null,
-      success: null
-    },
-    users: {
-      error: null,
-      success: null
-    },
-    dynatrace: {
-      error: null,
-      success: null
-    },
-    alexa: {
-      error: null,
-      success: null
-    },
-    slack: {
-      error: null,
-      success: null
-    }
-  };
-  
-  values: any = {
-    otherUser: {
-      email: null,
-      password: null,
-      timezone: null,
-      alexa_ids: null,
-      name: {
-          first: null,
-          last: null
-      },
-      admin: false
-    },
-    users: [],
-    dynatrace: {
-      url: null,
-      token: null,
-      strictSSL: true
-    },
-    slack: {
-      enabled: true,
-      clientId: null,
-      clientSecret: null,
-      redirectUri: null
-    },
-    original: {
-      user: {},
-      otherUser: {},
-      dynatrace: {},
-      slack: {}
-    }
-  };
+  values: any = new DavisModel().config.values;
+  status: any = new DavisModel().config.status;
   
   // ------------------------------------------------------
   // Inject services
@@ -94,11 +42,6 @@ export class ConfigService {
   selectView(newView: string) {
     this.view = newView;
     this.location.go(`/${ (this.isWizard) ? 'wizard' : 'configuration'}#${newView}`);
-  }
-  
-  generateError(name: string, message: any) {
-    this.status[name].success = false;
-    this.status[name].error = message || 'Sorry an error occurred, please try again.';
   }
   
   getDavisConfiguration(): Promise<any> {
@@ -219,5 +162,15 @@ export class ConfigService {
       .toPromise()
       .then(this.iDavis.extractData)
       .catch(this.iDavis.handleError);
+  }
+  
+  displayError(message: string, category: string): void {
+    if (category) {
+      this.status[category].success = false;
+      this.status[category].error = message || 'Sorry an error occurred, please try again.';
+    }
+    if (message.includes('invalid token')) {
+      this.iDavis.logOut();
+    }
   }
 }

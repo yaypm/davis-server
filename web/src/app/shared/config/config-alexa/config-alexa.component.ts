@@ -23,24 +23,16 @@ export class ConfigAlexaComponent implements OnInit {
     if (this.iDavis.values.user.alexa_ids) {
       this.submitButton = 'Saving...';
       this.iConfig.connectAlexa()
-        .then(result => {
-          if (result.success) {
-            this.iConfig.status['alexa'].success = true;
-            this.iConfig.selectView('slack');
-          } else {
-            this.iConfig.generateError('alexa', result.message);
-            this.resetSubmitButton();
+        .then(response => {
+          if (!response.success) { 
+            this.resetSubmitButton(); 
+            throw new Error(response.message); 
           }
-        },
-        error => {
-          console.log(error);
-          this.iConfig.generateError('alexa', null);
-          this.resetSubmitButton();
+          this.iConfig.status['alexa'].success = true;
+          this.iConfig.selectView('slack');
         })
         .catch(err => {
-          if (JSON.stringify(err).includes('invalid token')) {
-            this.iDavis.logOut();
-          }
+          this.iConfig.displayError(err, 'alexa');
         });
     } else {
       this.iConfig.selectView('slack');

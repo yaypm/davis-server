@@ -28,6 +28,7 @@ export class AuthLoginComponent  implements OnInit {
   // Initialize form submission
   submitted: boolean = false;
   loginError: string = null;
+  email: string = '';
   password: string = '';
   submitButton: string = 'Sign in';
   navigationExtras: NavigationExtras = {
@@ -51,45 +52,45 @@ export class AuthLoginComponent  implements OnInit {
     this.iDavis.values.authenticate.email = form.value.email;
     this.iDavis.values.authenticate.password = form.value.password;
     this.iDavis.getJwtToken()
-      .then(result => {
-        if (result.success) {
-          this.submitButton = 'Sign in';
-          this.loginError = null;
-          this.iDavis.token = result.token;
-          this.iDavis.isAuthenticated = true;
-          this.iDavis.isAdmin = result.admin;
-          sessionStorage.removeItem('email');
-          sessionStorage.removeItem('token');
-          sessionStorage.removeItem('isAdmin');
-          sessionStorage.setItem('email', form.value.email);
-          sessionStorage.setItem('token', result.token);
-          sessionStorage.setItem('isAdmin', result.admin);
-          return this.iDavis.getDavisUser();
-        } else {
-          this.submitButton = 'Sign in';
-          this.loginError = result.message;
-          this.password = '';
+      .then(response => {
+        if (!response.success) { 
+          this.loginError = response.message;
+          this.password = ''; 
+          throw new Error(response.message); 
         }
+        this.loginError = null;
+        this.iDavis.token = response.token;
+        this.iDavis.isAuthenticated = true;
+        this.iDavis.isAdmin = response.admin;
+        sessionStorage.removeItem('email');
+        sessionStorage.removeItem('token');
+        sessionStorage.removeItem('isAdmin');
+        sessionStorage.setItem('email', form.value.email);
+        sessionStorage.setItem('token', response.token);
+        sessionStorage.setItem('isAdmin', response.admin);
+        return this.iDavis.getDavisUser();
       })
-      .then(result => {
-        if (result.success) {
-          this.iDavis.values.user = result.user;
-          if (!result.user.name) {
-            this.iDavis.values.user.name = {first:'',last:''};
-          } else {
-            if (!result.user.name.first) this.iDavis.values.user.name.first = '';
-            if (!result.user.name.last) this.iDavis.values.user.name.last = '';
-          }
-          this.iConfig.values.original.user = _.cloneDeep(this.iDavis.values.user);
-          this.router.navigate([`/${(this.navigationExtras.fragment) ? 'configuration' : 'davis'}`], this.navigationExtras);
-        } else {
-          this.loginError = result.message;
+      .then(response => {
+        if (!response.success) { 
+          this.loginError = response.message;
+          this.password = ''; 
+          throw new Error(response.message); 
         }
+        this.iDavis.values.user = response.user;
+        if (!response.user.name) {
+          this.iDavis.values.user.name = {first:'',last:''};
+        } else {
+          if (!response.user.name.first) this.iDavis.values.user.name.first = '';
+          if (!response.user.name.last) this.iDavis.values.user.name.last = '';
+        }
+        this.iConfig.values.original.user = _.cloneDeep(this.iDavis.values.user);
+        this.router.navigate([`/${(this.navigationExtras.fragment) ? 'configuration' : 'davis'}`], this.navigationExtras);
+        this.submitButton = 'Sign in';
       })
       .catch(err => {
-        if (JSON.stringify(err).includes('invalid token')) {
-          this.iDavis.logOut();
-        }
+        this.loginError = err.message || 'Sorry an error occurred, please try again.';
+        this.password = '';
+        this.submitButton = 'Sign in';
       });
   }
 
