@@ -178,26 +178,13 @@ export class ConfigUserComponent implements OnInit {
         this.submitButtonDefault = 'Add User';
       }
 
-      this.iConfig.getTimezones()
-        .then( 
-          response => {
-            this.detectedTimezone = this.iDavis.getTimezone();
-            this.iConfig.timezones = response.timezones;
-            if (this.iConfig.isWizard) {
-              this.iDavis.values.user.timezone = this.iDavis.getTimezone();
-            } else if (this.isNewUser){
-              this.iConfig.values.otherUser.timezone = this.iDavis.getTimezone();
-            }
-          },
-          error => {
-            this.iConfig.status['user'].success = false;
-            this.iConfig.status['user'].error = 'Unable to get timezones, please try again later.';
-          })
-          .catch(err => {
-            if (JSON.stringify(err).includes('invalid token')) {
-              this.iDavis.logOut();
-            }
-          });
+      this.detectedTimezone = this.iDavis.getTimezone();
+      if (this.iConfig.isWizard) {
+        this.iDavis.values.user.timezone = this.iDavis.getTimezone();
+      } else if (this.isNewUser){
+        this.iConfig.values.otherUser.timezone = this.iDavis.getTimezone();
+      }
+       
       setTimeout(() => {
         if (document.getElementsByName('first')[0]) {
           document.getElementsByName('first')[0].focus();

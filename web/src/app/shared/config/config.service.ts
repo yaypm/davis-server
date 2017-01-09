@@ -23,7 +23,7 @@ export class ConfigService {
   // Initialize view
   view: string = "dynatrace";
   helpLinkText: string = 'How to complete this step';
-  timezones: any = [];
+  timezones: any = require('./../../../../../lib/config/timezones');
   titleGlobal: string = '';
   isWizard: boolean = false;
   isSidebarVisible: boolean = false;
@@ -99,16 +99,6 @@ export class ConfigService {
   generateError(name: string, message: any) {
     this.status[name].success = false;
     this.status[name].error = message || 'Sorry an error occurred, please try again.';
-  }
-  
-  getTimezones(): Promise<any> {
-    let headers = new Headers({ 'Content-Type': 'application/json', 'x-access-token': this.iDavis.token });
-    let options = new RequestOptions({ headers: headers });
-
-    return this.http.get('/api/v1/system/users/timezones', options)
-      .toPromise()
-      .then(this.iDavis.extractData)
-      .catch(this.iDavis.handleError);
   }
   
   getDavisConfiguration(): Promise<any> {
