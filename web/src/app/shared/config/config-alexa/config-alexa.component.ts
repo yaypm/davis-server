@@ -20,6 +20,7 @@ export class ConfigAlexaComponent implements OnInit {
 
   doSubmit() {
     this.submitted = true;
+    this.iDavis.values.user.alexa_ids = this.iDavis.safariAutoCompletePolyFill(this.iDavis.values.user.alexa_ids, 'alexa_ids');
     if (this.iDavis.values.user.alexa_ids) {
       this.submitButton = 'Saving...';
       this.iConfig.connectAlexa()
@@ -53,6 +54,6 @@ export class ConfigAlexaComponent implements OnInit {
   }
 
   ngOnInit() {
-    document.getElementsByName('alexa')[0].focus();
+    document.getElementsByName('alexa_ids')[0].focus();
   }
 }

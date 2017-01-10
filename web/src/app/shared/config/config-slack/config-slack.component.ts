@@ -43,6 +43,8 @@ export class ConfigSlackComponent implements OnInit {
 
     doSubmit() {
       this.submitted = true;
+      this.iConfig.values.slack.clientId = this.iDavis.safariAutoCompletePolyFill(this.iConfig.values.slack.clientId, 'clientId');
+      this.iConfig.values.slack.clientSecret = this.iDavis.safariAutoCompletePolyFill(this.iConfig.values.slack.clientSecret, 'clientSecret');
       if (!this.iConfig.status['slack'].success && this.iConfig.values.slack.clientId && this.iConfig.values.slack.clientSecret) {
         this.submitButton = 'Saving...';
         this.iConfig.connectSlack()

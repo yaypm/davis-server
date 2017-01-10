@@ -23,6 +23,8 @@ export class ConfigDynatraceComponent implements OnInit {
   doSubmit() {
     this.submitted = true;
     this.submitButton = 'Saving...';
+    this.iConfig.values.dynatrace.url = this.iDavis.safariAutoCompletePolyFill(this.iConfig.values.dynatrace.url, 'url');
+    this.iConfig.values.dynatrace.token = this.iDavis.safariAutoCompletePolyFill(this.iConfig.values.dynatrace.token, 'token');
     if (this.iConfig.values.dynatrace.url.slice(-1) === '/') {
       this.iConfig.values.dynatrace.url = this.iConfig.values.dynatrace.url.substring(0, this.iConfig.values.dynatrace.url.length - 1);
     }

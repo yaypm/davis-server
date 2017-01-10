@@ -69,7 +69,7 @@ export class DavisBaseComponent implements OnInit, AfterViewInit {
   // ------------------------------------------------------
   
   doSubmit() {
-    let phrase = this.davisInput;
+    let phrase = this.iDavis.safariAutoCompletePolyFill(this.davisInput, 'davisInput');
     if (phrase.length > 0) {
       this.addToConvo( { visual: { text: phrase } }, false);
       this.iDavis.windowScrollBottom('slow');

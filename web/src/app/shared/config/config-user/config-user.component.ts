@@ -34,6 +34,23 @@ export class ConfigUserComponent implements OnInit {
   doSubmit() {
     this.submitted = true;
     this.submitButton = 'Saving...';
+    
+    // Safari autocomplete polyfill - https://github.com/angular/angular.js/issues/1460
+    if (!this.iConfig.isWizard && !this.isMyUser) {
+      this.iConfig.values.ohterUser.name.first = this.iDavis.safariAutoCompletePolyFill(this.iConfig.values.otherUser.name.first, 'first');
+      this.iConfig.values.otherUser.name.last = this.iDavis.safariAutoCompletePolyFill(this.iConfig.values.otherUser.name.last, 'last');
+      this.iConfig.values.otherUser.email = this.iDavis.safariAutoCompletePolyFill(this.iConfig.values.otherUser.email, 'email');
+      this.iConfig.values.otherUser.admin = this.iDavis.safariAutoCompletePolyFill(this.iConfig.values.otherUser.admin, 'admin');
+      this.iConfig.values.otherUser.timezone = this.iDavis.safariAutoCompletePolyFill(this.iConfig.values.otherUser.timezone, 'timezone');
+      this.iConfig.values.otherUser.alexa_ids = this.iDavis.safariAutoCompletePolyFill(this.iConfig.values.otherUser.alexa_ids, 'alexa_ids');
+    } else {
+      this.iDavis.values.user.name.first = this.iDavis.safariAutoCompletePolyFill(this.iDavis.values.user.name.first, 'first');
+      this.iDavis.values.user.name.last = this.iDavis.safariAutoCompletePolyFill(this.iDavis.values.user.name.last, 'last');
+      this.iDavis.values.user.email = this.iDavis.safariAutoCompletePolyFill(this.iDavis.values.user.email, 'email');
+      this.iDavis.values.user.timezone = this.iDavis.safariAutoCompletePolyFill(this.iDavis.values.user.timezone, 'timezone');
+      this.iDavis.values.user.alexa_ids = this.iDavis.safariAutoCompletePolyFill(this.iDavis.values.user.alexa_ids, 'alexa_ids');
+    }
+    
     this.user = (!this.iConfig.isWizard && !this.isMyUser) ? this.iConfig.values.otherUser : this.iDavis.values.user;
     
     if ((!this.iConfig.isWizard && !this.isNewUser) || (!this.iConfig.isWizard && this.isMyUser)) {

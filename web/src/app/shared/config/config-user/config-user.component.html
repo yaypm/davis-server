@@ -99,7 +99,7 @@
                     [(ngModel)]="iDavis.values.user.password" 
                     (focus)="isPasswordFocused = true" (blur)="isPasswordFocused = false" (keyup)="validate()"
                     [required]="(iConfig.isWizard) ? '' : null">
-                <input *ngIf="!isPasswordMasked && isMyUser" type="text" name="passwordText" id="password" class="input-button-input" 
+                <input *ngIf="!isPasswordMasked && isMyUser" type="text" name="password" id="password" class="input-button-input" 
                     [(ngModel)]="iDavis.values.user.password" (focus)="isPasswordFocused = true" (blur)="isPasswordFocused = false" (keyup)="validate()"
                     [required]="(iConfig.isWizard) ? '' : null">
                     
@@ -108,7 +108,7 @@
                     [(ngModel)]="iConfig.values.otherUser.password" 
                     (focus)="isPasswordFocused = true" (blur)="isPasswordFocused = false"(keyup)="validate()"
                     [required]="(isNewUser) ? '' : null">
-                <input *ngIf="!isPasswordMasked && !isMyUser" type="text" name="passwordText" id="password" class="input-button-input" 
+                <input *ngIf="!isPasswordMasked && !isMyUser" type="text" name="password" id="password" class="input-button-input" 
                     [(ngModel)]="iConfig.values.otherUser.password" 
                     (focus)="isPasswordFocused = true" (blur)="isPasswordFocused = false" (keyup)="validate()"
                     [required]="(isNewUser) ? '' : null">
@@ -183,18 +183,18 @@
         </div>
       </div>
       <div class="island island--full" *ngIf="!iConfig.isWizard">          
-        <label for="alexa" class="label">
+        <label for="alexa_ids" class="label">
           Alexa User ID
         </label>
         
         <!-- isMyUser -->
-        <input type="text" class="inputfield" id="alexa" name="alexa" 
+        <input type="text" class="inputfield" id="alexa_ids" name="alexa_ids" 
             *ngIf="isMyUser"
             [(ngModel)]="iDavis.values.user.alexa_ids"
             (keyup)="validate()">
             
         <!-- !isMyUser -->
-        <input type="text" class="inputfield" id="alexa" name="alexa" 
+        <input type="text" class="inputfield" id="alexa_ids" name="alexa_ids" 
             *ngIf="!isMyUser"
             [(ngModel)]="iConfig.values.otherUser.alexa_ids"
             (keyup)="validate()">

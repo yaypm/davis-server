@@ -15,6 +15,7 @@ import { Router, ActivatedRoute,
 import { ConfigService }                from '../../shared/config/config.service';
 import { DavisService }                 from '../../shared/davis.service';
 import * as _                           from "lodash";
+import * as $                           from 'jquery';
 
 // ----------------------------------------------------------------------------
 // Class
@@ -46,11 +47,10 @@ export class AuthLoginComponent  implements OnInit {
   // Initialize component
   // ------------------------------------------------------
   login(form: any) {
-
     this.submitted = true;
     this.submitButton = 'Signing in...';
-    this.iDavis.values.authenticate.email = form.value.email;
-    this.iDavis.values.authenticate.password = form.value.password;
+    this.iDavis.values.authenticate.email = this.iDavis.safariAutoCompletePolyFill(form.value.email, 'email');
+    this.iDavis.values.authenticate.password = this.iDavis.safariAutoCompletePolyFill(form.value.password, 'password');
     this.iDavis.getJwtToken()
       .then(response => {
         if (!response.success) { 
