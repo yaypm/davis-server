@@ -123,6 +123,7 @@
     "moment-round": "^1.0.1",
     "moment-timezone": "^0.5.10",
     "mongoose": "^4.7.2",
+    "morgan": "^1.7.0",
     "natural": "^0.4.0",
     "nunjucks": "^3.0.0",
     "rand-token": "^0.2.1",
