@@ -3,12 +3,48 @@
     <div [class.circle-left]="isDavis" [class.circle-right]="!isDavis">
       {{ (isDavis) ? null : iDavis.values.user.name.first[0].toUpperCase() + iDavis.values.user.name.last[0].toUpperCase() }}
       <svg *ngIf="isDavis" class="icon icon--white icon--davis">
-        <use xlink:href="#davis"></use>
+        <use href="#davis"></use>
       </svg>
     </div>
     <div [class.triangle-left]="isDavis" [class.triangle-right]="!isDavis"></div>
-    <div class="island" [class.island--isDavis]="isDavis" [class.island--isUser]="!isDavis" style="padding: 16px; margin: 0">
-      {{ message }}
+    <div class="island" [class.island--isDavis]="isDavis" [class.island--isUser]="!isDavis" style="padding: 17.5px 16px; margin: 0">
+      <div *ngIf="message.visual.text && (!message.visual.card || message.visual.card.attachments.length === 0)" style="font-size: 14px">
+        {{ message.visual.text }}
+      </div>
+      <div *ngIf="message.visual.card && message.visual.card.text" style="font-size: 14px">
+        {{ message.visual.card.text }}
+      </div>
+      <div *ngIf="message.visual.card && message.visual.card.attachments.length > 0" class="card-attachments">
+        <div *ngFor="let attachment of message.visual.card.attachments" class="card-attachment">
+          <div *ngIf="attachment.pretext || attachment.text || attachment.fields || attachment.actions || attachment.actionClicked" class="card-bar" [style.border-color]="attachment.color"></div>
+          <div class="card-content">
+             <div class="card-pretext" [innerHTML]="attachment.pretext | slackTagConversionPipe:true"></div>
+             <a class="card-title" [innerHTML]="attachment.title | slackTagConversionPipe:true" (click)="iDavis.windowOpen(attachment.title_link)"></a>
+             <div class="card-text" [innerHTML]="attachment.text | slackTagConversionPipe:true"></div>
+             <div class="card-fields">
+                <div *ngFor="let field of attachment.fields" class="card-field">
+                 <div class="card-field-title" [innerHTML]="field.title | slackTagConversionPipe:true"></div>
+                 <div class="card-field-value" [innerHTML]="field.value | slackTagConversionPipe:true"></div>
+                </div>
+             </div>
+             <div *ngIf="attachment.actions || attachment.actionClicked" class="card-actions">
+                <button *ngFor="let action of attachment.actions" type="button" class="btn btn--secondary btn--submit card-action" 
+                  (click)="addToConvo(action.name); attachment.actionClicked = action.text; attachment.actions = null">
+                  {{ action.text }}
+                </button>
+                <button *ngIf="attachment.actionClicked" type="button" class="btn btn--secondary btn--submit card-action" disabled>
+                  {{ attachment.actionClicked }}
+                </button>
+             </div>
+          </div>
+          <!--
+          <div class="card-thumb-url-wrapper">
+            <img [src]="{{ src }}" class="card-thumb-url">
+          </div>
+          <img src="{{ src }}" class="card-image-url" (click)="window.open("{{ src }}')">
+          -->
+        </div>
+      </div>
     </div>
   </div>
 </form>

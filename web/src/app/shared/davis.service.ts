@@ -2,6 +2,7 @@ import {Injectable}                from '@angular/core';
 import { Router }                  from '@angular/router';
 import { Http, Response }          from '@angular/http';
 import { Headers, RequestOptions } from '@angular/http';
+import { DavisModel }              from './models/davis.model';
 import * as moment                 from 'moment';
 import * as momentz                from 'moment-timezone';
 import * as $                      from 'jquery';
@@ -16,32 +17,16 @@ export class DavisService {
   isBreadcrumbsVisible: boolean = false;
   isUserMenuVisible: boolean = false;
   
-  values: any = {
-    authenticate: {
-      email: null,
-      password: null
-    },
-    user: {
-      email: null,
-      password: null,
-      timezone: null,
-      alexa_ids: null,
-      name: {
-          first: null,
-          last: null
-      },
-      admin: false
-    },
-  };
-  
   conversation: Array<any> = [];
   
   route_names: any = {
     '/wizard': 'Setup',
     '/configuration': 'Account settings',
   };
+  
+  values: any = new DavisModel().davis.values;
 
-  constructor (private http: Http, private router: Router) {}
+  constructor (private http: Http, private router: Router) { }
   
   goToPage(location: string): void {
     if (this.router.url !== '/wizard') {
@@ -63,22 +48,8 @@ export class DavisService {
   
   logOut(): void {
     
-    this.values.authenticate = {
-      email: null,
-      password: null,
-    };
-    
-    this.values.user = {
-      email: null,
-      password: null,
-      timezone: null,
-      alexa_ids: null,
-      name: {
-          first: null,
-          last: null
-      },
-      admin: false,
-    };
+    this.values.authenticate = new DavisModel().davis.values.authenticate;
+    this.values.user = new DavisModel().davis.values.user;
     
     this.isUserMenuVisible = false;
     this.isAuthenticated = false;
@@ -166,6 +137,12 @@ export class DavisService {
 
   getTimezone(): string {
     return momentz.tz.guess();
+  }
+  
+  safariAutoCompletePolyFill(input: string, id: string): string {
+    let value = $(`#${id}`).val();
+    if (value && input !== value) input = value;
+    return input;
   }
 
 }

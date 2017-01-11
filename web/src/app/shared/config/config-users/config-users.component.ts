@@ -1,9 +1,10 @@
-import { Component, OnInit, Pipe, PipeTransform } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
-import { Router } from '@angular/router';
-import { ConfigService } from '../config.service';
-import { DavisService } from '../../davis.service';
-import * as _ from "lodash";
+import { Component, OnInit, Pipe, PipeTransform }   from '@angular/core';
+import { FormBuilder }                              from '@angular/forms';
+import { Router }                                   from '@angular/router';
+import { ConfigService }                            from '../config.service';
+import { DavisService }                             from '../../davis.service';
+import { DavisModel }                               from '../../models/davis.model';
+import * as _                                       from "lodash";
 
 @Component({
     selector: 'config-users',
@@ -25,17 +26,7 @@ export class ConfigUsersComponent implements OnInit {
     constructor(public iDavis: DavisService, public iConfig: ConfigService, public router: Router) {}
     
     addMode() {
-      this.iConfig.values.otherUser = {
-        email: null,
-        password: null,
-        timezone: null,
-        alexa_ids: null,
-        name: {
-            first: null,
-            last: null
-        },
-        admin: false
-      };
+      this.iConfig.values.otherUser = new DavisModel().config.values.otherUser;
       this.iConfig.values.otherUser.timezone = this.iDavis.getTimezone();
       this.iConfig.values.original.otherUser = _.cloneDeep(this.iConfig.values.otherUser);
       this.filterName = '';
@@ -51,6 +42,8 @@ export class ConfigUsersComponent implements OnInit {
     getUsers() {
       this.iConfig.getDavisUsers()
         .then(response => {
+          if (!response.success) throw new Error(response.message);
+          
           this.iConfig.values.users = response.users;
           _.remove(this.iConfig.values.users, (user: any) => {
             return user.email === this.iDavis.values.user.email;
@@ -64,15 +57,9 @@ export class ConfigUsersComponent implements OnInit {
             }
           });
           this.users = _.cloneDeep(response.users);
-        },
-        error => {
-          console.log(error);
-          this.iConfig.generateError('users', null);
         })
         .catch(err => {
-          if (JSON.stringify(err).includes('invalid token')) {
-            this.iDavis.logOut();
-          }
+          this.iConfig.displayError(err, 'users');
         });
     }
 
@@ -80,7 +67,7 @@ export class ConfigUsersComponent implements OnInit {
       this.getUsers();
       this.addUser = false;
       this.editUser = false;
-      this.iConfig.values.original.otherUser.first = null;
+      this.iConfig.values.original.otherUser = new DavisModel().config.values.otherUser;
     }
 
     updateFilter(input: any) {
@@ -89,17 +76,7 @@ export class ConfigUsersComponent implements OnInit {
 
     ngOnInit() {
       this.getUsers();
-      this.iConfig.values.otherUser = {
-        email: null,
-        password: null,
-        timezone: null,
-        alexa_ids: null,
-        name: {
-            first: null,
-            last: null
-        },
-        admin: false
-      };
+      this.iConfig.values.otherUser = new DavisModel().config.values.otherUser;;
     }
 
 }
