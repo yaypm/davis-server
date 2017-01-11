@@ -19,7 +19,7 @@ export class DavisCardComponent implements OnInit {
     public iConfig: ConfigService) { }
     
   addToConvo(phrase: string) {
-    this.iDavis.askDavis(phrase)
+    this.iDavis.askDavis(phrase.toLowerCase())
       .then(result => {
         result.response.isDavis = true;
         this.iDavis.conversation.push(result.response);
