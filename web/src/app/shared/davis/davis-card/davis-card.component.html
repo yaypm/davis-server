@@ -8,9 +8,6 @@
     </div>
     <div [class.triangle-left]="isDavis" [class.triangle-right]="!isDavis"></div>
     <div class="island" [class.island--isDavis]="isDavis" [class.island--isUser]="!isDavis" style="padding: 17.5px 16px; margin: 0">
-      <div *ngIf="message.visual.text && (!message.visual.card || message.visual.card.attachments.length === 0)" style="font-size: 14px">
-        {{ message.visual.text }}
-      </div>
       <div *ngIf="message.visual.card && message.visual.card.text" style="font-size: 14px">
         {{ message.visual.card.text }}
       </div>
