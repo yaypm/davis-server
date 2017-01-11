@@ -13,6 +13,9 @@ import { Routes, RouterModule } from '@angular/router';
 // Components
 import { AuthLoginComponent } from './auth-login/auth-login.component';
 
+// Services
+import { ConfigGuard } from '../auth/auth-guard/config-guard.service';
+
 // ----------------------------------------------------------------------------
 // Routes
 // ----------------------------------------------------------------------------

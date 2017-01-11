@@ -75,6 +75,11 @@ form {
 .island--my-account {
   padding: 0; }
   
+.island--my-account-error {
+  max-width: 600px;
+  margin-top: 10px;
+  padding: 10px; }
+  
 .island--user-accounts {
   margin-top: -30px;
   padding: 0; }
@@ -492,6 +497,7 @@ select:focus {
 }
 
 .island--isUser {
+  font-size: 14px;
   background-color: #e0f4fc;
 }
 
@@ -505,7 +511,7 @@ select:focus {
   background-color: #00a1b2;
   color: white;
   font-size: 16px;
-  padding-top: 8px;
+  padding-top: 7.5px;
   text-align: center; }
   
 .triangle-left {}
@@ -520,7 +526,7 @@ select:focus {
   background-color: #6d6d6d;
   color: white;
   font-size: 16px;
-  padding-top: 9px;
+  padding-top: 8.5px;
   text-align: center; }
   
 .triangle-right {}
@@ -552,13 +558,13 @@ select:focus {
     width: 56px; 
     height: 56px; 
     font-size: 25px; 
-    padding-top: 10px; }
+    padding-top: 9px; }
   
   .triangle-left {
     position: absolute;
     width: 0;
   	height: 0;
-  	margin-top: 20px;
+  	margin-top: 19px;
   	margin-left: -10px;
   	border-top: 10px solid transparent;
   	border-bottom: 10px solid transparent;
@@ -571,13 +577,13 @@ select:focus {
     width: 56px; 
     height: 56px; 
     font-size: 25px; 
-    padding-top: 10px; } 
+    padding-top: 9px; } 
     
   .triangle-right {
     position: absolute;
     width: 0;
   	height: 0;
-  	margin-top: 20px;
+  	margin-top: 19px;
   	margin-left: 600px;
   	border-top: 10px solid transparent;
   	border-bottom: 10px solid transparent;
@@ -585,3 +591,83 @@ select:focus {
     
 form.card-form {
   min-height: 0; }
+  
+/* Card styling */
+.card-pretext {
+	margin-left: 10px; }
+
+.card-attachments {
+	float: right;
+	width: 100%;
+	margin: 0 auto;
+	color: #666666;
+	text-align: left;
+	font-size: 14px;
+	border: 1px solid white;
+	background-color: white;
+	border-radius: 2px; }
+
+.card-attachment {
+	float: left;
+	padding: 0px 10px 0px 0px;
+	margin: 2px; }
+
+.card-bar {
+	display: table-cell;
+	border: 2px solid #e6e6e6;
+	border-radius: 2px; }
+
+.card-content {
+	display: table-cell;
+	padding-left: 10px;
+	vertical-align: top; }
+
+.card-title {
+	float: left;
+	cursor: pointer;
+	font-weight: bold; }
+
+.card-text {
+	clear: both; }
+
+.card-fields {
+	clear: both;
+	float: left;
+	margin-top: 2px; }
+
+.card-field {
+	float: left;
+	min-width: 200px;
+	margin-bottom: 2px;
+	margin-right: 10px; }
+
+.card-field-title {
+	font-weight: bold;}
+	
+.card-actions {
+  float: left;
+  padding: 5px 0px;
+}
+
+.card-action {
+  float: left;
+  margin-right: 5px;
+}
+
+.card-image-url {
+	float: left;
+	max-width: 400px;
+	max-height: 500px;
+	margin: 10px 20px 10px 0px;
+	cursor: pointer; }
+
+.card-thumb-url-wrapper {
+	display: table-cell;
+	height: 100%;
+	vertical-align: middle;
+	padding-left: 10px; }
+
+.card-thumb-url {
+	position: relative;
+	float: right;
+	height: 75px; }

@@ -16,11 +16,11 @@
   </div>
   <div class="island--full-width" [class.island--full-width-sidebar]="!iConfig.isWizard">
     <div class="island island--center" [class.island--left]="!iConfig.isWizard">
-      <label for="alexa" class="label">
+      <label for="alexa_ids" class="label">
         Alexa User ID
       </label>
-      <input type="text" name="alexa"
-        class="inputfield" id="alexa"
+      <input type="text" name="alexa_ids"
+        class="inputfield" id="alexa_ids"
         [(ngModel)]="iDavis.values.user.alexa_ids" 
         (keyup)="validate()">
     </div>

@@ -16,6 +16,7 @@ import { FormsModule }              from "@angular/forms";
 import { DavisCardComponent }       from "./davis-card/davis-card.component";
 
 // Services
+import { SlackTagConversionPipe }   from './davis-slack-pipe/davis-slack.pipe';
 
 // ----------------------------------------------------------------------------
 // Module
@@ -23,9 +24,11 @@ import { DavisCardComponent }       from "./davis-card/davis-card.component";
 @NgModule({
   declarations: [
     DavisCardComponent,
+    SlackTagConversionPipe,
   ],
   exports: [
     DavisCardComponent,
+    SlackTagConversionPipe,
   ],
   imports: [
     CommonModule,

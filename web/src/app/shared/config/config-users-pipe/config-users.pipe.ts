@@ -8,7 +8,7 @@ export class FilterUsersByNamePipe implements PipeTransform {
       return users;
     }
     users = _.filter(users, (user: any) => { 
-      return user.name.first.toLowerCase().includes(str.toLowerCase()) || user.name.last.toLowerCase().includes(str.toLowerCase()); 
+      return user.name.first.toLowerCase().indexOf(str.toLowerCase()) > -1 || user.name.last.toLowerCase().indexOf(str.toLowerCase()) > -1; 
     });
     return users;
   }
