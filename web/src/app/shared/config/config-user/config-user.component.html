@@ -13,7 +13,8 @@
     </a>
   </div>
   <div *ngIf="iConfig.status['user'].success === false" class="island--full-width island--error" 
-    [class.island--full-width-sidebar]="!iConfig.isWizard" 
+    [class.island--full-width-sidebar]="!iConfig.isWizard"
+    [class.island--my-account-error]="!iConfig.isWizard && isMyUser"
     [class.island--user-accounts-error]="!isMyUser">
     {{ iConfig.status['user'].error }}
   </div>
@@ -115,7 +116,7 @@
                 
                 <div class="input-button-button" (click)="isPasswordMasked = !isPasswordMasked">
                   <svg class="icon icon--black icon--input-button-img" [class.input-button-img-password-masked]="isPasswordMasked">
-                    <use xlink:href="#eye"></use>
+                    <use href="#eye"></use>
                   </svg>
                 </div>
             </div>
@@ -128,7 +129,7 @@
             </label>
             
             <!-- isMyUser -->
-            <select *ngIf="isMyUser" name="timezone" 
+            <select *ngIf="isMyUser" id="timezone" name="timezone" 
               [(ngModel)]="iDavis.values.user.timezone"
               (ngModelChange)="onTimezoneChange($event); validate()"
               [class.select-opened]="isSelectOpened" 
@@ -138,7 +139,7 @@
             </select>
             
              <!-- !isMyUser -->
-            <select *ngIf="!isMyUser" name="timezone" 
+            <select *ngIf="!isMyUser" id="timezone" name="timezone" 
               [(ngModel)]="iConfig.values.otherUser.timezone" 
               (ngModelChange)="onTimezoneChange($event); validate()"
               [class.select-opened]="isSelectOpened" 

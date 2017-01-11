@@ -76,15 +76,37 @@ export class DavisBaseComponent implements OnInit, AfterViewInit {
       this.davisInput = '';
       this.iDavis.askDavis(phrase)
         .then(result => {
-          this.addToConvo(result.response, true);
-          setTimeout(() => {
-            this.iDavis.windowScrollBottom('slow');
-          }, 100);
-        }).catch(err => { console.log(err) });
+          if (result.response.visual.card) {
+            result.response.visual.card.attachments.forEach((attachment: any, index: any) => {
+              if (attachment.actions) {
+                result.response.visual.card.attachments[index].actionClicked = null;
+                result.response.visual.card.attachments.push(result.response.visual.card.attachments[index]);
+                result.response.visual.card.attachments.splice(index, 1);
+              }
+            });
+          }
+          if (result.response.visual.card || result.response.visual.text) {
+            this.addToConvo(result.response, true);
+            setTimeout(() => {
+              this.iDavis.windowScrollBottom('slow');
+            }, 100);
+          }
+        })
+        .catch(err => {
+          this.addToConvo( { visual: { text: err } }, true);
+        });
     }
   }
   
   addToConvo(message: any, isDavis: boolean) {
+    
+    // Delete all previous card's unclicked actions
+    let lastIndex: any = this.iDavis.conversation.length - 2;
+    if (lastIndex > -1 && this.iDavis.conversation[lastIndex].visual.card && this.iDavis.conversation[lastIndex].visual.card.attachments.length > 0 
+      && this.iDavis.conversation[lastIndex].visual.card.attachments[this.iDavis.conversation[lastIndex].visual.card.attachments.length - 1].actions) {
+      this.iDavis.conversation[lastIndex].visual.card.attachments[this.iDavis.conversation[lastIndex].visual.card.attachments.length - 1].actions = null;
+    }
+    
     message.isDavis = isDavis;
     this.iDavis.conversation.push(message);
   }
@@ -124,7 +146,7 @@ export class DavisBaseComponent implements OnInit, AfterViewInit {
           }
         })
         .catch(err => {
-          if (JSON.stringify(err).includes('invalid token')) {
+          if (JSON.stringify(err).indexOf('invalid token') > -1) {
             this.iDavis.logOut();
           }
         });

@@ -44,7 +44,7 @@ export class ConfigGuard implements CanActivate {
   canActivate(actRoute: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<boolean> | boolean {
     if (window.location.hash) {
       this.navigationExtras.fragment = window.location.hash.replace('#', '');
-    } else if (window.location.pathname.includes('configuration')) {
+    } else if (window.location.pathname.indexOf('configuration') > -1) {
       this.navigationExtras.fragment = 'configuration';
     }
     if (!this.iConfig.isWizard && !this.iDavis.token) {

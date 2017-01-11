@@ -169,7 +169,7 @@ export class ConfigService {
       this.status[category].success = false;
       this.status[category].error = message || 'Sorry an error occurred, please try again.';
     }
-    if (typeof message === 'string' && message.includes('invalid token')) {
+    if (typeof message === 'string' && message.indexOf('invalid token') > -1) {
       this.iDavis.logOut();
     }
   }

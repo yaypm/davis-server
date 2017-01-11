@@ -141,7 +141,7 @@ export class DavisService {
   
   safariAutoCompletePolyFill(input: string, id: string): string {
     let value = $(`#${id}`).val();
-    if (input !== value) input = value;
+    if (value && input !== value) input = value;
     return input;
   }
 
