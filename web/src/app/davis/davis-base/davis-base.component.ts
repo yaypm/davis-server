@@ -71,7 +71,7 @@ export class DavisBaseComponent implements OnInit, AfterViewInit {
   doSubmit() {
     let phrase = this.iDavis.safariAutoCompletePolyFill(this.davisInput, 'davisInput');
     if (phrase.length > 0) {
-      this.addToConvo( { visual: { text: phrase } }, false);
+      this.addToConvo( { visual: { card: { text: phrase } } }, false);
       this.iDavis.windowScrollBottom('slow');
       this.davisInput = '';
       this.iDavis.askDavis(phrase)
@@ -85,7 +85,7 @@ export class DavisBaseComponent implements OnInit, AfterViewInit {
               }
             });
           }
-          if (result.response.visual.card || result.response.visual.text) {
+          if (result.response.visual.card || result.response.visual.card.text) {
             this.addToConvo(result.response, true);
             setTimeout(() => {
               this.iDavis.windowScrollBottom('slow');
@@ -93,7 +93,7 @@ export class DavisBaseComponent implements OnInit, AfterViewInit {
           }
         })
         .catch(err => {
-          this.addToConvo( { visual: { text: err } }, true);
+          this.addToConvo( { visual: { card: { text: err } }}, true);
         });
     }
   }
@@ -101,11 +101,14 @@ export class DavisBaseComponent implements OnInit, AfterViewInit {
   addToConvo(message: any, isDavis: boolean) {
     
     // Delete all previous card's unclicked actions
-    let lastIndex: any = this.iDavis.conversation.length - 2;
-    if (lastIndex > -1 && this.iDavis.conversation[lastIndex].visual.card && this.iDavis.conversation[lastIndex].visual.card.attachments.length > 0 
-      && this.iDavis.conversation[lastIndex].visual.card.attachments[this.iDavis.conversation[lastIndex].visual.card.attachments.length - 1].actions) {
-      this.iDavis.conversation[lastIndex].visual.card.attachments[this.iDavis.conversation[lastIndex].visual.card.attachments.length - 1].actions = null;
-    }
+    // if (this.iDavis.conversation) {
+    //   let lastIndex: any = this.iDavis.conversation.length - 2;
+    //   if (lastIndex > -1 && this.iDavis.conversation[lastIndex].visual.card 
+    //     && this.iDavis.conversation[lastIndex].visual.card.attachments && this.iDavis.conversation[lastIndex].visual.card.attachments.length > 0 
+    //     && this.iDavis.conversation[lastIndex].visual.card.attachments[this.iDavis.conversation[lastIndex].visual.card.attachments.length - 1].actions) {
+    //     this.iDavis.conversation[lastIndex].visual.card.attachments[this.iDavis.conversation[lastIndex].visual.card.attachments.length - 1].actions = null;
+    //   }
+    // }
     
     message.isDavis = isDavis;
     this.iDavis.conversation.push(message);

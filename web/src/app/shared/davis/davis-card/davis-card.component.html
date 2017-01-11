@@ -11,7 +11,7 @@
       <div *ngIf="message.visual.card && message.visual.card.text" style="font-size: 14px">
         {{ message.visual.card.text }}
       </div>
-      <div *ngIf="message.visual.card && message.visual.card.attachments.length > 0" class="card-attachments">
+      <div *ngIf="message.visual.card && message.visual.card.attachments && message.visual.card.attachments.length > 0" class="card-attachments">
         <div *ngFor="let attachment of message.visual.card.attachments" class="card-attachment">
           <div *ngIf="attachment.pretext || attachment.text || attachment.fields || attachment.actions || attachment.actionClicked" class="card-bar" [style.border-color]="attachment.color"></div>
           <div class="card-content">
