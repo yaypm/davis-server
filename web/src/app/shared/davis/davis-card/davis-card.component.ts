@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, Pipe, PipeTransform } from '@angular/core';
 
 // Services
 import { ConfigService } from '../../config/config.service';
@@ -11,17 +11,29 @@ import * as _ from "lodash";
 })
 export class DavisCardComponent implements OnInit {
   
-  @Input() message: string;
+  @Input() message: any;
   @Input() isDavis: boolean;
 
   constructor(
     public iDavis: DavisService,
     public iConfig: ConfigService) { }
+    
+  addToConvo(phrase: string) {
+    this.iDavis.askDavis(phrase.toLowerCase())
+      .then(result => {
+        result.response.isDavis = true;
+        this.iDavis.conversation.push(result.response);
+        setTimeout(() => {
+          this.iDavis.windowScrollBottom('slow');
+        }, 100);
+      })
+      .catch(err => {
+        let message = { visual: { text: err }, isDavis: true };
+        this.iDavis.conversation.push(message);
+      });
+  }
 
-  doSubmit() {
+  doSubmit() {}
   
-  }
-  
-  ngOnInit() {
-  }
+  ngOnInit() {}
 }

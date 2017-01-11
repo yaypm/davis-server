@@ -23,9 +23,9 @@ export class ConfigSlackComponent implements OnInit {
     isSecretMasked: boolean = true;
     
     constructor(public iDavis: DavisService, public iConfig: ConfigService, public router: Router) {
-        this.myURL = `${window.location.protocol}//${window.location.host}`;
-        this.requestUri = `${this.myURL}/slack/receive`;
-        this.iConfig.values.slack.redirectUri = `${this.myURL}/oauth`;
+      this.myURL = `${window.location.protocol}//${window.location.host}`;
+      this.requestUri = `${this.myURL}/slack/receive`;
+      this.iConfig.values.slack.redirectUri = `${this.myURL}/oauth`;
     }
 
     validate() {
@@ -43,40 +43,26 @@ export class ConfigSlackComponent implements OnInit {
 
     doSubmit() {
       this.submitted = true;
+      this.iConfig.values.slack.clientId = this.iDavis.safariAutoCompletePolyFill(this.iConfig.values.slack.clientId, 'clientId');
+      this.iConfig.values.slack.clientSecret = this.iDavis.safariAutoCompletePolyFill(this.iConfig.values.slack.clientSecret, 'clientSecret');
       if (!this.iConfig.status['slack'].success && this.iConfig.values.slack.clientId && this.iConfig.values.slack.clientSecret) {
         this.submitButton = 'Saving...';
         this.iConfig.connectSlack()
-          .then(result => {
-            if (result.success) {
-              return this.iConfig.startSlack();
-            } else {
-              this.iConfig.generateError('slack', result.message);
-              this.resetSubmitButton();
+          .then(response => {
+            if (!response.success) { 
+              this.resetSubmitButton(); 
+              throw new Error(response.message); 
             }
-          },
-          error => {
-            console.log(error);
-            this.iConfig.generateError('slack', null);
-            this.resetSubmitButton();
+            return this.iConfig.startSlack();
           })
-          .then(result => {
-            if (result.success) {
-              this.iConfig.status['slack'].success = true;
-              this.iDavis.windowLocation(`https://slack.com/oauth/authorize?scope=incoming-webhook,commands,bot&client_id=${this.iConfig.values.slack.clientId}`);
-            } else {
-              this.iConfig.generateError('slack', result.message);
-              this.resetSubmitButton();
-            }
-          },
-          error => {
-            console.log(error);
-            this.iConfig.generateError('slack', null);
+          .then(response => {
             this.resetSubmitButton();
+            if (!response.success) throw new Error(response.message); 
+            this.iConfig.status['slack'].success = true;
+            this.iDavis.windowLocation(`https://slack.com/oauth/authorize?scope=incoming-webhook,commands,bot&client_id=${this.iConfig.values.slack.clientId}`);
           })
           .catch(err => {
-            if (JSON.stringify(err).includes('invalid token')) {
-              this.iDavis.logOut();
-            }
+            this.iConfig.displayError(err, 'slack');
           });
       } else if (this.iConfig.isWizard) {
         this.iConfig.isWizard = false;
@@ -87,6 +73,7 @@ export class ConfigSlackComponent implements OnInit {
     }
 
     ngOnInit() {
+      this.iConfig.status['slack'].success = null;
       this.iDavis.isBreadcrumbsVisible = true;
       setTimeout(() => {
         document.getElementsByName('clientId')[0].focus();

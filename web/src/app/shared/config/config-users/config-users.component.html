@@ -23,7 +23,7 @@
             (blur)="isFilterFocused = false">
         <div id="clearBtn" class="input-button-button" *ngIf="filter && filter.value.length > 0" (click)="filter.value = '';filterName = ''">
             <svg class="icon icon--black icon--input-button-img" [class.input-button-img-password-masked]="!isFilterFocused">
-              <use xlink:href="#clear"></use>
+              <use href="#clear"></use>
             </svg>
         </div>
     </div>
@@ -53,6 +53,6 @@
   </div>
 </div>
 <svg *ngIf="editUser" class="icon--back" (click)="editUser = false">
-  <use xlink:href="#back"></use>
+  <use href="#back"></use>
 </svg>
 <config-user *ngIf="addUser || iConfig.values.original.otherUser.first || editUser" [isNewUser]="addUser" [isMyUser]="false" (showUsersList)="showUsers()"></config-user>

@@ -81,12 +81,12 @@
     <div class="nav__buttongroup">
       <a class="nav__btn btn--icon" [class.nav__btn-highlighted]="iDavis.isUserMenuVisible" (click)="iDavis.toggleUserMenu(); iDavis.isSidebarVisible = false">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon icon--white icon--nav__btn">
-          <use xlink:href="#user"></use>
+          <use href="#user"></use>
         </svg>
       </a>
-      <a *ngIf="router.url.includes('/configuration')" class="nav__btn btn--icon hide-lg" (click)="iDavis.isUserMenuVisible = false; iDavis.isSidebarVisible = !iDavis.isSidebarVisible">
+      <a *ngIf="router.url.indexOf('/configuration') > -1" class="nav__btn btn--icon hide-lg" (click)="iDavis.isUserMenuVisible = false; iDavis.isSidebarVisible = !iDavis.isSidebarVisible">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon icon--white icon--nav__btn">
-          <use xlink:href="#sidebar"></use>
+          <use href="#sidebar"></use>
         </svg>
       </a>
     </div>
