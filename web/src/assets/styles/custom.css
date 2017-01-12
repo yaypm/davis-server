@@ -676,6 +676,9 @@ form.card-form {
 	min-width: 200px;
 	margin-bottom: 2px;
 	margin-right: 10px; }
+	
+.card-field-wrap {
+  clear: both; }
 
 .card-field-title {
 	font-weight: bold;}
@@ -710,8 +713,14 @@ form.card-form {
 	
 .card-timestamp {
   clear: both;
-  float: right;
   margin-top: 3px;
-  margin-right: 3px;
   font-size: 10px;
   color: #b7b7b7; }
+  
+.card-timestamp-user {
+  float: right;
+  margin-right: 3px; }
+  
+.card-timestamp-davis {
+  float: right;
+  margin-right: 3px; }

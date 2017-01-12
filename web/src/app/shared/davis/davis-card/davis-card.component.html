@@ -19,9 +19,9 @@
              <a class="card-title" [innerHTML]="attachment.title | slackTagConversionPipe:true" (click)="iDavis.windowOpen(attachment.title_link)"></a>
              <div class="card-text" [innerHTML]="attachment.text | slackTagConversionPipe:true"></div>
              <div class="card-fields">
-                <div *ngFor="let field of attachment.fields" class="card-field">
-                 <div class="card-field-title" [innerHTML]="field.title | slackTagConversionPipe:true"></div>
-                 <div class="card-field-value" [innerHTML]="field.value | slackTagConversionPipe:true"></div>
+                <div *ngFor="let field of attachment.fields; let i = index" class="card-field" [class.card-field-wrap]="i % 2 == 0">
+                  <div class="card-field-title" [innerHTML]="field.title | slackTagConversionPipe:true"></div>
+                  <div class="card-field-value" [innerHTML]="field.value | slackTagConversionPipe:true"></div>
                 </div>
              </div>
              <div *ngIf="attachment.actions || attachment.actionClicked" class="card-actions">
@@ -45,7 +45,6 @@
     </div>
   </div>
 </form>
-<div *ngIf="isDavis && (message.timestamp != iDavis.conversation[iDavis.conversation.length - 1].timestamp 
-  || iDavis.conversation[iDavis.conversation.length - 1] === message)" class="card-timestamp">
+<div class="card-timestamp" [class.card-timestamp-davis]="isDavis" [class.card-timestamp-user]="!isDavis">
   {{ message.timestamp }}
 </div>
