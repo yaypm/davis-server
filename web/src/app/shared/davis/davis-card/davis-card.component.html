@@ -45,3 +45,7 @@
     </div>
   </div>
 </form>
+<div *ngIf="isDavis && (message.timestamp != iDavis.conversation[iDavis.conversation.length - 1].timestamp 
+  || iDavis.conversation[iDavis.conversation.length - 1] === message)" class="card-timestamp">
+  {{ message.timestamp }}
+</div>

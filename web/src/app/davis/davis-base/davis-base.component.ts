@@ -111,6 +111,7 @@ export class DavisBaseComponent implements OnInit, AfterViewInit {
     }
     
     message.isDavis = isDavis;
+    message.timestamp = this.iDavis.getTimestamp();
     this.iDavis.conversation.push(message);
   }
   

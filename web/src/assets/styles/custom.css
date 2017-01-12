@@ -665,3 +665,11 @@ form.card-form {
 	position: relative;
 	float: right;
 	height: 75px; }
+	
+.card-timestamp {
+  clear: both;
+  float: right;
+  margin-top: 3px;
+  margin-right: 3px;
+  font-size: 10px;
+  color: #b7b7b7; }

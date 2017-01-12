@@ -139,6 +139,10 @@ export class DavisService {
     return momentz.tz.guess();
   }
   
+  getTimestamp(): string {
+    return momentz().format('LT') + ' ' + momentz.tz(moment.tz.guess()).format('z');
+  }
+  
   safariAutoCompletePolyFill(input: string, id: string): string {
     let value = $(`#${id}`).val();
     

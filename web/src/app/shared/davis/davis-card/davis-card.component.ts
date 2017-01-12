@@ -22,6 +22,7 @@ export class DavisCardComponent implements OnInit {
     this.iDavis.askDavis(phrase.toLowerCase())
       .then(result => {
         result.response.isDavis = true;
+        result.response.timestamp = this.iDavis.getTimestamp();
         this.iDavis.conversation.push(result.response);
         setTimeout(() => {
           this.iDavis.windowScrollBottom('slow');
