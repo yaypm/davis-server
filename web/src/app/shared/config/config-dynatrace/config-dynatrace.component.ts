@@ -15,6 +15,7 @@ export class ConfigDynatraceComponent implements OnInit {
   submitButton: string = (this.iConfig.isWizard) ? 'Continue' : 'Save';
   isTokenMasked: boolean = true;
   isDirty: boolean = false;
+  isAdvancedExpanded: boolean = false;
 
   constructor(
     public iDavis: DavisService,

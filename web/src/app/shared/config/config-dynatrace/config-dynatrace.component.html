@@ -42,6 +42,32 @@
           </div>
       </div>
     </div>
+    <div class="island island--center" [class.island--left]="!iConfig.isWizard">
+      <div class="expandable" [class.is-expanded]="isAdvancedExpanded">
+        <a (click)="isAdvancedExpanded = !isAdvancedExpanded" class="expandable__trigger" style="margin-left: -14px">Advanced</a>
+        <div class="expandable__content">
+          <div class="layout is-flex has-islands" style="padding: 0">
+            <div class="island island--center" [class.island--left]="!iConfig.isWizard">
+              <label for="url" class="label">
+                Dynatrace API URL
+              </label>
+              <input type="text" name="apiUrl"
+                class="inputfield" id="apiUrl"
+                [(ngModel)]="iConfig.values.dynatrace.apiUrl" 
+                (keyup)="validate()">
+            </div>
+            <div class="island island--center" [class.island--left]="!iConfig.isWizard">
+              <input type="checkbox" class="checkbox" id="strictSSL" name="strictSSL"
+                [(ngModel)]="iConfig.values.dynatrace.strictSSL"
+                (change)="validate()">
+              <label for="strictSSL" class="checkbox__label">
+                <span class="checkbox__caption">Strict SSL</span>
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
     <div class="island island--center island--submit" [class.island--left]="!iConfig.isWizard">
       <button type="submit" role="button" class="btn btn--primary btn--submit"
           [attr.disabled]="(!form.valid || submitButton === 'Saving...' || !isDirty) ? true : null">
