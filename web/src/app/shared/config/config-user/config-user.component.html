@@ -96,20 +96,20 @@
             <div class="input-button-wrapper" [class.input-button-wrapper-focus]="isPasswordFocused">
               
                 <!-- isMyUser -->
-                <input *ngIf="isPasswordMasked && isMyUser" type="password" name="password" id="password" class="input-button-input" 
+                <input *ngIf="isPasswordMasked && isMyUser" type="password" name="password" id="password" class="input-button-input" minlength="6" 
                     [(ngModel)]="iDavis.values.user.password" 
                     (focus)="isPasswordFocused = true" (blur)="isPasswordFocused = false" (keyup)="validate()"
                     [required]="(iConfig.isWizard) ? '' : null">
-                <input *ngIf="!isPasswordMasked && isMyUser" type="text" name="password" id="password" class="input-button-input" 
+                <input *ngIf="!isPasswordMasked && isMyUser" type="text" name="password" id="password" class="input-button-input" minlength="6" 
                     [(ngModel)]="iDavis.values.user.password" (focus)="isPasswordFocused = true" (blur)="isPasswordFocused = false" (keyup)="validate()"
                     [required]="(iConfig.isWizard) ? '' : null">
                     
                 <!-- !isMyUser -->
-                <input *ngIf="isPasswordMasked && !isMyUser" type="password" name="password" id="password" class="input-button-input" 
+                <input *ngIf="isPasswordMasked && !isMyUser" type="password" name="password" id="password" class="input-button-input" minlength="6"
                     [(ngModel)]="iConfig.values.otherUser.password" 
                     (focus)="isPasswordFocused = true" (blur)="isPasswordFocused = false"(keyup)="validate()"
                     [required]="(isNewUser) ? '' : null">
-                <input *ngIf="!isPasswordMasked && !isMyUser" type="text" name="password" id="password" class="input-button-input" 
+                <input *ngIf="!isPasswordMasked && !isMyUser" type="text" name="password" id="password" class="input-button-input" minlength="6" 
                     [(ngModel)]="iConfig.values.otherUser.password" 
                     (focus)="isPasswordFocused = true" (blur)="isPasswordFocused = false" (keyup)="validate()"
                     [required]="(isNewUser) ? '' : null">
@@ -120,6 +120,7 @@
                   </svg>
                 </div>
             </div>
+            <p class="hint" id="i9">Minimum of 6 characters</p>
           </div>
         </div>
         <div class="layout__container layout--half">

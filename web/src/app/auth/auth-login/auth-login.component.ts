@@ -89,6 +89,13 @@ export class AuthLoginComponent  implements OnInit {
         if (typeof ruxitApi != "undefined") ruxitApi.tagSession(this.iDavis.values.authenticate.email);
         this.router.navigate([`/${(this.navigationExtras.fragment) ? 'configuration' : 'davis'}`], this.navigationExtras);
         this.submitButton = 'Sign in';
+        return this.iDavis.getDavisVersion();
+      })
+      .then(response => {
+        if (!response.success) { 
+          throw new Error(response.message); 
+        }
+        this.iDavis.davisVersion = response.version;
       })
       .catch(err => {
         this.loginError = err.message || 'Sorry an error occurred, please try again.';

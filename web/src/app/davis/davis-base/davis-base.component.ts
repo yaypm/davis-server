@@ -135,26 +135,30 @@ export class DavisBaseComponent implements OnInit, AfterViewInit {
     this.davisMode = this.modes.noMic;
     this.iDavis.focusDavisInputOnKeyPress();
     
-    if (!this.iDavis.values.user.email) {
+    if (!this.iDavis.values.user.email || !this.iDavis.davisVersion) {
       this.iDavis.getDavisUser()
-        .then(result => {
-          if (result.success) {
-            this.iDavis.values.user = result.user;
-            if (!result.user.name) {
-              this.iDavis.values.user.name = {first:'',last:''};
-            } else {
-              if (!result.user.name.first) this.iDavis.values.user.name.first = '';
-              if (!result.user.name.last) this.iDavis.values.user.name.last = '';
-            }
-            this.iDavis.values.original.user = _.cloneDeep(this.iDavis.values.user);
+        .then(response => {
+          if (!response.success) throw new Error(response.message); 
+          this.iDavis.values.user = response.user;
+          
+          // Backwards compatibility, was once optional
+          if (!response.user.name) {
+            this.iDavis.values.user.name = { first: '', last: '' };
           } else {
-            console.log(result.message);
+            if (!response.user.name.first) this.iDavis.values.user.name.first = '';
+            if (!response.user.name.last) this.iDavis.values.user.name.last = '';
           }
+          this.iConfig.values.original.user = _.cloneDeep(this.iDavis.values.user);
+          return this.iDavis.getDavisVersion();
+        })
+        .then(response => {
+          if (!response.success) { 
+            throw new Error(response.message); 
+          }
+          this.iDavis.davisVersion = response.version;
         })
         .catch(err => {
-          if (JSON.stringify(err).indexOf('invalid token') > -1) {
-            this.iDavis.logOut();
-          }
+          this.iConfig.displayError(err, null);
         });
     }
   }
