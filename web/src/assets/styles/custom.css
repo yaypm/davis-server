@@ -609,6 +609,7 @@ form.card-form {
 
 .card-attachment {
 	float: left;
+	width: 100%;
 	padding: 0px 10px 0px 0px;
 	margin: 2px; }
 

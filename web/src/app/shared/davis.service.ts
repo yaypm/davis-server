@@ -141,6 +141,12 @@ export class DavisService {
   
   safariAutoCompletePolyFill(input: string, id: string): string {
     let value = $(`#${id}`).val();
+    
+    // Checkbox workaround
+    if( $(`#${id}`).attr('type') === 'checkbox' ) {
+      value = $(`#${id}`).is(':checked');
+    }
+    
     if (value && input !== value) input = value;
     return input;
   }
