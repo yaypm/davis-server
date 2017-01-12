@@ -7,6 +7,17 @@ form {
   
 .breadcrumbs__link {
   cursor: pointer; }
+  
+.breadcrumbs {
+  display: none; }
+  
+.breadcrumbs--spacer {
+  width: 100%; 
+  height: 44px; }
+  
+.chat-spacer {
+  width: 100%; 
+  height: 60px; }
 
 .disabled.breadcrumbs__link, .disabled.breadcrumbs__link:hover {
   cursor: default;
@@ -474,15 +485,24 @@ select:focus {
 
 .island--davisInput-border {
   border-top: 0;
-  padding: 16px;
-  padding-bottom: 30px;
-  bottom-left-border-radius: 0; 
-  bottom-right-border-radius: 0; }
+  padding: 0px 8px 8px 8px;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0; }
 
 .island--davisInput-border-full-width {
   border-top: 2px solid #f8f8f8;
-  bottom-left-border-radius: 0; 
-  bottom-right-border-radius: 0; }
+  border-bottom-left-radius: 0; 
+  border-bottom-right-radius: 0; }
+  
+.layout.is-flex.is-flex--compact {
+  padding: 0; }
+  
+.layout.has-islands {
+  padding: 8px; }
+  
+.label--compact { 
+  padding-top: 3px;
+  padding-bottom: 1px; }
 
 .icon--davis {
   width: 25px; 
@@ -530,14 +550,36 @@ select:focus {
     
 @media (min-width: 750px) {
   
+  .breadcrumbs {
+    display: inherit; }
+    
+  .breadcrumbs--spacer {
+    height: 74px; }
+    
+  .chat-spacer {
+    width: 100%; 
+    height: 125px; }
+  
   .island--davisInput {
     background-color: transparent;  }
   
   .island--davisInput-border {
+    padding: 16px;
+    padding-bottom: 30px;
     border-top: 2px solid #f8f8f8; }
   
   .island--davisInput-border-full-width {
     border-top: 0; }
+    
+  .layout.is-flex.isflex--compact {
+    padding: initial; }
+    
+  .layout.has-islands {
+    padding: 12px; }
+  
+  .label--compact { 
+    padding-top: initial;
+    padding-bottom: 6px; }
   
   .icon--davis {
     margin-top: 1px;
@@ -645,7 +687,7 @@ form.card-form {
 
 .card-action {
   float: left;
-  margin-right: 5px;
+  margin: 2.5px 5px 2.5px 0px;
 }
 
 .card-image-url {

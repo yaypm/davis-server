@@ -87,6 +87,7 @@ export class DavisBaseComponent implements OnInit, AfterViewInit {
           }
           if (result.response.visual.card || result.response.visual.card.text) {
             this.addToConvo(result.response, true);
+            this.iDavis.blurDavisInput();
             setTimeout(() => {
               this.iDavis.windowScrollBottom('slow');
             }, 100);
@@ -132,6 +133,7 @@ export class DavisBaseComponent implements OnInit, AfterViewInit {
   ngOnInit() {
     this.iDavis.isBreadcrumbsVisible = true;
     this.davisMode = this.modes.noMic;
+    this.iDavis.focusDavisInputOnKeyPress();
     
     if (!this.iDavis.values.user.email) {
       this.iDavis.getDavisUser()

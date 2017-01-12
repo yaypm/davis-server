@@ -71,6 +71,11 @@
 </g>
 </symbol>
 </svg>
+<svg xmlns="http://www.w3.org/2000/svg" style="width:0; height:0; display: none;">
+<symbol id="send" viewBox="0 0 512 512">
+  <polygon points="414.3,229.2 193.3,229.2 314.2,108.1 272.5,66.3 97.7,241.6 97.7,271.1 272.5,446.4 314.2,404.6    196,286.2 414.3,286.2  "/>
+</symbol>
+</svg>
 
 <!-- Header -->
 <div style="position: fixed; width: 100%; top: 0; z-index: 1000">
@@ -81,12 +86,12 @@
     <div class="nav__buttongroup">
       <a class="nav__btn btn--icon" [class.nav__btn-highlighted]="iDavis.isUserMenuVisible" (click)="iDavis.toggleUserMenu(); iDavis.isSidebarVisible = false">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon icon--white icon--nav__btn">
-          <use href="#user"></use>
+          <use xlink:href="#user"></use>
         </svg>
       </a>
       <a *ngIf="router.url.indexOf('/configuration') > -1" class="nav__btn btn--icon hide-lg" (click)="iDavis.isUserMenuVisible = false; iDavis.isSidebarVisible = !iDavis.isSidebarVisible">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon icon--white icon--nav__btn">
-          <use href="#sidebar"></use>
+          <use xlink:href="#sidebar"></use>
         </svg>
       </a>
     </div>
@@ -161,6 +166,6 @@
   </div>
 
 </div>
-<div style="width: 100%; height: 74px;"></div>
+<div class="breadcrumbs--spacer"></div>
 <!-- Content -->
 <router-outlet></router-outlet>

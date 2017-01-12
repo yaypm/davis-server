@@ -3,7 +3,7 @@
     <div [class.circle-left]="isDavis" [class.circle-right]="!isDavis">
       {{ (isDavis) ? null : iDavis.values.user.name.first[0].toUpperCase() + iDavis.values.user.name.last[0].toUpperCase() }}
       <svg *ngIf="isDavis" class="icon icon--white icon--davis">
-        <use href="#davis"></use>
+        <use xlink:href="#davis"></use>
       </svg>
     </div>
     <div [class.triangle-left]="isDavis" [class.triangle-right]="!isDavis"></div>

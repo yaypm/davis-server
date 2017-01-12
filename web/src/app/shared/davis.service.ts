@@ -124,7 +124,19 @@ export class DavisService {
   }
   
   windowScrollBottom(speed: any): void {
-    $("html, body").animate({ scrollTop: $(document).height() }, speed);
+    $('html, body').animate({ scrollTop: $(document).height() }, speed);
+  }
+  
+  focusDavisInputOnKeyPress() : void {
+    $(document).keypress(function(event) {
+      if (window.location.pathname === '/davis' && !$('#davisInput').is(":focus")) {
+        $('#davisInput').focus();
+      }
+    });
+  }
+  
+  blurDavisInput(): void {
+    $('#davisInput').blur();
   }
   
   addToChrome(): void {

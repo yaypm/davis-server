@@ -11,11 +11,11 @@
       </div>
     </div>
   </div>
-  <div style="width: 100%; height: 125px"></div>
+  <div class="chat-spacer"></div>
   <div class="island island--full-width island--davisInput island--davisInput-border-full-width">
-    <div class="layout is-flex has-islands" style="padding-bottom: 0;">
+    <div class="layout is-flex has-islands is-flex--compact" style="padding-bottom: 0;">
       <div class="island island--center island--davisInput-border">         
-        <label for="davisInput" class="label">
+        <label for="davisInput" class="label label--compact">
             {{ davisMode.title }}
         </label>
         <div class="input-button-wrapper" [class.input-button-wrapper-focus]="isDavisInputFocused">
@@ -28,9 +28,15 @@
             (blur)="isDavisInputFocused = false"
             [attr.autofocus]="davisMode.name === 'noMic'">
           
-          <div *ngIf="davisMode.name !== 'noMic'" class="input-button-button" (click)="toggleListening(!isDavisListening)">
+          <div *ngIf="davisMode.name !== 'noMic' && davisInput.length < 1" class="input-button-button" (click)="toggleListening(!isDavisListening)">
             <svg class="icon icon--black icon--input-button-img" [class.input-button-img-password-masked]="isDavisInputFocused || !isDavisListening">
-              <use href="#mic"></use>
+              <use xlink:href="#mic"></use>
+            </svg>
+          </div>
+          
+          <div *ngIf="davisInput && davisInput.length > 0" class="input-button-button" (click)="doSubmit()">
+            <svg class="icon icon--black icon--input-button-img" style="transform: rotate(90deg);">
+              <use xlink:href="#send"></use>
             </svg>
           </div>
         </div>
