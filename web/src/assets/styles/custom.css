@@ -551,7 +551,7 @@ select:focus {
 @media (min-width: 750px) {
   
   .breadcrumbs {
-    display: inherit; }
+    display: flex; }
     
   .breadcrumbs--spacer {
     height: 74px; }

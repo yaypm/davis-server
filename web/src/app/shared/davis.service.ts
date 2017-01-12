@@ -22,6 +22,11 @@ export class DavisService {
   route_names: any = {
     '/wizard': 'Setup',
     '/configuration': 'Account settings',
+    '/configuration#user': 'Account settings',
+    '/configuration#users': 'Account settings',
+    '/configuration#dynatrace': 'Account settings',
+    '/configuration#slack': 'Account settings',
+    '/configuration#chrome': 'Account settings',
   };
   
   values: any = new DavisModel().davis.values;
