@@ -30,7 +30,7 @@ after(() => {
 
 // require('./classes/Davis');
 // require('./classes/Service');
-require('./classes/Users');
+/*require('./classes/Users');
 require('./classes/Dynatrace');
 require('./classes/Exchange');
 require('./classes/Decide');
@@ -38,4 +38,5 @@ require('./classes/Nlp');
 require('./classes/ResponseBuilder');
 require('./classes/PluginManager');
 require('./classes/Nunjucks');
-require('./classes/Express');
+require('./classes/Express');*/
+require('./classes/Filters');
