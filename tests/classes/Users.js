@@ -31,7 +31,7 @@ describe('Users', () => {
     const alexaID = 'shouldExist';
 
     return davis.config.load()
-      .then(() => users.createUser( { email, password: 'test', name: { first: 'admin', last: 'user' }, admin: true }))
+      .then(() => users.createUser( { email, password: 'supersecret', name: { first: 'admin', last: 'user' }, admin: true }))
       .then(() => users.updateUser(email, { alexa_ids: [alexaID] }))
       .then(() => users.validateAlexaUser(alexaID))
       .then(user => (user.email).should.equal(email));
