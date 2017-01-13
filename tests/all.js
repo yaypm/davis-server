@@ -1,15 +1,7 @@
 'use strict';
 
 const mongoose = require('mongoose');
-const BbPromise = require('bluebird');
-
-function clearDB() {
-  const colls = [];
-  for (let i in mongoose.connection.collections) {
-    colls.push(mongoose.connection.collections[i].remove());
-  }
-  return BbPromise.all(colls);
-}
+const utils = require('./utils');
 
 before(() => {
   if (mongoose.connection.readyState === 0) {
@@ -17,10 +9,10 @@ before(() => {
       if (err) {
         throw new Error('Not connected to MongoDB!');
       }
-      return clearDB();
+      return utils.clearDB();
     });
   } else {
-    return clearDB();
+    return utils.clearDB();
   }
 });
 
@@ -30,6 +22,7 @@ after(() => {
 
 // require('./classes/Davis');
 // require('./classes/Service');
+
 require('./classes/Users');
 require('./classes/Dynatrace');
 require('./classes/Exchange');
@@ -38,5 +31,6 @@ require('./classes/Nlp');
 require('./classes/ResponseBuilder');
 require('./classes/PluginManager');
 require('./classes/Nunjucks');
-require('./classes/Express');
 require('./classes/Filters');
+// express tests must be last
+require('./classes/Express');

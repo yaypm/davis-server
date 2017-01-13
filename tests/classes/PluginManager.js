@@ -21,7 +21,7 @@ describe('PluginManager', () => {
       './tests/mock_data/plugin_manager/mock-plugin',
     ],
   });
-  after(() => nock.restore());
+  after(() => nock.cleanAll());
   nock('https://ogj1j3zad0.execute-api.us-east-1.amazonaws.com')
     .post('/prod/datetime')
     .reply(200, davisParserData);

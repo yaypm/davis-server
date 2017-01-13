@@ -16,7 +16,7 @@ describe('Filters', () => {
   const davis = new Davis();
 
   // Makes sure the nock doesn't interfere with the next test.
-  after(() => nock.restore());
+  after(() => nock.cleanAll());
 
   it('should load in the Davis config', done => {
     davis.config.load()
@@ -29,7 +29,7 @@ describe('Filters', () => {
       .get('/api/v1/problem/feed')
       .query(true)
       .reply(200, problemSummary);
-    
+
     // Creating a fake exchange
     const exchange = { getScope: () => 'test' };
     _.set(exchange, 'model.request.analysed.timeRange.startTime', 1465571160000);

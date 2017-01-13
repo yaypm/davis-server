@@ -14,7 +14,7 @@ const davisParserData = require('../mock_data/nlp/yesterday.json');
 describe('Nlp', () => {
   const davis = new Davis();
   const Exchange = davis.classes.Exchange;
-  after(() => nock.restore());
+  after(() => nock.cleanAll());
   nock('https://ogj1j3zad0.execute-api.us-east-1.amazonaws.com')
     .post('/prod/datetime')
     .reply(200, davisParserData);

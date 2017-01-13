@@ -16,7 +16,7 @@ describe('Dynatrace', () => {
   const davis = new Davis();
 
   // Makes sure the nock doesn't interfere with the next test.
-  after(() => nock.restore());
+  after(() => nock.cleanAll());
 
   it('should load in the Davis config', done => {
     davis.config.load()
