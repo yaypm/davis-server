@@ -39,6 +39,7 @@ export class SlackTagConversionPipe implements PipeTransform {
           }
         });
         str = exploded.join('');
+        str = str.toUpperCase();
       }
     }
     return str;

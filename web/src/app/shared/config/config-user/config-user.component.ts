@@ -33,11 +33,11 @@ export class ConfigUserComponent implements OnInit {
 
   doSubmit() {
     this.submitted = true;
-    this.submitButton = 'Saving...';
+    this.submitButton = (this.isNewUser) ? 'Adding User...' : 'Saving...';
     
-    // Safari autocomplete polyfill - https://github.com/angular/angular.js/issues/1460
+    // // Safari autocomplete polyfill - https://github.com/angular/angular.js/issues/1460
     if (!this.iConfig.isWizard && !this.isMyUser) {
-      this.iConfig.values.ohterUser.name.first = this.iDavis.safariAutoCompletePolyFill(this.iConfig.values.otherUser.name.first, 'first');
+      this.iConfig.values.otherUser.name.first = this.iDavis.safariAutoCompletePolyFill(this.iConfig.values.otherUser.name.first, 'first');
       this.iConfig.values.otherUser.name.last = this.iDavis.safariAutoCompletePolyFill(this.iConfig.values.otherUser.name.last, 'last');
       this.iConfig.values.otherUser.email = this.iDavis.safariAutoCompletePolyFill(this.iConfig.values.otherUser.email, 'email');
       this.iConfig.values.otherUser.admin = this.iDavis.safariAutoCompletePolyFill(this.iConfig.values.otherUser.admin, 'admin');
@@ -73,8 +73,7 @@ export class ConfigUserComponent implements OnInit {
       this.iConfig.addDavisUser(this.user)
         .then(response => {
           if (!response.success) throw new Error(response.message);
-          
-          this.submitButton = this.submitButtonDefault;
+      
           this.iConfig.status['user'].success = true;
           this.iConfig.status['user'].error = null;
           this.iConfig.values.otherUser = new DavisModel().config.values.otherUser;
@@ -107,6 +106,7 @@ export class ConfigUserComponent implements OnInit {
               })
               .catch(err => {
                 this.iConfig.displayError(err, 'user');
+                this.submitButton = this.submitButtonDefault;
               });
             
           } else {
@@ -116,6 +116,7 @@ export class ConfigUserComponent implements OnInit {
       })
       .catch(err => {
         this.iConfig.displayError(err, 'user');
+        this.submitButton = this.submitButtonDefault;
       });
     }
   }
@@ -154,6 +155,7 @@ export class ConfigUserComponent implements OnInit {
   ngOnInit() {
     if (this.isNewUser) {
       this.submitButtonDefault = 'Add User';
+      this.submitButton = 'Add User';
     }
 
     this.detectedTimezone = this.iDavis.getTimezone();

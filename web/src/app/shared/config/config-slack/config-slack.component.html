@@ -83,7 +83,7 @@
             
             <div class="input-button-button" (click)="isSecretMasked = !isSecretMasked">
               <svg class="icon icon--black icon--input-button-img" [class.input-button-img-password-masked]="isSecretMasked">
-                <use href="#eye"></use>
+                <use xlink:href="#eye"></use>
               </svg>
             </div>
           </div>
@@ -99,7 +99,7 @@
               
               <div id="redirectUriBtn" class="input-button-button clipboard" data-clipboard-target="#redirectUri">
                 <svg class="icon icon--black icon--input-button-img" [class.input-button-img-password-masked]="!isRedirectUriFocused">
-                  <use href="#cut"></use>
+                  <use xlink:href="#cut"></use>
                 </svg>
               </div>
           </div>
@@ -115,7 +115,7 @@
   
               <div id="requestUriBtn" class="input-button-button clipboard" data-clipboard-target="#requestUri">
                 <svg class="icon icon--black icon--input-button-img" [class.input-button-img-password-masked]="!isRequestUriFocused">
-                  <use href="#cut"></use>
+                  <use xlink:href="#cut"></use>
                 </svg>
               </div>
           </div>

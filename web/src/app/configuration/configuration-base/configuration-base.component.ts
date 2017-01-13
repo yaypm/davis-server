@@ -117,6 +117,13 @@ export class ConfigurationBaseComponent implements OnInit {
         this.iConfig.values.slack = response.slack;
         this.iConfig.values.slack.enabled = true;
         this.iConfig.values.original.slack = _.cloneDeep(this.iConfig.values.slack);
+        return this.iDavis.getDavisVersion();
+      })
+      .then(response => {
+        if (!response.success) { 
+          throw new Error(response.message); 
+        }
+        this.iDavis.davisVersion = response.version;
       })
       .catch(err => {
         this.iConfig.displayError(err, null);

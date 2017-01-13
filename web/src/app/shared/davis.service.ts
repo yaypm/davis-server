@@ -12,6 +12,7 @@ export class DavisService {
 
   isAdmin: boolean = false;
   isAuthenticated: boolean = false;
+  davisVersion: string;
 
   token: string;
   isBreadcrumbsVisible: boolean = false;
@@ -22,6 +23,11 @@ export class DavisService {
   route_names: any = {
     '/wizard': 'Setup',
     '/configuration': 'Account settings',
+    '/configuration#user': 'Account settings',
+    '/configuration#users': 'Account settings',
+    '/configuration#dynatrace': 'Account settings',
+    '/configuration#slack': 'Account settings',
+    '/configuration#chrome': 'Account settings',
   };
   
   values: any = new DavisModel().davis.values;
@@ -82,6 +88,16 @@ export class DavisService {
       .catch(this.handleError);
   }
   
+  getDavisVersion(): Promise<any> {
+    let headers = new Headers({ 'Content-Type': 'application/json', 'x-access-token': this.token });
+    let options = new RequestOptions({ headers: headers });
+
+    return this.http.get('/api/v1/system/version', options)
+      .toPromise()
+      .then(this.extractData)
+      .catch(this.handleError);
+  }
+  
   askDavis(phrase: string) {
     let headers = new Headers({ 'Content-Type': 'application/json', 'x-access-token': this.token });
     let options = new RequestOptions({ headers: headers });
@@ -124,7 +140,19 @@ export class DavisService {
   }
   
   windowScrollBottom(speed: any): void {
-    $("html, body").animate({ scrollTop: $(document).height() }, speed);
+    $('html, body').animate({ scrollTop: $(document).height() }, speed);
+  }
+  
+  focusDavisInputOnKeyPress() : void {
+    $(document).keypress(function(event) {
+      if (window.location.pathname === '/davis' && !$('#davisInput').is(":focus")) {
+        $('#davisInput').focus();
+      }
+    });
+  }
+  
+  blurDavisInput(): void {
+    $('#davisInput').blur();
   }
   
   addToChrome(): void {
@@ -139,8 +167,18 @@ export class DavisService {
     return momentz.tz.guess();
   }
   
+  getTimestamp(): string {
+    return moment().format('LTS');
+  }
+  
   safariAutoCompletePolyFill(input: string, id: string): string {
     let value = $(`#${id}`).val();
+    
+    // Checkbox workaround
+    if( $(`#${id}`).attr('type') === 'checkbox' ) {
+      value = $(`#${id}`).is(':checked');
+    }
+    
     if (value && input !== value) input = value;
     return input;
   }
