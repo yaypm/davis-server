@@ -92,53 +92,41 @@ export class ConfigurationBaseComponent implements OnInit {
     this.iConfig.helpLinkText = 'Help for these settings';  
   
     this.iDavis.getDavisUser()
-      .then(result => {
-        if (result.success) {
-          this.iDavis.values.user = result.user;
-          if (!result.user.name) {
-            this.iDavis.values.user.name = {first:'',last:''};
-          } else {
-            if (!result.user.name.first) this.iDavis.values.user.name.first = '';
-            if (!result.user.name.last) this.iDavis.values.user.name.last = '';
-          }
-          this.iConfig.values.original.user = _.cloneDeep(this.iDavis.values.user);
+      .then(response => {
+        if (!response.success) throw new Error(response.message); 
+        this.iDavis.values.user = response.user;
+        
+        // Backwards compatibility, was once optional
+        if (!response.user.name) {
+          this.iDavis.values.user.name = { first: '', last: '' };
         } else {
-          this.iConfig.generateError('user', result.message);
+          if (!response.user.name.first) this.iDavis.values.user.name.first = '';
+          if (!response.user.name.last) this.iDavis.values.user.name.last = '';
         }
+        this.iConfig.values.original.user = _.cloneDeep(this.iDavis.values.user);
+        return this.iConfig.getDynatrace();
+      })
+      .then(response => {
+        if (!response.success) throw new Error(response.message);
+        this.iConfig.values.dynatrace = response.dynatrace;
+        this.iConfig.values.original.dynatrace = _.cloneDeep(this.iConfig.values.dynatrace);
+        return this.iConfig.getSlack();
+      })
+      .then(response => {
+        if (!response.success) throw new Error(response.message);
+        this.iConfig.values.slack = response.slack;
+        this.iConfig.values.slack.enabled = true;
+        this.iConfig.values.original.slack = _.cloneDeep(this.iConfig.values.slack);
+        return this.iDavis.getDavisVersion();
+      })
+      .then(response => {
+        if (!response.success) { 
+          throw new Error(response.message); 
+        }
+        this.iDavis.davisVersion = response.version;
       })
       .catch(err => {
-        console.log(err);
-      });
-      
-    this.iConfig.getDynatrace()
-      .then(result => {
-        if (result.success) {
-          this.iConfig.values.dynatrace = result.dynatrace;
-          this.iConfig.values.original.dynatrace = _.cloneDeep(this.iConfig.values.dynatrace);
-        } else {
-          this.iConfig.generateError('dynatrace', result.message);
-        }
-      })
-      .catch(err => {
-        if (JSON.stringify(err).includes('invalid token')) {
-          this.iDavis.logOut();
-        }
-      });
-      
-    this.iConfig.getSlack()
-      .then(result => {
-        if (result.success) {
-          this.iConfig.values.slack = result.slack;
-          this.iConfig.values.slack.enabled = true;
-          this.iConfig.values.original.slack = _.cloneDeep(this.iConfig.values.slack);
-        } else {
-          this.iConfig.generateError('slack', result.message);
-        }
-      })
-      .catch(err => {
-        if (JSON.stringify(err).includes('invalid token')) {
-          this.iDavis.logOut();
-        }
+        this.iConfig.displayError(err, null);
       });
   }
 }

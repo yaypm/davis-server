@@ -39,3 +39,4 @@ require('./classes/ResponseBuilder');
 require('./classes/PluginManager');
 require('./classes/Nunjucks');
 require('./classes/Express');
+require('./classes/Filters');

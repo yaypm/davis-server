@@ -69,23 +69,50 @@ export class DavisBaseComponent implements OnInit, AfterViewInit {
   // ------------------------------------------------------
   
   doSubmit() {
-    let phrase = this.davisInput;
+    let phrase = this.iDavis.safariAutoCompletePolyFill(this.davisInput, 'davisInput');
     if (phrase.length > 0) {
-      this.addToConvo( { visual: { text: phrase } }, false);
+      this.addToConvo( { visual: { card: { text: phrase } } }, false);
       this.iDavis.windowScrollBottom('slow');
       this.davisInput = '';
       this.iDavis.askDavis(phrase)
         .then(result => {
-          this.addToConvo(result.response, true);
-          setTimeout(() => {
-            this.iDavis.windowScrollBottom('slow');
-          }, 100);
-        }).catch(err => { console.log(err) });
+          if (result.response.visual.card) {
+            result.response.visual.card.attachments.forEach((attachment: any, index: any) => {
+              if (attachment.actions) {
+                result.response.visual.card.attachments[index].actionClicked = null;
+                result.response.visual.card.attachments.push(result.response.visual.card.attachments[index]);
+                result.response.visual.card.attachments.splice(index, 1);
+              }
+            });
+          }
+          if (result.response.visual.card || result.response.visual.card.text) {
+            this.addToConvo(result.response, true);
+            this.iDavis.blurDavisInput();
+            setTimeout(() => {
+              this.iDavis.windowScrollBottom('slow');
+            }, 100);
+          }
+        })
+        .catch(err => {
+          this.addToConvo( { visual: { card: { text: err } }}, true);
+        });
     }
   }
   
   addToConvo(message: any, isDavis: boolean) {
+    
+    // Delete all previous card's unclicked actions
+    if (this.iDavis.conversation) {
+      let lastIndex: any = this.iDavis.conversation.length - 2;
+      if (lastIndex > -1 && this.iDavis.conversation[lastIndex].visual.card 
+        && this.iDavis.conversation[lastIndex].visual.card.attachments && this.iDavis.conversation[lastIndex].visual.card.attachments.length > 0 
+        && this.iDavis.conversation[lastIndex].visual.card.attachments[this.iDavis.conversation[lastIndex].visual.card.attachments.length - 1].actions) {
+        this.iDavis.conversation[lastIndex].visual.card.attachments[this.iDavis.conversation[lastIndex].visual.card.attachments.length - 1].actions = null;
+      }
+    }
+    
     message.isDavis = isDavis;
+    message.timestamp = this.iDavis.getTimestamp();
     this.iDavis.conversation.push(message);
   }
   
@@ -106,27 +133,32 @@ export class DavisBaseComponent implements OnInit, AfterViewInit {
   ngOnInit() {
     this.iDavis.isBreadcrumbsVisible = true;
     this.davisMode = this.modes.noMic;
+    this.iDavis.focusDavisInputOnKeyPress();
     
-    if (!this.iDavis.values.user.email) {
+    if (!this.iDavis.values.user.email || !this.iDavis.davisVersion) {
       this.iDavis.getDavisUser()
-        .then(result => {
-          if (result.success) {
-            this.iDavis.values.user = result.user;
-            if (!result.user.name) {
-              this.iDavis.values.user.name = {first:'',last:''};
-            } else {
-              if (!result.user.name.first) this.iDavis.values.user.name.first = '';
-              if (!result.user.name.last) this.iDavis.values.user.name.last = '';
-            }
-            this.iDavis.values.original.user = _.cloneDeep(this.iDavis.values.user);
+        .then(response => {
+          if (!response.success) throw new Error(response.message); 
+          this.iDavis.values.user = response.user;
+          
+          // Backwards compatibility, was once optional
+          if (!response.user.name) {
+            this.iDavis.values.user.name = { first: '', last: '' };
           } else {
-            console.log(result.message);
+            if (!response.user.name.first) this.iDavis.values.user.name.first = '';
+            if (!response.user.name.last) this.iDavis.values.user.name.last = '';
           }
+          this.iConfig.values.original.user = _.cloneDeep(this.iDavis.values.user);
+          return this.iDavis.getDavisVersion();
+        })
+        .then(response => {
+          if (!response.success) { 
+            throw new Error(response.message); 
+          }
+          this.iDavis.davisVersion = response.version;
         })
         .catch(err => {
-          if (JSON.stringify(err).includes('invalid token')) {
-            this.iDavis.logOut();
-          }
+          this.iConfig.displayError(err, null);
         });
     }
   }

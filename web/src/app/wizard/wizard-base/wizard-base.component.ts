@@ -34,13 +34,17 @@ export class WizardBaseComponent implements OnInit {
   ngOnInit() {
     this.iDavis.isBreadcrumbsVisible = true;
     this.iConfig.getDavisConfiguration()
-      .then(result => {
-        if (result.success) {
-          this.iConfig.values.dynatrace.url = result.config.dynatrace.url;
-          this.iConfig.values.dynatrace.token = result.config.dynatrace.token;
-          this.iConfig.values.slack.clientId = result.config.slack.clientId;
-          this.iConfig.values.slack.clientSecret = result.config.slack.clientSecret;
+      .then(response => {
+        if (!response.success) { 
+          throw new Error(response.message); 
         }
+        this.iConfig.values.dynatrace.url = response.config.dynatrace.url;
+        this.iConfig.values.dynatrace.token = response.config.dynatrace.token;
+        this.iConfig.values.slack.clientId = response.config.slack.clientId;
+        this.iConfig.values.slack.clientSecret = response.config.slack.clientSecret;
+      })
+      .catch(err => {
+        this.iConfig.displayError(err, 'dynatrace');
       });
   }
 }

@@ -15,6 +15,7 @@ export class ConfigDynatraceComponent implements OnInit {
   submitButton: string = (this.iConfig.isWizard) ? 'Continue' : 'Save';
   isTokenMasked: boolean = true;
   isDirty: boolean = false;
+  isAdvancedExpanded: boolean = false;
 
   constructor(
     public iDavis: DavisService,
@@ -23,43 +24,34 @@ export class ConfigDynatraceComponent implements OnInit {
   doSubmit() {
     this.submitted = true;
     this.submitButton = 'Saving...';
+    this.iConfig.values.dynatrace.url = this.iDavis.safariAutoCompletePolyFill(this.iConfig.values.dynatrace.url, 'url');
+    this.iConfig.values.dynatrace.token = this.iDavis.safariAutoCompletePolyFill(this.iConfig.values.dynatrace.token, 'token');
     if (this.iConfig.values.dynatrace.url.slice(-1) === '/') {
       this.iConfig.values.dynatrace.url = this.iConfig.values.dynatrace.url.substring(0, this.iConfig.values.dynatrace.url.length - 1);
     }
     this.iConfig.connectDynatrace()
-      .then(result => {
-        if (result.success) {
-           return this.iConfig.validateDynatrace();
-        } else {
-          this.iConfig.generateError('dynatrace', result.message);
-          this.resetSubmitButton();
+      .then(response => {
+        if (!response.success) { 
+          this.resetSubmitButton(); 
+          throw new Error(response.message); 
         }
-      },
-      error => {
-        this.iConfig.generateError('dynatrace', null);
-        this.resetSubmitButton();
+        return this.iConfig.validateDynatrace();
       })
-      .then(result => {
-        if (result.success) {
-          this.iConfig.status['dynatrace'].success = true;
-          if (this.iConfig.isWizard) {
-            this.iConfig.selectView('user');
-          } else {
-            this.submitButton = 'Save';
-          }
+      .then(response => {
+        if (!response.success) { 
+          this.resetSubmitButton(); 
+          throw new Error(response.message); 
+        }
+        
+        this.iConfig.status['dynatrace'].success = true;
+        if (this.iConfig.isWizard) {
+          this.iConfig.selectView('user');
         } else {
-          this.iConfig.generateError('dynatrace', result.message);
           this.resetSubmitButton();
         }
-      },
-      err => {
-        this.iConfig.generateError('dynatrace', null);
-        this.resetSubmitButton();
       })
       .catch(err => {
-        if (JSON.stringify(err).includes('invalid token')) {
-          this.iDavis.logOut();
-        }
+        this.iConfig.displayError(err, 'dynatrace');
       });
   }
 

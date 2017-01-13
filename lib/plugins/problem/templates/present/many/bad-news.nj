@@ -1,0 +1,1 @@
+I hate to be the bearer of bad news, but there are currently {{ totalProblemCount }} problems detected. {% if totalProblemCount > 3 %}I would recommend focusing on one of the following problems.{% endif %} {% include "lib/plugins/shared-templates/top-three-problems.nj" %}

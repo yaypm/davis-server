@@ -7,6 +7,17 @@ form {
   
 .breadcrumbs__link {
   cursor: pointer; }
+  
+.breadcrumbs {
+  display: none; }
+  
+.breadcrumbs--spacer {
+  width: 100%; 
+  height: 44px; }
+  
+.chat-spacer {
+  width: 100%; 
+  height: 60px; }
 
 .disabled.breadcrumbs__link, .disabled.breadcrumbs__link:hover {
   cursor: default;
@@ -74,6 +85,11 @@ form {
   
 .island--my-account {
   padding: 0; }
+  
+.island--my-account-error {
+  max-width: 600px;
+  margin-top: 10px;
+  padding: 10px; }
   
 .island--user-accounts {
   margin-top: -30px;
@@ -465,35 +481,42 @@ select:focus {
   bottom: 0; 
   padding: 0; 
   margin: 0;
-  background-color: white;  
-}
+  background-color: white;  }
 
 .island--davisInput-border {
   border-top: 0;
-  padding: 16px;
-  padding-bottom: 30px;
-  bottom-left-border-radius: 0; 
-  bottom-right-border-radius: 0;
-}
+  padding: 0px 8px 8px 8px;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0; }
 
 .island--davisInput-border-full-width {
   border-top: 2px solid #f8f8f8;
-  bottom-left-border-radius: 0; 
-  bottom-right-border-radius: 0;
-}
+  border-bottom-left-radius: 0; 
+  border-bottom-right-radius: 0; }
+  
+.layout.is-flex.is-flex--compact {
+  padding: 0; }
+  
+.layout.has-islands {
+  padding: 8px; }
+  
+.label--compact { 
+  padding-top: 3px;
+  padding-bottom: 1px; }
 
 .icon--davis {
   width: 25px; 
-  height: 25px;
-}
+  height: 25px; }
 
 .island--isDavis {
-  background-color: white;
-}
+  background-color: white; }
 
 .island--isUser {
-  background-color: #e0f4fc;
-}
+  font-size: 14px;
+  background-color: #e0f4fc; }
+
+.expandable__trigger {
+  cursor: pointer; }
 
 .circle-left {
   position: absolute;
@@ -505,7 +528,7 @@ select:focus {
   background-color: #00a1b2;
   color: white;
   font-size: 16px;
-  padding-top: 8px;
+  padding-top: 7.5px;
   text-align: center; }
   
 .triangle-left {}
@@ -520,30 +543,48 @@ select:focus {
   background-color: #6d6d6d;
   color: white;
   font-size: 16px;
-  padding-top: 9px;
+  padding-top: 8.5px;
   text-align: center; }
   
 .triangle-right {}
     
 @media (min-width: 750px) {
   
+  .breadcrumbs {
+    display: flex; }
+    
+  .breadcrumbs--spacer {
+    height: 74px; }
+    
+  .chat-spacer {
+    width: 100%; 
+    height: 125px; }
+  
   .island--davisInput {
-    background-color: transparent;  
-  }
+    background-color: transparent;  }
   
   .island--davisInput-border {
-    border-top: 2px solid #f8f8f8;
-  }
+    padding: 16px;
+    padding-bottom: 30px;
+    border-top: 2px solid #f8f8f8; }
   
   .island--davisInput-border-full-width {
-    border-top: 0;
-  }
+    border-top: 0; }
+    
+  .layout.is-flex.isflex--compact {
+    padding: initial; }
+    
+  .layout.has-islands {
+    padding: 12px; }
+  
+  .label--compact { 
+    padding-top: initial;
+    padding-bottom: 6px; }
   
   .icon--davis {
     margin-top: 1px;
     width: 35px; 
-    height: 35px;
-  }
+    height: 35px; }
 
   .circle-left {
     position: absolute; 
@@ -552,13 +593,13 @@ select:focus {
     width: 56px; 
     height: 56px; 
     font-size: 25px; 
-    padding-top: 10px; }
+    padding-top: 9px; }
   
   .triangle-left {
     position: absolute;
     width: 0;
   	height: 0;
-  	margin-top: 20px;
+  	margin-top: 19px;
   	margin-left: -10px;
   	border-top: 10px solid transparent;
   	border-bottom: 10px solid transparent;
@@ -571,13 +612,13 @@ select:focus {
     width: 56px; 
     height: 56px; 
     font-size: 25px; 
-    padding-top: 10px; } 
+    padding-top: 9px; } 
     
   .triangle-right {
     position: absolute;
     width: 0;
   	height: 0;
-  	margin-top: 20px;
+  	margin-top: 19px;
   	margin-left: 600px;
   	border-top: 10px solid transparent;
   	border-bottom: 10px solid transparent;
@@ -585,3 +626,101 @@ select:focus {
     
 form.card-form {
   min-height: 0; }
+  
+/* Card styling */
+.card-pretext {
+	margin-left: 10px; }
+
+.card-attachments {
+	float: right;
+	width: 100%;
+	margin: 0 auto;
+	color: #666666;
+	text-align: left;
+	font-size: 14px;
+	border: 1px solid white;
+	background-color: white;
+	border-radius: 2px; }
+
+.card-attachment {
+	float: left;
+	width: 100%;
+	padding: 0px 10px 0px 0px;
+	margin: 2px; }
+
+.card-bar {
+	display: table-cell;
+	border: 2px solid #e6e6e6;
+	border-radius: 2px; }
+
+.card-content {
+	display: table-cell;
+	padding-left: 10px;
+	vertical-align: top; }
+
+.card-title {
+	float: left;
+	cursor: pointer;
+	font-weight: bold; }
+
+.card-text {
+	clear: both; }
+
+.card-fields {
+	clear: both;
+	float: left;
+	margin-top: 2px; }
+
+.card-field {
+	float: left;
+	min-width: 200px;
+	margin-bottom: 2px;
+	margin-right: 10px; }
+	
+.card-field-wrap {
+  clear: both; }
+
+.card-field-title {
+	font-weight: bold;}
+	
+.card-actions {
+  float: left;
+  padding: 5px 0px;
+}
+
+.card-action {
+  float: left;
+  margin: 2.5px 5px 2.5px 0px;
+}
+
+.card-image-url {
+	float: left;
+	max-width: 400px;
+	max-height: 500px;
+	margin: 10px 20px 10px 0px;
+	cursor: pointer; }
+
+.card-thumb-url-wrapper {
+	display: table-cell;
+	height: 100%;
+	vertical-align: middle;
+	padding-left: 10px; }
+
+.card-thumb-url {
+	position: relative;
+	float: right;
+	height: 75px; }
+	
+.card-timestamp {
+  clear: both;
+  margin-top: 3px;
+  font-size: 10px;
+  color: #b7b7b7; }
+  
+.card-timestamp-user {
+  float: right;
+  margin-right: 3px; }
+  
+.card-timestamp-davis {
+  float: right;
+  margin-right: 3px; }

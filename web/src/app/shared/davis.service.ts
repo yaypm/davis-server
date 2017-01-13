@@ -2,6 +2,7 @@ import {Injectable}                from '@angular/core';
 import { Router }                  from '@angular/router';
 import { Http, Response }          from '@angular/http';
 import { Headers, RequestOptions } from '@angular/http';
+import { DavisModel }              from './models/davis.model';
 import * as moment                 from 'moment';
 import * as momentz                from 'moment-timezone';
 import * as $                      from 'jquery';
@@ -11,37 +12,27 @@ export class DavisService {
 
   isAdmin: boolean = false;
   isAuthenticated: boolean = false;
+  davisVersion: string;
 
   token: string;
   isBreadcrumbsVisible: boolean = false;
   isUserMenuVisible: boolean = false;
-  
-  values: any = {
-    authenticate: {
-      email: null,
-      password: null
-    },
-    user: {
-      email: null,
-      password: null,
-      timezone: null,
-      alexa_ids: null,
-      name: {
-          first: null,
-          last: null
-      },
-      admin: false
-    },
-  };
   
   conversation: Array<any> = [];
   
   route_names: any = {
     '/wizard': 'Setup',
     '/configuration': 'Account settings',
+    '/configuration#user': 'Account settings',
+    '/configuration#users': 'Account settings',
+    '/configuration#dynatrace': 'Account settings',
+    '/configuration#slack': 'Account settings',
+    '/configuration#chrome': 'Account settings',
   };
+  
+  values: any = new DavisModel().davis.values;
 
-  constructor (private http: Http, private router: Router) {}
+  constructor (private http: Http, private router: Router) { }
   
   goToPage(location: string): void {
     if (this.router.url !== '/wizard') {
@@ -63,22 +54,8 @@ export class DavisService {
   
   logOut(): void {
     
-    this.values.authenticate = {
-      email: null,
-      password: null,
-    };
-    
-    this.values.user = {
-      email: null,
-      password: null,
-      timezone: null,
-      alexa_ids: null,
-      name: {
-          first: null,
-          last: null
-      },
-      admin: false,
-    };
+    this.values.authenticate = new DavisModel().davis.values.authenticate;
+    this.values.user = new DavisModel().davis.values.user;
     
     this.isUserMenuVisible = false;
     this.isAuthenticated = false;
@@ -106,6 +83,16 @@ export class DavisService {
     let options = new RequestOptions({ headers: headers });
 
     return this.http.get(`/api/v1/system/users/${this.values.authenticate.email}`, options)
+      .toPromise()
+      .then(this.extractData)
+      .catch(this.handleError);
+  }
+  
+  getDavisVersion(): Promise<any> {
+    let headers = new Headers({ 'Content-Type': 'application/json', 'x-access-token': this.token });
+    let options = new RequestOptions({ headers: headers });
+
+    return this.http.get('/api/v1/system/version', options)
       .toPromise()
       .then(this.extractData)
       .catch(this.handleError);
@@ -153,7 +140,19 @@ export class DavisService {
   }
   
   windowScrollBottom(speed: any): void {
-    $("html, body").animate({ scrollTop: $(document).height() }, speed);
+    $('html, body').animate({ scrollTop: $(document).height() }, speed);
+  }
+  
+  focusDavisInputOnKeyPress() : void {
+    $(document).keypress(function(event) {
+      if (window.location.pathname === '/davis' && !$('#davisInput').is(":focus")) {
+        $('#davisInput').focus();
+      }
+    });
+  }
+  
+  blurDavisInput(): void {
+    $('#davisInput').blur();
   }
   
   addToChrome(): void {
@@ -166,6 +165,22 @@ export class DavisService {
 
   getTimezone(): string {
     return momentz.tz.guess();
+  }
+  
+  getTimestamp(): string {
+    return moment().format('LTS');
+  }
+  
+  safariAutoCompletePolyFill(input: string, id: string): string {
+    let value = $(`#${id}`).val();
+    
+    // Checkbox workaround
+    if( $(`#${id}`).attr('type') === 'checkbox' ) {
+      value = $(`#${id}`).is(':checked');
+    }
+    
+    if (value && input !== value) input = value;
+    return input;
   }
 
 }

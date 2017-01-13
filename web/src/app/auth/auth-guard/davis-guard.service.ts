@@ -52,8 +52,8 @@ export class DavisGuard implements CanActivate {
 
     // Attempt to get token
     return this.iDavis.getJwtToken()
-      .then((response: any) => this.CheckUserResponse(response),
-            (error: any) => this.CheckUserError(error));
+      .then(response => this.CheckUserResponse(response))
+      .catch(err => this.CheckUserError(err));
   }
 
   // ------------------------------------------------------
