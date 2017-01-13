@@ -33,6 +33,7 @@ export class DavisModel {
       users: [],
       dynatrace: {
         url: null,
+        apiUrl: null,
         token: null,
         strictSSL: true,
       },
