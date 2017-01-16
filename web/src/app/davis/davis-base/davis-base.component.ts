@@ -74,7 +74,7 @@ export class DavisBaseComponent implements OnInit, AfterViewInit {
       this.addToConvo( { visual: { card: { text: phrase } } }, false);
       this.iDavis.windowScrollBottom('slow');
       this.davisInput = '';
-      this.iDavis.askDavis(phrase)
+      this.iDavis.askDavisPhrase(phrase)
         .then(result => {
           if (result.response.visual.card) {
             result.response.visual.card.attachments.forEach((attachment: any, index: any) => {

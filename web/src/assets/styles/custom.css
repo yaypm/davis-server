@@ -677,7 +677,7 @@ form.card-form {
 	margin: 0 auto;
 	color: #666666;
 	text-align: left;
-	font-size: 14px;
+	font-size: 12px;
 	border: 1px solid white;
 	background-color: white;
 	border-radius: 2px; }
@@ -701,9 +701,11 @@ form.card-form {
 .card-title {
 	float: left;
 	cursor: pointer;
+	font-size: 14px;
 	font-weight: bold; }
 
 .card-text {
+  font-size: 14px;
 	clear: both; }
 
 .card-fields {
