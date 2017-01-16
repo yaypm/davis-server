@@ -1,13 +1,13 @@
 export class DavisModel {
   
   user: any = {
-    email: null,
-    password: null,
-    timezone: null,
-    alexa_ids: null,
+    email: '',
+    password: '',
+    timezone: '',
+    alexa_ids: '',
     name: {
-        first: null,
-        last: null,
+        first: '',
+        last: '',
     },
     admin: false,
   };
@@ -20,8 +20,8 @@ export class DavisModel {
   davis: any = {
     values: {
       authenticate: {
-        email: null,
-        password: null,
+        email: '',
+        password: '',
       },
       user: this.user,
     }
@@ -32,16 +32,16 @@ export class DavisModel {
       otherUser: this.user,
       users: [],
       dynatrace: {
-        url: null,
-        apiUrl: null,
-        token: null,
+        url: '',
+        apiUrl: '',
+        token: '',
         strictSSL: true,
       },
       slack: {
         enabled: true,
-        clientId: null,
-        clientSecret: null,
-        redirectUri: null,
+        clientId: '',
+        clientSecret: '',
+        redirectUri: '',
       },
       original: {
         user: {},
