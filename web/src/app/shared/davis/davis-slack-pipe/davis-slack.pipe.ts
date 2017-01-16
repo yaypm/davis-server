@@ -35,11 +35,11 @@ export class SlackTagConversionPipe implements PipeTransform {
           if (fragment.indexOf('|') > -1 && fragment.indexOf('>') > -1) {
             let date = fragment.substring(0, fragment.indexOf('>'));
             let text = date.substring(date.indexOf('|') + 1);
+            text = text.charAt(0).toUpperCase() + text.slice(1);
             exploded[index] = fragment.replace(fragment.substring(0, fragment.indexOf('>') + 1), text);
           }
         });
         str = exploded.join('');
-        str = str.toUpperCase();
       }
     }
     return str;
