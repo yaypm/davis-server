@@ -5,6 +5,10 @@ form {
   width: 100%;
   min-height: 600px; } 
   
+.sidebar-sm {
+  width: 100%;
+  flex: none; }
+  
 .breadcrumbs__link {
   cursor: pointer; }
   
@@ -478,13 +482,15 @@ select:focus {
 /* Chat styling */
 .island--davisInput {
   position: fixed; 
+  z-index: 1000;
   bottom: 0; 
   padding: 0; 
   margin: 0;
   background-color: white;  }
 
 .island--davisInput-border {
-  border-top: 0;
+  border: 1px solid #ececec;
+  border-bottom: 0;
   padding: 0px 8px 8px 8px;
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0; }
@@ -520,6 +526,7 @@ select:focus {
 
 .circle-left {
   position: absolute;
+  z-index: 102;
   margin-top: -23px;
   margin-left: -7px;
   width: 40px;
@@ -533,8 +540,11 @@ select:focus {
   
 .triangle-left {}
 
+.triangle-left-border {}
+
 .circle-right {
   position: absolute;
+  z-index: 102;
   margin-top: -23px;
   margin-left: calc(100% - 32px);
   width: 40px;
@@ -547,8 +557,14 @@ select:focus {
   text-align: center; }
   
 .triangle-right {}
+
+.triangle-right-border {}
     
 @media (min-width: 750px) {
+  
+  .sidebar-sm {
+    width: 284px;
+    flex: 0px 0px 284px; }
   
   .breadcrumbs {
     display: flex; }
@@ -588,7 +604,7 @@ select:focus {
 
   .circle-left {
     position: absolute; 
-    margin-top: 0px; 
+    margin-top: 1px; 
     margin-left: -72px; 
     width: 56px; 
     height: 56px; 
@@ -597,32 +613,56 @@ select:focus {
   
   .triangle-left {
     position: absolute;
+    z-index: 100;
+    width: 0;
+  	height: 0;
+  	margin-top: 19px;
+  	margin-left: -9px;
+  	border-top: 10px solid transparent;
+  	border-bottom: 10px solid transparent;
+  	border-right: 10px solid white; }
+  	
+  .triangle-left-border {
+    position: absolute;
+    z-index: 98;
     width: 0;
   	height: 0;
   	margin-top: 19px;
   	margin-left: -10px;
   	border-top: 10px solid transparent;
   	border-bottom: 10px solid transparent;
-  	border-right: 10px solid white; }
+  	border-right: 10px solid #ececec; }
     
   .circle-right {
     position: absolute; 
-    margin-top: 0px; 
+    margin-top: 1px; 
     margin-left: 616px; 
     width: 56px; 
     height: 56px; 
     font-size: 25px; 
-    padding-top: 9px; } 
+    padding-top: 9px; }
     
   .triangle-right {
     position: absolute;
+    z-index: 100;
+    width: 0;
+  	height: 0;
+  	margin-top: 19px;
+  	margin-left: 599px;
+  	border-top: 10px solid transparent;
+  	border-bottom: 10px solid transparent;
+  	border-left: 10px solid #e0f4fc; }
+  	
+  .triangle-right-border {
+    position: absolute;
+    z-index: 98;
     width: 0;
   	height: 0;
   	margin-top: 19px;
   	margin-left: 600px;
   	border-top: 10px solid transparent;
   	border-bottom: 10px solid transparent;
-  	border-left: 10px solid #e0f4fc; } }
+  	border-left: 10px solid #ececec; } }
     
 form.card-form {
   min-height: 0; }

@@ -5,8 +5,8 @@
         <davis-card class="island island--center" style="background-color: transparent; position: relative" [message]="message" [isDavis]="message.isDavis"></davis-card>
       </div>
       <div *ngIf="iDavis.conversation.length < 1" class="layout is-flex has-islands">
-        <div class="island island--center" style="height: 299px">
-          <img style="width: 250px; display: block; margin: 0 auto; margin-top: 93px;" src="/assets/images/davis-logo.png">
+        <div class="island island--center" style="height: 299px; border: 0.5px solid #ececec">
+          <img style="width: 250px; display: block; margin: 0 auto; margin-top: 93px" src="/assets/images/davis-logo.png">
         </div>
       </div>
     </div>
@@ -35,7 +35,7 @@
           </div>
           
           <div *ngIf="davisInput && davisInput.length > 0" class="input-button-button" (click)="doSubmit()">
-            <svg class="icon icon--black icon--input-button-img" style="transform: rotate(90deg);">
+            <svg class="icon icon--black icon--input-button-img">
               <use xlink:href="#send"></use>
             </svg>
           </div>
