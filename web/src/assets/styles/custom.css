@@ -1,5 +1,9 @@
 body {
   background-color: #f8f8f8; }
+  
+body.iFrameTile {
+  background-color: white;
+}
  
 form {
   width: 100%;
@@ -766,3 +770,23 @@ form.card-form {
 .card-timestamp-davis {
   float: right;
   margin-right: 3px; }
+  
+.root-cause {
+  display: inline-block;
+  vertical-align: text-top;
+  padding: 2px 4px;
+  margin-bottom: 5px;
+  margin-left: 5px;
+  border-radius: 3px;
+  font-size: 10px;
+  color: white;
+  background-color: #d3571a;
+}
+
+a:hover .root-cause {
+  text-decoration: none;
+}
+
+a:hover .root-cause:hover {
+  background-color: #92380e;
+}
