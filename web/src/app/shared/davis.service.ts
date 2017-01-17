@@ -17,6 +17,7 @@ export class DavisService {
   token: string;
   isBreadcrumbsVisible: boolean = false;
   isUserMenuVisible: boolean = false;
+  isIframeTile: boolean = false;
   
   conversation: Array<any> = [];
   
@@ -134,6 +135,21 @@ export class DavisService {
     }
     console.error(errMsg);
     return Promise.reject(errMsg);
+  }
+  
+  isIframeTileDetected(): boolean {
+    let result = false;
+    try {
+      result = window.self !== window.top;
+    } catch (e) {
+      result = true;
+    }
+    
+    if (result) {
+      $('body').addClass('iFrameTile');
+    }
+    
+    return result;
   }
 
   windowLocation(url:string): void {

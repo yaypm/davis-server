@@ -78,7 +78,7 @@
 </svg>
 
 <!-- Header -->
-<div style="position: fixed; width: 100%; top: 0; z-index: 1000">
+<div *ngIf="!iDavis.isIframeTile" style="position: fixed; width: 100%; top: 0; z-index: 1000">
   <div class="nav has-no-secondary">
     <a class="nav__brand" style="cursor: pointer" (click)="iDavis.goToPage('/davis')">
       <img class="nav__logo" src="https://help.dynatrace.com/assets/dynatrace-logo.svg" alt="dynatrace logo"/>
@@ -153,7 +153,7 @@
   </div>
   <div *ngIf="iDavis.isUserMenuVisible" class="disable_screen" (click)="iDavis.isUserMenuVisible = false">
   </div>
-  <div *ngIf="iDavis.isBreadcrumbsVisible">
+  <div *ngIf="iDavis.isBreadcrumbsVisible && !iDavis.isIframeTile">
     <ul class="breadcrumbs">
       <li class="breadcrumbs__item">
         <a *ngIf="router.url !== '/davis'" class="breadcrumbs__link"
