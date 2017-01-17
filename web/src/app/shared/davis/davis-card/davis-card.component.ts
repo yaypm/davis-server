@@ -18,8 +18,8 @@ export class DavisCardComponent implements OnInit {
     public iDavis: DavisService,
     public iConfig: ConfigService) { }
     
-  addToConvo(phrase: string) {
-    this.iDavis.askDavis(phrase.toLowerCase())
+  addToConvo(intent: string, name: string, value: string) {
+    this.iDavis.askDavisIntent(intent, name, value)
       .then(result => {
         result.response.isDavis = true;
         result.response.timestamp = this.iDavis.getTimestamp();

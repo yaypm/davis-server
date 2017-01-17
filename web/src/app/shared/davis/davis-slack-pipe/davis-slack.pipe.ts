@@ -8,6 +8,7 @@ export class SlackTagConversionPipe implements PipeTransform {
     if (str) {
       str = str.replace(/\n/g, '<br>');
       str = str.replace(/\:key\:/g, '🔑');
+      str = str.replace(/\:zap\:/g, '⚡');
       let exploded: any;
       
       if (str.indexOf('<http') > -1) {

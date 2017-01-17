@@ -14,10 +14,12 @@
       </div>
       <div *ngIf="message.visual.card && message.visual.card.attachments && message.visual.card.attachments.length > 0" class="card-attachments">
         <div *ngFor="let attachment of message.visual.card.attachments" class="card-attachment">
-          <div *ngIf="attachment.pretext || attachment.text || attachment.fields || attachment.actions || attachment.actionClicked" class="card-bar" [style.border-color]="attachment.color"></div>
+          <div *ngIf="attachment.title || attachment.pretext || attachment.text || attachment.fields 
+            || attachment.actions || attachment.actionClicked" class="card-bar" [style.border-color]="attachment.color"></div>
           <div class="card-content">
              <div class="card-pretext" [innerHTML]="attachment.pretext | slackTagConversionPipe:true"></div>
-             <a class="card-title" [innerHTML]="attachment.title | slackTagConversionPipe:true" (click)="iDavis.windowOpen(attachment.title_link)"></a>
+             <a *ngIf="attachment.title_link" class="card-title" [innerHTML]="attachment.title | slackTagConversionPipe:true" (click)="iDavis.windowOpen(attachment.title_link)"></a>
+             <div *ngIf="!attachment.title_link" class="card-title" style="color: #6d6d6d; cursor: default" [innerHTML]="attachment.title | slackTagConversionPipe:true"></div>
              <div class="card-text" [innerHTML]="attachment.text | slackTagConversionPipe:true"></div>
              <div class="card-fields">
                 <div *ngFor="let field of attachment.fields; let i = index" class="card-field" [class.card-field-wrap]="i % 2 == 0">
@@ -27,7 +29,7 @@
              </div>
              <div *ngIf="attachment.actions || attachment.actionClicked" class="card-actions">
                 <button *ngFor="let action of attachment.actions" type="button" class="btn btn--secondary btn--submit card-action" 
-                  (click)="addToConvo(action.name); attachment.actionClicked = action.text; attachment.actions = null">
+                  (click)="addToConvo(attachment.callback_id, action.name, action.value); attachment.actionClicked = action.text; attachment.actions = null">
                   {{ action.text }}
                 </button>
                 <button *ngIf="attachment.actionClicked" type="button" class="btn btn--secondary btn--submit card-action" disabled>
@@ -35,12 +37,6 @@
                 </button>
              </div>
           </div>
-          <!--
-          <div class="card-thumb-url-wrapper">
-            <img [src]="{{ src }}" class="card-thumb-url">
-          </div>
-          <img src="{{ src }}" class="card-image-url" (click)="window.open("{{ src }}')">
-          -->
         </div>
       </div>
     </div>
