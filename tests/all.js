@@ -32,5 +32,6 @@ require('./classes/ResponseBuilder');
 require('./classes/PluginManager');
 require('./classes/Nunjucks');
 require('./classes/Filters');
+require('./classes/TextHelpers');
 // express tests must be last
 require('./classes/Express');
