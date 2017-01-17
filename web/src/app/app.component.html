@@ -106,12 +106,20 @@
       {{ iDavis.values.user.email }}
     </div>
     <div *ngIf="iDavis.isAuthenticated && !iConfig.isWizard" class="nav__user-menu-section-break"></div>
-    <div *ngIf="iDavis.isAuthenticated && !iConfig.isWizard" class="nav__user-menu-section-title">
+    <div *ngIf="iDavis.isAuthenticated && !iConfig.isWizard && router.url.indexOf('/configuration') < 0" class="nav__user-menu-section-title">
       Account
     </div>
-    <div *ngIf="iDavis.isAuthenticated && !iConfig.isWizard" class="nav__user-menu-section-item-wrapper" (click)="iDavis.goToPage('/configuration')">
+    <div *ngIf="iDavis.isAuthenticated && !iConfig.isWizard && router.url.indexOf('/configuration') < 0" class="nav__user-menu-section-item-wrapper" (click)="iDavis.goToPage('/configuration')">
       <div class="nav__user-menu-section-item">
         Account settings
+      </div>
+    </div>
+    <div *ngIf="iDavis.isAuthenticated && !iConfig.isWizard && router.url.indexOf('/configuration') > -1" class="nav__user-menu-section-title">
+      Internal
+    </div>
+    <div *ngIf="iDavis.isAuthenticated && !iConfig.isWizard && router.url.indexOf('/configuration') > -1" class="nav__user-menu-section-item-wrapper" (click)="iDavis.goToPage('/davis')">
+      <div class="nav__user-menu-section-item">
+        Interact with davis
       </div>
     </div>
     <div class="nav__user-menu-section-break" [class.nav__user-menu-section-break-small]="!iDavis.isAuthenticated || iConfig.isWizard"></div>

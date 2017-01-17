@@ -13,16 +13,19 @@ export class DavisCardComponent implements OnInit {
   
   @Input() message: any;
   @Input() isDavis: boolean;
+  @Output() toggleProcessingIndicator: EventEmitter<any> = new EventEmitter();
 
   constructor(
     public iDavis: DavisService,
     public iConfig: ConfigService) { }
     
   addToConvo(intent: string, name: string, value: string) {
+    this.toggleProcessingIndicator.emit();
     this.iDavis.askDavisIntent(intent, name, value)
       .then(result => {
         result.response.isDavis = true;
         result.response.timestamp = this.iDavis.getTimestamp();
+        this.toggleProcessingIndicator.emit();
         this.iDavis.conversation.push(result.response);
         setTimeout(() => {
           this.iDavis.windowScrollBottom('slow');

@@ -2,7 +2,12 @@
   <div class="layout is-flex has-islands">
     <div class="island island--full-width" style="background-color: transparent; margin: 0; padding: 0">
       <div *ngFor="let message of iDavis.conversation" class="layout is-flex has-islands">
-        <davis-card class="island island--center" style="background-color: transparent; position: relative" [message]="message" [isDavis]="message.isDavis"></davis-card>
+        <davis-card class="island island--center" style="background-color: transparent; position: relative; padding: 0" [message]="message" [isDavis]="message.isDavis" 
+          (toggleProcessingIndicator)="showProcessingIndicator = !showProcessingIndicator"></davis-card>
+      </div>
+      <div *ngIf="showProcessingIndicator" class="layout is-flex has-islands">
+        <davis-card class="island island--center" style="background-color: transparent; position: relative; padding: 0" [message]="{}" [isDavis]="true" 
+          (toggleProcessingIndicator)="showProcessingIndicator = !showProcessingIndicator"></davis-card>
       </div>
       <div *ngIf="iDavis.conversation.length < 1 && !iDavis.isIframeTile" class="layout is-flex has-islands">
         <div class="island island--center" style="height: 299px; border: 0.5px solid #ececec">

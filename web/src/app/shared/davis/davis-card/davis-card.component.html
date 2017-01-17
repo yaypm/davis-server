@@ -9,10 +9,17 @@
     <div [class.triangle-left-border]="isDavis" [class.triangle-right-border]="!isDavis"></div>
     <div [class.triangle-left]="isDavis" [class.triangle-right]="!isDavis"></div>
     <div class="island" [class.island--isDavis]="isDavis" [class.island--isUser]="!isDavis" style="padding: 17.5px 16px; margin: 0; border: 0.5px solid #ececec; z-index: 99">
-      <div *ngIf="message.visual.card && message.visual.card.text" style="font-size: 14px">
+      <div *ngIf="message === {}" style="font-size: 28px">
+        <div class="typing-indicator">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+      </div>
+      <div *ngIf="message.visual && message.visual.card && message.visual.card.text" style="font-size: 14px">
         {{ message.visual.card.text }}
       </div>
-      <div *ngIf="message.visual.card && message.visual.card.attachments && message.visual.card.attachments.length > 0" class="card-attachments">
+      <div *ngIf="message.visual && message.visual.card && message.visual.card.attachments && message.visual.card.attachments.length > 0" class="card-attachments">
         <div *ngFor="let attachment of message.visual.card.attachments" class="card-attachment">
           <div *ngIf="attachment.title || attachment.pretext || attachment.text || attachment.fields 
             || attachment.actions || attachment.actionClicked" class="card-bar" [style.border-color]="attachment.color"></div>

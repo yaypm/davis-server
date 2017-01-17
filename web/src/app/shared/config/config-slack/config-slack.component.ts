@@ -13,7 +13,6 @@ import * as Clipboard from 'clipboard';
 })
 export class ConfigSlackComponent implements OnInit {
 
-    myURL: string = '';
     requestUri: string = '';
     submitted: boolean = false;
     submitButton: string = (this.iConfig.isWizard) ? 'Skip and Finish' : 'Create Davis Slack Bot';
@@ -22,11 +21,7 @@ export class ConfigSlackComponent implements OnInit {
     isDirty: boolean = false;
     isSecretMasked: boolean = true;
     
-    constructor(public iDavis: DavisService, public iConfig: ConfigService, public router: Router) {
-      this.myURL = `${window.location.protocol}//${window.location.host}`;
-      this.requestUri = `${this.myURL}/slack/receive`;
-      this.iConfig.values.slack.redirectUri = `${this.myURL}/oauth`;
-    }
+    constructor(public iDavis: DavisService, public iConfig: ConfigService, public router: Router) {}
 
     validate() {
       if (this.iConfig.values.slack.clientId && this.iConfig.values.slack.clientSecret) {
@@ -75,6 +70,7 @@ export class ConfigSlackComponent implements OnInit {
     ngOnInit() {
       this.iConfig.status['slack'].success = null;
       this.iDavis.isBreadcrumbsVisible = true;
+      this.requestUri = `${window.location.protocol}//${window.location.host}/slack/receive`;
       setTimeout(() => {
         document.getElementsByName('clientId')[0].focus();
         new Clipboard('.clipboard');
