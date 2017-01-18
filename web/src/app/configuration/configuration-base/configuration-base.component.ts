@@ -37,11 +37,11 @@ export class ConfigurationBaseComponent implements OnInit {
       name: 'User Accounts',
       admin: true,
     },
-    filters: {
-      key: 'filter',
-      name: 'Filters',
-      admin: false,
-    },
+    // filters: {
+    //   key: 'filter',
+    //   name: 'Filters',
+    //   admin: false,
+    // },
     dynatrace: {
       key: 'dynatrace',
       name: 'Dynatrace',

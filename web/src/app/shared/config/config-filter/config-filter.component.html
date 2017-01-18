@@ -2,7 +2,7 @@
 <div class="layout is-flex has-islands">
   <div class="island--full-width island--full-width-sidebar">
     <div class="config-title">
-      Filter
+      {{ iConfig.values.filter.name }}
     </div>
     <a href="https://github.com/Dynatrace/davis-server/wiki/Getting%20Started" target="_blank" class="config-help">
       {{ iConfig.helpLinkText }}
@@ -13,7 +13,7 @@
   </div>
   <div class="island--full-width island--full-width-sidebar">
     <div class="island island--center island--left island--my-account">
-      <div class="layout is-flex has-islands island--half">
+      <div class="layout is-flex has-islands">
         <label for="first" class="label">
           Name
         </label>
@@ -22,8 +22,8 @@
           [(ngModel)]="iConfig.values.filter.name" 
           (keyup)="validate()" required>
       </div>
-      <div class="layout is-flex has-islands island--half">
-        <label for="last" class="label">
+      <div class="layout is-flex has-islands">
+        <label for="description" class="label">
           Description
         </label>
         <input type="text" name="description" 
@@ -31,25 +31,27 @@
           [(ngModel)]="iConfig.values.filter.description" 
           (keyup)="validate()" required>
       </div>
-      <div class="layout is-flex has-islands island--half">
-        <div class="layout__container layout--half layout--half--small" [class.checkbox--admin]="!iConfig.isWizard && iDavis.isAdmin">
-          <div class="island island--half island--half--left" style="padding-top: 14px;" *ngIf="!iConfig.isWizard && iDavis.isAdmin">  
-            <input type="checkbox" class="switch to-right" id="admin" name="admin"
-              [(ngModel)]="iDavis.values.user.admin"
-              [attr.disabled]="(iConfig.isWizard) ? true : null"
-              (change)="validate()" />
-            <label for="admin" class="switch__label">
-              <span class="switch__caption">Filter Enabled</span>
-            </label>
-          </div>
-        </div>
+      <div class="layout is-flex has-islands">
+        <label for="scope" class="label">
+          Scope
+        </label>
+        <input type="text" name="description" 
+          class="inputfield" id="description"
+          [(ngModel)]="iConfig.values.filter.scope" 
+          (keyup)="validate()" required>
       </div>
-      <div class="island island--full" *ngIf="!iConfig.isWizard && !isMyUser && iDavis.isAdmin && !isNewUser">
-        <button type="button" class="btn btn--secondary btn--secondary--delete"
-            [attr.disabled]="(iConfig.isWizard) ? true : null"
-            (click)="clearAll()">
-            Reset
-        </button>
+      <div class="layout is-flex has-islands">
+        <label for="status" class="label">
+          Status
+        </label>
+        <select *ngIf="isMyUser" id="status" name="status" 
+          [(ngModel)]="iDavis.values.user.status"
+          (ngModelChange)="onTimezoneChange($event); validate()"
+          [class.select-opened]="isSelectOpened" 
+          (click)="isSelectOpened = !isSelectOpened" 
+          (blur)="isSelectOpened = false;" required>
+          <option *ngFor="let tz of iConfig.timezones" [value]="tz">{{tz}}</option>
+        </select>
       </div>
       <div class="island island--center island--submit">
         <button type="submit" class="btn btn--primary btn--submit"
