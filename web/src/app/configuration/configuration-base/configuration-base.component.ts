@@ -37,6 +37,11 @@ export class ConfigurationBaseComponent implements OnInit {
       name: 'User Accounts',
       admin: true,
     },
+    filters: {
+      key: 'filters',
+      name: 'Filters',
+      admin: false,
+    },
     dynatrace: {
       key: 'dynatrace',
       name: 'Dynatrace',
@@ -84,6 +89,8 @@ export class ConfigurationBaseComponent implements OnInit {
     
     this.iConfig.status['user'].success = null;
     this.iConfig.status['user'].error = null;
+    this.iConfig.status['filters'].success = null;
+    this.iConfig.status['filters'].error = null;
     this.iConfig.status['dynatrace'].success = null;
     this.iConfig.status['dynatrace'].error = null;
     this.iConfig.status['slack'].success = null;
@@ -104,6 +111,12 @@ export class ConfigurationBaseComponent implements OnInit {
           if (!response.user.name.last) this.iDavis.values.user.name.last = '';
         }
         this.iConfig.values.original.user = _.cloneDeep(this.iDavis.values.user);
+        return this.iConfig.getDavisFilters();
+      })
+      .then(response => {
+        if (!response.success) throw new Error(response.message);
+        this.iConfig.values.filters = response.filters;
+        this.iConfig.values.original.filters = _.cloneDeep(this.iConfig.values.filters);
         return this.iConfig.getDynatrace();
       })
       .then(response => {

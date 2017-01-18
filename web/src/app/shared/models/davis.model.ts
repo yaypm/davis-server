@@ -6,10 +6,28 @@ export class DavisModel {
     timezone: '',
     alexa_ids: '',
     name: {
-        first: '',
-        last: '',
+      first: '',
+      last: '',
     },
     admin: false,
+  };
+  
+  filters: any = {
+    name: '',
+    owner: '',
+    description: '',
+    enabled: true,
+    scope: '',
+    origin: '',
+    status: [],
+    impact: [],
+    severityLevel: [],
+    entityID: [],
+    excludeEventType: [],
+    tags: {
+      includes: [],
+      excludes: [],
+    },
   };
   
   status: any = {
@@ -31,6 +49,7 @@ export class DavisModel {
     values: {
       otherUser: this.user,
       users: [],
+      filters: this.filters,
       dynatrace: {
         url: '',
         apiUrl: '',
@@ -46,6 +65,7 @@ export class DavisModel {
       original: {
         user: {},
         otherUser: {},
+        filters: {},
         dynatrace: {},
         slack: {},
       },
@@ -53,6 +73,7 @@ export class DavisModel {
     status: {
       user: this.status,
       users: this.status,
+      filters: this.status,
       dynatrace: this.status,
       alexa: this.status,
       slack: this.status,
