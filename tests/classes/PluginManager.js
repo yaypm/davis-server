@@ -21,7 +21,7 @@ describe('PluginManager', () => {
       './tests/mock_data/plugin_manager/mock-plugin',
     ],
   });
-  after(() => nock.restore());
+  after(() => nock.cleanAll());
   nock('https://ogj1j3zad0.execute-api.us-east-1.amazonaws.com')
     .post('/prod/datetime')
     .reply(200, davisParserData);
@@ -64,7 +64,7 @@ describe('PluginManager', () => {
 
   it('should run intents', () => {
     return new Exchange(davis, { id: 'testuser', timezone: 'America/Detroit' })
-      .start('test', 'alexa')
+      .start('test', 'alexa', 'test')
       .then(e => davis.pluginManager.run(e, 'mockIntent'))
       .then(e => e.tested.should.equal(true));
   });

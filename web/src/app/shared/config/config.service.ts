@@ -93,6 +93,26 @@ export class ConfigService {
       .then(this.iDavis.extractData)
       .catch(this.iDavis.handleError);
   }
+  
+  getDavisFilters(): Promise<any> {
+    let headers = new Headers({ 'Content-Type': 'application/json', 'x-access-token': this.iDavis.token });
+    let options = new RequestOptions({ headers: headers });
+
+    return this.http.get(`/api/v1/system/filters`, options)
+      .toPromise()
+      .then(this.iDavis.extractData)
+      .catch(this.iDavis.handleError);
+  }
+  
+  addDavisFilter(filters: any): Promise<any> {
+    let headers = new Headers({ 'Content-Type': 'application/json', 'x-access-token': this.iDavis.token });
+    let options = new RequestOptions({ headers: headers });
+
+    return this.http.post(`/api/v1/system/filters`, filters, options)
+      .toPromise()
+      .then(this.iDavis.extractData)
+      .catch(this.iDavis.handleError);
+  }
 
   getDynatrace(): Promise<any> {
     let headers = new Headers({ 'Content-Type': 'application/json', 'x-access-token': this.iDavis.token } );
@@ -158,7 +178,7 @@ export class ConfigService {
     let headers = new Headers({ 'Content-Type': 'application/json', 'x-access-token': this.iDavis.token });
     let options = new RequestOptions({ headers: headers });
 
-    return this.http.post('/api/v1/system/config/slack/start', {}, options)
+    return this.http.post('/api/v1/system/slack/start', {}, options)
       .toPromise()
       .then(this.iDavis.extractData)
       .catch(this.iDavis.handleError);

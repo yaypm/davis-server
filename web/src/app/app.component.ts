@@ -38,6 +38,9 @@ export class AppComponent {
       if(typeof dT_!='undefined' && dT_.initAngularNg){
         dT_.initAngularNg(http, Headers);
       }
+      
+      // Detect embedding in Dynatrace iFrame tile
+      this.iDavis.isIframeTile = this.iDavis.isIframeTileDetected();
     }
 
 }

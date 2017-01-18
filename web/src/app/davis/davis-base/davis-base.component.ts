@@ -58,6 +58,7 @@ export class DavisBaseComponent implements OnInit, AfterViewInit {
   placeholder: string = 'Did anything happen last night?';
   isDavisInputFocused: boolean = false;
   isDavisListening: boolean = false;
+  showProcessingIndicator: boolean = false;
   
   // ------------------------------------------------------
   // Inject services
@@ -74,7 +75,11 @@ export class DavisBaseComponent implements OnInit, AfterViewInit {
       this.addToConvo( { visual: { card: { text: phrase } } }, false);
       this.iDavis.windowScrollBottom('slow');
       this.davisInput = '';
-      this.iDavis.askDavis(phrase)
+      this.showProcessingIndicator = true;
+      setTimeout(() => {
+        this.iDavis.windowScrollBottom('slow');
+      }, 200);
+      this.iDavis.askDavisPhrase(phrase)
         .then(result => {
           if (result.response.visual.card) {
             result.response.visual.card.attachments.forEach((attachment: any, index: any) => {
@@ -113,6 +118,7 @@ export class DavisBaseComponent implements OnInit, AfterViewInit {
     
     message.isDavis = isDavis;
     message.timestamp = this.iDavis.getTimestamp();
+    this.showProcessingIndicator = false;
     this.iDavis.conversation.push(message);
   }
   

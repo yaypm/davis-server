@@ -4,10 +4,10 @@ import * as $                           from 'jquery';
 
 @Pipe({name: 'slackTagConversionPipe'})
 export class SlackTagConversionPipe implements PipeTransform {
-  transform(str: string, isAttachment: boolean): any {
+  transform(str: string, options: any): any {
     if (str) {
       str = str.replace(/\n/g, '<br>');
-      str = str.replace(/\:key\:/g, '🔑');
+      str = str.replace(/\[Root Cause\]/g, '<span class="root-cause">Root Cause</span>');
       let exploded: any;
       
       if (str.indexOf('<http') > -1) {
@@ -16,7 +16,7 @@ export class SlackTagConversionPipe implements PipeTransform {
         exploded = str.split('<http');
         $.each(exploded, function (index, fragment) {
           if (fragment.indexOf('|') > -1 && fragment.indexOf('>') > -1) {
-            let link = (isAttachment) ? "<a href='{{url}}' target='_blank' class='card-link-attachment'>{{text}}</a>" : "<a href='{{url}}' target='_blank' class='card-link-text'>{{text}}</a>";
+            let link = (options.isAttachment) ? "<a href='{{url}}' target='_blank' class='card-link-attachment'>{{text}}</a>" : "<a href='{{url}}' target='_blank' class='card-link-text'>{{text}}</a>";
             let url = fragment.substring(0, fragment.indexOf('>'));
             let text = url.substring(url.indexOf('|') + 1);
             url = 'http' + url.substring(0, url.indexOf('|'));
@@ -35,7 +35,7 @@ export class SlackTagConversionPipe implements PipeTransform {
           if (fragment.indexOf('|') > -1 && fragment.indexOf('>') > -1) {
             let date = fragment.substring(0, fragment.indexOf('>'));
             let text = date.substring(date.indexOf('|') + 1);
-            text = text.charAt(0).toUpperCase() + text.slice(1);
+            if (!options.isSentence) text = text.charAt(0).toUpperCase() + text.slice(1);
             exploded[index] = fragment.replace(fragment.substring(0, fragment.indexOf('>') + 1), text);
           }
         });

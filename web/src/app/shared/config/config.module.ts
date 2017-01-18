@@ -16,6 +16,7 @@ import { FormsModule }              from "@angular/forms";
 import { ConfigAlexaComponent }     from "./config-alexa/config-alexa.component";
 import { ConfigChromeComponent }    from "./config-chrome/config-chrome.component";
 import { ConfigDynatraceComponent } from "./config-dynatrace/config-dynatrace.component";
+import { ConfigFilterComponent }   from "./config-filter/config-filter.component";
 import { ConfigSlackComponent }     from "./config-slack/config-slack.component";
 import { ConfigUserComponent }      from "./config-user/config-user.component";
 import { ConfigUsersComponent }     from "./config-users/config-users.component";
@@ -33,6 +34,7 @@ import { FilterSidebarItemsByAdminPipe } from './config-sidebar-pipe/config-side
     ConfigAlexaComponent,
     ConfigChromeComponent,
     ConfigDynatraceComponent,
+    ConfigFilterComponent,
     ConfigSlackComponent,
     ConfigUserComponent,
     ConfigUsersComponent,
@@ -43,6 +45,7 @@ import { FilterSidebarItemsByAdminPipe } from './config-sidebar-pipe/config-side
     ConfigAlexaComponent,
     ConfigChromeComponent,
     ConfigDynatraceComponent,
+    ConfigFilterComponent,
     ConfigSlackComponent,
     ConfigUserComponent,
     ConfigUsersComponent,

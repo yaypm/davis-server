@@ -37,6 +37,11 @@ export class ConfigurationBaseComponent implements OnInit {
       name: 'User Accounts',
       admin: true,
     },
+    // filters: {
+    //   key: 'filter',
+    //   name: 'Filters',
+    //   admin: false,
+    // },
     dynatrace: {
       key: 'dynatrace',
       name: 'Dynatrace',
@@ -84,6 +89,8 @@ export class ConfigurationBaseComponent implements OnInit {
     
     this.iConfig.status['user'].success = null;
     this.iConfig.status['user'].error = null;
+    this.iConfig.status['filter'].success = null;
+    this.iConfig.status['filter'].error = null;
     this.iConfig.status['dynatrace'].success = null;
     this.iConfig.status['dynatrace'].error = null;
     this.iConfig.status['slack'].success = null;
@@ -104,6 +111,12 @@ export class ConfigurationBaseComponent implements OnInit {
           if (!response.user.name.last) this.iDavis.values.user.name.last = '';
         }
         this.iConfig.values.original.user = _.cloneDeep(this.iDavis.values.user);
+        return this.iConfig.getDavisFilters();
+      })
+      .then(response => {
+        if (!response.success) throw new Error(response.message);
+        this.iConfig.values.filters = response.filters;
+        this.iConfig.values.original.filters = _.cloneDeep(this.iConfig.values.filters);
         return this.iConfig.getDynatrace();
       })
       .then(response => {
@@ -116,6 +129,9 @@ export class ConfigurationBaseComponent implements OnInit {
         if (!response.success) throw new Error(response.message);
         this.iConfig.values.slack = response.slack;
         this.iConfig.values.slack.enabled = true;
+        if (this.iConfig.values.slack.redirectUri.length < 1) {
+          this.iConfig.values.slack.redirectUri = `${window.location.protocol}//${window.location.host}/oauth`;
+        }
         this.iConfig.values.original.slack = _.cloneDeep(this.iConfig.values.slack);
         return this.iDavis.getDavisVersion();
       })

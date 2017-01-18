@@ -17,6 +17,7 @@ export class DavisService {
   token: string;
   isBreadcrumbsVisible: boolean = false;
   isUserMenuVisible: boolean = false;
+  isIframeTile: boolean = false;
   
   conversation: Array<any> = [];
   
@@ -98,11 +99,21 @@ export class DavisService {
       .catch(this.handleError);
   }
   
-  askDavis(phrase: string) {
+  askDavisPhrase(phrase: string) {
     let headers = new Headers({ 'Content-Type': 'application/json', 'x-access-token': this.token });
     let options = new RequestOptions({ headers: headers });
 
     return this.http.post(`/api/v1/web`, { phrase: phrase, timezone: this.values.user.timezone }, options)
+      .toPromise()
+      .then(this.extractData)
+      .catch(this.handleError);
+  }
+  
+  askDavisIntent(intent: string, name: string, value: string) {
+    let headers = new Headers({ 'Content-Type': 'application/json', 'x-access-token': this.token });
+    let options = new RequestOptions({ headers: headers });
+    
+    return this.http.post(`/api/v1/web`, { button: { name: name, value: value }, intent: intent }, options)
       .toPromise()
       .then(this.extractData)
       .catch(this.handleError);
@@ -124,6 +135,21 @@ export class DavisService {
     }
     console.error(errMsg);
     return Promise.reject(errMsg);
+  }
+  
+  isIframeTileDetected(): boolean {
+    let result = false;
+    try {
+      result = window.self !== window.top;
+    } catch (e) {
+      result = true;
+    }
+    
+    if (result) {
+      $('body').addClass('iFrameTile');
+    }
+    
+    return result;
   }
 
   windowLocation(url:string): void {

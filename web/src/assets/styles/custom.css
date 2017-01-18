@@ -1,5 +1,9 @@
 body {
   background-color: #f8f8f8; }
+  
+body.iFrameTile {
+  background-color: white;
+}
  
 form {
   width: 100%;
@@ -236,6 +240,10 @@ form {
   border: 1px solid #cccccc;
   border-radius: 3px;
   background-color: white; }
+  
+.input-button-wrapper:hover {
+  border-color: #a0a0a0;
+}
 
 .input-button-wrapper-focus {
   outline: none;
@@ -302,6 +310,10 @@ select {
   background: white url("/assets/images/arrow-down.svg") no-repeat calc(100% - 8px) center;
   background-size: 16px 16px;
   cursor: pointer; }
+  
+select:hover {
+  border-color: #a0a0a0;
+}
 
 select:focus {
   outline: none;
@@ -511,8 +523,9 @@ select:focus {
   padding-bottom: 1px; }
 
 .icon--davis {
-  width: 25px; 
-  height: 25px; }
+  margin-top: -3px;
+  width: 30px; 
+  height: 30px; }
 
 .island--isDavis {
   background-color: white; }
@@ -598,9 +611,9 @@ select:focus {
     padding-bottom: 6px; }
   
   .icon--davis {
-    margin-top: 1px;
-    width: 35px; 
-    height: 35px; }
+    margin-top: -1px;
+    width: 40px; 
+    height: 40px; }
 
   .circle-left {
     position: absolute; 
@@ -677,7 +690,7 @@ form.card-form {
 	margin: 0 auto;
 	color: #666666;
 	text-align: left;
-	font-size: 14px;
+	font-size: 12px;
 	border: 1px solid white;
 	background-color: white;
 	border-radius: 2px; }
@@ -701,9 +714,11 @@ form.card-form {
 .card-title {
 	float: left;
 	cursor: pointer;
+	font-size: 14px;
 	font-weight: bold; }
 
 .card-text {
+  font-size: 14px;
 	clear: both; }
 
 .card-fields {
@@ -719,19 +734,20 @@ form.card-form {
 	
 .card-field-wrap {
   clear: both; }
+  
+.card-field-many-rows {
+  margin-bottom: 10px; }
 
 .card-field-title {
 	font-weight: bold;}
 	
 .card-actions {
   float: left;
-  padding: 5px 0px;
-}
+  padding: 5px 0px; }
 
 .card-action {
   float: left;
-  margin: 2.5px 5px 2.5px 0px;
-}
+  margin: 2.5px 5px 2.5px 0px; }
 
 .card-image-url {
 	float: left;
@@ -764,3 +780,67 @@ form.card-form {
 .card-timestamp-davis {
   float: right;
   margin-right: 3px; }
+  
+.root-cause {
+  display: inline-block;
+  vertical-align: text-top;
+  padding: 2px 4px;
+  margin-bottom: 5px;
+  margin-left: 5px;
+  border-radius: 3px;
+  font-size: 10px;
+  color: white;
+  background-color: #d3571a;
+}
+
+a:hover .root-cause {
+  text-decoration: none;
+}
+
+a:hover .root-cause:hover {
+  background-color: #92380e;
+}
+
+/* Typing indicator */
+.typing-indicator {
+  padding: 0;
+  display: table;
+  margin: 0 auto;
+  position: relative; 
+  float: left ; }
+
+.typing-indicator span {
+  height: 14px;
+  width: 14px;
+  float: left;
+  margin: 0 1px;
+  background-color: #00a1b2;
+  display: block;
+  border-radius: 50%;
+  opacity: 0.4;
+}
+
+.typing-indicator span:nth-of-type(1) {
+  -webkit-animation: 1s blink infinite 0.3333s;
+          animation: 1s blink infinite 0.3333s;
+}
+.typing-indicator span:nth-of-type(2) {
+  -webkit-animation: 1s blink infinite 0.6666s;
+          animation: 1s blink infinite 0.6666s;
+}
+.typing-indicator span:nth-of-type(3) {
+  -webkit-animation: 1s blink infinite 0.9999s;
+          animation: 1s blink infinite 0.9999s;
+}
+
+@-webkit-keyframes blink {
+  50% {
+    opacity: 1;
+  }
+}
+
+@keyframes blink {
+  50% {
+    opacity: 1;
+  }
+}
