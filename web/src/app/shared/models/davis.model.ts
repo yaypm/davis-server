@@ -12,7 +12,7 @@ export class DavisModel {
     admin: false,
   };
   
-  filters: any = {
+  filter: any = {
     name: '',
     owner: '',
     description: '',
@@ -49,7 +49,7 @@ export class DavisModel {
     values: {
       otherUser: this.user,
       users: [],
-      filters: this.filters,
+      filter: this.filter,
       dynatrace: {
         url: '',
         apiUrl: '',
@@ -65,7 +65,7 @@ export class DavisModel {
       original: {
         user: {},
         otherUser: {},
-        filters: {},
+        filter: {},
         dynatrace: {},
         slack: {},
       },
@@ -73,7 +73,7 @@ export class DavisModel {
     status: {
       user: this.status,
       users: this.status,
-      filters: this.status,
+      filter: this.status,
       dynatrace: this.status,
       alexa: this.status,
       slack: this.status,

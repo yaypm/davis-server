@@ -523,8 +523,9 @@ select:focus {
   padding-bottom: 1px; }
 
 .icon--davis {
-  width: 25px; 
-  height: 25px; }
+  margin-top: -3px;
+  width: 30px; 
+  height: 30px; }
 
 .island--isDavis {
   background-color: white; }
@@ -610,9 +611,9 @@ select:focus {
     padding-bottom: 6px; }
   
   .icon--davis {
-    margin-top: 1px;
-    width: 35px; 
-    height: 35px; }
+    margin-top: -1px;
+    width: 40px; 
+    height: 40px; }
 
   .circle-left {
     position: absolute; 
@@ -733,19 +734,20 @@ form.card-form {
 	
 .card-field-wrap {
   clear: both; }
+  
+.card-field-many-rows {
+  margin-bottom: 10px; }
 
 .card-field-title {
 	font-weight: bold;}
 	
 .card-actions {
   float: left;
-  padding: 5px 0px;
-}
+  padding: 5px 0px; }
 
 .card-action {
   float: left;
-  margin: 2.5px 5px 2.5px 0px;
-}
+  margin: 2.5px 5px 2.5px 0px; }
 
 .card-image-url {
 	float: left;
@@ -801,7 +803,7 @@ a:hover .root-cause:hover {
 
 /* Typing indicator */
 .typing-indicator {
-  padding: 20px;
+  padding: 0;
   display: table;
   margin: 0 auto;
   position: relative; 

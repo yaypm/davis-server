@@ -11,7 +11,13 @@
       </div>
       <div *ngIf="iDavis.conversation.length < 1 && !iDavis.isIframeTile" class="layout is-flex has-islands">
         <div class="island island--center" style="height: 299px; border: 0.5px solid #ececec">
-          <img style="width: 250px; display: block; margin: 0 auto; margin-top: 93px" src="/assets/images/davis-logo.png">
+          <svg style="fill: #004999; width: 175px; height: 175px; display: block; margin: 0 auto; margin-top: 20px">
+            <use xlink:href="#davis"></use>
+          </svg>
+          <!--<img style="width: 250px; display: block; margin: 0 auto; margin-top: 73px" src="/assets/images/davis-logo.png">-->
+          <div style="text-align: center; margin-top: 15px; padding: 0px 16px">
+            Davis here, your DevOps assistant, ask me something below!
+          </div>
         </div>
       </div>
     </div>

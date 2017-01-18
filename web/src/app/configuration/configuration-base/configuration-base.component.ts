@@ -38,7 +38,7 @@ export class ConfigurationBaseComponent implements OnInit {
       admin: true,
     },
     filters: {
-      key: 'filters',
+      key: 'filter',
       name: 'Filters',
       admin: false,
     },
@@ -89,8 +89,8 @@ export class ConfigurationBaseComponent implements OnInit {
     
     this.iConfig.status['user'].success = null;
     this.iConfig.status['user'].error = null;
-    this.iConfig.status['filters'].success = null;
-    this.iConfig.status['filters'].error = null;
+    this.iConfig.status['filter'].success = null;
+    this.iConfig.status['filter'].error = null;
     this.iConfig.status['dynatrace'].success = null;
     this.iConfig.status['dynatrace'].error = null;
     this.iConfig.status['slack'].success = null;

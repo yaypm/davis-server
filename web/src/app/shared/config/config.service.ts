@@ -104,7 +104,7 @@ export class ConfigService {
       .catch(this.iDavis.handleError);
   }
   
-  addDavisFilters(filters: any): Promise<any> {
+  addDavisFilter(filters: any): Promise<any> {
     let headers = new Headers({ 'Content-Type': 'application/json', 'x-access-token': this.iDavis.token });
     let options = new RequestOptions({ headers: headers });
 

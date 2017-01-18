@@ -1,7 +1,12 @@
 <div class="layout is-flex has-islands">
   <div class="island--full-width island--center island--login" [class.island--login-error-height]="loginError">
     <form (ngSubmit)="login(form)" #form="ngForm">
-      <div class="island island--login-row" style="min-height: 67px">
+      <div class="island island--login-row" style="min-height: 67px;">
+        <!--
+        <svg class="davis-logo" style="fill: #004999; width: 125px; height: 125px; margin-top: -30px">
+          <use xlink:href="#davis"></use>
+        </svg>
+        -->
         <img src="/assets/images/davis-logo.png" class="davis-logo">
       </div>
       <div *ngIf="loginError" class="island island--login-row island--error island--login-error">
