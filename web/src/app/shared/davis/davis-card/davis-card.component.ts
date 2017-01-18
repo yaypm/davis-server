@@ -23,7 +23,22 @@ export class DavisCardComponent implements OnInit {
     this.toggleProcessingIndicator.emit();
     this.iDavis.askDavisIntent(intent, name, value)
       .then(result => {
-        result.response.isDavis = true;
+        if (typeof result.response === 'string') {
+          result.response = {
+            visual: {
+              card: {
+                attachments: [
+                  {
+                    text: result.response,
+                  },
+                ],
+              }
+            },
+            isDavis: true,
+          };
+        } else {
+          result.response.isDavis = true;
+        }
         result.response.timestamp = this.iDavis.getTimestamp();
         this.toggleProcessingIndicator.emit();
         this.iDavis.conversation.push(result.response);

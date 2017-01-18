@@ -844,3 +844,17 @@ a:hover .root-cause:hover {
     opacity: 1;
   }
 }
+
+/* Card animations */
+.card-push-animation {
+  animation: push 0.5s;
+}
+
+@keyframes push {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1.0;
+  } 
+}
