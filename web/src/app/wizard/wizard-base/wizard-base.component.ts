@@ -42,6 +42,10 @@ export class WizardBaseComponent implements OnInit {
         this.iConfig.values.dynatrace.token = response.config.dynatrace.token;
         this.iConfig.values.slack.clientId = response.config.slack.clientId;
         this.iConfig.values.slack.clientSecret = response.config.slack.clientSecret;
+        this.iConfig.values.slack.redirectUri = response.config.slack.redirectUri;
+        if (this.iConfig.values.slack.redirectUri.length < 1) {
+          this.iConfig.values.slack.redirectUri = `${window.location.protocol}//${window.location.host}/oauth`;
+        }
       })
       .catch(err => {
         this.iConfig.displayError(err, 'dynatrace');
