@@ -8,93 +8,141 @@
 // Imports
 // ----------------------------------------------------------------------------
 // Angular
-import { Component } from '@angular/core';
-import { Router }    from '@angular/router';
-import { ConfigService } from '../../shared/config/config.service';
-import { DavisService } from '../../shared/davis.service';
-import * as _ from "lodash";
+import { Component, OnInit, Pipe, PipeTransform }   from '@angular/core';
+import { Location }                                 from '@angular/common';
+import { Router, ActivatedRoute }                   from '@angular/router';
+import { Observable }                               from 'rxjs/Observable';
+import { ConfigService }                            from '../../shared/config/config.service';
+import { DavisService }                             from '../../shared/davis.service';
+import * as _                                       from "lodash";
 
 // ----------------------------------------------------------------------------
 // Class
 // ----------------------------------------------------------------------------
 @Component({
-  moduleId:    module.id,
   selector:    'configuration-base',
+  providers: [Location],
   templateUrl: './configuration-base.component.html',
 })
 
-export class ConfigurationBaseComponent  {
-  
+export class ConfigurationBaseComponent implements OnInit {
+  sidebarItems: any = {
+    user: {
+      key:  'user',
+      name: 'My Account',
+      admin: false,
+    },
+    users: {
+      key: 'users',
+      name: 'User Accounts',
+      admin: true,
+    },
+    // filters: {
+    //   key: 'filter',
+    //   name: 'Filters',
+    //   admin: false,
+    // },
+    dynatrace: {
+      key: 'dynatrace',
+      name: 'Dynatrace',
+      admin: true,
+    },
+    slack: {
+      key: 'slack',
+      name: 'Slack App',
+      admin: true,
+    },
+    chrome: {
+      key: 'chrome',
+      name: 'Chrome Extension',
+      admin: false,
+    },
+  };
+
   // ------------------------------------------------------
   // Inject services
   // ------------------------------------------------------
-  constructor(public router: Router, public iConfig: ConfigService, public iDavis: DavisService) { }
+  constructor(
+    public router: Router,
+    public route: ActivatedRoute,
+    public location: Location,
+    public iConfig: ConfigService,
+    public iDavis: DavisService
+  ) { }
 
   // ------------------------------------------------------
   // Initialize component
   // ------------------------------------------------------
   ngOnInit() {
-    this.iConfig.SelectView('user');
+    this.iDavis.isBreadcrumbsVisible = true;
+
+    this.route
+      .fragment
+      .map(fragment => fragment || 'None')
+      .subscribe(value => {
+        if (this.sidebarItems[value]) {
+          this.iConfig.selectView(value);
+        } else {
+          this.iConfig.selectView('user');
+        }
+      });
     
-    this.iDavis.config['user'].success = null;
-    this.iDavis.config['user'].error = null;
-    this.iDavis.config['dynatrace'].success = null;
-    this.iDavis.config['dynatrace'].error = null;
-    this.iDavis.config['slack'].success = null;
-    this.iDavis.config['slack'].error = null;
+    this.iConfig.status['user'].success = null;
+    this.iConfig.status['user'].error = null;
+    this.iConfig.status['filter'].success = null;
+    this.iConfig.status['filter'].error = null;
+    this.iConfig.status['dynatrace'].success = null;
+    this.iConfig.status['dynatrace'].error = null;
+    this.iConfig.status['slack'].success = null;
+    this.iConfig.status['slack'].error = null;
   
-    this.iDavis.helpLinkText = 'Help for these settings';  
+    this.iConfig.helpLinkText = 'Help for these settings';  
   
     this.iDavis.getDavisUser()
-      .then(result => {
-        if (result.success) {
-          this.iDavis.values.user = result.user;
-          if (!result.user.name) {
-            this.iDavis.values.user.name = {first:'',last:''};
-          } else {
-            if (!result.user.name.first) this.iDavis.values.user.name.first = '';
-            if (!result.user.name.last) this.iDavis.values.user.name.last = '';
-          }
-          this.iDavis.values.original.user = _.cloneDeep(this.iDavis.values.user);
+      .then(response => {
+        if (!response.success) throw new Error(response.message); 
+        this.iDavis.values.user = response.user;
+        
+        // Backwards compatibility, was once optional
+        if (!response.user.name) {
+          this.iDavis.values.user.name = { first: '', last: '' };
         } else {
-          this.iDavis.generateError('user', result.message);
+          if (!response.user.name.first) this.iDavis.values.user.name.first = '';
+          if (!response.user.name.last) this.iDavis.values.user.name.last = '';
         }
+        this.iConfig.values.original.user = _.cloneDeep(this.iDavis.values.user);
+        return this.iConfig.getDavisFilters();
+      })
+      .then(response => {
+        if (!response.success) throw new Error(response.message);
+        this.iConfig.values.filters = response.filters;
+        this.iConfig.values.original.filters = _.cloneDeep(this.iConfig.values.filters);
+        return this.iConfig.getDynatrace();
+      })
+      .then(response => {
+        if (!response.success) throw new Error(response.message);
+        this.iConfig.values.dynatrace = response.dynatrace;
+        this.iConfig.values.original.dynatrace = _.cloneDeep(this.iConfig.values.dynatrace);
+        return this.iConfig.getSlack();
+      })
+      .then(response => {
+        if (!response.success) throw new Error(response.message);
+        this.iConfig.values.slack = response.slack;
+        this.iConfig.values.slack.enabled = true;
+        if (this.iConfig.values.slack.redirectUri.length < 1) {
+          this.iConfig.values.slack.redirectUri = `${window.location.protocol}//${window.location.host}/oauth`;
+        }
+        this.iConfig.values.original.slack = _.cloneDeep(this.iConfig.values.slack);
+        return this.iDavis.getDavisVersion();
+      })
+      .then(response => {
+        if (!response.success) { 
+          throw new Error(response.message); 
+        }
+        this.iDavis.davisVersion = response.version;
       })
       .catch(err => {
-        if (err.includes('invalid token')) {
-          this.iDavis.logOut();
-        }
-      });
-      
-    this.iDavis.getDynatrace()
-      .then(result => {
-        if (result.success) {
-          this.iDavis.values.dynatrace = result.dynatrace;
-          this.iDavis.values.original.dynatrace = _.cloneDeep(this.iDavis.values.dynatrace);
-        } else {
-          this.iDavis.generateError('dynatrace', result.message);
-        }
-      })
-      .catch(err => {
-        if (err.includes('invalid token')) {
-          this.iDavis.logOut();
-        }
-      });
-      
-    this.iDavis.getSlack()
-      .then(result => {
-        if (result.success) {
-          this.iDavis.values.slack = result.slack;
-          this.iDavis.values.slack.enabled = true;
-          this.iDavis.values.original.slack = _.cloneDeep(this.iDavis.values.slack);
-        } else {
-          this.iDavis.generateError('slack', result.message);
-        }
-      })
-      .catch(err => {
-        if (err.includes('invalid token')) {
-          this.iDavis.logOut();
-        }
+        this.iConfig.displayError(err, null);
       });
   }
 }

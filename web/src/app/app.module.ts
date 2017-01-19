@@ -14,6 +14,7 @@ import { FormsModule }            from "@angular/forms";
 import { HttpModule,
          JsonpModule }            from "@angular/http";
 import { RouterModule }           from "@angular/router";
+import { APP_BASE_HREF }          from '@angular/common';
 
 // Components
 import { AppComponent } from "./app.component";
@@ -56,6 +57,7 @@ import { DavisService } from "./shared/davis.service";
     WizardModule,
   ],
   providers: [
+    {provide: APP_BASE_HREF, useValue: '/'},
     ConfigGuard,
     DavisGuard,
     WizardGuard,

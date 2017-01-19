@@ -1,21 +1,28 @@
 <form (ngSubmit)="doSubmit()" #form="ngForm">
 <div class="layout is-flex has-islands">
-  <div *ngIf="iDavis.isWizard || isMyUser" class="island--full-width" [class.island--full-width-sidebar]="!iDavis.isWizard">
+  <div *ngIf="iConfig.isWizard || isMyUser" class="island--full-width" 
+    [class.island--full-width-sidebar]="!iConfig.isWizard">
     <div class="config-title">
-      {{ (iDavis.isWizard) ?  'Create Administrator Account' : 'My Account' }}
+      {{ (iConfig.isWizard) ?  'Create Administrator Account' : 'My Account' }}
     </div>
-    <div *ngIf="iDavis.isWizard" class="wizard-step-number">
+    <div *ngIf="iConfig.isWizard" class="wizard-step-number">
       Step 2 of 4
     </div>
     <a href="https://github.com/Dynatrace/davis-server/wiki/Getting%20Started" target="_blank" class="config-help">
-      {{ iDavis.helpLinkText }}
+      {{ iConfig.helpLinkText }}
     </a>
   </div>
-  <div *ngIf="iDavis.config['user'].success === false" class="island--full-width island--error" [class.island--full-width-sidebar]="!iDavis.isWizard" [class.island--user-accounts-error]="!isMyUser">
-    {{ iDavis.config['user'].error }}
+  <div *ngIf="iConfig.status['user'].success === false" class="island--full-width island--error" 
+    [class.island--full-width-sidebar]="!iConfig.isWizard"
+    [class.island--my-account-error]="!iConfig.isWizard && isMyUser"
+    [class.island--user-accounts-error]="!isMyUser">
+    {{ iConfig.status['user'].error }}
   </div>
-  <div class="island--full-width" [class.island--full-width-sidebar]="!iDavis.isWizard">
-    <div class="island island--center" [class.island--left]="!iDavis.isWizard" [class.island--user-accounts]="!iDavis.isWizard">
+  <div class="island--full-width" [class.island--full-width-sidebar]="!iConfig.isWizard">
+    <div class="island island--center" 
+      [class.island--left]="!iConfig.isWizard" 
+      [class.island--user-accounts]="!iConfig.isWizard && !isMyUser" 
+      [class.island--my-account]="!iConfig.isWizard && isMyUser">
       <div class="layout is-flex has-islands island--half">
         <div class="layout__container layout--half">
           <div class="island island--half island--half--left">
@@ -34,7 +41,7 @@
             <input type="text" name="first" 
               class="inputfield" id="first"
               *ngIf="!isMyUser"
-              [(ngModel)]="iDavis.values.otherUser.name.first" 
+              [(ngModel)]="iConfig.values.otherUser.name.first" 
               (keyup)="validate()" required>
           </div>
         </div>
@@ -55,12 +62,12 @@
             <input type="text" name="last"
               class="inputfield" id="last"
               *ngIf="!isMyUser"
-              [(ngModel)]="iDavis.values.otherUser.name.last" 
+              [(ngModel)]="iConfig.values.otherUser.name.last" 
               (keyup)="validate()" required>
           </div>
         </div>
       </div>
-      <div class="island island--full" *ngIf="iDavis.isWizard || !isMyUser">
+      <div class="island island--full" *ngIf="iConfig.isWizard || !isMyUser">
         <label for="email" class="label">
           Email
         </label>
@@ -70,13 +77,13 @@
           *ngIf="isMyUser"
           [(ngModel)]="iDavis.values.user.email" 
           (keyup)="validate()" 
-          [attr.disabled]="(iDavis.isWizard) ? null : ''" required>
+          [attr.disabled]="(iConfig.isWizard) ? null : ''" required>
             
         <!-- !isMyUser -->
         <input type="email" name="email" 
           class="inputfield" id="email"
           *ngIf="!isMyUser"
-          [(ngModel)]="iDavis.values.otherUser.email" 
+          [(ngModel)]="iConfig.values.otherUser.email" 
           (keyup)="validate()"
           [attr.disabled]="(isNewUser) ? null : ''" required>
       </div>
@@ -84,26 +91,26 @@
         <div class="layout__container layout--half">
           <div class="island island--half island--half--left">
             <label for="password" class="label">
-              {{ (iDavis.isWizard || isNewUser) ? '' : 'Change ' }}Password
+              {{ (iConfig.isWizard || isNewUser) ? '' : 'Change ' }}Password
             </label>
             <div class="input-button-wrapper" [class.input-button-wrapper-focus]="isPasswordFocused">
               
                 <!-- isMyUser -->
-                <input *ngIf="isPasswordMasked && isMyUser" type="password" name="password" id="password" class="input-button-input" 
+                <input *ngIf="isPasswordMasked && isMyUser" type="password" name="password" id="password" class="input-button-input" minlength="6" 
                     [(ngModel)]="iDavis.values.user.password" 
                     (focus)="isPasswordFocused = true" (blur)="isPasswordFocused = false" (keyup)="validate()"
-                    [required]="(iDavis.isWizard) ? '' : null">
-                <input *ngIf="!isPasswordMasked && isMyUser" type="text" name="passwordText" id="password" class="input-button-input" 
+                    [required]="(iConfig.isWizard) ? '' : null">
+                <input *ngIf="!isPasswordMasked && isMyUser" type="text" name="password" id="password" class="input-button-input" minlength="6" 
                     [(ngModel)]="iDavis.values.user.password" (focus)="isPasswordFocused = true" (blur)="isPasswordFocused = false" (keyup)="validate()"
-                    [required]="(iDavis.isWizard) ? '' : null">
+                    [required]="(iConfig.isWizard) ? '' : null">
                     
                 <!-- !isMyUser -->
-                <input *ngIf="isPasswordMasked && !isMyUser" type="password" name="password" id="password" class="input-button-input" 
-                    [(ngModel)]="iDavis.values.otherUser.password" 
+                <input *ngIf="isPasswordMasked && !isMyUser" type="password" name="password" id="password" class="input-button-input" minlength="6"
+                    [(ngModel)]="iConfig.values.otherUser.password" 
                     (focus)="isPasswordFocused = true" (blur)="isPasswordFocused = false"(keyup)="validate()"
                     [required]="(isNewUser) ? '' : null">
-                <input *ngIf="!isPasswordMasked && !isMyUser" type="text" name="passwordText" id="password" class="input-button-input" 
-                    [(ngModel)]="iDavis.values.otherUser.password" 
+                <input *ngIf="!isPasswordMasked && !isMyUser" type="text" name="password" id="password" class="input-button-input" minlength="6" 
+                    [(ngModel)]="iConfig.values.otherUser.password" 
                     (focus)="isPasswordFocused = true" (blur)="isPasswordFocused = false" (keyup)="validate()"
                     [required]="(isNewUser) ? '' : null">
                 
@@ -113,6 +120,7 @@
                   </svg>
                 </div>
             </div>
+            <p class="hint" id="i9">Minimum of 6 characters</p>
           </div>
         </div>
         <div class="layout__container layout--half">
@@ -122,30 +130,30 @@
             </label>
             
             <!-- isMyUser -->
-            <select *ngIf="isMyUser" name="timezone" 
+            <select *ngIf="isMyUser" id="timezone" name="timezone" 
               [(ngModel)]="iDavis.values.user.timezone"
               (ngModelChange)="onTimezoneChange($event); validate()"
               [class.select-opened]="isSelectOpened" 
               (click)="isSelectOpened = !isSelectOpened" 
               (blur)="isSelectOpened = false;" required>
-              <option *ngFor="let tz of iDavis.timezones" [value]="tz">{{tz}}</option>
+              <option *ngFor="let tz of iConfig.timezones" [value]="tz">{{tz}}</option>
             </select>
             
              <!-- !isMyUser -->
-            <select *ngIf="!isMyUser" name="timezone" 
-              [(ngModel)]="iDavis.values.otherUser.timezone" 
+            <select *ngIf="!isMyUser" id="timezone" name="timezone" 
+              [(ngModel)]="iConfig.values.otherUser.timezone" 
               (ngModelChange)="onTimezoneChange($event); validate()"
               [class.select-opened]="isSelectOpened" 
               (click)="isSelectOpened = !isSelectOpened" 
               (blur)="isSelectOpened = false;" required>
-              <option *ngFor="let tz of iDavis.timezones" [value]="tz">{{tz}}</option>
+              <option *ngFor="let tz of iConfig.timezones" [value]="tz">{{tz}}</option>
             </select>
           </div>
         </div>
       </div>
       <div class="layout is-flex has-islands island--half">
-        <div class="layout__container layout--half layout--half--small" [class.checkbox--admin]="!iDavis.isWizard && iDavis.isAdmin">
-          <div class="island island--half island--half--left" style="padding-top: 14px;" *ngIf="!iDavis.isWizard && iDavis.isAdmin">  
+        <div class="layout__container layout--half layout--half--small" [class.checkbox--admin]="!iConfig.isWizard && iDavis.isAdmin">
+          <div class="island island--half island--half--left" style="padding-top: 14px;" *ngIf="!iConfig.isWizard && iDavis.isAdmin">  
           
             <!-- isMyUser -->
             <input type="checkbox" class="checkbox" id="admin" name="admin"
@@ -156,7 +164,7 @@
                 
             <!-- !isMyUser -->
             <input type="checkbox" class="checkbox" id="admin" name="admin"
-              [(ngModel)]="iDavis.values.otherUser.admin"
+              [(ngModel)]="iConfig.values.otherUser.admin"
               *ngIf="!isMyUser"
               (change)="validate()">
               
@@ -168,41 +176,41 @@
         <div class="layout__container layout--half layout--half--small">
           <div class="island island--half island--half--right" 
             *ngIf="detectedTimezone && ((isMyUser && iDavis.values.user.timezone != detectedTimezone) 
-              || (!isMyUser && iDavis.values.otherUser.timezone != detectedTimezone))">                 
+              || (!isMyUser && iConfig.values.otherUser.timezone != detectedTimezone))">                 
             <button type="button" class="btn btn--secondary btn--submit"
-                (click)="(isMyUser) ? iDavis.values.user.timezone = detectedTimezone : iDavis.values.otherUser.timezone = detectedTimezone; validate()">
+                (click)="(isMyUser) ? iDavis.values.user.timezone = detectedTimezone : iConfig.values.otherUser.timezone = detectedTimezone; validate()">
                 Detect Timezone
             </button>
           </div>
         </div>
       </div>
-      <div class="island island--full" *ngIf="!iDavis.isWizard">          
-        <label for="alexa" class="label">
+      <div class="island island--full" *ngIf="!iConfig.isWizard">          
+        <label for="alexa_ids" class="label">
           Alexa User ID
         </label>
         
         <!-- isMyUser -->
-        <input type="text" class="inputfield" id="alexa" name="alexa" 
+        <input type="text" class="inputfield" id="alexa_ids" name="alexa_ids" 
             *ngIf="isMyUser"
             [(ngModel)]="iDavis.values.user.alexa_ids"
             (keyup)="validate()">
             
         <!-- !isMyUser -->
-        <input type="text" class="inputfield" id="alexa" name="alexa" 
+        <input type="text" class="inputfield" id="alexa_ids" name="alexa_ids" 
             *ngIf="!isMyUser"
-            [(ngModel)]="iDavis.values.otherUser.alexa_ids"
+            [(ngModel)]="iConfig.values.otherUser.alexa_ids"
             (keyup)="validate()">
       </div>
-      <div class="island island--full" *ngIf="!iDavis.isWizard && !isMyUser && iDavis.isAdmin && !isNewUser">
+      <div class="island island--full" *ngIf="!iConfig.isWizard && !isMyUser && iDavis.isAdmin && !isNewUser">
         <button type="button" class="btn btn--secondary btn--secondary--delete"
             [attr.disabled]="(isMyUser) ? true : null"
-            (click)="deleteUser(iDavis.values.otherUser.email)">
+            (click)="deleteUser(iConfig.values.otherUser.email)">
             {{ (confirmDeleteUser) ? 'Confirm Delete User' : 'Delete User' }}
         </button>
       </div>
       <div class="island island--center island--submit">
         <button type="submit" class="btn btn--primary btn--submit"
-            [attr.disabled]="(!form.valid || submitButton === 'Saving...' || !isDirty) ? true : null">
+            [attr.disabled]="(!form.valid || submitButton === 'Saving...' || submitButton === 'Adding User...' || !isDirty) ? true : null">
             {{ submitButton }}
         </button>
       </div>

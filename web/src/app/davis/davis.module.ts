@@ -8,14 +8,18 @@
 //  Imports
 // ----------------------------------------------------------------------------
 // Angular
-import { NgModule }     from "@angular/core";
-import { CommonModule } from "@angular/common";
+import { NgModule }               from "@angular/core";
+import { CommonModule }           from "@angular/common";
+import { FormsModule }            from '@angular/forms';
 
 // Components
 import { DavisBaseComponent } from "./davis-base/davis-base.component";
 
 // Routes
 import { DavisRouting } from "./davis.routing";
+
+// Modules
+import { SharedDavisModule }      from '../shared/davis/shared-davis.module';
 
 // ----------------------------------------------------------------------------
 // Module
@@ -26,7 +30,9 @@ import { DavisRouting } from "./davis.routing";
   ],
   imports: [
     CommonModule,
-    DavisRouting
+    DavisRouting,
+    FormsModule,
+    SharedDavisModule,
   ]
 })
 

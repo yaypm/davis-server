@@ -1,13 +1,13 @@
-<div class="layout is-flex has-islands" style="max-width: 440px">
+<div class="layout is-flex has-islands" style="max-width: 640px">
   <div class="island--full-width island--full-width-sidebar island--left">
     <div class="config-title">
       User Accounts
     </div>
     <a href="https://github.com/Dynatrace/davis-server/wiki/Getting%20Started" target="_blank" class="config-help">
-      {{ iDavis.helpLinkText }}
+      {{ iConfig.helpLinkText }}
     </a>
   </div>
-  <div class="island--full-width island--full-width-sidebar island--center island--left" style="padding-top: 32px">
+  <div class="island--full-width island--full-width-sidebar island--center island--left" style="padding-top: 20px">
     <div class="tabs">
       <button class="tab" [class.is-active]="addUser" (click)="addUser = true; editUser = false; addMode()">Add User</button>
       <button class="tab" [class.is-active]="!addUser" (click)="addUser = false; editUser = false; getUsers()">Edit User</button>
@@ -31,7 +31,7 @@
       <thead>
         <tr>
           <th>Name</th>
-          <th>Admin</th>
+          <th style="width: 100px">Admin</th>
         </tr>
       </thead>
     </table>
@@ -40,19 +40,19 @@
         <tbody>
           <tr *ngFor='let user of users | filterUsersByName:filterName' (click)="editMode(user)">
             <td>
-                  {{ user.name.last }}, {{ user.name.first }}
+              {{ user.name.last }}, {{ user.name.first }}
             </td>
-            <td>
-                {{ (user.admin) ? '&#x2713;' : '' }}
+            <td style="width: 100px">
+              {{ (user.admin) ? '&#x2713;' : null }}
             </td>
           </tr>
         </tbody>
       </table>
     </div>
-    <h3 *ngIf="users && users.length < 1" style="text-align: center; opacity: 0.2">None</h3>
+    <h3 *ngIf="(users | filterUsersByName:filterName).length < 1" style="text-align: center; opacity: 0.2">None</h3>
   </div>
 </div>
 <svg *ngIf="editUser" class="icon--back" (click)="editUser = false">
   <use xlink:href="#back"></use>
 </svg>
-<config-user *ngIf="addUser || iDavis.values.original.otherUser.first || editUser" [isNewUser]="addUser" [isMyUser]="false" (showUsersList)="showUsers()"></config-user>
+<config-user *ngIf="addUser || iConfig.values.original.otherUser.first || editUser" [isNewUser]="addUser" [isMyUser]="false" (showUsersList)="showUsers()"></config-user>

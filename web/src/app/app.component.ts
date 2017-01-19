@@ -8,28 +8,39 @@
 // Imports
 // ----------------------------------------------------------------------------
 // Angular
-import { Component } from "@angular/core";
-import { Router } from "@angular/router";
+import { Http, Headers }        from "@angular/http";
+import { Component }            from "@angular/core";
+import { Router }               from "@angular/router";
 
 // Third party
 import "./rxjs-operators";
-import { DavisService } from "./shared/davis.service";
+import { ConfigService }        from "./shared/config/config.service";
+import { DavisService }         from "./shared/davis.service";
+
+declare var dT_ : any;
 
 // ----------------------------------------------------------------------------
 // Class
 // ----------------------------------------------------------------------------
 @Component({
-  moduleId:    module.id,
   selector:    "davis",
   templateUrl: "./app.component.html",
 })
 
-export class AppComponent { 
-  isUserMenuVisible: boolean = false;
+export class AppComponent {
 
-  constructor(public iDavis: DavisService, public router: Router) {}
-  
-  toggleUserMenu() {
-    this.isUserMenuVisible = !this.isUserMenuVisible;
-  }
+  constructor(
+    public iConfig: ConfigService, 
+    public iDavis: DavisService, 
+    public http: Http,
+    public router: Router) {
+      // Dynatrace Angular2 instrumentation (optional)
+      if(typeof dT_!='undefined' && dT_.initAngularNg){
+        dT_.initAngularNg(http, Headers);
+      }
+      
+      // Detect embedding in Dynatrace iFrame tile
+      this.iDavis.isIframeTile = this.iDavis.isIframeTileDetected();
+    }
+
 }

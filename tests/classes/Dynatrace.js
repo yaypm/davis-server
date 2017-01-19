@@ -16,7 +16,7 @@ describe('Dynatrace', () => {
   const davis = new Davis();
 
   // Makes sure the nock doesn't interfere with the next test.
-  after(() => nock.restore());
+  after(() => nock.cleanAll());
 
   it('should load in the Davis config', done => {
     davis.config.load()
@@ -31,7 +31,7 @@ describe('Dynatrace', () => {
       .reply(200, problemSummary);
 
     // Creating a fake exchange
-    const exchange = {};
+    const exchange = { getScope: () => 'test' };
     _.set(exchange, 'model.request.analysed.timeRange.startTime', 1465571160000);
     _.set(exchange, 'model.request.analysed.timeRange.stopTime', 1465572960000);
 
@@ -49,7 +49,7 @@ describe('Dynatrace', () => {
       .reply(200, problemSummary);
 
     // Creating a fake exchange
-    const exchange = {};
+    const exchange = { getScope: () => 'test' };
     _.set(exchange, 'model.request.analysed.timeRange.startTime', 1465571160000);
     _.set(exchange, 'model.request.analysed.timeRange.stopTime', 1465572960000);
 
@@ -68,7 +68,7 @@ describe('Dynatrace', () => {
       .reply(200, problemSummary);
 
     // Creating a fake exchange
-    const exchange = {};
+    const exchange = { getScope: () => 'test' };
     _.set(exchange, 'model.request.analysed.timeRange.startTime', 1465571160000);
     _.set(exchange, 'model.request.analysed.timeRange.stopTime', 1465572960000);
 

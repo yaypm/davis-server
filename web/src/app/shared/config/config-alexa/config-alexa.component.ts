@@ -6,13 +6,12 @@ import { DavisService }  from '../../davis.service';
 import * as _ from "lodash";
 
 @Component({
-  moduleId: module.id,
   selector: 'config-alexa',
   templateUrl: './config-alexa.component.html',
 })
 export class ConfigAlexaComponent implements OnInit {
   submitted: boolean = false;
-  submitButton: string = (this.iDavis.isWizard) ? 'Skip' : 'Save';
+  submitButton: string = (this.iConfig.isWizard) ? 'Skip' : 'Save';
   isDirty: boolean = false;
 
   constructor(
@@ -20,49 +19,41 @@ export class ConfigAlexaComponent implements OnInit {
     public iConfig: ConfigService) { }
 
   doSubmit() {
+    this.submitted = true;
+    this.iDavis.values.user.alexa_ids = this.iDavis.safariAutoCompletePolyFill(this.iDavis.values.user.alexa_ids, 'alexa_ids');
     if (this.iDavis.values.user.alexa_ids) {
       this.submitButton = 'Saving...';
-      this.iDavis.connectAlexa()
-        .then(result => {
-          if (result.success) {
-            this.iDavis.config['alexa'].success = true;
-            this.iConfig.SelectView('slack');
-          } else {
-            this.iDavis.generateError('alexa', result.message);
-            this.resetSubmitButton();
+      this.iConfig.connectAlexa()
+        .then(response => {
+          if (!response.success) { 
+            this.resetSubmitButton(); 
+            throw new Error(response.message); 
           }
-        },
-        error => {
-          console.log(error);
-          this.iDavis.generateError('alexa', null);
-          this.resetSubmitButton();
+          this.iConfig.status['alexa'].success = true;
+          this.iConfig.selectView('slack');
         })
         .catch(err => {
-          if (err.includes('invalid token')) {
-            this.iDavis.logOut();
-          }
+          this.iConfig.displayError(err, 'alexa');
         });
     } else {
-      this.iConfig.SelectView('slack');
+      this.iConfig.selectView('slack');
     }
-
-    this.submitted = true;
   }
-  
+
   validate() {
     if (this.iDavis.values.user.alexa_ids) {
       this.submitButton = 'Continue';
     } else {
       this.submitButton = 'Skip';
     }
-    this.isDirty = !_.isEqual(this.iDavis.values.user, this.iDavis.values.original.user);
+    this.isDirty = !_.isEqual(this.iDavis.values.user, this.iConfig.values.original.user);
   }
-  
+
   resetSubmitButton() {
-    this.submitButton = (this.iDavis.isWizard) ? 'Continue' : 'Save';
+    this.submitButton = (this.iConfig.isWizard) ? 'Continue' : 'Save';
   }
-  
+
   ngOnInit() {
-    document.getElementsByName('alexa')[0].focus();
+    document.getElementsByName('alexa_ids')[0].focus();
   }
 }

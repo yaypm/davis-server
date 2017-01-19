@@ -1,34 +1,33 @@
 <form (ngSubmit)="doSubmit()" #form="ngForm">
 <div class="layout is-flex has-islands">
-  <div class="island--full-width" [class.island--full-width-sidebar]="!iDavis.isWizard">
+  <div class="island--full-width" [class.island--full-width-sidebar]="!iConfig.isWizard">
     <div class="config-title">
       Connect to Amazon Alexa
     </div>
-    <div *ngIf="iDavis.isWizard" class="wizard-step-number">
+    <div *ngIf="iConfig.isWizard" class="wizard-step-number">
       Step 3 of 4
     </div>
     <a href="https://github.com/Dynatrace/davis-server/wiki/Setup%20Alexa" target="_blank" class="config-help">
-      {{ iDavis.helpLinkText }}
+      {{ iConfig.helpLinkText }}
     </a>
   </div>
-  <div *ngIf="iDavis.config['alexa'].success === false" class="island--full-width island--error" [class.island--full-width-sidebar]="!iDavis.isWizard">
-    {{ iDavis.config['alexa'].error }}
+  <div *ngIf="iConfig.status['alexa'].success === false" class="island--full-width island--error" [class.island--full-width-sidebar]="!iConfig.isWizard">
+    {{ iConfig.status['alexa'].error }}
   </div>
-  <div class="island--full-width" [class.island--full-width-sidebar]="!iDavis.isWizard">
-    <div class="island island--center" [class.island--left]="!iDavis.isWizard">
-      <label for="alexa" class="label">
+  <div class="island--full-width" [class.island--full-width-sidebar]="!iConfig.isWizard">
+    <div class="island island--center" [class.island--left]="!iConfig.isWizard">
+      <label for="alexa_ids" class="label">
         Alexa User ID
       </label>
-      <input type="text" name="alexa"
-        class="inputfield" id="alexa"
+      <input type="text" name="alexa_ids"
+        class="inputfield" id="alexa_ids"
         [(ngModel)]="iDavis.values.user.alexa_ids" 
-        (keyup)="validate()" 
-        [required]="(submitButton === 'Save') ? '' : null">
+        (keyup)="validate()">
     </div>
-    <div class="island island--center island--submit" [class.island--left]="!iDavis.isWizard">
+    <div class="island island--center island--submit" [class.island--left]="!iConfig.isWizard">
       <button type="submit" role="button" class="btn btn--primary btn--submit"
         [class.btn--warning]="submitButton === 'Skip'"
-        [attr.disabled]="(!form.valid || submitButton === 'Saving...' || (!isDirty && !iDavis.isWizard)) ? true : null">
+        [attr.disabled]="(!form.valid || submitButton === 'Saving...' || (!isDirty && !iConfig.isWizard)) ? true : null">
         {{ submitButton }}
       </button>
     </div>

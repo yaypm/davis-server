@@ -2,142 +2,70 @@ import {Injectable}                from '@angular/core';
 import { Router }                  from '@angular/router';
 import { Http, Response }          from '@angular/http';
 import { Headers, RequestOptions } from '@angular/http';
-import * as moment from 'moment';
-import * as momentz from 'moment-timezone';
-
-declare var chrome: any;
+import { DavisModel }              from './models/davis.model';
+import * as moment                 from 'moment';
+import * as momentz                from 'moment-timezone';
+import * as $                      from 'jquery';
 
 @Injectable()
 export class DavisService {
 
   isAdmin: boolean = false;
   isAuthenticated: boolean = false;
+  davisVersion: string;
 
   token: string;
-  timezones: any = [];
-  isWizard: boolean = false;
-  titleGlobal: string = '';
-  helpLinkText: string = 'How to complete this step';
-  isChromeExtensionInstalled: boolean = (typeof chrome !== 'undefined') ? chrome.app.isInstalled : false;
-
-  values: any = {
-    authenticate: {
-      email: null,
-      password: null
-    },
-    user: {
-      email: null,
-      password: null,
-      timezone: null,
-      alexa_ids: null,
-      name: {
-          first: null,
-          last: null
-      },
-      admin: false
-    },
-    otherUser: {
-      email: null,
-      password: null,
-      timezone: null,
-      alexa_ids: null,
-      name: {
-          first: null,
-          last: null
-      },
-      admin: false
-    },
-    users: [],
-    dynatrace: {
-      url: null,
-      token: null,
-      strictSSL: true
-    },
-    slack: {
-      enabled: true,
-      clientId: null,
-      clientSecret: null,
-      redirectUri: null
-    },
-    original: {
-      user: {},
-      otherUser: {},
-      dynatrace: {},
-      slack: {}
-    }
-  };
-
-  config: any = {
-    user: {
-      title: 'My Account',
-      name: 'user',
-      path: 'src/config-user',
-      error: null,
-      success: null
-    },
-    users: {
-      title: 'User Accounts',
-      name: 'users',
-      path: 'src/config-users',
-      error: null,
-      success: null
-    },
-    dynatrace: {
-      title: 'Let\'s connect to Dynatrace!',
-      name: 'dynatrace',
-      path: 'src/config-dynatrace',
-      error: null,
-      success: null
-    },
-    alexa: {
-      title: 'Alexa',
-      name: 'alexa',
-      path: 'src/config-alexa',
-      error: null,
-      success: null
-    },
-    slack: {
-      title: 'Slack App',
-      name: 'slack',
-      path: 'src/config-slack',
-      error: null,
-      success: null
-    }
-  };
+  isBreadcrumbsVisible: boolean = false;
+  isUserMenuVisible: boolean = false;
+  isIframeTile: boolean = false;
+  
+  conversation: Array<any> = [];
   
   route_names: any = {
     '/wizard': 'Setup',
     '/configuration': 'Account settings',
-    '/auth/login': 'Sign in'
+    '/configuration#user': 'Account settings',
+    '/configuration#users': 'Account settings',
+    '/configuration#dynatrace': 'Account settings',
+    '/configuration#slack': 'Account settings',
+    '/configuration#chrome': 'Account settings',
   };
+  
+  values: any = new DavisModel().davis.values;
 
-  constructor (private http: Http, private router: Router) {}
+  constructor (private http: Http, private router: Router) { }
+  
+  goToPage(location: string): void {
+    if (this.router.url !== '/wizard') {
+      
+      if (location === '/davis') {
+        this.windowScrollBottom(1);
+      } else {
+        this.windowScrollTop();
+      }
+      
+      this.router.navigate([location]);
+      this.isUserMenuVisible = false;
+    }
+  }
+  
+  toggleUserMenu(): void {
+    this.isUserMenuVisible = !this.isUserMenuVisible;
+  }
   
   logOut(): void {
     
-    this.values.authenticate = {
-      email: null,
-      password: null
-    };
+    this.values.authenticate = new DavisModel().davis.values.authenticate;
+    this.values.user = new DavisModel().davis.values.user;
     
-    this.values.user = {
-      email: null,
-      password: null,
-      timezone: null,
-      alexa_ids: null,
-      name: {
-          first: null,
-          last: null
-      },
-      admin: false
-    };
-    
+    this.isUserMenuVisible = false;
     this.isAuthenticated = false;
     this.isAdmin = false;
     this.token = null;
     sessionStorage.removeItem('email');
     sessionStorage.removeItem('token');
     sessionStorage.removeItem('isAdmin');
+    this.windowScrollTop();
     this.router.navigate(["/auth/login"]);
   }
 
@@ -146,16 +74,6 @@ export class DavisService {
     let options = new RequestOptions({ headers: headers });
 
     return this.http.post('/api/v1/authenticate', { email: this.values.authenticate.email, password: this.values.authenticate.password }, options)
-      .toPromise()
-      .then(this.extractData)
-      .catch(this.handleError);
-  }
-
-  getTimezones(): Promise<any> {
-    let headers = new Headers({ 'Content-Type': 'application/json', 'x-access-token': this.token });
-    let options = new RequestOptions({ headers: headers });
-
-    return this.http.get('/api/v1/system/users/timezones', options)
       .toPromise()
       .then(this.extractData)
       .catch(this.handleError);
@@ -171,122 +89,42 @@ export class DavisService {
       .catch(this.handleError);
   }
   
-  getDavisUsers(): Promise<any> {
+  getDavisVersion(): Promise<any> {
     let headers = new Headers({ 'Content-Type': 'application/json', 'x-access-token': this.token });
     let options = new RequestOptions({ headers: headers });
 
-    return this.http.get(`/api/v1/system/users`, options)
+    return this.http.get('/api/v1/system/version', options)
       .toPromise()
       .then(this.extractData)
       .catch(this.handleError);
   }
   
-  updateDavisUser(user: any): Promise<any> {
+  askDavisPhrase(phrase: string) {
     let headers = new Headers({ 'Content-Type': 'application/json', 'x-access-token': this.token });
     let options = new RequestOptions({ headers: headers });
 
-    return this.http.put(`/api/v1/system/users/${user.email}`, user, options)
-      .toPromise()
-      .then(this.extractData)
-      .catch(this.handleError);
-  }
-
-  addDavisUser(user: any): Promise<any> {
-    let headers = new Headers({ 'Content-Type': 'application/json', 'x-access-token': this.token });
-    let options = new RequestOptions({ headers: headers });
-
-    return this.http.post(`/api/v1/system/users/${user.email}`, user, options)
-      .toPromise()
-      .then(this.extractData)
-      .catch(this.handleError);
-  }
-
-  removeDavisUser(email: string): Promise<any> {
-    let headers = new Headers({ 'Content-Type': 'application/json', 'x-access-token': this.token });
-    let options = new RequestOptions({ headers: headers });
-
-    return this.http.delete(`/api/v1/system/users/${email}`, options)
-      .toPromise()
-      .then(this.extractData)
-      .catch(this.handleError);
-  }
-
-  getDynatrace(): Promise<any> {
-    let headers = new Headers({ 'Content-Type': 'application/json', 'x-access-token': this.token } );
-    let options = new RequestOptions({ headers: headers });
-
-    return this.http.get('/api/v1/system/config/dynatrace', options)
+    return this.http.post(`/api/v1/web`, { phrase: phrase, timezone: this.values.user.timezone }, options)
       .toPromise()
       .then(this.extractData)
       .catch(this.handleError);
   }
   
-  connectDynatrace(): Promise<any> {
-    let headers = new Headers({ 'Content-Type': 'application/json', 'x-access-token': this.token } );
-    let options = new RequestOptions({ headers: headers });
-
-    return this.http.put('/api/v1/system/config/dynatrace', this.values.dynatrace, options)
-      .toPromise()
-      .then(this.extractData)
-      .catch(this.handleError);
-  }
-
-  validateDynatrace(): Promise<any> {
-    let headers = new Headers({ 'Content-Type': 'application/json', 'x-access-token': this.token } );
-    let options = new RequestOptions({ headers: headers });
-
-    return this.http.get('/api/v1/system/config/dynatrace/validate', options)
-      .toPromise()
-      .then(this.extractData)
-      .catch(this.handleError);
-  }
-
-  connectAlexa(): Promise<any> {
+  askDavisIntent(intent: string, name: string, value: string) {
     let headers = new Headers({ 'Content-Type': 'application/json', 'x-access-token': this.token });
     let options = new RequestOptions({ headers: headers });
-
-    return this.http.put(`/api/v1/system/users/${this.values.user.email}`, { alexa_ids: this.values.user.alexa_ids }, options)
-      .toPromise()
-      .then(this.extractData)
-      .catch(this.handleError);
-  }
-  
-  getSlack(): Promise<any> {
-    let headers = new Headers({ 'Content-Type': 'application/json', 'x-access-token': this.token });
-    let options = new RequestOptions({ headers: headers });
-
-    return this.http.get('/api/v1/system/config/slack', options)
+    
+    return this.http.post(`/api/v1/web`, { button: { name: name, value: value }, intent: intent }, options)
       .toPromise()
       .then(this.extractData)
       .catch(this.handleError);
   }
 
-  connectSlack(): Promise<any> {
-    let headers = new Headers({ 'Content-Type': 'application/json', 'x-access-token': this.token });
-    let options = new RequestOptions({ headers: headers });
-
-    return this.http.put('/api/v1/system/config/slack', this.values.slack, options)
-      .toPromise()
-      .then(this.extractData)
-      .catch(this.handleError);
-  }
-  
-  startSlack(): Promise<any> {
-    let headers = new Headers({ 'Content-Type': 'application/json', 'x-access-token': this.token });
-    let options = new RequestOptions({ headers: headers });
-
-    return this.http.post('/api/v1/system/config/slack/start', {}, options)
-      .toPromise()
-      .then(this.extractData)
-      .catch(this.handleError);
-  }
-
-  private extractData(res: Response) {
+  extractData(res: Response): any {
     let body = res.json();
     return body || {};
   }
 
-  private handleError(error: Response | any) {
+  handleError(error: Response | any): any {
     let errMsg: string;
     if (error instanceof Response) {
       const body = error.json() || '';
@@ -299,9 +137,19 @@ export class DavisService {
     return Promise.reject(errMsg);
   }
   
-  generateError(name: string, message: any) {
-    this.config[name].success = false;
-    this.config[name].error = message || 'Sorry an error occurred, please try again.';
+  isIframeTileDetected(): boolean {
+    let result = false;
+    try {
+      result = window.self !== window.top;
+    } catch (e) {
+      result = true;
+    }
+    
+    if (result) {
+      $('body').addClass('iFrameTile');
+    }
+    
+    return result;
   }
 
   windowLocation(url:string): void {
@@ -309,16 +157,31 @@ export class DavisService {
   }
 
   windowOpen(url:string): void {
+    this.isUserMenuVisible = false;
     window.open(url);
   }
   
-  addToChrome(): void {
-    if (typeof chrome !== 'undefined') chrome.webstore.install('https://chrome.google.com/webstore/detail/kighaljfkdkpbneahajiknoiinbckfpg', this.addToChomeSuccess, this.addToChomeFailure);
+  windowScrollTop(): void {
+    window.scrollTo(0, 0);
   }
   
-  addToChomeSuccess(): void {}
+  windowScrollBottom(speed: any): void {
+    $('html, body').animate({ scrollTop: $(document).height() }, speed);
+  }
   
-  addToChomeFailure(err: string): void {
+  focusDavisInputOnKeyPress() : void {
+    $(document).keypress(function(event) {
+      if (window.location.pathname === '/davis' && !$('#davisInput').is(":focus")) {
+        $('#davisInput').focus();
+      }
+    });
+  }
+  
+  blurDavisInput(): void {
+    $('#davisInput').blur();
+  }
+  
+  addToChrome(): void {
     window.open('https://chrome.google.com/webstore/detail/kighaljfkdkpbneahajiknoiinbckfpg');
   }
   
@@ -328,6 +191,22 @@ export class DavisService {
 
   getTimezone(): string {
     return momentz.tz.guess();
+  }
+  
+  getTimestamp(): string {
+    return moment().format('LTS');
+  }
+  
+  safariAutoCompletePolyFill(input: string, id: string): string {
+    let value = $(`#${id}`).val();
+    
+    // Checkbox workaround
+    if( $(`#${id}`).attr('type') === 'checkbox' ) {
+      value = $(`#${id}`).is(':checked');
+    }
+    
+    if (value && input !== value) input = value;
+    return input;
   }
 
 }
