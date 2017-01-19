@@ -2,6 +2,7 @@
     "intents": [
         "./problem",
         "./routing",
+        "./pager",
         "./help",
         "./davisVersion",
         "./launch",
