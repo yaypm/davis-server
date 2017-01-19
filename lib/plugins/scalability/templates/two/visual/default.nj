@@ -5,17 +5,18 @@
            {% include "lib/plugins/shared-templates/problem-summary/visual/default.nj" %}
         {%- endfor %}
         ,{
-            "callback_id": "scalability_two",
+            "callback_id": "problemDetails",
             "actions": [
                 {
                     "name":"1",
                     "text": "First",
-                    "value": "1",
+                    "value": "{{ problems[0].id }}",
                     "type": "button"
                 },
                 {
                     "name":"2",
                     "text": "Second",
+                    "value": "{{ problems[1].id }}",
                     "value": "2",
                     "type": "button"
                 },
