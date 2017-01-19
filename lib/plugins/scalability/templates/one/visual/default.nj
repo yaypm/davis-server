@@ -5,12 +5,12 @@
            {% include "lib/plugins/shared-templates/problem-summary/visual/default.nj" %}
         {%- endfor %}
         ,{
-            "callback_id": "scalability_one",
+            "callback_id": "problemDetails",
             "actions": [
                 {
                     "name":"yes",
                     "text": "Yes",
-                    "value": "yes",
+                    "value": "{{ problems[0].id }}",
                     "type": "button"
                 },
                 {
