@@ -80,18 +80,19 @@ export class DavisBaseComponent implements OnInit, AfterViewInit {
         this.iDavis.windowScrollBottom('slow');
       }, 200);
       this.iDavis.askDavisPhrase(phrase)
-        .then(result => {
-          if (result.response.visual.card) {
-            result.response.visual.card.attachments.forEach((attachment: any, index: any) => {
+        .then(response => {
+          if (!response.success) throw new Error(response.message); 
+          if (response.response.visual.card) {
+            response.response.visual.card.attachments.forEach((attachment: any, index: any) => {
               if (attachment.actions) {
-                result.response.visual.card.attachments[index].actionClicked = null;
-                result.response.visual.card.attachments.push(result.response.visual.card.attachments[index]);
-                result.response.visual.card.attachments.splice(index, 1);
+                response.response.visual.card.attachments[index].actionClicked = null;
+                response.response.visual.card.attachments.push(response.response.visual.card.attachments[index]);
+                response.response.visual.card.attachments.splice(index, 1);
               }
             });
           }
-          if (result.response.visual.card || result.response.visual.card.text) {
-            this.addToConvo(result.response, true);
+          if (response.response.visual.card || response.response.visual.card.text) {
+            this.addToConvo(response.response, true);
             this.iDavis.blurDavisInput();
             setTimeout(() => {
               this.iDavis.windowScrollBottom('slow');
@@ -99,7 +100,7 @@ export class DavisBaseComponent implements OnInit, AfterViewInit {
           }
         })
         .catch(err => {
-          this.addToConvo( { visual: { card: { text: err } }}, true);
+          this.addToConvo( { visual: { card: { text: err, error: true } }}, true);
         });
     }
   }
@@ -139,7 +140,7 @@ export class DavisBaseComponent implements OnInit, AfterViewInit {
   ngOnInit() {
     this.iDavis.isBreadcrumbsVisible = true;
     this.davisMode = this.modes.noMic;
-    this.iDavis.focusDavisInputOnKeyPress();
+    this.iDavis.focusDavisInputOnKeyDown();
     
     if (!this.iDavis.values.user.email || !this.iDavis.davisVersion) {
       this.iDavis.getDavisUser()

@@ -130,22 +130,16 @@
             </label>
             
             <!-- isMyUser -->
-            <select *ngIf="isMyUser" id="timezone" name="timezone" 
+            <select *ngIf="isMyUser" id="timezone" name="timezone" class="select"
               [(ngModel)]="iDavis.values.user.timezone"
-              (ngModelChange)="onTimezoneChange($event); validate()"
-              [class.select-opened]="isSelectOpened" 
-              (click)="isSelectOpened = !isSelectOpened" 
-              (blur)="isSelectOpened = false;" required>
+              (ngModelChange)="onTimezoneChange($event); validate()" required>
               <option *ngFor="let tz of iConfig.timezones" [value]="tz">{{tz}}</option>
             </select>
             
              <!-- !isMyUser -->
-            <select *ngIf="!isMyUser" id="timezone" name="timezone" 
+            <select *ngIf="!isMyUser" id="timezone" name="timezone" class="select" 
               [(ngModel)]="iConfig.values.otherUser.timezone" 
-              (ngModelChange)="onTimezoneChange($event); validate()"
-              [class.select-opened]="isSelectOpened" 
-              (click)="isSelectOpened = !isSelectOpened" 
-              (blur)="isSelectOpened = false;" required>
+              (ngModelChange)="onTimezoneChange($event); validate()" required>
               <option *ngFor="let tz of iConfig.timezones" [value]="tz">{{tz}}</option>
             </select>
           </div>
@@ -192,13 +186,13 @@
         <!-- isMyUser -->
         <input type="text" class="inputfield" id="alexa_ids" name="alexa_ids" 
             *ngIf="isMyUser"
-            [(ngModel)]="iDavis.values.user.alexa_ids"
+            [(ngModel)]="iDavis.values.user.alexa_ids[0]"
             (keyup)="validate()">
             
         <!-- !isMyUser -->
         <input type="text" class="inputfield" id="alexa_ids" name="alexa_ids" 
             *ngIf="!isMyUser"
-            [(ngModel)]="iConfig.values.otherUser.alexa_ids"
+            [(ngModel)]="iConfig.values.otherUser.alexa_ids[0]"
             (keyup)="validate()">
       </div>
       <div class="island island--full" *ngIf="!iConfig.isWizard && !isMyUser && iDavis.isAdmin && !isNewUser">

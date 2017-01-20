@@ -4,12 +4,13 @@ export class DavisModel {
     email: '',
     password: '',
     timezone: '',
-    alexa_ids: '',
+    alexa_ids: [],
     name: {
       first: '',
       last: '',
     },
     admin: false,
+    owner: '',
   };
 
   filter: any = {
@@ -74,9 +75,83 @@ export class DavisModel {
       user: this.status,
       users: this.status,
       filter: this.status,
+      filters: this.status,
       dynatrace: this.status,
       alexa: this.status,
       slack: this.status,
     },
+  };   
+  
+  filterOptions = {
+    status: [
+      {
+        text: 'Open',
+        value: 'OPEN',
+        enabled: false,
+      }, 
+      {
+        text: 'Closed',
+        value: 'CLOSED',
+        enabled: false,
+      },
+    ],
+    impact: [
+      {
+        text: 'Application',
+        value: 'APPLICATION',
+        enabled: false,
+      }, 
+      {
+        text: 'Service',
+        value: 'SERVICE',
+        enabled: false,
+      },
+      {
+        text: 'Infrastructure',
+        value: 'INFRASTRUCTURE',
+        enabled: false,
+      },
+    ],
+    severityLevel: [
+      {
+        text: 'Availability',
+        value: 'AVAILABILITY',
+        enabled: false,
+      }, 
+      {
+        text: 'Error',
+        value: 'ERROR',
+        enabled: false,
+      },
+      {
+        text: 'Performance',
+        value: 'PERFORMANCE',
+        enabled: false,
+      },
+      {
+        text: 'Resource Contention',
+        value: 'RESOURCE_CONTENTION',
+        enabled: false,
+      },
+      {
+        text: 'Custom Alert',
+        value: 'CUSTOM_ALERT',
+        enabled: false,
+      },
+    ],
+    origin: [
+      {
+        text: 'All',
+        value: 'ALL',
+      }, 
+      {
+        text: 'Notification',
+        value: 'NOTIFICATION',
+      }, 
+      {
+        text: 'Question',
+        value: 'QUESTION',
+      },
+    ],
   };
 }

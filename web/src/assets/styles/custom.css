@@ -111,9 +111,6 @@ form {
 .island--submit.island {
   padding-top: 28px;
   padding-bottom: 50px; }
-  
-.island--error {
-  background-color: #fdb8b8; }
 
 .island--login {
   margin-top: 100px;
@@ -292,36 +289,16 @@ input:-webkit-autofill {
 .checkbox--admin {
   min-height: 48px; }
   
-/* Select */
-select {
-  clear: both;
-  float: left;
-  width: 100%;
-  height: 32px;
-  padding: 0px 30px 0px 11px;
-  color: #454646;
-  border: 1px solid #cccccc;
-  border-radius: 3px;
-  font-size: 14px;
-  font-family: "BerninaSans", "Open Sans", sans-serif;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
-  background: white url("/assets/images/arrow-down.svg") no-repeat calc(100% - 8px) center;
-  background-size: 16px 16px;
-  cursor: pointer; }
+.checkbox--row {
+  margin-bottom: 6px; }
   
-select:hover {
-  border-color: #a0a0a0;
-}
+.checkbox--section-title {
+  font-size: 12px;
+  padding-bottom: 6px; }
 
-select:focus {
-  outline: none;
-  box-shadow: 0 0 0 2px rgba(204, 204, 204, 0.8); }
-
-.select-opened {
-  background: white url("/assets/images/arrow-up.svg") no-repeat calc(100% - 8px) center;
-  background-size: 16px 16px; }
+/* Switch */
+.switch__caption {
+  vertical-align: top; }
   
 /* Scrollbar */
 ::-webkit-scrollbar {
@@ -390,7 +367,7 @@ select:focus {
   background-color: #e0f4fc; }
   
 /* Trumps */
-@media (min-width: 701px) {
+@media (min-width: 700px) {
   .hide-lg {
     display: none; } }
     
@@ -533,6 +510,9 @@ select:focus {
 .island--isUser {
   font-size: 14px;
   background-color: #e0f4fc; }
+  
+.island--error {
+  background-color: #fdb8b8; }
 
 .expandable__trigger {
   cursor: pointer; }
@@ -573,7 +553,7 @@ select:focus {
 
 .triangle-right-border {}
     
-@media (min-width: 750px) {
+@media (min-width: 700px) {
   
   .sidebar-sm {
     width: 284px;
@@ -634,6 +614,17 @@ select:focus {
   	border-top: 10px solid transparent;
   	border-bottom: 10px solid transparent;
   	border-right: 10px solid white; }
+  	
+  .triangle-left-error {
+    position: absolute;
+    z-index: 100;
+    width: 0;
+  	height: 0;
+  	margin-top: 19px;
+  	margin-left: -9px;
+  	border-top: 10px solid transparent;
+  	border-bottom: 10px solid transparent;
+  	border-right: 10px solid #fdb8b8; }
   	
   .triangle-left-border {
     position: absolute;
@@ -847,7 +838,7 @@ a:hover .root-cause:hover {
 
 /* Card animations */
 .card-push-animation {
-  animation: push 0.5s;
+  /* animation: push 0.5s; */
 }
 
 @keyframes push {

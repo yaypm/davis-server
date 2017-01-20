@@ -38,7 +38,7 @@ export class ConfigurationBaseComponent implements OnInit {
       admin: true,
     },
     filters: {
-      key: 'filter',
+      key: 'filters',
       name: 'Filters',
       admin: false,
     },
@@ -91,6 +91,8 @@ export class ConfigurationBaseComponent implements OnInit {
     this.iConfig.status['user'].error = null;
     this.iConfig.status['filter'].success = null;
     this.iConfig.status['filter'].error = null;
+    this.iConfig.status['filters'].success = null;
+    this.iConfig.status['filters'].error = null;
     this.iConfig.status['dynatrace'].success = null;
     this.iConfig.status['dynatrace'].error = null;
     this.iConfig.status['slack'].success = null;
@@ -116,7 +118,7 @@ export class ConfigurationBaseComponent implements OnInit {
       .then(response => {
         if (!response.success) throw new Error(response.message);
         this.iConfig.values.filters = response.filters;
-        this.iConfig.values.original.filters = _.cloneDeep(this.iConfig.values.filters);
+        this.iConfig.values.filter.owner = this.iDavis.values.user._id;
         return this.iConfig.getDynatrace();
       })
       .then(response => {

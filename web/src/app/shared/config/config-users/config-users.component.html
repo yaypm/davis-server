@@ -38,7 +38,7 @@
     <div class="island--scrollable-table">
       <table *ngIf="!addUser && !editUser" class="table">
         <tbody>
-          <tr *ngFor='let user of users | filterUsersByName:filterName' (click)="editMode(user)">
+          <tr *ngFor="let user of users | filterUsersByName:filterName" (click)="editMode(user)">
             <td>
               {{ user.name.last }}, {{ user.name.first }}
             </td>

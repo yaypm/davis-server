@@ -21,7 +21,7 @@
       </label>
       <input type="text" name="alexa_ids"
         class="inputfield" id="alexa_ids"
-        [(ngModel)]="iDavis.values.user.alexa_ids" 
+        [(ngModel)]="iDavis.values.user.alexa_ids[0]" 
         (keyup)="validate()">
     </div>
     <div class="island island--center island--submit" [class.island--left]="!iConfig.isWizard">

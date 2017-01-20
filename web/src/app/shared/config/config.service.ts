@@ -104,11 +104,31 @@ export class ConfigService {
       .catch(this.iDavis.handleError);
   }
   
-  addDavisFilter(filters: any): Promise<any> {
+  addDavisFilter(filter: any): Promise<any> {
     let headers = new Headers({ 'Content-Type': 'application/json', 'x-access-token': this.iDavis.token });
     let options = new RequestOptions({ headers: headers });
 
-    return this.http.post(`/api/v1/system/filters`, filters, options)
+    return this.http.post(`/api/v1/system/filters`, filter, options)
+      .toPromise()
+      .then(this.iDavis.extractData)
+      .catch(this.iDavis.handleError);
+  }
+  
+  updateDavisFilter(filter: any): Promise<any> {
+    let headers = new Headers({ 'Content-Type': 'application/json', 'x-access-token': this.iDavis.token });
+    let options = new RequestOptions({ headers: headers });
+
+    return this.http.put(`/api/v1/system/filters/${filter._id}`, filter, options)
+      .toPromise()
+      .then(this.iDavis.extractData)
+      .catch(this.iDavis.handleError);
+  }
+  
+  removeDavisFilter(filter: any): Promise<any> {
+    let headers = new Headers({ 'Content-Type': 'application/json', 'x-access-token': this.iDavis.token });
+    let options = new RequestOptions({ headers: headers });
+
+    return this.http.delete(`/api/v1/system/filters/${filter._id}`, options)
       .toPromise()
       .then(this.iDavis.extractData)
       .catch(this.iDavis.handleError);

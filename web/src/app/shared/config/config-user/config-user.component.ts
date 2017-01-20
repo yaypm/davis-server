@@ -141,6 +141,9 @@ export class ConfigUserComponent implements OnInit {
   }
 
   validate() {
+    if (this.iDavis.values.user.alexa_ids.length < 1 || this.iDavis.values.user.alexa_ids[0].trim().length < 1) {
+      this.iDavis.values.user.alexa_ids = [];
+    }
     this.isDirty = (this.isMyUser) ? !_.isEqual(this.iDavis.values.user, this.iConfig.values.original.user) : !_.isEqual(this.iConfig.values.otherUser, this.iConfig.values.original.otherUser);
   }
 

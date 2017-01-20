@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, 
+         Input, Output, 
+         EventEmitter }           from '@angular/core';
 
 // Services
 import { ConfigService }          from '../config.service';
@@ -12,11 +14,12 @@ import * as _                     from 'lodash';
 })
 export class ConfigFilterComponent implements OnInit {
 
-  filter: any;
+  @Input() isNewFilter: boolean;
+  
+  filterOptions: any;
   submitted: boolean = false;
-  submitButton: string = 'Apply Filter';
-  submitButtonDefault: string = 'Apply Filter';
-  isSelectOpened: boolean = false;
+  submitButton: string;
+  submitButtonDefault: string;
   isDirty: boolean = false;
 
   constructor(
@@ -25,45 +28,101 @@ export class ConfigFilterComponent implements OnInit {
 
   doSubmit() {
     this.submitted = true;
-    this.submitButton = 'Applying Filter...';
+    this.submitButton = (this.isNewFilter) ? 'Adding...' : 'Saving...';
     
     // Safari autocomplete polyfill - https://github.com/angular/angular.js/issues/1460
-    // this.iConfig.values.filter.name.first = this.iDavis.safariAutoCompletePolyFill(this.iConfig.values.filter.name.first, 'first');
-    // this.iConfig.values.filter.name.last = this.iDavis.safariAutoCompletePolyFill(this.iConfig.values.filter.name.last, 'last');
-    // this.iConfig.values.filter.email = this.iDavis.safariAutoCompletePolyFill(this.iConfig.values.filter.email, 'email');
-    // this.iConfig.values.filter.admin = this.iDavis.safariAutoCompletePolyFill(this.iConfig.values.filter.admin, 'admin');
-    // this.iConfig.values.filter.timezone = this.iDavis.safariAutoCompletePolyFill(this.iConfig.values.filter.timezone, 'timezone');
-    // this.iConfig.values.filter.alexa_ids = this.iDavis.safariAutoCompletePolyFill(this.iConfig.values.filter.alexa_ids, 'alexa_ids');
+    this.iConfig.values.filter.name = this.iDavis.safariAutoCompletePolyFill(this.iConfig.values.filter.name, 'name');
+    this.iConfig.values.filter.description = this.iDavis.safariAutoCompletePolyFill(this.iConfig.values.filter.description, 'description');
+    this.iConfig.values.filter.scope = this.iDavis.safariAutoCompletePolyFill(this.iConfig.values.filter.scope, 'scope');
+    this.iConfig.values.filter.origin = this.iDavis.safariAutoCompletePolyFill(this.iConfig.values.filter.origin, 'origin');
     
-    this.iConfig.addDavisFilter(this.filter)
-      .then(response => {
-        if (!response.success) throw new Error(response.message);
-        this.iConfig.values.original.filter = _.cloneDeep(this.filter);
-        this.isDirty = false;
-        this.iConfig.status['user'].success = true;
-        this.submitButton = 'Apply Filter';
-      })
-      .catch(err => {
-        this.iConfig.displayError(err, 'filter');
-      });
+    // Safari autocomplete polyfill - Update any autofilled checkboxes
+    this.validate();
+    
+    let filterCleaned = this.removeNullProperties(this.iConfig.values.filter);
+    
+    if (this.isNewFilter) {
+      this.iConfig.addDavisFilter(filterCleaned)
+        .then(response => {
+          if (!response.success) throw new Error(response.message);
+          this.iConfig.values.filter = new DavisModel().filter;
+          this.iConfig.values.filter.origin = 'ALL';
+          this.iConfig.values.filter.owner = this.iDavis.values.user._id;
+          this.iConfig.values.filter.scope = 'global';
+          this.iConfig.values.original.filter = new DavisModel().filter;
+          this.isDirty = false;
+          this.iConfig.status['filter'].success = true;
+          this.submitButton = this.submitButtonDefault;
+        })
+        .catch(err => {
+          this.iConfig.displayError(err, 'filter');
+          this.submitButton = this.submitButtonDefault;
+        });
+    } else {
+      this.iConfig.updateDavisFilter(filterCleaned)
+        .then(response => {
+          if (!response.success) throw new Error(response.message);
+          this.iConfig.values.original.filter = filterCleaned;
+          this.isDirty = false;
+          this.iConfig.status['filter'].success = true;
+          this.submitButton = this.submitButtonDefault;
+        })
+        .catch(err => {
+          this.iConfig.displayError(err, 'filter');
+          this.submitButton = this.submitButtonDefault;
+        });
+    }
   }
 
   validate() {
+    
+    // Get checkbox values
+    for(let key in this.filterOptions) {
+      if (key !== 'origin') {
+        this.iConfig.values.filter[key] = [];
+        this.filterOptions[key].forEach((option: any)  => {
+          if (option.enabled) this.iConfig.values.filter[key].push(option.value);
+        });
+      }
+    }
     this.isDirty = !_.isEqual(this.iConfig.values.filter, this.iConfig.values.original.filter);
   }
-
-  onTimezoneChange(tz: string) {
-    this.iConfig.values.filter.timezone = tz;
-  }
   
-  clearAll() {
-    this.filter = new DavisModel().filter;
+  removeNullProperties(filter: any): any {
+    
+    Object.keys(filter).forEach(key => {
+      if (filter[key] && typeof filter[key] === 'object') {
+        this.removeNullProperties(filter[key]);
+      } else if (filter[key] == null || filter[key].length < 1) {
+        delete filter[key];
+      }
+    });
+      
+    return filter;
+  }
+
+  onOriginChange(origin: string) {
+    this.iConfig.values.filter.origin = origin;
   }
 
   ngOnInit() {
-    this.submitButton = 'Apply Filter';
-    this.filter = new DavisModel().filter;
-     
+    this.submitButton = (this.isNewFilter) ? 'Add' : 'Save';
+    this.submitButtonDefault = (this.isNewFilter) ? 'Add' : 'Save';
+    this.iConfig.values.filter.origin = 'QUESTION';
+    this.iConfig.values.filter.owner = this.iDavis.values.user._id;
+    this.filterOptions = new DavisModel().filterOptions;
+    
+    // Set checkbox values
+    for(let key in this.filterOptions) {
+      if (key !== 'origin') {
+        this.iConfig.values.filter[key].forEach((value: any, index: any) => {
+          this.filterOptions[key].forEach((option: any, index: any) => {
+            if (option.value === value) this.filterOptions[key][index].enabled = true;
+          });
+        });
+      }
+    }
+    
     setTimeout(() => {
       this.validate();
     }, 200);

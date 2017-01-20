@@ -16,13 +16,15 @@ import { FormsModule }              from "@angular/forms";
 import { ConfigAlexaComponent }     from "./config-alexa/config-alexa.component";
 import { ConfigChromeComponent }    from "./config-chrome/config-chrome.component";
 import { ConfigDynatraceComponent } from "./config-dynatrace/config-dynatrace.component";
-import { ConfigFilterComponent }   from "./config-filter/config-filter.component";
+import { ConfigFilterComponent }    from "./config-filter/config-filter.component";
+import { ConfigFiltersComponent }   from "./config-filters/config-filters.component";
 import { ConfigSlackComponent }     from "./config-slack/config-slack.component";
 import { ConfigUserComponent }      from "./config-user/config-user.component";
 import { ConfigUsersComponent }     from "./config-users/config-users.component";
 
 // Services
 import { ConfigService } from "./config.service";
+import { FilterFiltersByNamePipe } from './config-filters-pipe/config-filters.pipe';
 import { FilterUsersByNamePipe } from './config-users-pipe/config-users.pipe';
 import { FilterSidebarItemsByAdminPipe } from './config-sidebar-pipe/config-sidebar.pipe';
 
@@ -35,9 +37,11 @@ import { FilterSidebarItemsByAdminPipe } from './config-sidebar-pipe/config-side
     ConfigChromeComponent,
     ConfigDynatraceComponent,
     ConfigFilterComponent,
+    ConfigFiltersComponent,
     ConfigSlackComponent,
     ConfigUserComponent,
     ConfigUsersComponent,
+    FilterFiltersByNamePipe,
     FilterUsersByNamePipe,
     FilterSidebarItemsByAdminPipe,
   ],
@@ -46,9 +50,11 @@ import { FilterSidebarItemsByAdminPipe } from './config-sidebar-pipe/config-side
     ConfigChromeComponent,
     ConfigDynatraceComponent,
     ConfigFilterComponent,
+    ConfigFiltersComponent,
     ConfigSlackComponent,
     ConfigUserComponent,
     ConfigUsersComponent,
+    FilterFiltersByNamePipe,
     FilterUsersByNamePipe,
     FilterSidebarItemsByAdminPipe,
   ],

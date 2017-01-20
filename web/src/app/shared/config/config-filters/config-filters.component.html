@@ -1,0 +1,64 @@
+<div class="layout is-flex has-islands" style="max-width: 640px">
+  <div class="island--full-width island--full-width-sidebar island--left">
+    <div class="config-title">
+      Filters
+    </div>
+    <a href="https://github.com/Dynatrace/davis-server/wiki/Getting%20Started" target="_blank" class="config-help">
+      {{ iConfig.helpLinkText }}
+    </a>
+  </div>
+  <div class="island--full-width island--full-width-sidebar island--center island--left" style="padding-top: 20px">
+    <div class="tabs">
+      <button class="tab" [class.is-active]="addFilter" (click)="addFilter = true; editFilter = false; addMode()">Add Filter</button>
+      <button class="tab" [class.is-active]="!addFilter" (click)="addFilter = false; editFilter = false; getFilters()">Edit Filter</button>
+    </div>
+  </div>         
+  <div *ngIf="!addFilter && !editFilter" class="island--full-width island--full-width-sidebar island--center island--left">     
+    <div class="input-button-wrapper" [class.input-button-wrapper-focus]="isFilterFocused" style="margin-top: -5px; margin-bottom: 15px">
+        <input #filter type="text" id="filter" name="filter" 
+          class="users-table-filter-input input-button-input"
+          placeholder="Filter by name" 
+          (keyup)="updateFilter(filter)"
+          (focus)="isFilterFocused = true" 
+          (blur)="isFilterFocused = false">
+        <div id="clearBtn" class="input-button-button" *ngIf="filter && filter.value.length > 0" (click)="filter.value = '';filterName = ''">
+          <svg class="icon icon--black icon--input-button-img" [class.input-button-img-password-masked]="!isFilterFocused">
+            <use xlink:href="#clear"></use>
+          </svg>
+        </div>
+    </div>
+    <table *ngIf="!addFilter && !editFilter" class="table">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th style="width: 100px">On/Off</th>
+        </tr>
+      </thead>
+    </table>
+    <div class="island--scrollable-table">
+      <table *ngIf="!addFilter && !editFilter" class="table">
+        <tbody>
+          <tr *ngFor="let filter of filters | filterFiltersByName:filterName; let i = index">
+            <td (click)="editMode(filters[i])">
+              {{ filter.name }}
+            </td>
+            <td style="width: 100px">
+              <input type="checkbox" class="switch to-right" id="{{ filter._id }}" name="{{ filter._id }}"
+              	[(ngModel)]="filters[i].enabled"
+              	(change)="saveFilter(filters[i])"
+              	[attr.disabled]="(!iDavis.isAdmin) ? true : null">
+              <label for="{{ filter._id }}" class="switch__label">
+              	<span class="switch__caption"></span>
+              </label>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h3 *ngIf="(filters | filterFiltersByName:filterName).length < 1" style="text-align: center; opacity: 0.2">None</h3>
+  </div>
+</div>
+<svg *ngIf="editFilter" class="icon--back" (click)="showFilters()">
+  <use xlink:href="#back"></use>
+</svg>
+<config-filter *ngIf="addFilter || editFilter" [isNewFilter]="addFilter" (showFiltersList)="showFilters()"></config-filter>

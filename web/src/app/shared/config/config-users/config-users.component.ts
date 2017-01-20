@@ -76,7 +76,7 @@ export class ConfigUsersComponent implements OnInit {
 
     ngOnInit() {
       this.getUsers();
-      this.iConfig.values.otherUser = new DavisModel().config.values.otherUser;;
+      this.iConfig.values.otherUser = new DavisModel().config.values.otherUser;
     }
 
 }

@@ -41,7 +41,10 @@ export class ConfigAlexaComponent implements OnInit {
   }
 
   validate() {
-    if (this.iDavis.values.user.alexa_ids) {
+    if (this.iDavis.values.user.alexa_ids.length < 1 || this.iDavis.values.user.alexa_ids[0].trim().length < 1) {
+      this.iDavis.values.user.alexa_ids = [];
+    }
+    if (this.iDavis.values.user.alexa_ids && this.iDavis.values.user.alexa_ids[0].length > 0) {
       this.submitButton = 'Continue';
     } else {
       this.submitButton = 'Skip';

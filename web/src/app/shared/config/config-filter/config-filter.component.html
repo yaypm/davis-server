@@ -1,61 +1,132 @@
 <form (ngSubmit)="doSubmit()" #form="ngForm">
 <div class="layout is-flex has-islands">
-  <div class="island--full-width island--full-width-sidebar">
-    <div class="config-title">
-      {{ iConfig.values.filter.name }}
-    </div>
-    <a href="https://github.com/Dynatrace/davis-server/wiki/Getting%20Started" target="_blank" class="config-help">
-      {{ iConfig.helpLinkText }}
-    </a>
-  </div>
-  <div *ngIf="iConfig.status['user'].success === false" class="island--full-width island--error island--full-width-sidebar island--my-account-error">
+  <div *ngIf="iConfig.status['filter'].success === false" class="island--full-width island--error island--full-width-sidebar island--user-accounts-error">
     {{ iConfig.status['filter'].error }}
   </div>
   <div class="island--full-width island--full-width-sidebar">
-    <div class="island island--center island--left island--my-account">
-      <div class="layout is-flex has-islands">
-        <label for="first" class="label">
-          Name
-        </label>
-        <input type="text" name="name"
-          class="inputfield" id="name"
-          [(ngModel)]="iConfig.values.filter.name" 
-          (keyup)="validate()" required>
+    <div class="island island--center island--left island--user-accounts">
+      <div class="layout is-flex has-islands island--half">
+        <div class="layout__container layout--half">
+          <div class="island island--half island--half--left">
+            <label for="first" class="label">
+              Name
+            </label>
+            <input type="text" name="name"
+              class="inputfield" id="name"
+              [(ngModel)]="iConfig.values.filter.name" 
+              [attr.disabled]="(!iDavis.isAdmin) ? true : null"
+              (keyup)="validate()" required>
+          </div>
+        </div>
+        <div class="layout__container layout--half">
+          <div class="island island--half island--half--right">
+            <div style="text-align: center; margin-top: 30px;">
+              Filter {{ (isNewFilter) ? 'will be ' : 'is ' }} {{ (iConfig.values.filter.enabled) ? 'enabled' : 'disabled' }}
+              {{ (isNewFilter) ? ' by default' : null }}
+              <!--
+              <input type="checkbox" class="switch to-right" id="enabled" name="enabled"
+              	[(ngModel)]="iConfig.values.filter.enabled"
+              	[attr.disabled]="(iConfig.isWizard) ? true : null"
+              	(change)="validate()">
+              <label for="enabled" class="switch__label">
+              	<span class="switch__caption">Filter On/Off</span>
+              </label>
+              -->
+            </div>
+        </div>
+        </div>
       </div>
-      <div class="layout is-flex has-islands">
+      <div class="layout is-flex has-islands island--half">
         <label for="description" class="label">
           Description
         </label>
         <input type="text" name="description" 
           class="inputfield" id="description"
           [(ngModel)]="iConfig.values.filter.description" 
-          (keyup)="validate()" required>
+          [attr.disabled]="(!iDavis.isAdmin) ? true : null"
+          (keyup)="validate()">
       </div>
-      <div class="layout is-flex has-islands">
+      <div class="layout is-flex has-islands island--half">
         <label for="scope" class="label">
           Scope
         </label>
-        <input type="text" name="description" 
-          class="inputfield" id="description"
+        <input type="text" name="scope" 
+          class="inputfield" id="scope"
           [(ngModel)]="iConfig.values.filter.scope" 
+          [attr.disabled]="(!iDavis.isAdmin) ? true : null"
           (keyup)="validate()" required>
+          <!--
+          <div class="island island--half island--half--right">
+            <label for="origin" class="label">
+              Origin
+            </label>
+            <select id="origin" name="origin" class="select"
+              [(ngModel)]="iConfig.values.filter.origin"
+              (ngModelChange)="onOriginChange($event); validate()">
+              <option *ngFor="let origin of filterOptions.origin" [value]="origin.value" >
+                {{origin.text}}
+              </option>
+            </select>
+          </div>
+          -->
       </div>
-      <div class="layout is-flex has-islands">
-        <label for="status" class="label">
-          Status
-        </label>
-        <select *ngIf="isMyUser" id="status" name="status" 
-          [(ngModel)]="iDavis.values.user.status"
-          (ngModelChange)="onTimezoneChange($event); validate()"
-          [class.select-opened]="isSelectOpened" 
-          (click)="isSelectOpened = !isSelectOpened" 
-          (blur)="isSelectOpened = false;" required>
-          <option *ngFor="let tz of iConfig.timezones" [value]="tz">{{tz}}</option>
-        </select>
+      <div class="layout is-flex has-islands island--half">
+        <div class="layout__container layout--half">
+          <div class="island island--half island--half--left">
+            <div class="checkbox--section-title">
+              Status
+            </div>
+            <div *ngFor="let status of filterOptions.status; let i = index; let l = last;" [class.checkbox--row]="!l">
+              <input type="checkbox" class="checkbox" id="{{ status.text }}" name="{{ status.text }}"
+                [(ngModel)]="filterOptions.status[i].enabled"
+                [attr.disabled]="(!iDavis.isAdmin) ? true : null"
+                (change)="validate()" />
+              <label for="{{ status.text }}" class="checkbox__label">
+                <span class="checkbox__caption">{{ status.text }}</span>
+              </label>
+            </div>
+          </div>
+        </div>
+        <div class="layout__container layout--half">
+          <div class="island island--half island--half--right">
+            <div class="checkbox--section-title">
+              Impact
+            </div>
+            <div *ngFor="let impact of filterOptions.impact; let i = index; let l = last;" [class.checkbox--row]="!l">
+              <input type="checkbox" class="checkbox" id="{{ impact.text }}" name="{{ impact.text }}" 
+                [(ngModel)]="filterOptions.impact[i].enabled"
+                [attr.disabled]="(!iDavis.isAdmin) ? true : null"
+                (change)="validate()" />
+              <label for="{{ impact.text }}" class="checkbox__label">
+                <span class="checkbox__caption">{{ impact.text }}</span>
+              </label>
+            </div>
+          </div>
+        </div>
       </div>
-      <div class="island island--center island--submit">
+      <div class="layout is-flex has-islands island--half">
+        <div class="layout__container layout--half">
+          <div class="island island--half island--half--left">
+            <div class="checkbox--section-title">
+              Severity Level
+            </div>
+            <div *ngFor="let severityLevel of filterOptions.severityLevel; let i = index; let l = last;" [class.checkbox--row]="!l">
+              <input type="checkbox" class="checkbox" id="{{ severityLevel.text }}" name="{{ severityLevel.text }}"
+                [(ngModel)]="filterOptions.severityLevel[i].enabled"
+                [attr.disabled]="(!iDavis.isAdmin) ? true : null"
+                (change)="validate()" />
+              <label for="{{ severityLevel.text }}" class="checkbox__label">
+                <span class="checkbox__caption">{{ severityLevel.text }}</span>
+              </label>
+            </div>
+          </div>
+        </div>
+        <div class="layout__container layout--half">
+        </div>
+      </div>
+      <div *ngIf="iDavis.isAdmin" class="island island--center island--submit">
         <button type="submit" class="btn btn--primary btn--submit"
-            [attr.disabled]="(!form.valid || submitButton === 'Saving...' || !isDirty) ? true : null">
+            [attr.disabled]="(!form.valid || submitButton === 'Adding...' || submitButton === 'Saving...' || !isDirty) ? true : null">
             {{ submitButton }}
         </button>
       </div>

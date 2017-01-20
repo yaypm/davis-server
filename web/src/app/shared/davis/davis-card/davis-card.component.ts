@@ -47,7 +47,7 @@ export class DavisCardComponent implements OnInit {
         }, 100);
       })
       .catch(err => {
-        let message = { visual: { card: { text: err } }, isDavis: true };
+        let message = { visual: { card: { text: err, error: true } }, isDavis: true };
         this.iDavis.conversation.push(message);
       });
   }

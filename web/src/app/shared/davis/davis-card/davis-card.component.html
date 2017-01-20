@@ -7,8 +7,10 @@
       </svg>
     </div>
     <div [class.triangle-left-border]="isDavis" [class.triangle-right-border]="!isDavis"></div>
-    <div [class.triangle-left]="isDavis" [class.triangle-right]="!isDavis"></div>
-    <div class="island" [class.island--isDavis]="isDavis" [class.island--isUser]="!isDavis" style="padding: 17.5px 16px; margin: 0; border: 0.5px solid #ececec; z-index: 99">
+    <div [class.triangle-left]="isDavis" [class.triangle-right]="!isDavis" 
+      [class.triangle-left-error]="message.visual && message.visual.card && message.visual.card.error"></div>
+    <div class="island" [class.island--isDavis]="isDavis" [class.island--isUser]="!isDavis" 
+      [class.island--error]="message.visual && message.visual.card && message.visual.card.error" style="padding: 17.5px 16px; margin: 0; border: 0.5px solid #ececec; z-index: 99">
       <div *ngIf="message === {}">
         <div class="typing-indicator">
           <span></span>

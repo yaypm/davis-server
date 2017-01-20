@@ -127,9 +127,7 @@ export class DavisService {
   handleError(error: Response | any): any {
     let errMsg: string;
     if (error instanceof Response) {
-      const body = error.json() || '';
-      const err = body.error || JSON.stringify(body);
-      errMsg = `${error.status} - ${error.statusText || ''} ${err}`;
+      errMsg = `Error: ${error.status} - ${error.statusText}`;
     } else {
       errMsg = error.message ? error.message : error.toString();
     }
@@ -169,8 +167,8 @@ export class DavisService {
     $('html, body').animate({ scrollTop: $(document).height() }, speed);
   }
   
-  focusDavisInputOnKeyPress() : void {
-    $(document).keypress(function(event) {
+  focusDavisInputOnKeyDown() : void {
+    $(document).keydown(function(event) {
       if (window.location.pathname === '/davis' && !$('#davisInput').is(":focus")) {
         $('#davisInput').focus();
       }
