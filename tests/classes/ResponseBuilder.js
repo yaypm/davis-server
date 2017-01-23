@@ -75,7 +75,7 @@ describe('ResponseBuilder', () => {
     const p1 = e1.start('what happened yesterday with testapp', 'alexa', 'test')
       .then(e => {
 
-        e.addTemplateContext({
+        e.addExchangeContext({
           variable: "response",
         });
         e.model.request.analysed = {};
@@ -89,7 +89,7 @@ describe('ResponseBuilder', () => {
 
     const p2 = e2.start('what happened yesterday with testapp', 'alexa', 'test')
       .then(e => {
-        e.addTemplateContext({
+        e.addExchangeContext({
           variable: "response",
         });
         e.response({
@@ -102,7 +102,7 @@ describe('ResponseBuilder', () => {
 
     const p3 = e3.start('what happened yesterday with testapp', 'alexa', 'test')
       .then(e => {
-        e.addTemplateContext({
+        e.addExchangeContext({
           variable: "response",
         });
         e.response({
