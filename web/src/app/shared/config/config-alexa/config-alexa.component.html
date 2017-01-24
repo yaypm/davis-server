@@ -11,8 +11,17 @@
       {{ iConfig.helpLinkText }}
     </a>
   </div>
-  <div *ngIf="iConfig.status['alexa'].success === false" class="island--full-width island--error" [class.island--full-width-sidebar]="!iConfig.isWizard">
-    {{ iConfig.status['alexa'].error }}
+  <div *ngIf="iConfig.status['alexa'].success === false" class="island--full-width island--error island--error-container" [class.island--full-width-sidebar]="!iConfig.isWizard">
+    <div class="island--error-text">
+          {{ iConfig.status['alexa'].error }}
+    </div>
+    <div class="island--error-button">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" 
+        class="icon icon--black icon--error-button" 
+        (click)="iConfig.status['alexa'].success = null;">
+        <use xlink:href="#clear"></use>
+      </svg>
+    </div>
   </div>
   <div class="island--full-width" [class.island--full-width-sidebar]="!iConfig.isWizard">
     <div class="island island--center" [class.island--left]="!iConfig.isWizard">

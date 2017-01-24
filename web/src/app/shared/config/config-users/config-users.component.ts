@@ -19,8 +19,6 @@ export class ConfigUsersComponent implements OnInit {
     addUser: boolean = true;
     editUser: boolean = false;
     users: any = [];
-    backImg: string = '/assets/img/back.svg';
-    backImgHover: string = '/assets/img/back-hover.svg';
     filterName: string = '';
     
     constructor(public iDavis: DavisService, public iConfig: ConfigService, public router: Router) {}

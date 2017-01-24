@@ -82,7 +82,35 @@ export class DavisModel {
     },
   };   
   
-  filterOptions = {
+  filterScope: any = {
+    source: 'global',
+    team_id: null,
+    channel_id: null,
+    email: null,
+  };
+  
+  filterScopes: any = {
+    sources: [
+      {
+        text: 'All',
+        value: 'global',
+      }, 
+      {
+        text: 'Web',
+        value: 'web',
+      }, 
+      {
+        text: 'Slack',
+        value: 'slack',
+      },
+    ],
+    teams: {},
+    teams_array: [],
+    channels: [],
+    users: [],
+  };
+  
+  filterOptions: any = {
     status: [
       {
         text: 'Open',

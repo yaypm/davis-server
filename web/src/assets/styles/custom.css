@@ -43,6 +43,12 @@ form {
 .wizard-step-number {
   font-size: 18px; }
   
+.layout--two-thirds {
+  flex-basis: 66.66%; }
+  
+.layout--third {
+  flex-basis: 33.33%; }
+  
 .island--connected {
   min-height: 800px; }
   
@@ -282,6 +288,18 @@ input:invalid {
 input:-webkit-autofill {
   -webkit-box-shadow: 0 0 0px 1000px white inset; }
   
+.select[disabled] {
+  background-color: #f2f2f2;
+  color: #ccc; }
+  
+.select[disabled]:hover {
+  border-color: #ccc;
+  cursor: default;
+}
+
+.select:active {
+  background-image: url(//assets.dynatrace.com/groundhog/v0.1.0/assets/images/icons/icons_file_002_dropdownclosed_downwards.svg); }
+  
 /* Checkbox */
 .checkbox__caption {
   vertical-align: top; }
@@ -327,6 +345,30 @@ input:-webkit-autofill {
 
 ::-webkit-scrollbar-corner {
   background: transparent; }
+  
+/* Error message styling */
+.island--error-container {
+  overflow: auto; }
+
+.island--error-text {
+  float: left; 
+  width: calc(100% - 20px); 
+  font-size: 14px; }
+
+.island--error-button {
+  float: right;
+  width: 14px;
+  height: 14px;
+  padding-top: 1px; }
+
+.icon--error-button {
+  width: 20px;
+  height: 20px; 
+  opacity: 0.3;
+  cursor: pointer; }
+  
+.icon--error-button:hover {
+  opacity: 1.0; }
 
 /* Small screen size */
 @media (max-width: 599px) {
@@ -334,7 +376,13 @@ input:-webkit-autofill {
     margin:0; }
     
   .layout--half--small.layout--half {
-    flex-basis: 50%; } }
+    flex-basis: 50%; } 
+    
+  .layout--two-thirds {
+    flex-basis: 100%; }
+  
+  .layout--third {
+    flex-basis: 100%; } }
 
 /* Button Colors */
 .btn--warning {
@@ -503,6 +551,11 @@ input:-webkit-autofill {
   margin-top: -3px;
   width: 30px; 
   height: 30px; }
+  
+.icon--dynatrace-signet {
+  width: 36px;
+  height: 36px;
+  margin-top: -2px; }
 
 .island--isDavis {
   background-color: white; }
@@ -594,6 +647,11 @@ input:-webkit-autofill {
     margin-top: -1px;
     width: 40px; 
     height: 40px; }
+    
+  .icon--dynatrace-signet {
+    margin-top: -1px;
+    width: 50px; 
+    height: 50px; }
 
   .circle-left {
     position: absolute; 

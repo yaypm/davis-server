@@ -2,15 +2,16 @@
   <div *ngIf="message" class="layout is-flex has-islands" style="padding: 0">
     <div [class.circle-left]="isDavis" [class.circle-right]="!isDavis">
       {{ (isDavis) ? null : iDavis.values.user.name.first[0].toUpperCase() + iDavis.values.user.name.last[0].toUpperCase() }}
-      <svg *ngIf="isDavis" class="icon icon--white icon--davis">
-        <use xlink:href="#davis"></use>
+      <svg *ngIf="isDavis" class="icon icon--white icon--dynatrace-signet">
+        <use xlink:href="#dynatrace-signet"></use>
       </svg>
     </div>
     <div [class.triangle-left-border]="isDavis" [class.triangle-right-border]="!isDavis"></div>
     <div [class.triangle-left]="isDavis" [class.triangle-right]="!isDavis" 
       [class.triangle-left-error]="message.visual && message.visual.card && message.visual.card.error"></div>
     <div class="island" [class.island--isDavis]="isDavis" [class.island--isUser]="!isDavis" 
-      [class.island--error]="message.visual && message.visual.card && message.visual.card.error" style="padding: 17.5px 16px; margin: 0; border: 0.5px solid #ececec; z-index: 99">
+      [class.island--error]="message.visual && message.visual.card && message.visual.card.error" 
+      style="padding: 17.5px 16px; margin: 0; border: 0.5px solid #ececec; z-index: 99">
       <div *ngIf="message === {}">
         <div class="typing-indicator">
           <span></span>

@@ -1,7 +1,17 @@
 <form (ngSubmit)="doSubmit()" #form="ngForm">
 <div class="layout is-flex has-islands">
-  <div *ngIf="iConfig.status['filter'].success === false" class="island--full-width island--error island--full-width-sidebar island--user-accounts-error">
-    {{ iConfig.status['filter'].error }}
+  <div *ngIf="iConfig.status['filter'].success === false" 
+    class="island--full-width island--error island--full-width-sidebar island--user-accounts-error island--error-container">
+    <div class="island--error-text">
+       {{ iConfig.status['filter'].error }}
+    </div>
+    <div class="island--error-button">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" 
+        class="icon icon--black icon--error-button" 
+        (click)="iConfig.status['filter'].success = null;">
+        <use xlink:href="#clear"></use>
+      </svg>
+    </div>
   </div>
   <div class="island--full-width island--full-width-sidebar">
     <div class="island island--center island--left island--user-accounts">
@@ -21,17 +31,13 @@
         <div class="layout__container layout--half">
           <div class="island island--half island--half--right">
             <div style="text-align: center; margin-top: 30px;">
-              Filter {{ (isNewFilter) ? 'will be ' : 'is ' }} {{ (iConfig.values.filter.enabled) ? 'enabled' : 'disabled' }}
-              {{ (isNewFilter) ? ' by default' : null }}
-              <!--
-              <input type="checkbox" class="switch to-right" id="enabled" name="enabled"
-              	[(ngModel)]="iConfig.values.filter.enabled"
-              	[attr.disabled]="(iConfig.isWizard) ? true : null"
-              	(change)="validate()">
-              <label for="enabled" class="switch__label">
-              	<span class="switch__caption">Filter On/Off</span>
+              <input type="checkbox" class="checkbox" id="enabled" name="enabled"
+                [(ngModel)]="iConfig.values.filter.enabled"
+                [attr.disabled]="(!iDavis.isAdmin) ? true : null"
+                (change)="validate()" />
+              <label for="enabled" class="checkbox__label">
+                <span class="checkbox__caption">Filter Enabled</span>
               </label>
-              -->
             </div>
         </div>
         </div>
@@ -47,28 +53,75 @@
           (keyup)="validate()">
       </div>
       <div class="layout is-flex has-islands island--half">
-        <label for="scope" class="label">
-          Scope
-        </label>
-        <input type="text" name="scope" 
-          class="inputfield" id="scope"
-          [(ngModel)]="iConfig.values.filter.scope" 
-          [attr.disabled]="(!iDavis.isAdmin) ? true : null"
-          (keyup)="validate()" required>
-          <!--
-          <div class="island island--half island--half--right">
-            <label for="origin" class="label">
-              Origin
+        <div class="layout__container layout--third">
+          <div class="island island--half island--half--left">
+            <label for="source" class="label">
+              Scope
             </label>
-            <select id="origin" name="origin" class="select"
-              [(ngModel)]="iConfig.values.filter.origin"
-              (ngModelChange)="onOriginChange($event); validate()">
-              <option *ngFor="let origin of filterOptions.origin" [value]="origin.value" >
-                {{origin.text}}
+            <select id="source" name="source" class="select"
+              [(ngModel)]="filterScope.source"
+              (ngModelChange)="onSourceChange($event); validate()"
+              [attr.disabled]="(!iDavis.isAdmin) ? true : null">
+              <option *ngFor="let source of filterScopes.sources" [value]="source.value">
+                {{ source.text }}
               </option>
             </select>
           </div>
-          -->
+        </div>    
+        <div *ngIf="filterScope.source === 'web'" class="layout__container layout--two-thirds">
+          <div class="island island--half island--half--right island--half--left">
+            <label for="email" class="label">
+              User's Email
+            </label>
+            <select id="email" name="email" class="select"
+              [(ngModel)]="filterScope.email"
+              (ngModelChange)="onEmailChange($event); validate()"
+              [attr.disabled]="(!iDavis.isAdmin) ? true : null">
+              <option value="null">
+                All
+              </option>
+              <option *ngFor="let user of filterScopes.users" [value]="user.email">
+                {{ user.email }}
+              </option>
+            </select>
+          </div>
+        </div>
+        <div *ngIf="filterScope.source === 'slack'" class="layout__container layout--third">
+          <div class="island island--half island--half--left">
+            <label for="team" class="label">
+              Slack Team
+            </label>
+            <select id="team" name="team" class="select"
+              [(ngModel)]="filterScope.team_id"
+              (ngModelChange)="onTeamChange($event); validate()"
+              [attr.disabled]="(!iDavis.isAdmin) ? true : null">
+              <option value="null">
+                All
+              </option>
+              <option *ngFor="let team of filterScopes.teams_array" [value]="team.team_id">
+                {{ team.team_name }}
+              </option>
+            </select>
+          </div>
+        </div>
+        <div *ngIf="filterScope.source === 'slack' && filterScope.team_id" class="layout__container layout--third">
+          <div class="island island--half island--half--right">
+            <label for="channel" class="label">
+              Slack Channel
+            </label>
+            <select id="channel" name="channel" class="select"
+              [(ngModel)]="filterScope.channel_id"
+              (ngModelChange)="onChannelChange($event); validate()"
+              [attr.disabled]="(!iDavis.isAdmin) ? true : null">
+              <option value="null">
+                All
+              </option>
+              <option *ngFor="let channel of filterScopes.channels" [value]="channel.id">
+                {{ channel.name }}
+              </option>
+            </select>
+          </div>
+        </div>
       </div>
       <div class="layout is-flex has-islands island--half">
         <div class="layout__container layout--half">

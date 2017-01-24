@@ -106,17 +106,6 @@ export class DavisBaseComponent implements OnInit, AfterViewInit {
   }
   
   addToConvo(message: any, isDavis: boolean) {
-    
-    // Delete all previous card's unclicked actions
-    if (this.iDavis.conversation) {
-      let lastIndex: any = this.iDavis.conversation.length - 2;
-      if (lastIndex > -1 && this.iDavis.conversation[lastIndex].visual.card 
-        && this.iDavis.conversation[lastIndex].visual.card.attachments && this.iDavis.conversation[lastIndex].visual.card.attachments.length > 0 
-        && this.iDavis.conversation[lastIndex].visual.card.attachments[this.iDavis.conversation[lastIndex].visual.card.attachments.length - 1].actions) {
-        this.iDavis.conversation[lastIndex].visual.card.attachments[this.iDavis.conversation[lastIndex].visual.card.attachments.length - 1].actions = null;
-      }
-    }
-    
     message.isDavis = isDavis;
     message.timestamp = this.iDavis.getTimestamp();
     this.showProcessingIndicator = false;

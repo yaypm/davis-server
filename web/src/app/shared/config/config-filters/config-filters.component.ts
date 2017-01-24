@@ -20,22 +20,20 @@ export class ConfigFiltersComponent implements OnInit {
   addFilter: boolean = true;
   editFilter: boolean = false;
   filters: any = [];
-  backImg: string = '/assets/img/back.svg';
-  backImgHover: string = '/assets/img/back-hover.svg';
   filterName: string = '';
   
   constructor(public iDavis: DavisService, public iConfig: ConfigService, public router: Router) {}
   
   addMode() {
+    this.addFilter = true;
+    this.editFilter = false;
+    this.iConfig.values.original.filter = new DavisModel().filter;
     this.iConfig.values.filter = new DavisModel().filter;
-    this.iConfig.values.filter.origin = 'QUESTION';
-    this.iConfig.values.filter.owner = this.iDavis.values.user._id;
-    this.iConfig.values.filter.scope = 'global';
-    this.iConfig.values.original.filter = _.cloneDeep(this.iConfig.values.filter);
     this.filterName = '';
   }
 
   editMode(filter: any) {
+    this.addFilter = false;
     this.editFilter = true;
     this.iConfig.values.original.filter = filter;
     this.iConfig.values.filter = _.cloneDeep(filter);
@@ -77,12 +75,8 @@ export class ConfigFiltersComponent implements OnInit {
   }
 
   ngOnInit() {
+    if (!this.iDavis.isAdmin) this.addFilter = false;
     this.getFilters();
-    this.iConfig.values.filter = new DavisModel().filter;
-    this.iConfig.values.filter.origin = 'QUESTION';
-    this.iConfig.values.filter.owner = this.iDavis.values.user._id;
-    this.iConfig.values.filter.scope = 'global';
-    this.iConfig.values.original.filter = new DavisModel().filter;
   }
 
 }

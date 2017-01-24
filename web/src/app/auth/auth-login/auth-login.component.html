@@ -9,8 +9,17 @@
         -->
         <img src="/assets/images/davis-logo.png" class="davis-logo">
       </div>
-      <div *ngIf="loginError" class="island island--login-row island--error island--login-error">
-           {{ loginError }}
+      <div *ngIf="loginError" class="island island--login-row island--error island--login-error island--error-container">
+        <div class="island--error-text">
+          {{ loginError }}
+        </div>
+        <div class="island--error-button">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" 
+            class="icon icon--black icon--error-button" 
+            (click)="loginError = false;">
+            <use xlink:href="#clear"></use>
+          </svg>
+        </div>
       </div> 
       <div class="island island--login-row">
         <label for="email" class="label">

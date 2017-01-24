@@ -113,13 +113,24 @@ export class ConfigurationBaseComponent implements OnInit {
           if (!response.user.name.last) this.iDavis.values.user.name.last = '';
         }
         this.iConfig.values.original.user = _.cloneDeep(this.iDavis.values.user);
+        return this.iDavis.getDavisVersion();
+      })
+      .then(response => {
+        if (!response.success) { 
+          throw new Error(response.message); 
+        }
+        this.iDavis.davisVersion = response.version;
         return this.iConfig.getDavisFilters();
       })
       .then(response => {
         if (!response.success) throw new Error(response.message);
         this.iConfig.values.filters = response.filters;
         this.iConfig.values.filter.owner = this.iDavis.values.user._id;
-        return this.iConfig.getDynatrace();
+        if (this.iDavis.isAdmin) { 
+          return this.iConfig.getDynatrace();
+        } else {
+          throw new Error('skip-admin-only');
+        }
       })
       .then(response => {
         if (!response.success) throw new Error(response.message);
@@ -135,13 +146,6 @@ export class ConfigurationBaseComponent implements OnInit {
           this.iConfig.values.slack.redirectUri = `${window.location.protocol}//${window.location.host}/oauth`;
         }
         this.iConfig.values.original.slack = _.cloneDeep(this.iConfig.values.slack);
-        return this.iDavis.getDavisVersion();
-      })
-      .then(response => {
-        if (!response.success) { 
-          throw new Error(response.message); 
-        }
-        this.iDavis.davisVersion = response.version;
       })
       .catch(err => {
         this.iConfig.displayError(err, null);

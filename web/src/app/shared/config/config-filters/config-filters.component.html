@@ -7,9 +7,9 @@
       {{ iConfig.helpLinkText }}
     </a>
   </div>
-  <div class="island--full-width island--full-width-sidebar island--center island--left" style="padding-top: 20px">
+  <div *ngIf="iDavis.isAdmin" class="island--full-width island--full-width-sidebar island--center island--left" style="padding-top: 20px">
     <div class="tabs">
-      <button class="tab" [class.is-active]="addFilter" (click)="addFilter = true; editFilter = false; addMode()">Add Filter</button>
+      <button class="tab" [class.is-active]="addFilter" (click)="addMode()">Add Filter</button>
       <button class="tab" [class.is-active]="!addFilter" (click)="addFilter = false; editFilter = false; getFilters()">Edit Filter</button>
     </div>
   </div>         
@@ -31,7 +31,7 @@
       <thead>
         <tr>
           <th>Name</th>
-          <th style="width: 100px">On/Off</th>
+          <th style="width: 100px">Enabled</th>
         </tr>
       </thead>
     </table>
@@ -43,11 +43,11 @@
               {{ filter.name }}
             </td>
             <td style="width: 100px">
-              <input type="checkbox" class="switch to-right" id="{{ filter._id }}" name="{{ filter._id }}"
+              <span *ngIf="!iDavis.isAdmin && filter.enabled" style="margin-left: 20px;">&#x2713;</span>
+              <input *ngIf="iDavis.isAdmin" type="checkbox" class="switch to-right" id="{{ filter._id }}" name="{{ filter._id }}"
               	[(ngModel)]="filters[i].enabled"
-              	(change)="saveFilter(filters[i])"
-              	[attr.disabled]="(!iDavis.isAdmin) ? true : null">
-              <label for="{{ filter._id }}" class="switch__label">
+              	(change)="saveFilter(filters[i])">
+              <label *ngIf="iDavis.isAdmin" for="{{ filter._id }}" class="switch__label">
               	<span class="switch__caption"></span>
               </label>
             </td>
@@ -61,4 +61,4 @@
 <svg *ngIf="editFilter" class="icon--back" (click)="showFilters()">
   <use xlink:href="#back"></use>
 </svg>
-<config-filter *ngIf="addFilter || editFilter" [isNewFilter]="addFilter" (showFiltersList)="showFilters()"></config-filter>
+<config-filter *ngIf="addFilter || editFilter" [isNotifications]="false" [isNewFilter]="addFilter" (showFiltersList)="showFilters()"></config-filter>

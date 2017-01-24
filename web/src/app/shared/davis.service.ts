@@ -127,7 +127,7 @@ export class DavisService {
   handleError(error: Response | any): any {
     let errMsg: string;
     if (error instanceof Response) {
-      errMsg = `Error: ${error.status} - ${error.statusText}`;
+      errMsg = `${error.status} - ${error.statusText}`;
     } else {
       errMsg = error.message ? error.message : error.toString();
     }
