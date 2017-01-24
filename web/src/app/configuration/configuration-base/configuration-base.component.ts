@@ -132,10 +132,15 @@ export class ConfigurationBaseComponent implements OnInit {
         this.iConfig.values.filters = response.filters;
         this.iConfig.values.filter.owner = this.iDavis.values.user._id;
         if (this.iDavis.isAdmin) { 
-          return this.iConfig.getDynatrace();
+          return this.iConfig.getSlackChannels();
         } else {
           throw new Error('skip-admin-only');
         }
+      })
+      .then(response => {
+        if (!response.success) throw new Error(response.message);
+        this.iConfig.values.channels = response.channels;
+        return this.iConfig.getDynatrace();
       })
       .then(response => {
         if (!response.success) throw new Error(response.message);

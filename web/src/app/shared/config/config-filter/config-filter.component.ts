@@ -189,6 +189,11 @@ export class ConfigFilterComponent implements OnInit, OnChanges {
     this.filterScopes = new DavisModel().filterScopes;
     this.filterOptions = new DavisModel().filterOptions;
     
+    if (this.isNotifications) {
+      this.filterScope.source = 'slack';
+      this.filterScopes.sources = [this.filterScopes.sources[2]];
+    }
+    
     // Set checkbox values
     for(let key in this.filterOptions) {
       if (key !== 'origin') {
