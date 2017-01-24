@@ -20,7 +20,7 @@
         </div>
       </div>
       <div *ngIf="message.visual && message.visual.card && message.visual.card.text" class="card-push-animation" style="font-size: 14px">
-        {{ message.visual.card.text }}
+        {{ message.visual.card.text | slackTagConversionPipe:{isAttachment: false, isSentence: true} }}
       </div>
       <div *ngIf="message.visual && message.visual.card && message.visual.card.attachments && message.visual.card.attachments.length > 0" class="card-attachments card-push-animation">
         <div *ngFor="let attachment of message.visual.card.attachments" class="card-attachment">
