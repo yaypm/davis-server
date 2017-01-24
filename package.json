@@ -1,6 +1,6 @@
 {
   "name": "@dynatrace/davis",
-  "version": "0.7.2",
+  "version": "0.8.0",
   "description": "Davis Server",
   "main": "./lib/Davis.js",
   "license": "MIT",
@@ -19,7 +19,6 @@
     "debug-test": "mocha tests/all --debug-brk",
     "lint": "eslint lib && echo",
     "jsdoc": "jsdoc -r lib",
-    "publish": "gulp publish",
     "heroku-postbuild": "gulp --gulpfile heroku.gulpfile.js get-dist",
     "precompile:watch": "gulp clean",
     "compile:watch": "webpack --watch --display-error-details --progress"

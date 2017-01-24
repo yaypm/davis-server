@@ -5,24 +5,24 @@
            {% include "lib/plugins/shared-templates/problem-summary/visual/default.nj" %}{%- if not loop.last %},{% endif %}
         {%- endfor %}
         ,{
-            "callback_id": "scalability_many",
+            "callback_id": "problemDetails",
             "actions": [
                 {
-                    "name":"1",
+                    "name":"First",
                     "text": "First",
-                    "value": "1",
+                    "value": "{{ problems[0].id }}",
                     "type": "button"
                 },
                 {
-                    "name":"2",
+                    "name":"Second",
                     "text": "Second",
-                    "value": "2",
+                    "value": "{{ problems[1].id }}",
                     "type": "button"
                 },
                 {
-                    "name":"3",
+                    "name":"Third",
                     "text": "Third",
-                    "value": "3",
+                    "value": "{{ problems[2].id }}",
                     "type": "button"
                 },
                 {

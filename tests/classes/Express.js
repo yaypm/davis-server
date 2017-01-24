@@ -276,7 +276,7 @@ describe('Express', () => {
       .send({ phrase: 'What happened yesterday' })
       .then(res => {
         res.body.success.should.eql(true);
-        res.body.intents.should.eql(['problem']);
+        res.body.intents.should.eql(['problem', 'showPage']);
       });
   });
 
@@ -287,7 +287,67 @@ describe('Express', () => {
       .send({ phrase: 'the first one' })
       .then(res => {
         res.body.success.should.eql(true);
-        res.body.intents.should.eql(['routing', 'problemDetails']);
+        res.body.intents.should.eql(['routing', 'pageRoute', 'problemDetails']);
+      });
+  });
+
+  it('should go back to the problem list', () => {
+    return chai.request(app)
+      .post('/api/v1/web')
+      .set('X-Access-Token', token)
+      .send({ phrase: 'back' })
+      .then(res => {
+        res.body.success.should.eql(true);
+        res.body.intents.should.eql(['setPage', 'showPage']);
+      });
+  });
+
+  it('should go to the next page', () => {
+    return chai.request(app)
+      .post('/api/v1/web')
+      .set('X-Access-Token', token)
+      .send({ phrase: 'next' })
+      .then(res => {
+        res.body.response.visual.card.attachments[0].footer.should.match(/^Page 2/);
+        res.body.success.should.eql(true);
+        res.body.intents.should.eql(['setPage', 'showPage']);
+      });
+  });
+
+  it('should go to the previous page', () => {
+    return chai.request(app)
+      .post('/api/v1/web')
+      .set('X-Access-Token', token)
+      .send({ phrase: 'back' })
+      .then(res => {
+        res.body.response.visual.card.attachments[0].footer.should.match(/^Page 1/);
+        res.body.success.should.eql(true);
+        res.body.intents.should.eql(['setPage', 'showPage']);
+      });
+  });
+
+  it('should go to the last page', () => {
+    return chai.request(app)
+      .post('/api/v1/web')
+      .set('X-Access-Token', token)
+      .send({ phrase: 'last page' })
+      .then(res => {
+        const match = res.body.response.visual.card.attachments[0].footer.match(/^Page (\d+) of (\d+)$/);
+        match[1].should.eql(match[2]);
+        res.body.success.should.eql(true);
+        res.body.intents.should.eql(['setPage', 'showPage']);
+      });
+  });
+
+  it('should go to the first page', () => {
+    return chai.request(app)
+      .post('/api/v1/web')
+      .set('X-Access-Token', token)
+      .send({ phrase: 'first page' })
+      .then(res => {
+        res.body.response.visual.card.attachments[0].footer.should.match(/^Page 1/);
+        res.body.success.should.eql(true);
+        res.body.intents.should.eql(['setPage', 'showPage']);
       });
   });
 

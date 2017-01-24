@@ -2,6 +2,7 @@
     "intents": [
         "./problem",
         "./routing",
+        "./pager",
         "./help",
         "./davisVersion",
         "./launch",
@@ -11,7 +12,6 @@
         "./thanks",
         "./unknown",
         "./userActivity",
-        "./ping",
         "./problemNotification",
         "./pushLink",
         "./autoFollowUp",
