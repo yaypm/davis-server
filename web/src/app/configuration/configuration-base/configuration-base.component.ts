@@ -42,6 +42,11 @@ export class ConfigurationBaseComponent implements OnInit {
       name: 'Filters',
       admin: false,
     },
+    notifications: {
+      key: 'notifications',
+      name: 'Notifications',
+      admin: false,
+    },
     dynatrace: {
       key: 'dynatrace',
       name: 'Dynatrace',

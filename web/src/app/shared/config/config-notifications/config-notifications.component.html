@@ -1,7 +1,7 @@
 <div class="layout is-flex has-islands" style="max-width: 640px">
   <div class="island--full-width island--full-width-sidebar island--left">
     <div class="config-title">
-      Filters
+      Notifications
     </div>
     <a href="https://github.com/Dynatrace/davis-server/wiki/Getting%20Started" target="_blank" class="config-help">
       {{ iConfig.helpLinkText }}
@@ -38,7 +38,7 @@
     <div class="island--scrollable-table">
       <table *ngIf="!addFilter && !editFilter" class="table">
         <tbody>
-          <tr *ngFor="let filter of filters | filterFiltersByName:{str: filterName, origin: 'QUESTION'}">
+          <tr *ngFor="let filter of filters | filterFiltersByName:{str: filterName, origin: 'NOTIFICATION'}">
             <td (click)="editMode(filter)">
               {{ filter.name }}
             </td>
@@ -55,10 +55,10 @@
         </tbody>
       </table>
     </div>
-    <h3 *ngIf="(filters | filterFiltersByName:{str: filterName, origin: 'QUESTION'}).length < 1" style="text-align: center; opacity: 0.2">None</h3>
+    <h3 *ngIf="(filters | filterFiltersByName:{str: filterName, origin: 'NOTIFICATION'}).length < 1" style="text-align: center; opacity: 0.2">None</h3>
   </div>
 </div>
 <svg *ngIf="editFilter" class="icon--back" (click)="showFilters()">
   <use xlink:href="#back"></use>
 </svg>
-<config-filter *ngIf="addFilter || editFilter" [isNotifications]="false" [isNewFilter]="addFilter" (showFiltersList)="showFilters()"></config-filter>
+<config-filter *ngIf="addFilter || editFilter" [isNotifications]="true" [isNewFilter]="addFilter" (showFiltersList)="showFilters()"></config-filter>

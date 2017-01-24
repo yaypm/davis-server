@@ -8,10 +8,10 @@ import { DavisModel }                               from '../../models/davis.mod
 import * as _                                       from "lodash";
 
 @Component({
-  selector: 'config-filters',
-  templateUrl: './config-filters.component.html',
+  selector: 'config-notifications',
+  templateUrl: './config-notifications.component.html',
 })
-export class ConfigFiltersComponent implements OnInit {
+export class ConfigNotificationsComponent implements OnInit {
 
   submitted: boolean = false;
   submitButton: string = 'Save';

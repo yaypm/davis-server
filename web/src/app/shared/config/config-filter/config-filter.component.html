@@ -104,7 +104,7 @@
             </select>
           </div>
         </div>
-        <div *ngIf="filterScope.source === 'slack' && filterScope.team_id" class="layout__container layout--third">
+        <div *ngIf="filterScope.source === 'slack' && filterScope.team_id && filterScope.team_id !== 'null'" class="layout__container layout--third">
           <div class="island island--half island--half--right">
             <label for="channel" class="label">
               Slack Channel

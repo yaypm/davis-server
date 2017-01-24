@@ -115,10 +115,13 @@ export class ConfigFilterComponent implements OnInit, OnChanges {
   }
   
   onTeamChange(team_id: string) {
-    this.iConfig.values.filter.scope = this.buildScope();
     if (team_id && team_id !== 'null') {
       this.filterScopes.channels = this.filterScopes.teams[team_id].channels;
+    } else {
+      this.filterScope.channel = null;
+      this.filterScopes.channels = [];
     }
+    this.iConfig.values.filter.scope = this.buildScope();
   }
   
   onChannelChange(id: string) {
@@ -164,6 +167,9 @@ export class ConfigFilterComponent implements OnInit, OnChanges {
           
           if (this.filterScope.team_id && this.filterScope.team_id !== 'null') {
             this.filterScopes.channels = this.filterScopes.teams[this.filterScope.team_id].channels;
+          } else {
+            this.filterScope.channel = null;
+            this.filterScopes.channels = [];
           }
         } else {
           // Remove Slack from scope source, since there are no teams for this user
