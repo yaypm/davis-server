@@ -732,6 +732,10 @@ form.card-form {
 /* Card styling */
 .card-pretext {
 	margin-left: 10px; }
+	
+.card-footer {
+  margin-top: 5px;
+	color: #b7b7b7; }
 
 .card-attachments {
 	float: right;

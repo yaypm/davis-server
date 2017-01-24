@@ -48,6 +48,7 @@
                   {{ attachment.actionClicked }}
                 </button>
              </div>
+             <div class="card-footer" [innerHTML]="attachment.footer | slackTagConversionPipe:{isAttachment: true, isSentence: true}"></div>
           </div>
         </div>
       </div>
