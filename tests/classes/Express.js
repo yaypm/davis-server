@@ -248,9 +248,9 @@ describe('Express', () => {
       .then(res => {
         res.body.response.outputSpeech.should.have.property('ssml');
         [
-          "<speak>What's up?</speak>",
-          '<speak>How can I be of service?</speak>',
-          '<speak>How can I help you?</speak>',
+          "<speak>Hi test. What's up?</speak>",
+          '<speak>Hi test. How can I be of service?</speak>',
+          '<speak>Hi test. How can I help you?</speak>',
         ].indexOf(res.body.response.outputSpeech.ssml)
           .should.be.greaterThan(-1);
       })
