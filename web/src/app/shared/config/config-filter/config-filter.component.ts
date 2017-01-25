@@ -31,6 +31,7 @@ export class ConfigFilterComponent implements OnInit, OnChanges, AfterViewInit {
   submitButton: string;
   submitButtonDefault: string;
   isDirty: boolean = false;
+  confirmDeleteFilter: boolean = false;
 
   constructor(
     private renderer: Renderer,
@@ -82,6 +83,25 @@ export class ConfigFilterComponent implements OnInit, OnChanges, AfterViewInit {
           this.iConfig.displayError(err, 'filter');
           this.submitButton = this.submitButtonDefault;
         });
+    }
+  }
+  
+  deleteFilter(filter: any) {
+    if (this.confirmDeleteFilter) {
+      this.iConfig.removeDavisFilter(filter)
+        .then(response => {
+          if (!response.success) throw new Error(response.message);
+          
+          this.isDirty = false;
+          this.iConfig.status['filter'].success = true;
+          this.confirmDeleteFilter = false;
+          this.showFiltersList.emit();
+        })
+        .catch(err => {
+          this.iConfig.displayError(err, 'filter');
+        });
+    } else {
+      this.confirmDeleteFilter = true;
     }
   }
 
