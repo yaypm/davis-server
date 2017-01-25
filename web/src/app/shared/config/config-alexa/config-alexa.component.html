@@ -28,7 +28,7 @@
       <label for="alexa_ids" class="label">
         Alexa User ID
       </label>
-      <input type="text" name="alexa_ids"
+      <input #alexaIds type="text" name="alexa_ids"
         class="inputfield" id="alexa_ids"
         [(ngModel)]="iDavis.values.user.alexa_ids[0]" 
         (keyup)="validate()">

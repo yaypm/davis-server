@@ -1,4 +1,10 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit,
+         AfterViewInit,
+         ElementRef,
+         Renderer,
+         ViewChild,
+         Input, Output, 
+         EventEmitter }           from '@angular/core';
 
 // Services
 import { ConfigService }          from '../config.service';
@@ -10,11 +16,12 @@ import * as _                     from 'lodash';
   selector: 'config-user',
   templateUrl: './config-user.component.html',
 })
-export class ConfigUserComponent implements OnInit {
+export class ConfigUserComponent implements OnInit, AfterViewInit {
 
   @Input() isMyUser: boolean;
   @Input() isNewUser: boolean;
   @Output() showUsersList: EventEmitter<any> = new EventEmitter();
+  @ViewChild('first') first: ElementRef;
 
   submitted: boolean = false;
   submitButton: string = (this.iConfig.isWizard) ? 'Continue' : 'Save';
@@ -28,6 +35,7 @@ export class ConfigUserComponent implements OnInit {
   user: any;
 
   constructor(
+    private renderer: Renderer,
     public iDavis: DavisService,
     public iConfig: ConfigService) {}
 
@@ -167,12 +175,12 @@ export class ConfigUserComponent implements OnInit {
     } else if (this.isNewUser){
       this.iConfig.values.otherUser.timezone = this.iDavis.getTimezone();
     }
-     
-    setTimeout(() => {
-      if (document.getElementsByName('first')[0]) {
-        document.getElementsByName('first')[0].focus();
-      }
-      this.validate();
-    }, 200);
+  }
+  
+  ngAfterViewInit() {
+    if (this.isNewUser) {
+      this.renderer.invokeElementMethod(this.first.nativeElement, 'focus');
+    }
+    this.validate();
   }
 }

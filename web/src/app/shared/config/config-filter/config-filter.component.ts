@@ -1,5 +1,9 @@
 import { Component, OnInit, 
          OnChanges, SimpleChange, 
+         AfterViewInit,
+         ElementRef,
+         Renderer,
+         ViewChild,
          Input, Output, 
          EventEmitter }           from '@angular/core';
 
@@ -13,11 +17,12 @@ import * as _                     from 'lodash';
   selector: 'config-filter',
   templateUrl: './config-filter.component.html',
 })
-export class ConfigFilterComponent implements OnInit, OnChanges {
+export class ConfigFilterComponent implements OnInit, OnChanges, AfterViewInit {
 
   @Input() isNotifications: boolean;
   @Input() isNewFilter: boolean;
   @Output() showFiltersList: EventEmitter<any> = new EventEmitter();
+  @ViewChild('name') name: ElementRef;
   
   filterScope: any;
   filterScopes: any;
@@ -28,6 +33,7 @@ export class ConfigFilterComponent implements OnInit, OnChanges {
   isDirty: boolean = false;
 
   constructor(
+    private renderer: Renderer,
     public iDavis: DavisService,
     public iConfig: ConfigService) {}
 
@@ -229,5 +235,11 @@ export class ConfigFilterComponent implements OnInit, OnChanges {
   // Workaround for reseting checkboxes when clicking Add Filter while editing a filter
   ngOnChanges(changes: {[propKey: string]: SimpleChange}) {
     if (changes['isNewFilter']) this.init();
+  }
+  
+  ngAfterViewInit() {
+    if (this.isNewFilter) {
+      this.renderer.invokeElementMethod(this.name.nativeElement, 'focus');
+    }
   }
 }

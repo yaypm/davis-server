@@ -1,20 +1,28 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,
+         AfterViewInit,
+         ElementRef,
+         Renderer,
+         ViewChild }     from '@angular/core';
 
 // Services
 import { ConfigService } from '../config.service';
 import { DavisService }  from '../../davis.service';
-import * as _ from "lodash";
+import * as _            from "lodash";
 
 @Component({
   selector: 'config-alexa',
   templateUrl: './config-alexa.component.html',
 })
-export class ConfigAlexaComponent implements OnInit {
+export class ConfigAlexaComponent implements OnInit, AfterViewInit {
+  
+  @ViewChild('alexaIds') alexaIds: ElementRef;
+  
   submitted: boolean = false;
   submitButton: string = (this.iConfig.isWizard) ? 'Skip' : 'Save';
   isDirty: boolean = false;
 
   constructor(
+    private renderer: Renderer,
     public iDavis: DavisService,
     public iConfig: ConfigService) { }
 
@@ -56,7 +64,9 @@ export class ConfigAlexaComponent implements OnInit {
     this.submitButton = (this.iConfig.isWizard) ? 'Continue' : 'Save';
   }
 
-  ngOnInit() {
-    document.getElementsByName('alexa_ids')[0].focus();
+  ngOnInit() {}
+  
+  ngAfterViewInit() {
+    this.renderer.invokeElementMethod(this.alexaIds.nativeElement, 'focus');
   }
 }

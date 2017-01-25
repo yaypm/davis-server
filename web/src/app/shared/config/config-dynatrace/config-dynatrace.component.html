@@ -29,7 +29,7 @@
       <label for="url" class="label">
         Dynatrace Tenant URL
       </label>
-      <input type="text" name="url"
+      <input #url type="text" name="url"
         class="inputfield" id="url"
         [(ngModel)]="iConfig.values.dynatrace.url" 
         (keyup)="validate()" required>
@@ -58,7 +58,7 @@
         <div class="expandable__content">
           <div class="layout is-flex has-islands" style="padding: 0">
             <div class="island island--center" [class.island--left]="!iConfig.isWizard">
-              <label for="url" class="label">
+              <label for="apiUrl" class="label">
                 Dynatrace API URL
               </label>
               <input type="text" name="apiUrl"

@@ -40,14 +40,14 @@
             </label>
             
             <!-- isMyUser -->
-            <input type="text" name="first"
+            <input #first type="text" name="first"
               class="inputfield" id="first"
               *ngIf="isMyUser"
               [(ngModel)]="iDavis.values.user.name.first" 
               (keyup)="validate()" required>
               
              <!-- !isMyUser -->
-            <input type="text" name="first" 
+            <input #first type="text" name="first" 
               class="inputfield" id="first"
               *ngIf="!isMyUser"
               [(ngModel)]="iConfig.values.otherUser.name.first" 

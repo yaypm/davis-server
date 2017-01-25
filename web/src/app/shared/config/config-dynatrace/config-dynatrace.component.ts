@@ -1,16 +1,22 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,
+         AfterViewInit,
+         ElementRef,
+         Renderer,
+         ViewChild }      from '@angular/core';
 
 // Services
-import { ConfigService } from '../config.service';
-import { DavisService } from '../../davis.service';
+import { ConfigService }  from '../config.service';
+import { DavisService }   from '../../davis.service';
 import * as _ from "lodash";
 
 @Component({
   selector: 'config-dynatrace',
   templateUrl: './config-dynatrace.component.html',
 })
-export class ConfigDynatraceComponent implements OnInit {
+export class ConfigDynatraceComponent implements OnInit, AfterViewInit {
 
+  @ViewChild('url') url: ElementRef;
+  
   submitted: boolean = false;
   submitButton: string = (this.iConfig.isWizard) ? 'Continue' : 'Save';
   isTokenMasked: boolean = true;
@@ -18,6 +24,7 @@ export class ConfigDynatraceComponent implements OnInit {
   isAdvancedExpanded: boolean = false;
 
   constructor(
+    private renderer: Renderer,
     public iDavis: DavisService,
     public iConfig: ConfigService) { }
 
@@ -63,11 +70,15 @@ export class ConfigDynatraceComponent implements OnInit {
     this.submitButton = (this.iConfig.isWizard) ? 'Continue' : 'Save';
   }
 
-  ngOnInit() {
-    document.getElementsByName('url')[0].focus();
+  ngOnInit() {}
+  
+  ngAfterViewInit() {
     if (window.location.protocol === 'http') {
       this.iConfig.status['dynatrace'].error = 'Warning, please note that "https://" is required for Davis to interact with Alexa, Slack, and Watson APIs!';
       this.iConfig.status['dynatrace'].success = false;
+    }
+    if (this.iConfig.isWizard) {
+      this.renderer.invokeElementMethod(this.url.nativeElement, 'focus');
     }
     this.validate();
   }

@@ -21,7 +21,7 @@
             <label for="first" class="label">
               Name
             </label>
-            <input type="text" name="name"
+            <input #name type="text" name="name"
               class="inputfield" id="name"
               [(ngModel)]="iConfig.values.filter.name" 
               [attr.disabled]="(!iDavis.isAdmin) ? true : null"

@@ -78,7 +78,7 @@
           <label for="clientId" class="label">
             Client ID
           </label>
-          <input type="text" id="clientId" class="inputfield" name="clientId" [(ngModel)]="iConfig.values.slack.clientId" (keyup)="validate()">
+          <input #clientId type="text" id="clientId" class="inputfield" name="clientId" [(ngModel)]="iConfig.values.slack.clientId" (keyup)="validate()">
         </div>
         <div class="island island--full" *ngIf="!iConfig.status['slack'].success">           
           <label for="clientSecret" class="label">
