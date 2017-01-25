@@ -63,6 +63,7 @@ export class DavisModel {
         clientSecret: '',
         redirectUri: '',
       },
+      channels: [],
       original: {
         user: {},
         otherUser: {},
