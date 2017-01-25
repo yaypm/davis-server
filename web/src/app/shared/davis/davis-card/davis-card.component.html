@@ -26,6 +26,12 @@
           <div *ngIf="attachment.title || attachment.pretext || attachment.text || attachment.fields 
             || attachment.actions || attachment.actionClicked" class="card-bar" [style.border-color]="attachment.color"></div>
           <div class="card-content">
+            <div *ngIf="attachment.author && attachment.author === 'filtered'" style="color: #b7b7b7">
+              <svg style="fill: #00A6FB; width: 15px; height: 15px; vertical-align: sub;">
+                <use xlink:href="#filter"></use>
+              </svg>
+              filtered
+            </div>
              <div class="card-pretext" [innerHTML]="attachment.pretext | slackTagConversionPipe:{isAttachment: true, isSentence: true}"></div>
              <a *ngIf="attachment.title_link" class="card-title" [innerHTML]="attachment.title | slackTagConversionPipe:{isAttachment: true}" (click)="iDavis.windowOpen(attachment.title_link)"></a>
              <div *ngIf="!attachment.title_link" class="card-title" style="color: #6d6d6d; cursor: default" [innerHTML]="attachment.title | slackTagConversionPipe:{isAttachment: true}"></div>

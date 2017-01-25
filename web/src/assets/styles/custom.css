@@ -21,7 +21,7 @@ form {
   
 .breadcrumbs--spacer {
   width: 100%; 
-  height: 44px; }
+  height: 60px; }
   
 .chat-spacer {
   width: 100%; 
@@ -533,6 +533,7 @@ input:-webkit-autofill {
   border-bottom-right-radius: 0; }
 
 .island--davisInput-border-full-width {
+  background: none;
   border-top: 2px solid #f8f8f8;
   border-bottom-left-radius: 0; 
   border-bottom-right-radius: 0; }
