@@ -21,7 +21,7 @@ export class ConfigAlexaComponent implements OnInit {
   doSubmit() {
     this.submitted = true;
     this.iDavis.values.user.alexa_ids = this.iDavis.safariAutoCompletePolyFill(this.iDavis.values.user.alexa_ids, 'alexa_ids');
-    if (this.iDavis.values.user.alexa_ids) {
+    if (this.iDavis.values.user.alexa_ids.length > 0) {
       this.submitButton = 'Saving...';
       this.iConfig.connectAlexa()
         .then(response => {
