@@ -1,6 +1,3 @@
-body {
-  background-color: #f8f8f8; }
-  
 body.iFrameTile {
   background-color: white;
 }
@@ -119,11 +116,17 @@ form {
   padding-bottom: 50px; }
 
 .island--login {
-  margin-top: 100px;
-  width: 380px;
+  margin: auto;
+  position: absolute;
+  top: 0; left: 0; bottom: 0; right: 0;
+  background: none;
+  border: 0;
   height: 380px; }
 
 .island--login-row {
+  width: 396px;
+  background: none;
+  margin: 0 auto;
   padding: 8px 16px; }
   
 .island--login-error {
@@ -133,6 +136,18 @@ form {
   
 .island--login-error-height {
   height: 410px; }
+
+body.theme--dark-background {
+  background-color: #191919;
+}
+
+body.theme--blue {
+  background-color: #f8f8f8;
+}
+
+label.theme--dark-label {
+  color: white;
+}
 
 .icon--back {
   cursor: pointer;
@@ -223,8 +238,11 @@ form {
 
 .davis-logo {
   display: block;
-  width: 75%;
-  margin: 0 auto; }
+  vertical-align: middle;
+  width: 100%;
+  height: 50px;
+  margin: 0 auto;
+  margin-bottom: 37px; }
   
 .disable_screen {
   position: fixed;
@@ -372,6 +390,12 @@ input:-webkit-autofill {
 
 /* Small screen size */
 @media (max-width: 599px) {
+  
+  .davis-logo {
+    width: 396px;
+    height: auto;
+  }
+  
   .island--half--left {
     margin:0; }
     
@@ -423,8 +447,9 @@ input:-webkit-autofill {
 .spinner {
   width: 80px;
   height: 80px;
-  margin: 0 auto;
-  margin-top: 275px;
+  margin: auto;
+  position: absolute;
+  top: 0; left: 0; bottom: 0; right: 0;
   -webkit-animation: rotate-all 1s linear infinite;
   animation: rotate-all 1s linear infinite; }
 
