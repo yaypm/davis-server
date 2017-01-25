@@ -25,8 +25,8 @@
         <label for="email" class="label">
           Email
         </label>
-        <input type="email" name="email" class="inputfield" 
-          id="email" [(ngModel)]="email" autofocus required/>
+        <input #emailInput type="email" name="email" class="inputfield" 
+          id="email" [(ngModel)]="email" required/>
       </div>
       <div class="island island--login-row">
         <label for="password" class="label">

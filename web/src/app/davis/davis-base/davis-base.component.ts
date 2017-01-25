@@ -9,7 +9,10 @@
 // ----------------------------------------------------------------------------
 // Angular
 import { Component, OnInit, 
-         AfterViewInit }          from '@angular/core';
+         AfterViewInit,
+         ElementRef,
+         Renderer,
+         ViewChild }              from '@angular/core';
 import { Router }                 from '@angular/router';
 import { ConfigService }          from '../../shared/config/config.service';
 import { DavisService }           from '../../shared/davis.service';
@@ -24,6 +27,8 @@ import * as _                     from 'lodash';
 })
 
 export class DavisBaseComponent implements OnInit, AfterViewInit {
+  
+  @ViewChild('davisIn') davisIn: ElementRef;
   
   davisInput: string = '';
   davisOutput: string = '';
@@ -63,7 +68,11 @@ export class DavisBaseComponent implements OnInit, AfterViewInit {
   // ------------------------------------------------------
   // Inject services
   // ------------------------------------------------------
-  constructor(public router: Router, public iConfig: ConfigService, public iDavis: DavisService) { }
+  constructor(
+    private renderer: Renderer,
+    public router: Router, 
+    public iConfig: ConfigService, 
+    public iDavis: DavisService) { }
 
   // ------------------------------------------------------
   // Initialize component
@@ -163,5 +172,6 @@ export class DavisBaseComponent implements OnInit, AfterViewInit {
     if (this.iDavis.conversation.length > 0) {
       window.scrollTo(0,document.body.scrollHeight);
     }
+    if (this.davisMode.name === 'noMic') this.renderer.invokeElementMethod(this.davisIn.nativeElement, 'focus');
   }
 }

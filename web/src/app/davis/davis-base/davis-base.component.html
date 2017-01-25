@@ -30,14 +30,13 @@
             {{ davisMode.title }}
         </label>
         <div class="input-button-wrapper" [class.input-button-wrapper-focus]="isDavisInputFocused">
-          <input type="text" id="davisInput" 
+          <input #davisIn type="text" id="davisInput" 
             name="davisInput" class="input-button-input" 
             [(ngModel)]="davisInput"
             [attr.placeholder]="placeholder"
             (keyup.enter)="doSubmit()"
             (focus)="isDavisInputFocused = true; toggleListening(false)"
-            (blur)="isDavisInputFocused = false"
-            [attr.autofocus]="davisMode.name === 'noMic'">
+            (blur)="isDavisInputFocused = false">
           
           <div *ngIf="davisMode.name !== 'noMic' && davisInput.length < 1" class="input-button-button" (click)="toggleListening(!isDavisListening)">
             <svg class="icon icon--black icon--input-button-img" [class.input-button-img-password-masked]="isDavisInputFocused || !isDavisListening">
