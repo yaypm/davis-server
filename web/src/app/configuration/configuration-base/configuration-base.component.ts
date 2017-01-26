@@ -44,7 +44,7 @@ export class ConfigurationBaseComponent implements OnInit {
     },
     notifications: {
       key: 'notifications',
-      name: 'Notifications',
+      name: 'Notification Filters',
       admin: false,
     },
     dynatrace: {

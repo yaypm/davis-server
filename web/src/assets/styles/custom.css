@@ -455,13 +455,23 @@ input:-webkit-autofill {
   .hide-lg {
     display: none; } }
     
-/* Spinner */
-.spinner {
-  width: 80px;
-  height: 80px;
+/* Loading */
+
+.loading {
+  width: 512px;
+  height: 332px;
   margin: auto;
   position: absolute;
-  top: 0; left: 0; bottom: 0; right: 0;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0; }
+    
+/* Spinner */
+.spinner {
+  margin: 0 auto;
+  width: 80px;
+  height: 80px;
   -webkit-animation: rotate-all 1s linear infinite;
   animation: rotate-all 1s linear infinite; }
 
