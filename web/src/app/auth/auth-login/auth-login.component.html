@@ -1,13 +1,8 @@
 <div class="layout is-flex has-islands">
-  <div class="island--full-width island--center island--login" [class.island--login-error-height]="loginError" style="border: 0.5px solid #ececec">
+  <div class="island--full-width island--center island--login" [class.island--login-error-height]="loginError">
     <form (ngSubmit)="login(form)" #form="ngForm">
-      <div class="island island--login-row" style="min-height: 67px;">
-        <!--
-        <svg class="davis-logo" style="fill: #004999; width: 125px; height: 125px; margin-top: -30px">
-          <use xlink:href="#davis"></use>
-        </svg>
-        -->
-        <img src="/assets/images/davis-logo.png" class="davis-logo">
+      <div class="island island--login-row" style="min-height: 67px; width: auto; max-width: 544px; min-width: 392px">
+        <img src="/assets/images/davis-logo-wide.svg" class="davis-logo">
       </div>
       <div *ngIf="loginError" class="island island--login-row island--error island--login-error island--error-container">
         <div class="island--error-text">
@@ -22,22 +17,22 @@
         </div>
       </div> 
       <div class="island island--login-row">
-        <label for="email" class="label">
+        <label for="email" class="label theme--dark-label">
           Email
         </label>
         <input #emailInput type="email" name="email" class="inputfield" 
           id="email" [(ngModel)]="email" required/>
       </div>
       <div class="island island--login-row">
-        <label for="password" class="label">
+        <label for="password" class="label theme--dark-label">
           Password
         </label>
         <input type="password" name="password" class="inputfield" 
           id="password" [(ngModel)]="password" required/>
       </div>
-      <div class="island island--login-row">
-        <button type="submit" role="button" class="btn btn--primary btn--submit"
-          [attr.disabled]="(!form.valid || submitButton === 'Signing in...') ? '' : null">
+      <div class="island island--login-row" style="padding-top: 21px">
+        <button type="submit" role="button" class="btn btn--primary btn--submit" style="border-color: white"
+          [attr.disabled]="(submitButton === 'Signing in...') ? '' : null">
             {{ submitButton }}
         </button>
       </div>
