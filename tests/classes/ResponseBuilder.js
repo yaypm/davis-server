@@ -171,7 +171,7 @@ describe('ResponseBuilder', () => {
       .spread((r1, r2, r3) => {
         const r = {
           text: 'test response.  Who am I?',
-          say: 'test response. Who am I?',
+          say: 'test response.  Who am I?',
           show: {
             text: 'test response.  Who am I?',
             attachments: [],
