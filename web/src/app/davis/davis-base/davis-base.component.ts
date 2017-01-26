@@ -110,6 +110,7 @@ export class DavisBaseComponent implements OnInit, AfterViewInit {
         })
         .catch(err => {
           this.addToConvo( { visual: { card: { text: err, error: true } }}, true);
+          this.iDavis.windowScrollBottom('slow');
         });
     }
   }
@@ -169,9 +170,9 @@ export class DavisBaseComponent implements OnInit, AfterViewInit {
   }
   
   ngAfterViewInit() {
-    if (this.iDavis.conversation.length > 0) {
-      window.scrollTo(0,document.body.scrollHeight);
-    }
     if (this.davisMode.name === 'noMic') this.renderer.invokeElementMethod(this.davisIn.nativeElement, 'focus');
+    if (this.iDavis.conversation.length > 0) {
+      this.iDavis.windowScrollBottom(1);
+    }
   }
 }

@@ -86,7 +86,7 @@
             </select>
           </div>
         </div>
-        <div *ngIf="filterScope.source === 'slack'" class="layout__container layout--third">
+        <div *ngIf="filterScope.source === 'slack' && (!isNotifications || filterScopes.teams_array.length > 0)" class="layout__container layout--third">
           <div class="island island--half island--half--left">
             <label for="team" class="label">
               Slack Team

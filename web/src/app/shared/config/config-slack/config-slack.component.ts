@@ -21,11 +21,12 @@ export class ConfigSlackComponent implements OnInit, AfterViewInit {
 
   requestUri: string = '';
   submitted: boolean = false;
-  submitButton: string = (this.iConfig.isWizard) ? 'Skip and Finish' : 'Create Davis Slack Bot';
+  submitButton: string = (this.iConfig.isWizard) ? 'Skip and Finish' : 'Connect';
   isPasswordFocused: boolean = false;
   isPasswordMasked: boolean = true;
   isDirty: boolean = false;
   isSecretMasked: boolean = true;
+  confirmDeleteSlackAppConfig: boolean = false;
   
   constructor(
     private renderer: Renderer,
@@ -35,7 +36,7 @@ export class ConfigSlackComponent implements OnInit, AfterViewInit {
 
   validate() {
     if (this.iConfig.values.slack.clientId && this.iConfig.values.slack.clientSecret) {
-        this.submitButton = 'Create Davis Slack Bot';
+        this.submitButton = 'Connect';
     } else if (!this.iConfig.status['slack'].success && this.iConfig.isWizard){
         this.submitButton = 'Skip and Finish';
     }
@@ -43,7 +44,7 @@ export class ConfigSlackComponent implements OnInit, AfterViewInit {
   }
 
   resetSubmitButton() {
-    this.submitButton = (this.iConfig.isWizard) ? 'Skip and Finish' : 'Create Davis Slack Bot';
+    this.submitButton = (this.iConfig.isWizard) ? 'Skip and Finish' : 'Connect';
   }
 
   doSubmit() {
@@ -51,7 +52,7 @@ export class ConfigSlackComponent implements OnInit, AfterViewInit {
     this.iConfig.values.slack.clientId = this.iDavis.safariAutoCompletePolyFill(this.iConfig.values.slack.clientId, 'clientId');
     this.iConfig.values.slack.clientSecret = this.iDavis.safariAutoCompletePolyFill(this.iConfig.values.slack.clientSecret, 'clientSecret');
     if (!this.iConfig.status['slack'].success && this.iConfig.values.slack.clientId && this.iConfig.values.slack.clientSecret) {
-      this.submitButton = 'Saving...';
+      this.submitButton = 'Connecting...';
       this.iConfig.connectSlack()
         .then(response => {
           if (!response.success) { 
@@ -61,7 +62,6 @@ export class ConfigSlackComponent implements OnInit, AfterViewInit {
           return this.iConfig.startSlack();
         })
         .then(response => {
-          this.resetSubmitButton();
           if (!response.success) throw new Error(response.message); 
           this.iConfig.status['slack'].success = true;
           this.iDavis.windowLocation(`https://slack.com/oauth/authorize?scope=incoming-webhook,commands,bot&client_id=${this.iConfig.values.slack.clientId}`);
@@ -76,6 +76,27 @@ export class ConfigSlackComponent implements OnInit, AfterViewInit {
       this.router.navigate(['/davis']);
     }
   }
+  
+  deleteSlackAppConfig() {
+    if (this.confirmDeleteSlackAppConfig) {
+      this.iConfig.removeSlackAppConfig()
+        .then(response => {
+          if (!response.success) throw new Error(response.message);
+          
+          this.iConfig.values.original.slack.clientId = null;
+          this.iConfig.values.original.slack.clientSecret = null;
+          
+          this.isDirty = true;
+          this.iConfig.status['slack'].success = null;
+          this.confirmDeleteSlackAppConfig = false;
+        })
+        .catch(err => {
+          this.iConfig.displayError(err, 'slack');
+        });
+    } else {
+      this.confirmDeleteSlackAppConfig = true;
+    }
+  }
 
   ngOnInit() {
     this.iConfig.status['slack'].success = null;
@@ -87,7 +108,6 @@ export class ConfigSlackComponent implements OnInit, AfterViewInit {
     if (this.iConfig.isWizard || !this.iConfig.values.slack.clientId || this.iConfig.values.slack.clientId.length < 1) {
       this.renderer.invokeElementMethod(this.clientId.nativeElement, 'focus');
     }
-    this.validate();
     new Clipboard('.clipboard');
   }
 }

@@ -251,6 +251,15 @@ form {
 .input-button-wrapper-focus {
   outline: none;
   box-shadow: 0 0 0 2px rgba(204, 204, 204, 0.8); }
+  
+.input-button-wrapper-disabled {
+  background-color: #f2f2f2;
+  color: #cccccc;
+}
+
+.input-button-wrapper-disabled:hover {
+  border-color: #cccccc;
+}
 
 input[type=text].input-button-input, input[type=email].input-button-input, input[type=password].input-button-input {
   float: left;
@@ -265,6 +274,10 @@ input[type=text].input-button-input, input[type=email].input-button-input, input
 input[type=text].input-button-input:focus, input[type=email].input-button-input:focus, input[type=password].input-button-input:focus {
 	outline: none;
 	border-width: 0; } 
+	
+input[type=text].input-button-input[disabled], input[type=email].input-button-input[disable], input[type=password].input-button-input[disabled] {
+  background-color: #f2f2f2;
+  color: #cccccc; }
 
 .input-button-button {
   float: right;

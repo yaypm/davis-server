@@ -178,7 +178,7 @@ export class ConfigUserComponent implements OnInit, AfterViewInit {
   }
   
   ngAfterViewInit() {
-    if (this.isNewUser) {
+    if (this.isNewUser || this.iConfig.isWizard) {
       this.renderer.invokeElementMethod(this.first.nativeElement, 'focus');
     }
     this.validate();

@@ -1,6 +1,6 @@
 <div class="layout is-flex">
   <nav class="sidebar sidebar-sm" [class.hide-sm]="!iDavis.isSidebarVisible">
-    <a *ngFor="let item of sidebarItems | filterSidebarItemsByAdminPipe:{isAdmin: iDavis.isAdmin, isSlackEnabled: (iConfig.values.channels && iConfig.values.channels.length > 0) }"
+    <a *ngFor="let item of sidebarItems | filterSidebarItemsByAdminPipe:{isAdmin: iDavis.isAdmin, isSlackEnabled: (iConfig.values.original.slack.clientId !== null) }"
       class="sidebar__item" [class.is-active]="iConfig.view === item.key" (click)="iConfig.selectView(item.key); iDavis.isSidebarVisible = false">
       <span class="sidebar__headline">{{ item.name }}</span>
     </a>

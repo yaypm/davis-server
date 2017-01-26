@@ -171,6 +171,7 @@ export class DavisService {
     $(document).keydown(function(event) {
       if (window.location.pathname === '/davis' && !$('#davisInput').is(":focus")) {
         $('#davisInput').focus();
+        this.windowScrollBottom('slow');
       }
     });
   }

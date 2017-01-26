@@ -214,6 +214,16 @@ export class ConfigService {
       .catch(this.iDavis.handleError);
   }
   
+  removeSlackAppConfig(): Promise<any> {
+    let headers = new Headers({ 'Content-Type': 'application/json', 'x-access-token': this.iDavis.token });
+    let options = new RequestOptions({ headers: headers });
+
+    return this.http.post(`/api/v1/system/slack/delete`, {}, options)
+      .toPromise()
+      .then(this.iDavis.extractData)
+      .catch(this.iDavis.handleError);
+  }
+  
   displayError(message: string, category: string): void {
     if (category) {
       this.status[category].success = false;
