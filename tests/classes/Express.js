@@ -321,7 +321,7 @@ describe('Express', () => {
       .set('X-Access-Token', token)
       .send({ phrase: 'next page' })
       .then(res => {
-        res.body.response.visual.card.text.should.match(/^Already on the last page/);
+        res.body.response.visual.card.attachments[0].text.should.match(/^Already on the last page/);
         res.body.success.should.eql(true);
         res.body.intents.should.eql(['setPage']);
       });
@@ -345,7 +345,7 @@ describe('Express', () => {
       .set('X-Access-Token', token)
       .send({ phrase: 'previous page' })
       .then(res => {
-        res.body.response.visual.card.text.should.match(/^Already on the first page/)
+        res.body.response.visual.card.attachments[0].text.should.match(/^Already on the first page/)
         res.body.success.should.eql(true);
         res.body.intents.should.eql(['setPage']);
       });
