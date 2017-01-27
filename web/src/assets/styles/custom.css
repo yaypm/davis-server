@@ -137,6 +137,9 @@ form {
   
 .island--login-error-height {
   height: 410px; }
+  
+.config-background {
+  background-color: #f8f8f8; }
 
 @keyframes darkToLight {
   from { background-color: #191919; }
@@ -157,7 +160,7 @@ body.theme--blue {
 
 .fadeIn {
   animation-name: fadeIn;
-  animation-duration: 2s;
+  animation-duration: 1s;
   opacity: 1.0; }
   
 @keyframes fadeInSlow {
@@ -166,7 +169,7 @@ body.theme--blue {
 
 .fadeInSlow {
   animation-name: fadeInSlow;
-  animation-duration: 10s;
+  animation-duration: 5s;
   opacity: 1.0; }
   
 @keyframes slideDownDavisCard {
@@ -176,7 +179,7 @@ body.theme--blue {
 
 .slideDownDavisCard {
   animation-name: slideDownDavisCard;
-  animation-duration: 2s;
+  animation-duration: 1500ms;
   bottom: 0px; }
   
 @keyframes slideUpDavisInput {
@@ -186,27 +189,17 @@ body.theme--blue {
 
 .slideUpDavisInput {
   animation-name: slideUpDavisInput;
-  animation-duration: 2s;
+  animation-duration: 1500ms;
   bottom: 0px; }
   
 .slideInRight {
   animation-name: slideInRight;
-  animation-duration: 2s;
+  animation-duration: 1500ms;
   margin-left: 0px; }
   
 @keyframes slideInRight {
   0% { margin-left: 30%; }
   100% { margin-left: 0px; } }
-  
-.slideInRight2 {
-  animation-name: slideInRight2;
-  animation-duration: 2s;
-  margin-left: 0px; }
-  
-@keyframes slideInRight2 {
-  0% { margin-left: 30%; }
-  100% { margin-left: 0px; } }
-
 
 label.theme--dark-label {
   color: white; }
