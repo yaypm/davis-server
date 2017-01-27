@@ -1,5 +1,5 @@
 <form (ngSubmit)="doSubmit()" #form="ngForm">
-<div class="layout is-flex has-islands">
+<div class="layout is-flex has-islands" [class.fadeInSlow]="iConfig.isWizard" [class.slideInRight2]="iConfig.isWizard">
   <div class="island--full-width" [class.island--full-width-sidebar]="!iConfig.isWizard">
     <div class="config-title">
       Connect to Slack App

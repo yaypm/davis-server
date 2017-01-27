@@ -9,12 +9,13 @@
         <davis-card class="island island--center" style="background-color: transparent; position: relative; padding: 0" [message]="{}" [isDavis]="true" 
           (toggleProcessingIndicator)="showProcessingIndicator = !showProcessingIndicator"></davis-card>
       </div>
-      <div *ngIf="iDavis.conversation.length < 1 && !iDavis.isIframeTile" class="layout is-flex has-islands">
+      <div *ngIf="iDavis.conversation.length < 1 && !iDavis.isIframeTile" class="layout is-flex has-islands" 
+        [class.fadeIn]="iDavis.conversation.length < 1"
+        [class.slideDownDavisCard]="iDavis.conversation.length < 1">
         <div class="island island--center" style="height: 299px; border: 0.5px solid #ececec">
           <svg style="fill: #004999; width: 175px; height: 175px; display: block; margin: 0 auto; margin-top: 20px">
             <use xlink:href="#davis"></use>
           </svg>
-          <!--<img style="width: 250px; display: block; margin: 0 auto; margin-top: 73px" src="/assets/images/davis-logo.png">-->
           <div style="text-align: center; margin-top: 15px; padding: 0px 16px">
             Davis here, your DevOps assistant, ask me something below!
           </div>
@@ -23,7 +24,9 @@
     </div>
   </div>
   <div class="chat-spacer"></div>
-  <div class="island island--full-width island--davisInput island--davisInput-border-full-width">
+  <div class="island island--full-width island--davisInput island--davisInput-border-full-width" 
+    [class.fadeIn]="iDavis.conversation.length < 1" 
+    [class.slideUpDavisInput]="iDavis.conversation.length < 1">
     <div class="layout is-flex has-islands is-flex--compact" style="padding-bottom: 0;">
       <div class="island island--center island--davisInput-border">         
         <label for="davisInput" class="label label--compact">

@@ -26,7 +26,7 @@ declare var dT_ : any;
 @Component({
   selector:    "body",
   templateUrl: "./app.component.html",
-  host: {'[class.theme--dark]':'!iDavis.isAuthenticated', '[class.theme--blue]':'iDavis.isAuthenticated'},
+  host: {'[class.theme--dark]':'!iDavis.isAuthenticated && !iConfig.isWizard', '[class.theme--blue]':'iDavis.isAuthenticated || iConfig.isWizard'},
 })
 
 export class AppComponent {
