@@ -1,11 +1,11 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import * as _ from "lodash";
 
-@Pipe({name: 'filterSidebarItemsByAdminPipe'})
+@Pipe({ name: 'filterSidebarItemsByAdminPipe' })
 export class FilterSidebarItemsByAdminPipe implements PipeTransform {
-  transform(items: any, obj: any): any {
+  transform(items: any, isAdmin: boolean, isSlackEnabled: string): any {
     items = _.filter(items, (item: any) => { 
-      return (!item.admin && (item.name !== 'Notifications' || obj.isSlackEnabled))  || (item.admin && obj.isAdmin && (item.name !== 'Notifications' || obj.isSlackEnabled)); 
+      return (!item.admin && item.name !== 'Notification Filters' )  || ((item.admin && isAdmin) || (item.name === 'Notification Filters' && isSlackEnabled !== '')); 
     });
     return items;
   }

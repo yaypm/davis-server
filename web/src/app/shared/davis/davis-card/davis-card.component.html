@@ -33,7 +33,7 @@
               filtered
             </div>
              <div class="card-pretext" [innerHTML]="attachment.pretext | slackTagConversionPipe:{isAttachment: true, isSentence: true}"></div>
-             <a [attr.href]="attachment.title_link" *ngIf="attachment.title_link" class="card-title" [innerHTML]="attachment.title | slackTagConversionPipe:{isAttachment: true}"></a>
+             <a [attr.href]="attachment.title_link" target="_blank" *ngIf="attachment.title_link" class="card-title" [innerHTML]="attachment.title | slackTagConversionPipe:{isAttachment: true}"></a>
              <div *ngIf="!attachment.title_link" class="card-title" style="color: #6d6d6d; cursor: default" [innerHTML]="attachment.title | slackTagConversionPipe:{isAttachment: true}"></div>
              <div class="card-text" [innerHTML]="attachment.text | slackTagConversionPipe:{isAttachment: true, isSentence: true}"></div>
              <div class="card-fields">
