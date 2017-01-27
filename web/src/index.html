@@ -2,7 +2,6 @@
 <html>
   <head>
     <title>Dynatrace Davis</title>
-    <!--<base href="/">-->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <link rel="shortcut icon" href="favicon.ico">
@@ -29,8 +28,9 @@
     <link rel="chrome-webstore-item" href="https://chrome.google.com/webstore/detail/kighaljfkdkpbneahajiknoiinbckfpg">
   </head>
 
-  <body class="theme--blue">
-    <davis>
+  <body class="theme--dark-background">
+    <div class="loading">
+      <img src="/assets/images/davis-logo-wide.svg" style="display: block; width: 100%; max-width: 544px; min-width: 394px; margin: 0 auto; margin-bottom: 40px; padding: 0px 18px 0px 14px">
       <div class="spinner">
       	<div class="right-side">
       		<div class="bar green"></div>
@@ -39,7 +39,7 @@
       		<div class="bar green"></div>
       	</div>
       </div>
-    </davis>
+    </div>
   </body>
   <script type="text/javascript" src="//assets.dynatrace.com/groundhog/v0.1.0/js/main.js"></script>
   <script src="/main.bundle.js"></script>

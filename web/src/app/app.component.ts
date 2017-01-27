@@ -9,7 +9,8 @@
 // ----------------------------------------------------------------------------
 // Angular
 import { Http, Headers }        from "@angular/http";
-import { Component }            from "@angular/core";
+import { Component,
+         AfterViewInit }        from "@angular/core";
 import { Router }               from "@angular/router";
 
 // Third party
@@ -23,12 +24,13 @@ declare var dT_ : any;
 // Class
 // ----------------------------------------------------------------------------
 @Component({
-  selector:    "davis",
+  selector:    "body",
   templateUrl: "./app.component.html",
+  host: {'[class.theme--dark]':'!iDavis.isAuthenticated && !iConfig.isWizard', '[class.theme--blue]':'iDavis.isAuthenticated || iConfig.isWizard'},
 })
 
 export class AppComponent {
-
+  
   constructor(
     public iConfig: ConfigService, 
     public iDavis: DavisService, 

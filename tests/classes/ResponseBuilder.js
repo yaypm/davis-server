@@ -57,8 +57,17 @@ describe('ResponseBuilder', () => {
           text: 'test response.',
           say: 'test response.',
           show: {
-            text: 'test response.',
-            attachments: [],
+            attachments: [
+              {
+                fallback: 'test response.',
+                mrkdwn_in: [
+                  'text',
+                  'pretext',
+                  'fields',
+                ],
+                text: 'test response.',
+              }
+            ],
           },
         };
         r1.should.eql(r);
@@ -119,8 +128,17 @@ describe('ResponseBuilder', () => {
           text: 'test response.',
           say: 'test response.',
           show: {
-            text: 'test response.',
-            attachments: [],
+            attachments: [
+              {
+                fallback: 'test response.',
+                mrkdwn_in: [
+                  'text',
+                  'pretext',
+                  'fields',
+                ],
+                text: 'test response.',
+              }
+            ],
           },
         };
         r1.should.eql(r);
@@ -171,10 +189,19 @@ describe('ResponseBuilder', () => {
       .spread((r1, r2, r3) => {
         const r = {
           text: 'test response.  Who am I?',
-          say: 'test response. Who am I?',
+          say: 'test response.  Who am I?',
           show: {
-            text: 'test response.  Who am I?',
-            attachments: [],
+            attachments: [
+              {
+                fallback: 'test response.  Who am I?',
+                mrkdwn_in: [
+                  'text',
+                  'pretext',
+                  'fields',
+                ],
+                text: 'test response.  Who am I?',
+              }
+            ],
           },
         };
         r1.should.eql(r);
@@ -183,3 +210,4 @@ describe('ResponseBuilder', () => {
       });
   });
 });
+
