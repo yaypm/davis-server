@@ -109,7 +109,7 @@ export class ConfigurationBaseComponent implements OnInit {
       .then(response => {
         if (!response.success) throw new Error(response.message); 
         this.iDavis.values.user = response.user;
-        
+
         // Backwards compatibility, was once optional
         if (!response.user.name) {
           this.iDavis.values.user.name = { first: '', last: '' };
