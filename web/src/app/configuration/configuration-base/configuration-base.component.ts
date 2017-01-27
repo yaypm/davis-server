@@ -31,38 +31,54 @@ export class ConfigurationBaseComponent implements OnInit {
       key:  'user',
       name: 'My Account',
       admin: false,
+      expanded: false,
     },
     users: {
       key: 'users',
       name: 'User Accounts',
       admin: true,
+      expanded: false,
     },
     filters: {
       key: 'filters',
       name: 'Filters',
       admin: false,
+      expanded: false,
     },
     notifications: {
       key: 'notifications',
-      name: 'Notification Filters',
+      name: 'Notifications',
       admin: false,
+      expanded: false,
+      items: {
+        filters: {
+          key: 'notifications',
+          name: 'Filters',
+          admin: false,
+        }
+      }
     },
     dynatrace: {
       key: 'dynatrace',
       name: 'Dynatrace',
       admin: true,
+      expanded: false,
     },
     slack: {
       key: 'slack',
       name: 'Slack App',
       admin: true,
+      expanded: false,
     },
     chrome: {
       key: 'chrome',
       name: 'Chrome Extension',
       admin: false,
+      expanded: false,
     },
   };
+  
+  expandedSection: string = '';
 
   // ------------------------------------------------------
   // Inject services
