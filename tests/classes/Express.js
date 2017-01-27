@@ -247,12 +247,7 @@ describe('Express', () => {
       .send(genPayload('launch davis'))
       .then(res => {
         res.body.response.outputSpeech.should.have.property('ssml');
-        [
-          "<speak>Hi test.  What's up?</speak>",
-          '<speak>Hi test.  How can I be of service?</speak>',
-          '<speak>Hi test.  How can I help you?</speak>',
-        ].indexOf(res.body.response.outputSpeech.ssml)
-          .should.be.greaterThan(-1);
+        res.body.response.shouldEndSession.should.be.false;
       })
   });
 
