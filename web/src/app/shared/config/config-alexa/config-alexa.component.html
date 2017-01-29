@@ -25,12 +25,12 @@
   </div>
   <div class="island--full-width" [class.island--full-width-sidebar]="!iConfig.isWizard">
     <div class="island island--center" [class.island--left]="!iConfig.isWizard">
-      <label for="alexa_ids" class="label">
+      <label for="alexa_id" class="label">
         Alexa User ID
       </label>
-      <input #alexaIds type="text" name="alexa_ids"
-        class="inputfield" id="alexa_ids"
-        [(ngModel)]="iDavis.values.user.alexa_ids[0]" 
+      <input #alexaIds type="text" name="alexa_id"
+        class="inputfield" id="alexa_id"
+        [(ngModel)]="iDavis.values.user.alexa_id" 
         (keyup)="validate()">
     </div>
     <div class="island island--center island--submit" [class.island--left]="!iConfig.isWizard">

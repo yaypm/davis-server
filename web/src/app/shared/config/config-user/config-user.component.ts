@@ -50,16 +50,18 @@ export class ConfigUserComponent implements OnInit, AfterViewInit {
       this.iConfig.values.otherUser.email = this.iDavis.safariAutoCompletePolyFill(this.iConfig.values.otherUser.email, 'email');
       this.iConfig.values.otherUser.admin = this.iDavis.safariAutoCompletePolyFill(this.iConfig.values.otherUser.admin, 'admin');
       this.iConfig.values.otherUser.timezone = this.iDavis.safariAutoCompletePolyFill(this.iConfig.values.otherUser.timezone, 'timezone');
-      this.iConfig.values.otherUser.alexa_ids = this.iDavis.safariAutoCompletePolyFill(this.iConfig.values.otherUser.alexa_ids, 'alexa_ids');
+      this.iConfig.values.otherUser.alexa_id = this.iDavis.safariAutoCompletePolyFill(this.iConfig.values.otherUser.alexa_id, 'alexa_id');
     } else {
       this.iDavis.values.user.name.first = this.iDavis.safariAutoCompletePolyFill(this.iDavis.values.user.name.first, 'first');
       this.iDavis.values.user.name.last = this.iDavis.safariAutoCompletePolyFill(this.iDavis.values.user.name.last, 'last');
       this.iDavis.values.user.email = this.iDavis.safariAutoCompletePolyFill(this.iDavis.values.user.email, 'email');
       this.iDavis.values.user.timezone = this.iDavis.safariAutoCompletePolyFill(this.iDavis.values.user.timezone, 'timezone');
-      this.iDavis.values.user.alexa_ids = this.iDavis.safariAutoCompletePolyFill(this.iDavis.values.user.alexa_ids, 'alexa_ids');
+      this.iDavis.values.user.alexa_id = this.iDavis.safariAutoCompletePolyFill(this.iDavis.values.user.alexa_id, 'alexa_id');
     }
     
     this.user = (!this.iConfig.isWizard && !this.isMyUser) ? this.iConfig.values.otherUser : this.iDavis.values.user;
+    
+    delete this.user.alexa_id;
     
     if ((!this.iConfig.isWizard && !this.isNewUser) || (!this.iConfig.isWizard && this.isMyUser)) {
       this.iConfig.updateDavisUser(this.user)
@@ -149,8 +151,18 @@ export class ConfigUserComponent implements OnInit, AfterViewInit {
   }
 
   validate() {
-    if (this.iDavis.values.user.alexa_ids.length < 1 || this.iDavis.values.user.alexa_ids[0].trim().length < 1) {
-      this.iDavis.values.user.alexa_ids = [];
+    if (this.isMyUser) {
+      if (this.iDavis.values.user.alexa_id && this.iDavis.values.user.alexa_id.trim().length > 0) {
+        this.iDavis.values.user.alexa_ids = [this.iDavis.values.user.alexa_id];
+      } else {
+        this.iDavis.values.user.alexa_ids = [];
+      }
+    } else if (this.iConfig.values.otherUser) {
+      if (this.iConfig.values.otherUser.alexa_id && this.iConfig.values.otherUser.alexa_id.trim().length > 0) {
+        this.iConfig.values.otherUser.alexa_ids = [this.iConfig.values.otherUser.alexa_id];
+      } else {
+        this.iConfig.values.otherUser.alexa_ids = [];
+      }
     }
     this.isDirty = (this.isMyUser) ? !_.isEqual(this.iDavis.values.user, this.iConfig.values.original.user) : !_.isEqual(this.iConfig.values.otherUser, this.iConfig.values.original.otherUser);
   }
@@ -167,6 +179,12 @@ export class ConfigUserComponent implements OnInit, AfterViewInit {
     if (this.isNewUser) {
       this.submitButtonDefault = 'Add User';
       this.submitButton = 'Add User';
+    } else {
+      if (this.iConfig.values.otherUser && this.iConfig.values.otherUser.alexa_ids.length > 0) {
+        this.iConfig.values.otherUser.alexa_id = this.iConfig.values.otherUser.alexa_ids[0];
+      } else if (this.iDavis.values.user && this.iDavis.values.user.alexa_ids.length > 0) {
+        this.iDavis.values.user.alexa_id = this.iDavis.values.user.alexa_ids[0];
+      }
     }
 
     this.detectedTimezone = this.iDavis.getTimezone();

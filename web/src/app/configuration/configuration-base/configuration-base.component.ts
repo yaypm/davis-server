@@ -109,6 +109,11 @@ export class ConfigurationBaseComponent implements OnInit {
       .then(response => {
         if (!response.success) throw new Error(response.message); 
         this.iDavis.values.user = response.user;
+        if (this.iDavis.values.user.alexa_ids && this.iDavis.values.user.alexa_ids.length > 0) {
+          this.iDavis.values.user.alexa_id = this.iDavis.values.user.alexa_ids[0];
+        } else {
+          this.iDavis.values.user.alexa_id = '';
+        }
 
         // Backwards compatibility, was once optional
         if (!response.user.name) {

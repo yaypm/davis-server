@@ -33,6 +33,11 @@ export class ConfigUsersComponent implements OnInit {
     editMode(user: any) {
       this.editUser = true;
       this.iConfig.values.original.otherUser = user;
+      if (this.iConfig.values.original.otherUser.alexa_ids && this.iConfig.values.original.otherUser.alexa_ids.length > 0) {
+        this.iConfig.values.original.otherUser.alexa_id = this.iConfig.values.original.otherUser.alexa_ids[0];
+      } else {
+        this.iConfig.values.original.otherUser.alexa_id = '';
+      }
       this.iConfig.values.otherUser = _.cloneDeep(user);
       this.filterName = '';
     }

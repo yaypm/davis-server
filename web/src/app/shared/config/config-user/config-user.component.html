@@ -188,20 +188,20 @@
         </div>
       </div>
       <div class="island island--full" *ngIf="!iConfig.isWizard">          
-        <label for="alexa_ids" class="label">
+        <label for="alexa_id" class="label">
           Alexa User ID
         </label>
         
         <!-- isMyUser -->
-        <input type="text" class="inputfield" id="alexa_ids" name="alexa_ids" 
+        <input type="text" class="inputfield" id="alexa_id" name="alexa_id" 
             *ngIf="isMyUser"
-            [(ngModel)]="iDavis.values.user.alexa_ids[0]"
+            [(ngModel)]="iDavis.values.user.alexa_id"
             (keyup)="validate()">
             
         <!-- !isMyUser -->
-        <input type="text" class="inputfield" id="alexa_ids" name="alexa_ids" 
+        <input type="text" class="inputfield" id="alexa_id" name="alexa_id" 
             *ngIf="!isMyUser"
-            [(ngModel)]="iConfig.values.otherUser.alexa_ids[0]"
+            [(ngModel)]="iConfig.values.otherUser.alexa_id"
             (keyup)="validate()">
       </div>
       <div class="island island--full" *ngIf="!iConfig.isWizard && !isMyUser && iDavis.isAdmin && !isNewUser">
