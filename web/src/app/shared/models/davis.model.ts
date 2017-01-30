@@ -1,54 +1,6 @@
+import { CommonModel } from './common.model';
+
 export class DavisModel {
-
-  user: any = {
-    email: '',
-    password: '',
-    timezone: '',
-    alexa_ids: [],
-    name: {
-      first: '',
-      last: '',
-    },
-    admin: false,
-    owner: '',
-  };
-
-  filter: any = {
-    name: '',
-    owner: '',
-    description: '',
-    enabled: true,
-    scope: '',
-    origin: '',
-    status: [],
-    impact: [],
-    severityLevel: [],
-    entityID: [],
-    excludeEventType: [],
-    tags: {
-      includes: [],
-      excludes: [],
-    },
-  };
-  
-  dynatrace: any = {
-    url: '',
-    apiUrl: '',
-    token: '',
-    strictSSL: true,
-  };
-  
-  slack: any = {
-    enabled: true,
-    clientId: '',
-    clientSecret: '',
-    redirectUri: '',
-  };
-
-  status: any = {
-    error: null,
-    success: null
-  };
 
   davis: any = {
     values: {
@@ -56,34 +8,34 @@ export class DavisModel {
         email: '',
         password: '',
       },
-      user: this.user,
+      user: new CommonModel().user,
     }
   };
 
   config: any = {
     values: {
-      otherUser: this.user,
+      otherUser: new CommonModel().user,
       users: [],
-      filter: this.filter,
-      dynatrace: this.dynatrace,
-      slack: this.slack,
+      filter: new CommonModel().filter,
+      dynatrace: new CommonModel().dynatrace,
+      slack: new CommonModel().slack,
       channels: [],
       original: {
-        user: this.user,
-        otherUser: this.user,
-        filter: this.filter,
-        dynatrace: this.dynatrace,
-        slack: this.slack,
+        user: new CommonModel().user,
+        otherUser: new CommonModel().user,
+        filter: new CommonModel().filter,
+        dynatrace: new CommonModel().dynatrace,
+        slack: new CommonModel().slack,
       },
     },
     status: {
-      user: this.status,
-      users: this.status,
-      filter: this.status,
-      filters: this.status,
-      dynatrace: this.status,
-      alexa: this.status,
-      slack: this.status,
+      user: new CommonModel().status,
+      users: new CommonModel().status,
+      filter: new CommonModel().status,
+      filters: new CommonModel().status,
+      dynatrace: new CommonModel().status,
+      alexa: new CommonModel().status,
+      slack: new CommonModel().status,
     },
   };   
   

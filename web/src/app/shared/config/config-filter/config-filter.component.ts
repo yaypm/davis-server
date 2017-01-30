@@ -11,6 +11,7 @@ import { Component, OnInit,
 import { ConfigService }          from '../config.service';
 import { DavisService }           from '../../davis.service';
 import { DavisModel }             from '../../models/davis.model';
+import { CommonModel }             from '../../models/common.model';
 import * as _                     from 'lodash';
 
 @Component({
@@ -56,10 +57,10 @@ export class ConfigFilterComponent implements OnInit, OnChanges, AfterViewInit {
         .then(response => {
           if (!response.success) throw new Error(response.message);
           this.filterOptions = new DavisModel().filterOptions;
-          this.iConfig.values.filter = new DavisModel().filter;
+          this.iConfig.values.filter = new CommonModel().filter;
           this.iConfig.values.filter.owner = this.iDavis.values.user._id;
           this.iConfig.values.filter.scope = 'global';
-          this.iConfig.values.original.filter = new DavisModel().filter;
+          this.iConfig.values.original.filter = new CommonModel().filter;
           this.isDirty = false;
           this.showFiltersList.emit();
           this.iConfig.status['filter'].success = true;

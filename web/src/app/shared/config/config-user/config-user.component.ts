@@ -49,38 +49,42 @@ export class ConfigUserComponent implements OnInit, AfterViewInit {
       this.iConfig.values.otherUser.name.last = this.iDavis.safariAutoCompletePolyFill(this.iConfig.values.otherUser.name.last, 'last');
       this.iConfig.values.otherUser.email = this.iDavis.safariAutoCompletePolyFill(this.iConfig.values.otherUser.email, 'email');
       this.iConfig.values.otherUser.admin = this.iDavis.safariAutoCompletePolyFill(this.iConfig.values.otherUser.admin, 'admin');
+      this.iConfig.values.otherUser.password = this.iDavis.safariAutoCompletePolyFill(this.iConfig.values.otherUser.password, 'password');
       this.iConfig.values.otherUser.timezone = this.iDavis.safariAutoCompletePolyFill(this.iConfig.values.otherUser.timezone, 'timezone');
       this.iConfig.values.otherUser.alexa_id = this.iDavis.safariAutoCompletePolyFill(this.iConfig.values.otherUser.alexa_id, 'alexa_id');
     } else {
       this.iDavis.values.user.name.first = this.iDavis.safariAutoCompletePolyFill(this.iDavis.values.user.name.first, 'first');
       this.iDavis.values.user.name.last = this.iDavis.safariAutoCompletePolyFill(this.iDavis.values.user.name.last, 'last');
       this.iDavis.values.user.email = this.iDavis.safariAutoCompletePolyFill(this.iDavis.values.user.email, 'email');
+      this.iDavis.values.user.password = this.iDavis.safariAutoCompletePolyFill(this.iDavis.values.user.password, 'password');
       this.iDavis.values.user.timezone = this.iDavis.safariAutoCompletePolyFill(this.iDavis.values.user.timezone, 'timezone');
       this.iDavis.values.user.alexa_id = this.iDavis.safariAutoCompletePolyFill(this.iDavis.values.user.alexa_id, 'alexa_id');
     }
     
+    if (this.iDavis.values.user.password === '') delete this.iDavis.values.user.password;
+    if (this.iConfig.values.otherUser.password === '') delete this.iConfig.values.otherUser.password;
+    
     this.user = (!this.iConfig.isWizard && !this.isMyUser) ? _.cloneDeep(this.iConfig.values.otherUser) : _.cloneDeep(this.iDavis.values.user);
     
     // Remove properties that shouldn't persist through user save 
-    delete this.user.alexa_id;
-    if (this.iDavis.values.user.password) delete this.iDavis.values.user.password;
-    if (this.iConfig.values.otherUser.password) delete this.iConfig.values.otherUser.password;
-    
+    if (this.user.alexa_id) delete this.user.alexa_id;
+
     if ((!this.iConfig.isWizard && !this.isNewUser) || (!this.iConfig.isWizard && this.isMyUser)) {
       this.iConfig.updateDavisUser(this.user)
         .then(response => {
           if (!response.success) throw new Error(response.message);
 
-          this.iConfig.values.original.user = _.cloneDeep(this.user);
           this.isDirty = false;
           this.iConfig.status['user'].success = true;
           this.submitButton = 'Save';
-          if (!this.isMyUser) {
-            this.showUsersList.emit();
-          }
+          if (this.iDavis.values.user.password) delete this.iDavis.values.user.password;
+          if (this.iConfig.values.otherUser.password) delete this.iConfig.values.otherUser.password;
+          this.iConfig.values.original.user = _.cloneDeep(this.iDavis.values.user);
+          if (!this.isMyUser) this.showUsersList.emit();
         })
         .catch(err => {
           this.iConfig.displayError(err, 'user');
+          this.submitButton = this.submitButtonDefault;
         });
     } else {
       this.iConfig.addDavisUser(this.user)
@@ -100,8 +104,8 @@ export class ConfigUserComponent implements OnInit, AfterViewInit {
             this.isDirty = false;
             
             // Authenticate new user, update token
-            this.iDavis.values.authenticate.email = this.iDavis.values.user.email;
-            this.iDavis.values.authenticate.password = this.iDavis.values.user.password;
+            this.iDavis.values.authenticate.email = this.user.email;
+            this.iDavis.values.authenticate.password = this.user.password;
             this.iDavis.getJwtToken()
               .then(
                 response => {
@@ -113,6 +117,8 @@ export class ConfigUserComponent implements OnInit, AfterViewInit {
                   sessionStorage.setItem('token', response.token);
                   sessionStorage.setItem('isAdmin', response.admin);
                   this.submitButton = this.submitButtonDefault;
+                  if (this.iDavis.values.user.password) delete this.iDavis.values.user.password;
+                  if (this.iConfig.values.otherUser.password) delete this.iConfig.values.otherUser.password;
                   
                   // Delete admin@localhost user
                   this.deleteUser('admin@localhost');
