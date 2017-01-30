@@ -59,15 +59,18 @@ export class ConfigUserComponent implements OnInit, AfterViewInit {
       this.iDavis.values.user.alexa_id = this.iDavis.safariAutoCompletePolyFill(this.iDavis.values.user.alexa_id, 'alexa_id');
     }
     
-    this.user = (!this.iConfig.isWizard && !this.isMyUser) ? this.iConfig.values.otherUser : this.iDavis.values.user;
+    this.user = (!this.iConfig.isWizard && !this.isMyUser) ? _.cloneDeep(this.iConfig.values.otherUser) : _.cloneDeep(this.iDavis.values.user);
     
+    // Remove properties that shouldn't persist through user save 
     delete this.user.alexa_id;
+    if (this.iDavis.values.user.password) delete this.iDavis.values.user.password;
+    if (this.iConfig.values.otherUser.password) delete this.iConfig.values.otherUser.password;
     
     if ((!this.iConfig.isWizard && !this.isNewUser) || (!this.iConfig.isWizard && this.isMyUser)) {
       this.iConfig.updateDavisUser(this.user)
         .then(response => {
           if (!response.success) throw new Error(response.message);
-          
+
           this.iConfig.values.original.user = _.cloneDeep(this.user);
           this.isDirty = false;
           this.iConfig.status['user'].success = true;
@@ -180,9 +183,9 @@ export class ConfigUserComponent implements OnInit, AfterViewInit {
       this.submitButtonDefault = 'Add User';
       this.submitButton = 'Add User';
     } else {
-      if (this.iConfig.values.otherUser && this.iConfig.values.otherUser.alexa_ids.length > 0) {
+      if (this.iConfig.values.otherUser && this.iConfig.values.otherUser.alexa_ids && this.iConfig.values.otherUser.alexa_ids.length > 0) {
         this.iConfig.values.otherUser.alexa_id = this.iConfig.values.otherUser.alexa_ids[0];
-      } else if (this.iDavis.values.user && this.iDavis.values.user.alexa_ids.length > 0) {
+      } else if (this.iDavis.values.user && this.iDavis.values.user.alexa_ids && this.iDavis.values.user.alexa_ids.length > 0) {
         this.iDavis.values.user.alexa_id = this.iDavis.values.user.alexa_ids[0];
       }
     }

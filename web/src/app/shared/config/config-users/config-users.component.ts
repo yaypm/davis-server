@@ -58,6 +58,7 @@ export class ConfigUsersComponent implements OnInit {
               if (!user.name.first) this.iConfig.values.users[index].name.first = '';
               if (!user.name.last) this.iConfig.values.users[index].name.last = '';
             }
+            this.iConfig.values.users[index].password = '';
           });
           this.users = _.cloneDeep(response.users);
         })

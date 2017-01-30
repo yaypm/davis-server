@@ -114,6 +114,7 @@ export class ConfigurationBaseComponent implements OnInit {
         } else {
           this.iDavis.values.user.alexa_id = '';
         }
+        this.iDavis.values.user.password = '';
 
         // Backwards compatibility, was once optional
         if (!response.user.name) {

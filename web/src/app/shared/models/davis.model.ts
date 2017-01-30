@@ -30,6 +30,20 @@ export class DavisModel {
       excludes: [],
     },
   };
+  
+  dynatrace: any = {
+    url: '',
+    apiUrl: '',
+    token: '',
+    strictSSL: true,
+  };
+  
+  slack: any = {
+    enabled: true,
+    clientId: '',
+    clientSecret: '',
+    redirectUri: '',
+  };
 
   status: any = {
     error: null,
@@ -51,25 +65,15 @@ export class DavisModel {
       otherUser: this.user,
       users: [],
       filter: this.filter,
-      dynatrace: {
-        url: '',
-        apiUrl: '',
-        token: '',
-        strictSSL: true,
-      },
-      slack: {
-        enabled: true,
-        clientId: '',
-        clientSecret: '',
-        redirectUri: '',
-      },
+      dynatrace: this.dynatrace,
+      slack: this.slack,
       channels: [],
       original: {
-        user: {},
-        otherUser: {},
-        filter: {},
-        dynatrace: {},
-        slack: {},
+        user: this.user,
+        otherUser: this.user,
+        filter: this.filter,
+        dynatrace: this.dynatrace,
+        slack: this.slack,
       },
     },
     status: {
