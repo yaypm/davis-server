@@ -47,6 +47,8 @@ export class ConfigFilterComponent implements OnInit, OnChanges, AfterViewInit {
     this.iConfig.values.filter.name = this.iDavis.safariAutoCompletePolyFill(this.iConfig.values.filter.name, 'name');
     this.iConfig.values.filter.origin = this.iDavis.safariAutoCompletePolyFill(this.iConfig.values.filter.origin, 'origin');
     
+    this.buildScope();
+    
     // Safari autocomplete polyfill - Update any autofilled checkboxes
     this.validate();
     
