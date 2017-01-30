@@ -40,7 +40,8 @@
         <tbody>
           <tr *ngFor="let filter of filters | filterFiltersByName:{str: filterName, origin: 'QUESTION'}">
             <td (click)="editMode(filter)">
-              {{ filter.name }}
+              {{ filter.name }}<br>
+              <span *ngFor="let scope of filter.description.split(':')" class="scope-tag" [class.scope-tag-enabled]="filter.enabled">{{ scope }}</span>
             </td>
             <td style="width: 100px">
               <span *ngIf="!iDavis.isAdmin && filter.enabled" style="margin-left: 20px;">&#x2713;</span>

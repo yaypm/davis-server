@@ -11,7 +11,7 @@ import { Component, OnInit,
 import { ConfigService }          from '../config.service';
 import { DavisService }           from '../../davis.service';
 import { DavisModel }             from '../../models/davis.model';
-import { CommonModel }             from '../../models/common.model';
+import { CommonModel }            from '../../models/common.model';
 import * as _                     from 'lodash';
 
 @Component({
@@ -45,8 +45,6 @@ export class ConfigFilterComponent implements OnInit, OnChanges, AfterViewInit {
     
     // Safari autocomplete polyfill - https://github.com/angular/angular.js/issues/1460
     this.iConfig.values.filter.name = this.iDavis.safariAutoCompletePolyFill(this.iConfig.values.filter.name, 'name');
-    this.iConfig.values.filter.description = this.iDavis.safariAutoCompletePolyFill(this.iConfig.values.filter.description, 'description');
-    // this.iConfig.values.filter.scope = this.iDavis.safariAutoCompletePolyFill(this.iConfig.values.filter.scope, 'scope');
     this.iConfig.values.filter.origin = this.iDavis.safariAutoCompletePolyFill(this.iConfig.values.filter.origin, 'origin');
     
     // Safari autocomplete polyfill - Update any autofilled checkboxes
@@ -156,12 +154,22 @@ export class ConfigFilterComponent implements OnInit, OnChanges, AfterViewInit {
   }
   
   buildScope(): string {
-    let scope = 'global';
-    if (this.filterScope.source === 'web') {
-      scope = (this.filterScope.email && this.filterScope.email !== 'null') ? `${this.filterScope.source}:${this.filterScope.email}` : this.filterScope.source;
+    let scope = this.filterScope.source;
+    this.iConfig.values.filter.description = this.filterScope.source;
+    if (this.filterScope.source === 'web' && this.filterScope.email && this.filterScope.email !== 'null') {
+      scope = `${this.filterScope.source}:${this.filterScope.email}`;
+      this.iConfig.values.filter.description = `${this.filterScope.source}:${this.filterScope.email}`;
     } else if (this.filterScope.source === 'slack') {
-      scope = (this.filterScope.team_id && this.filterScope.team_id !== 'null') ? `${this.filterScope.source}:${this.filterScope.team_id}` : this.filterScope.source;
-      scope = (this.filterScope.channel_id && this.filterScope.channel_id !== 'null') ? `${scope}:${this.filterScope.channel_id}` : scope;
+      if (this.filterScope.team_id && this.filterScope.team_id !== 'null') {
+        scope = `${this.filterScope.source}:${this.filterScope.team_id}`;
+        this.iConfig.values.filter.description = `${this.filterScope.source}:${this.filterScopes.teams[this.filterScope.team_id].team_name}`;
+      }
+      if (this.filterScope.team_id !== 'null' && this.filterScope.channel_id && this.filterScope.channel_id !== 'null') {
+        scope = `${scope}:${this.filterScope.channel_id}`;
+        let channel_id = this.filterScope.channel_id;
+        let channel_name = this.filterScopes.teams[this.filterScope.team_id].channels[_.findIndex(this.filterScopes.teams[this.filterScope.team_id].channels, (o: any) => { return o.id === channel_id; })].name;
+        this.iConfig.values.filter.description = `${this.iConfig.values.filter.description}:${channel_name}`;
+      }
     }
     return scope;
   }
