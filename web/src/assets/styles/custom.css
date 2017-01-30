@@ -40,6 +40,10 @@ form {
 .wizard-step-number {
   font-size: 18px; }
   
+.wizard-border {
+  border: 0.5px solid #ececec;
+}
+  
 .layout--two-thirds {
   flex-basis: 66.66%; }
   
