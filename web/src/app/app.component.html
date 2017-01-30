@@ -190,7 +190,7 @@
 </svg>
 
 <!-- Header -->
-<div *ngIf="!iDavis.isIframeTile && iDavis.isAuthenticated" style="position: fixed; width: 100%; top: 0; z-index: 1000">
+<div *ngIf="!iDavis.isIframeTile && (iDavis.isAuthenticated || iConfig.isWizard)" style="position: fixed; width: 100%; top: 0; z-index: 1000">
   <div class="nav has-no-secondary">
     <a class="nav__brand" style="cursor: pointer" (click)="iDavis.goToPage('/davis')">
       <img class="nav__logo" src="https://help.dynatrace.com/assets/dynatrace-logo.svg" alt="dynatrace logo"/>
