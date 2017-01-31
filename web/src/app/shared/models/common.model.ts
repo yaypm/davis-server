@@ -37,6 +37,11 @@ export class CommonModel {
     strictSSL: true,
   };
   
+  notifications: any = {
+    uri: '',
+    config: '',
+  };
+  
   slack: any = {
     enabled: true,
     clientId: '',

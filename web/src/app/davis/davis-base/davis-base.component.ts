@@ -90,7 +90,7 @@ export class DavisBaseComponent implements OnInit, AfterViewInit {
       }, 200);
       this.iDavis.askDavisPhrase(phrase)
         .then(response => {
-          if (!response.success) throw new Error(response.message); 
+          if (!response.success) throw new Error(response.response);
           if (response.response.visual.card) {
             response.response.visual.card.attachments.forEach((attachment: any, index: any) => {
               if (attachment.actions) {

@@ -208,6 +208,14 @@ export class ConfigFilterComponent implements OnInit, OnChanges, AfterViewInit {
             this.filterScope.channel = null;
             this.filterScopes.channels = [];
           }
+          
+          // If bot is not in channel, still insert as option
+          let channel_id = this.filterScope.channel_id;
+          let exploded = this.iConfig.values.filter.description.split(':');
+          let name = (exploded[2]) ? exploded[2] : '';
+          if (this.filterScope.channel_id && _.findIndex(this.filterScopes.teams[this.filterScope.team_id].channels, (o: any) => { return o.id === channel_id; }) < 0) {
+            this.filterScopes.teams[this.filterScope.team_id].channels.push({id: channel_id, name: name});
+          }
         } else {
           // Remove Slack from scope source, since there are no teams for this user
           this.filterScopes.sources.splice(2, 1);

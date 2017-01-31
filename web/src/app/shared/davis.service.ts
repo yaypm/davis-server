@@ -168,10 +168,15 @@ export class DavisService {
   }
   
   focusDavisInputOnKeyDown() : void {
+    var self = this;
+    var last = -1;
+    var last2 = -1;
     $(document).keydown(function(event) {
-      if (window.location.pathname === '/davis' && !$('#davisInput').is(":focus")) {
+      if (last2 !== event.which) last2 = last;
+      last = event.which;
+      if (window.location.pathname === '/davis' && event.which != 17 && last != 17 && last2 != 17 && !$('#davisInput').is(":focus")) {
         $('#davisInput').focus();
-        this.windowScrollBottom('slow');
+        self.windowScrollBottom('slow');
       }
     });
   }

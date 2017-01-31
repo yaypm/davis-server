@@ -1,15 +1,34 @@
 <div class="layout is-flex config-background">
   <nav class="sidebar sidebar-sm" [class.hide-sm]="!iDavis.isSidebarVisible">
-    <a *ngFor="let item of sidebarItems | filterSidebarItemsByAdminPipe:iDavis.isAdmin:iConfig.values.original.slack.clientId"
-      class="sidebar__item" [class.is-active]="iConfig.view === item.key" (click)="iConfig.selectView(item.key); iDavis.isSidebarVisible = false">
-      <span class="sidebar__headline">{{ item.name }}</span>
-    </a>
+    <span *ngFor="let item of sidebarItems | filterSidebarItemsByAdminPipe:iDavis.isAdmin:iConfig.values.original.slack.clientId">
+      <a *ngIf="!item.items" class="sidebar__item" [class.is-active]="iConfig.view === item.key" (click)="iConfig.selectView(item.key); iDavis.isSidebarVisible = false; expandedSection = '';">
+        <span class="sidebar__headline">{{ item.name }}</span>
+      </a>
+      <div *ngIf="item.items" class="expandable" 
+        [class.expandable--expanded]="expandedSection === item.key || ((iConfig.view === item.key || iConfig.view.indexOf('notification') > -1) && expandedSection === '')"
+        [class.is-expanded]="expandedSection === item.key || ((iConfig.view === item.key || iConfig.view.indexOf('notification') > -1) && expandedSection === '')"
+        [class.is-active]="expandedSection === item.key || ((iConfig.view === item.key || iConfig.view.indexOf('notification') > -1) && expandedSection === '')">
+        <a class="sidebar__item expandable__trigger expandable__trigger--right" 
+          [class.closed]="(expandedSection !== item.key || !item.expanded) && iConfig.view !== item.key"
+          (click)="item.expanded = !item.expanded; expandedSection = (item.expanded) ? item.key : '';">
+          <span class="sidebar__headline">{{ item.name }}</span>
+          <span class="sidebar__info">{{ item.description }}</span>
+        </a>
+        <div class="expandable__content">
+          <a *ngFor="let nestedItem of item.items | filterSidebarItemsByAdminPipe:iDavis.isAdmin:iConfig.values.original.slack.clientId" 
+            class="sidebar__item" [class.is-active]="iConfig.view === nestedItem.key" (click)="iConfig.selectView(nestedItem.key); iDavis.isSidebarVisible = false">
+            <span class="sidebar__headline">{{ nestedItem.name }}</span>
+          </a>
+        </div>
+      </div>
+    </span>
   </nav>
   <div class="island island--connected">
     <config-user *ngIf="iConfig.view === 'user'" [isNewUser]="false" [isMyUser]="true"></config-user>
     <config-users *ngIf="iConfig.view === 'users'"></config-users>
     <config-filters *ngIf="iConfig.view === 'filters'"></config-filters>
-    <config-notifications *ngIf="iConfig.view === 'notifications'"></config-notifications>
+    <config-notification-source *ngIf="iConfig.view === 'notification-source'"></config-notification-source>
+    <config-notification-filters *ngIf="iConfig.view === 'notification-filters'"></config-notification-filters>
     <config-dynatrace *ngIf="iConfig.view === 'dynatrace'"></config-dynatrace>
     <config-slack *ngIf="iConfig.view === 'slack'"></config-slack>
     <config-chrome *ngIf="iConfig.view === 'chrome'"></config-chrome>

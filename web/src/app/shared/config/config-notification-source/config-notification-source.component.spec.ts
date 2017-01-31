@@ -3,21 +3,21 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
 
-import { ConfigNotificationsComponent } from './config-notifications.component';
+import { ConfigNotificationSourceComponent } from './config-notification-source.component';
 
-describe('ConfigNotificationsComponent', () => {
-  let component: ConfigNotificationsComponent;
-  let fixture: ComponentFixture<ConfigNotificationsComponent>;
+describe('ConfigNotificationSourceComponent', () => {
+  let component: ConfigNotificationSourceComponent;
+  let fixture: ComponentFixture<ConfigNotificationSourceComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ConfigNotificationsComponent ]
+      declarations: [ ConfigNotificationSourceComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ConfigNotificationsComponent);
+    fixture = TestBed.createComponent(ConfigNotificationSourceComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

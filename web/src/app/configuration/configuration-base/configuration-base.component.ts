@@ -31,38 +31,59 @@ export class ConfigurationBaseComponent implements OnInit {
       key:  'user',
       name: 'My Account',
       admin: false,
+      expanded: false,
     },
     users: {
       key: 'users',
       name: 'User Accounts',
       admin: true,
+      expanded: false,
     },
     filters: {
       key: 'filters',
       name: 'Filters',
       admin: false,
+      expanded: false,
     },
     notifications: {
       key: 'notifications',
-      name: 'Notification Filters',
+      name: 'Notifications',
       admin: false,
+      expanded: false,
+      items: {
+        'notification-source': {
+          key: 'notification-source',
+          name: 'Connect to Source',
+          admin: false,
+        },
+        'notification-filters': {
+          key: 'notification-filters',
+          name: 'Filters',
+          admin: false,
+        },
+      }
     },
     dynatrace: {
       key: 'dynatrace',
       name: 'Dynatrace',
       admin: true,
+      expanded: false,
     },
     slack: {
       key: 'slack',
       name: 'Slack App',
       admin: true,
+      expanded: false,
     },
     chrome: {
       key: 'chrome',
       name: 'Chrome Extension',
       admin: false,
+      expanded: false,
     },
   };
+  
+  expandedSection: string = '';
 
   // ------------------------------------------------------
   // Inject services
@@ -86,6 +107,8 @@ export class ConfigurationBaseComponent implements OnInit {
       .map(fragment => fragment || 'None')
       .subscribe(value => {
         if (this.sidebarItems[value]) {
+          this.iConfig.selectView(value);
+        } else if (value.indexOf('notification') > -1) {
           this.iConfig.selectView(value);
         } else {
           this.iConfig.selectView('user');
@@ -146,6 +169,11 @@ export class ConfigurationBaseComponent implements OnInit {
       .then(response => {
         if (!response.success) throw new Error(response.message);
         this.iConfig.values.channels = response.channels;
+        return this.iConfig.getDavisNotificationsEndpoint();
+      })
+      .then(response => {
+        this.iConfig.values.notifications.uri = response.uri;
+        this.iConfig.values.notifications.config = response.config;
         return this.iConfig.getDynatrace();
       })
       .then(response => {

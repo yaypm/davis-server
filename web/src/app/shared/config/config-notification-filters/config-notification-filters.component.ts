@@ -9,10 +9,10 @@ import { CommonModel }                              from '../../models/common.mo
 import * as _                                       from "lodash";
 
 @Component({
-  selector: 'config-notifications',
-  templateUrl: './config-notifications.component.html',
+  selector: 'config-notification-filters',
+  templateUrl: './config-notification-filters.component.html',
 })
-export class ConfigNotificationsComponent implements OnInit {
+export class ConfigNotificationFiltersComponent implements OnInit {
 
   submitted: boolean = false;
   submitButton: string = 'Save';
