@@ -109,7 +109,7 @@ export class DavisBaseComponent implements OnInit, AfterViewInit {
           }
         })
         .catch(err => {
-          this.addToConvo( { visual: { card: { text: err, error: true } }}, true);
+          this.addToConvo( { visual: { card: { text: err.message, error: true } }}, true);
           this.iDavis.windowScrollBottom('slow');
         });
     }
