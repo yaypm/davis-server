@@ -40,6 +40,10 @@ form {
 .wizard-step-number {
   font-size: 18px; }
   
+.wizard-border {
+  border: 0.5px solid #ececec;
+}
+  
 .layout--two-thirds {
   flex-basis: 66.66%; }
   
@@ -949,6 +953,23 @@ form.card-form {
   font-size: 10px;
   color: white;
   background-color: #d3571a;
+}
+
+.scope-tag {
+  display: inline-block;
+  vertical-align: text-top;
+  padding: 0px 6px;
+  margin: 5px 5px 5px 0px;
+  border-radius: 3px;
+  font-size: 9px;
+  color: #898989;
+  border: 1px solid #898989;
+}
+
+.scope-tag-enabled {
+  border-color: transparent;
+  background-color: #00a1b2;
+  color: white;
 }
 
 a:hover .root-cause {

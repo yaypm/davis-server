@@ -1,6 +1,8 @@
 <form (ngSubmit)="doSubmit()" #form="ngForm">
 <div class="layout is-flex has-islands" [class.fadeInSlow]="iConfig.isWizard" [class.slideInRight]="iConfig.isWizard">
-  <div class="island--full-width" [class.island--full-width-sidebar]="!iConfig.isWizard">
+  <div class="island--full-width" 
+    [class.wizard-border]="iConfig.isWizard"
+    [class.island--full-width-sidebar]="!iConfig.isWizard">
     <div class="config-title">
       Connect to Slack App
     </div>
@@ -11,7 +13,8 @@
       {{ iConfig.helpLinkText }}
     </a>
   </div>
-  <div *ngIf="iConfig.status['slack'].success === false" class="island--full-width island--error island--error-container" 
+  <div *ngIf="iConfig.status['slack'].success === false" class="island--full-width island--error island--error-container"
+    [class.wizard-border]="iConfig.isWizard"
     [class.island--full-width-sidebar]="!iConfig.isWizard">
     <div class="island--error-text">
       {{ iConfig.status['slack'].error }}
@@ -26,7 +29,9 @@
   </div>
   <div class="layout is-flex has-islands island--half">
     <div class="layout__container layout--half">
-      <div class="island" [class.island--sidebar-left]="!iConfig.isWizard">
+      <div class="island" 
+        [class.wizard-border]="iConfig.isWizard"
+        [class.island--sidebar-left]="!iConfig.isWizard">
         <div class="island island--full">
           <ul class="list" 
             *ngIf="iConfig.isWizard || isDirty 
@@ -73,7 +78,9 @@
       </div>
     </div>
     <div class="layout__container layout--half">
-      <div class="island" [class.island--sidebar-right]="!iConfig.isWizard">
+      <div class="island" 
+        [class.wizard-border]="iConfig.isWizard"
+        [class.island--sidebar-right]="!iConfig.isWizard">
         <div class="island island--full">
           <label for="clientId" class="label">
             Client ID

@@ -43,16 +43,6 @@
         </div>
       </div>
       <div class="layout is-flex has-islands island--half">
-        <label for="description" class="label">
-          Description
-        </label>
-        <input type="text" name="description" 
-          class="inputfield" id="description"
-          [(ngModel)]="iConfig.values.filter.description" 
-          [attr.disabled]="(!iDavis.isAdmin) ? true : null"
-          (keyup)="validate()">
-      </div>
-      <div class="layout is-flex has-islands island--half">
         <div class="layout__container layout--third">
           <div class="island island--half island--half--left">
             <label for="source" class="label">

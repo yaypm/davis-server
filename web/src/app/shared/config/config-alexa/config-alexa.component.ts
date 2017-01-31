@@ -28,7 +28,7 @@ export class ConfigAlexaComponent implements OnInit, AfterViewInit {
 
   doSubmit() {
     this.submitted = true;
-    this.iDavis.values.user.alexa_ids = this.iDavis.safariAutoCompletePolyFill(this.iDavis.values.user.alexa_ids, 'alexa_ids');
+    this.iDavis.values.user.alexa_id = this.iDavis.safariAutoCompletePolyFill(this.iDavis.values.user.alexa_id, 'alexa_id');
     if (this.iDavis.values.user.alexa_ids.length > 0) {
       this.submitButton = 'Saving...';
       this.iConfig.connectAlexa()
@@ -49,10 +49,12 @@ export class ConfigAlexaComponent implements OnInit, AfterViewInit {
   }
 
   validate() {
-    if (!this.iDavis.values.user.alexa_ids || this.iDavis.values.user.alexa_ids.length < 1 || this.iDavis.values.user.alexa_ids[0].trim().length < 1) {
+    if (this.iDavis.values.user.alexa_id && this.iDavis.values.user.alexa_id.trim().length > 0) {
+      this.iDavis.values.user.alexa_ids = [this.iDavis.values.user.alexa_id];
+    } else {
       this.iDavis.values.user.alexa_ids = [];
     }
-    if (this.iDavis.values.user.alexa_ids && this.iDavis.values.user.alexa_ids[0] && this.iDavis.values.user.alexa_ids[0].length > 0) {
+    if (this.iDavis.values.user.alexa_ids && this.iDavis.values.user.alexa_ids.length > 0) {
       this.submitButton = 'Continue';
     } else {
       this.submitButton = 'Skip';

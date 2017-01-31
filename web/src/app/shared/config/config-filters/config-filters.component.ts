@@ -5,6 +5,7 @@ import { Router }                                   from '@angular/router';
 import { ConfigService }                            from '../config.service';
 import { DavisService }                             from '../../davis.service';
 import { DavisModel }                               from '../../models/davis.model';
+import { CommonModel }                              from '../../models/common.model';
 import * as _                                       from "lodash";
 
 @Component({
@@ -27,8 +28,8 @@ export class ConfigFiltersComponent implements OnInit {
   addMode() {
     this.addFilter = true;
     this.editFilter = false;
-    this.iConfig.values.original.filter = new DavisModel().filter;
-    this.iConfig.values.filter = new DavisModel().filter;
+    this.iConfig.values.original.filter = new CommonModel().filter;
+    this.iConfig.values.filter = new CommonModel().filter;
     this.filterName = '';
   }
 
@@ -56,7 +57,7 @@ export class ConfigFiltersComponent implements OnInit {
     this.getFilters();
     this.addFilter = false;
     this.editFilter = false;
-    this.iConfig.values.original.filter = new DavisModel().filter;
+    this.iConfig.values.original.filter = new CommonModel().filter;
   }
   
   saveFilter(filter: any) {
@@ -77,8 +78,8 @@ export class ConfigFiltersComponent implements OnInit {
   ngOnInit() {
     if (!this.iDavis.isAdmin) this.addFilter = false;
     this.getFilters();
-    this.iConfig.values.filter = new DavisModel().filter;
-    this.iConfig.values.original.filter = new DavisModel().filter;
+    this.iConfig.values.filter = new CommonModel().filter;
+    this.iConfig.values.original.filter = new CommonModel().filter;
   }
 
 }

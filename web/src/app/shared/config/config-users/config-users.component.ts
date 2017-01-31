@@ -33,6 +33,11 @@ export class ConfigUsersComponent implements OnInit {
     editMode(user: any) {
       this.editUser = true;
       this.iConfig.values.original.otherUser = user;
+      if (this.iConfig.values.original.otherUser.alexa_ids && this.iConfig.values.original.otherUser.alexa_ids.length > 0) {
+        this.iConfig.values.original.otherUser.alexa_id = this.iConfig.values.original.otherUser.alexa_ids[0];
+      } else {
+        this.iConfig.values.original.otherUser.alexa_id = '';
+      }
       this.iConfig.values.otherUser = _.cloneDeep(user);
       this.filterName = '';
     }
@@ -53,6 +58,7 @@ export class ConfigUsersComponent implements OnInit {
               if (!user.name.first) this.iConfig.values.users[index].name.first = '';
               if (!user.name.last) this.iConfig.values.users[index].name.last = '';
             }
+            this.iConfig.values.users[index].password = '';
           });
           this.users = _.cloneDeep(response.users);
         })
