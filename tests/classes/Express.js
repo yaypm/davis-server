@@ -532,14 +532,14 @@ describe('Express', () => {
       });
   });
 
-  it('Should route to lastProblem', () => {
+  it('Should route to last problem', () => {
     return chai.request(app)
       .post('/api/v1/web')
       .set('X-Access-Token', token)
       .send({ phrase: 'what was my most recent issue' })
       .then(res => {
         res.body.success.should.eql(true);
-        res.body.intents.should.eql(['lastProblem', 'problemDetails']);
+        res.body.intents.should.eql(['problem', 'problemDetails']);
       });
   });
 

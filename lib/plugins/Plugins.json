@@ -13,7 +13,6 @@
         "./userActivity",
         "./problemNotification",
         "./pushLink",
-        "./autoFollowUp",
-        "./lastProblem"
+        "./autoFollowUp"
     ]
 }
