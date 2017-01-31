@@ -51,11 +51,16 @@ export class ConfigurationBaseComponent implements OnInit {
       admin: false,
       expanded: false,
       items: {
-        filters: {
-          key: 'notifications',
+        'notification-source': {
+          key: 'notification-source',
+          name: 'Connect to Source',
+          admin: false,
+        },
+        'notification-filters': {
+          key: 'notification-filters',
           name: 'Filters',
           admin: false,
-        }
+        },
       }
     },
     dynatrace: {
@@ -102,6 +107,8 @@ export class ConfigurationBaseComponent implements OnInit {
       .map(fragment => fragment || 'None')
       .subscribe(value => {
         if (this.sidebarItems[value]) {
+          this.iConfig.selectView(value);
+        } else if (value.indexOf('notification') > -1) {
           this.iConfig.selectView(value);
         } else {
           this.iConfig.selectView('user');
@@ -162,6 +169,11 @@ export class ConfigurationBaseComponent implements OnInit {
       .then(response => {
         if (!response.success) throw new Error(response.message);
         this.iConfig.values.channels = response.channels;
+        return this.iConfig.getDavisNotificationsEndpoint();
+      })
+      .then(response => {
+        this.iConfig.values.notifications.uri = response.uri;
+        this.iConfig.values.notifications.config = response.config;
         return this.iConfig.getDynatrace();
       })
       .then(response => {
