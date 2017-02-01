@@ -873,6 +873,11 @@ form.card-form {
 	padding-left: 10px;
 	vertical-align: top; }
 
+.card-content-text-only {
+  padding-left: 0px;
+  margin-left: -2px;
+}
+
 .card-title {
 	float: left;
 	cursor: pointer;

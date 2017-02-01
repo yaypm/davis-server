@@ -18,7 +18,7 @@ export class DavisService {
   isBreadcrumbsVisible: boolean = false;
   isUserMenuVisible: boolean = false;
   isIframeTile: boolean = false;
-  
+
   conversation: Array<any> = [];
   
   route_names: any = {

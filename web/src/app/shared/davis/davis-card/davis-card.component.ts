@@ -14,15 +14,18 @@ export class DavisCardComponent implements OnInit {
   @Input() message: any;
   @Input() isDavis: boolean;
   @Output() toggleProcessingIndicator: EventEmitter<any> = new EventEmitter();
+  
+  updated: boolean = false;
 
   constructor(
     public iDavis: DavisService,
     public iConfig: ConfigService) { }
     
   addToConvo(intent: string, name: string, value: string) {
-    this.toggleProcessingIndicator.emit();
+    if (intent !== 'pageRoute') this.toggleProcessingIndicator.emit();
     this.iDavis.askDavisIntent(intent, name, value)
       .then(result => {
+        if (!result.success) throw new Error(result.response);
         if (typeof result.response === 'string') {
           result.response = {
             visual: {
@@ -40,11 +43,23 @@ export class DavisCardComponent implements OnInit {
           result.response.isDavis = true;
         }
         result.response.timestamp = this.iDavis.getTimestamp();
-        this.toggleProcessingIndicator.emit();
-        this.iDavis.conversation.push(result.response);
-        setTimeout(() => {
+        
+        if (intent === 'pageRoute') {
+          this.updated = true;
+          this.message = result.response;
+          setTimeout(() => {
+            this.iDavis.windowScrollBottom(1);
+          }, 100);
+          setTimeout(() => {
+            this.updated = false;
+          }, 2000);
+        } else {
+          this.toggleProcessingIndicator.emit();
+          this.iDavis.conversation.push(result.response);
+          setTimeout(() => {
           this.iDavis.windowScrollBottom('slow');
         }, 100);
+        }
       })
       .catch(err => {
         let message = { visual: { card: { text: err, error: true } }, isDavis: true };
