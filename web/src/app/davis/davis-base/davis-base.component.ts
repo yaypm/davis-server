@@ -79,7 +79,7 @@ export class DavisBaseComponent implements OnInit, AfterViewInit {
   // ------------------------------------------------------
   
   doSubmit() {
-    let phrase = this.iDavis.safariAutoCompletePolyFill(this.davisInput, 'davisInput');
+    let phrase = this.iDavis.safariAutoCompletePolyFill(this.davisInput, 'davisInput').trim();
     if (phrase.length > 0) {
       this.addToConvo( { visual: { card: { text: phrase } } }, false);
       this.iDavis.windowScrollBottom('slow');
@@ -113,6 +113,8 @@ export class DavisBaseComponent implements OnInit, AfterViewInit {
           this.addToConvo( { visual: { card: { text: err, error: true } }}, true);
           this.iDavis.windowScrollBottom('slow');
         });
+    } else {
+      this.davisInput = '';
     }
   }
   
