@@ -650,7 +650,7 @@ input:-webkit-autofill {
   padding: 0; }
   
 .layout.has-islands {
-  padding: 8px; }
+  padding: 16px 8px; }
   
 .label--compact { 
   padding-top: 3px;
