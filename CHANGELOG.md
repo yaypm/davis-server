@@ -1,3 +1,26 @@
+<a name="0.9.0"></a>
+# [0.9.0](https://github.com/Dynatrace/davis-server/compare/v0.8.0...v0.9.0) (2017-02-02)
+
+
+### Bug Fixes
+
+* [#204](https://github.com/Dynatrace/davis-server/issues/204) raw request not saved through clarification step ([f160ab8](https://github.com/Dynatrace/davis-server/commit/f160ab8))
+* In config-user, typing in the password input and deleting all characters still results in isDirty being true [#199](https://github.com/Dynatrace/davis-server/issues/199). config-user fails to initialize properly due to alexa_ids array being null in some cases [#198](https://github.com/Dynatrace/davis-server/issues/198) ([88707d3](https://github.com/Dynatrace/davis-server/commit/88707d3))
+* In config-user, typing in the password input and deleting all characters still results in isDirty being true [#199](https://github.com/Dynatrace/davis-server/issues/199). config-user fails to initialize properly due to alexa_ids array being null in some cases [#198](https://github.com/Dynatrace/davis-server/issues/198) ([b962d91](https://github.com/Dynatrace/davis-server/commit/b962d91))
+* Parse slack dates in the text field [#179](https://github.com/Dynatrace/davis-server/issues/179) ([7f84a3a](https://github.com/Dynatrace/davis-server/commit/7f84a3a))
+
+
+### Features
+
+* Add filter scope as description [#200](https://github.com/Dynatrace/davis-server/issues/200) ([b510d14](https://github.com/Dynatrace/davis-server/commit/b510d14))
+* Add pager functionality, port problem and problemDetails ([abef11f](https://github.com/Dynatrace/davis-server/commit/abef11f))
+* Add web ui configuration section for filters [#163](https://github.com/Dynatrace/davis-server/issues/163) ([186efce](https://github.com/Dynatrace/davis-server/commit/186efce))
+* back to list from problem details ([75c9d4e](https://github.com/Dynatrace/davis-server/commit/75c9d4e))
+* Restyle auth-login UI to match existing Dynatrace login UI [#186](https://github.com/Dynatrace/davis-server/issues/186) ([3edbd7d](https://github.com/Dynatrace/davis-server/commit/3edbd7d))
+* Web UI should render footers on attachments [#175](https://github.com/Dynatrace/davis-server/issues/175) ([6e34a78](https://github.com/Dynatrace/davis-server/commit/6e34a78))
+
+
+
 <a name="0.8.0"></a>
 # [0.8.0](https://github.com/Dynatrace/davis-server/compare/v0.7.2...v0.8.0) (2017-01-19)
 
