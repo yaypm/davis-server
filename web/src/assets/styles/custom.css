@@ -905,7 +905,7 @@ form.card-form {
 
 .card-field {
 	float: left;
-	min-width: 200px;
+	width: 260px;
 	margin-bottom: 2px;
 	margin-right: 10px; }
 	
