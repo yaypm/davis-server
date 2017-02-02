@@ -31,35 +31,32 @@ export class ConfigurationBaseComponent implements OnInit {
       key:  'user',
       name: 'My Account',
       admin: false,
-      expanded: false,
     },
     users: {
       key: 'users',
       name: 'User Accounts',
       admin: true,
-      expanded: false,
     },
     filters: {
       key: 'filters',
       name: 'Filters',
       admin: false,
-      expanded: false,
     },
     notifications: {
       key: 'notifications',
       name: 'Notifications',
       admin: false,
-      expanded: false,
+      expanded: null,
       items: {
-        'notification-source': {
-          key: 'notification-source',
-          name: 'Connect to Source',
-          admin: false,
-        },
         'notification-filters': {
           key: 'notification-filters',
           name: 'Filters',
           admin: false,
+        },
+        'notification-source': {
+          key: 'notification-source',
+          name: 'Connect to Source',
+          admin: true,
         },
       }
     },
@@ -67,19 +64,16 @@ export class ConfigurationBaseComponent implements OnInit {
       key: 'dynatrace',
       name: 'Dynatrace',
       admin: true,
-      expanded: false,
     },
     slack: {
       key: 'slack',
       name: 'Slack App',
       admin: true,
-      expanded: false,
     },
     chrome: {
       key: 'chrome',
       name: 'Chrome Extension',
       admin: false,
-      expanded: false,
     },
   };
   

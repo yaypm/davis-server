@@ -79,6 +79,12 @@ export class ConfigDynatraceComponent implements OnInit, AfterViewInit {
     }
     if (this.iConfig.isWizard) {
       this.renderer.invokeElementMethod(this.url.nativeElement, 'focus');
+      setTimeout(() => {
+        this.validate();
+      }, 300);
+      setTimeout(() => {
+        this.validate();
+      }, 1000);
     }
     this.validate();
   }
