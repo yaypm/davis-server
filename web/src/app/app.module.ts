@@ -39,7 +39,7 @@ import { DavisService } from "./shared/davis.service";
 // ----------------------------------------------------------------------------
 @NgModule({
   bootstrap: [
-    AppComponent
+    AppComponent,
   ],
   declarations: [
     AppComponent,

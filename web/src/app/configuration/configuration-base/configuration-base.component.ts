@@ -37,11 +37,29 @@ export class ConfigurationBaseComponent implements OnInit {
       name: 'User Accounts',
       admin: true,
     },
-    // filters: {
-    //   key: 'filter',
-    //   name: 'Filters',
-    //   admin: false,
-    // },
+    filters: {
+      key: 'filters',
+      name: 'Filters',
+      admin: false,
+    },
+    notifications: {
+      key: 'notifications',
+      name: 'Notifications',
+      admin: false,
+      expanded: null,
+      items: {
+        'notification-filters': {
+          key: 'notification-filters',
+          name: 'Filters',
+          admin: false,
+        },
+        'notification-source': {
+          key: 'notification-source',
+          name: 'Connect to Source',
+          admin: true,
+        },
+      }
+    },
     dynatrace: {
       key: 'dynatrace',
       name: 'Dynatrace',
@@ -58,6 +76,8 @@ export class ConfigurationBaseComponent implements OnInit {
       admin: false,
     },
   };
+  
+  expandedSection: string = '';
 
   // ------------------------------------------------------
   // Inject services
@@ -82,6 +102,8 @@ export class ConfigurationBaseComponent implements OnInit {
       .subscribe(value => {
         if (this.sidebarItems[value]) {
           this.iConfig.selectView(value);
+        } else if (value.indexOf('notification') > -1) {
+          this.iConfig.selectView(value);
         } else {
           this.iConfig.selectView('user');
         }
@@ -91,6 +113,8 @@ export class ConfigurationBaseComponent implements OnInit {
     this.iConfig.status['user'].error = null;
     this.iConfig.status['filter'].success = null;
     this.iConfig.status['filter'].error = null;
+    this.iConfig.status['filters'].success = null;
+    this.iConfig.status['filters'].error = null;
     this.iConfig.status['dynatrace'].success = null;
     this.iConfig.status['dynatrace'].error = null;
     this.iConfig.status['slack'].success = null;
@@ -102,7 +126,13 @@ export class ConfigurationBaseComponent implements OnInit {
       .then(response => {
         if (!response.success) throw new Error(response.message); 
         this.iDavis.values.user = response.user;
-        
+        if (this.iDavis.values.user.alexa_ids && this.iDavis.values.user.alexa_ids.length > 0) {
+          this.iDavis.values.user.alexa_id = this.iDavis.values.user.alexa_ids[0];
+        } else {
+          this.iDavis.values.user.alexa_id = '';
+        }
+        this.iDavis.values.user.password = '';
+
         // Backwards compatibility, was once optional
         if (!response.user.name) {
           this.iDavis.values.user.name = { first: '', last: '' };
@@ -111,12 +141,33 @@ export class ConfigurationBaseComponent implements OnInit {
           if (!response.user.name.last) this.iDavis.values.user.name.last = '';
         }
         this.iConfig.values.original.user = _.cloneDeep(this.iDavis.values.user);
+        return this.iDavis.getDavisVersion();
+      })
+      .then(response => {
+        if (!response.success) { 
+          throw new Error(response.message); 
+        }
+        this.iDavis.davisVersion = response.version;
         return this.iConfig.getDavisFilters();
       })
       .then(response => {
         if (!response.success) throw new Error(response.message);
         this.iConfig.values.filters = response.filters;
-        this.iConfig.values.original.filters = _.cloneDeep(this.iConfig.values.filters);
+        this.iConfig.values.filter.owner = this.iDavis.values.user._id;
+        if (this.iDavis.isAdmin) { 
+          return this.iConfig.getSlackChannels();
+        } else {
+          throw new Error('skip-admin-only');
+        }
+      })
+      .then(response => {
+        if (!response.success) throw new Error(response.message);
+        this.iConfig.values.channels = response.channels;
+        return this.iConfig.getDavisNotificationsEndpoint();
+      })
+      .then(response => {
+        this.iConfig.values.notifications.uri = response.uri;
+        this.iConfig.values.notifications.config = response.config;
         return this.iConfig.getDynatrace();
       })
       .then(response => {
@@ -133,13 +184,6 @@ export class ConfigurationBaseComponent implements OnInit {
           this.iConfig.values.slack.redirectUri = `${window.location.protocol}//${window.location.host}/oauth`;
         }
         this.iConfig.values.original.slack = _.cloneDeep(this.iConfig.values.slack);
-        return this.iDavis.getDavisVersion();
-      })
-      .then(response => {
-        if (!response.success) { 
-          throw new Error(response.message); 
-        }
-        this.iDavis.davisVersion = response.version;
       })
       .catch(err => {
         this.iConfig.displayError(err, null);

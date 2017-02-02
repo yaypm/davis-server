@@ -9,7 +9,10 @@
 // ----------------------------------------------------------------------------
 // Angular
 import { Component, OnInit, 
-         AfterViewInit }          from '@angular/core';
+         AfterViewInit,
+         ElementRef,
+         Renderer,
+         ViewChild }              from '@angular/core';
 import { Router }                 from '@angular/router';
 import { ConfigService }          from '../../shared/config/config.service';
 import { DavisService }           from '../../shared/davis.service';
@@ -24,6 +27,8 @@ import * as _                     from 'lodash';
 })
 
 export class DavisBaseComponent implements OnInit, AfterViewInit {
+  
+  @ViewChild('davisIn') davisIn: ElementRef;
   
   davisInput: string = '';
   davisOutput: string = '';
@@ -63,14 +68,18 @@ export class DavisBaseComponent implements OnInit, AfterViewInit {
   // ------------------------------------------------------
   // Inject services
   // ------------------------------------------------------
-  constructor(public router: Router, public iConfig: ConfigService, public iDavis: DavisService) { }
+  constructor(
+    private renderer: Renderer,
+    public router: Router, 
+    public iConfig: ConfigService, 
+    public iDavis: DavisService) { }
 
   // ------------------------------------------------------
   // Initialize component
   // ------------------------------------------------------
   
   doSubmit() {
-    let phrase = this.iDavis.safariAutoCompletePolyFill(this.davisInput, 'davisInput');
+    let phrase = this.iDavis.safariAutoCompletePolyFill(this.davisInput, 'davisInput').trim();
     if (phrase.length > 0) {
       this.addToConvo( { visual: { card: { text: phrase } } }, false);
       this.iDavis.windowScrollBottom('slow');
@@ -80,18 +89,19 @@ export class DavisBaseComponent implements OnInit, AfterViewInit {
         this.iDavis.windowScrollBottom('slow');
       }, 200);
       this.iDavis.askDavisPhrase(phrase)
-        .then(result => {
-          if (result.response.visual.card) {
-            result.response.visual.card.attachments.forEach((attachment: any, index: any) => {
+        .then(response => {
+          if (!response.success) throw new Error(response.response);
+          if (response.response.visual.card) {
+            response.response.visual.card.attachments.forEach((attachment: any, index: any) => {
               if (attachment.actions) {
-                result.response.visual.card.attachments[index].actionClicked = null;
-                result.response.visual.card.attachments.push(result.response.visual.card.attachments[index]);
-                result.response.visual.card.attachments.splice(index, 1);
+                response.response.visual.card.attachments[index].actionClicked = null;
+                response.response.visual.card.attachments.push(response.response.visual.card.attachments[index]);
+                response.response.visual.card.attachments.splice(index, 1);
               }
             });
           }
-          if (result.response.visual.card || result.response.visual.card.text) {
-            this.addToConvo(result.response, true);
+          if (response.response.visual.card || response.response.visual.card.text) {
+            this.addToConvo(response.response, true);
             this.iDavis.blurDavisInput();
             setTimeout(() => {
               this.iDavis.windowScrollBottom('slow');
@@ -99,23 +109,16 @@ export class DavisBaseComponent implements OnInit, AfterViewInit {
           }
         })
         .catch(err => {
-          this.addToConvo( { visual: { card: { text: err } }}, true);
+          if (typeof err !== 'string' && err.message) err = err.message;
+          this.addToConvo( { visual: { card: { text: err, error: true } }}, true);
+          this.iDavis.windowScrollBottom('slow');
         });
+    } else {
+      this.davisInput = '';
     }
   }
   
   addToConvo(message: any, isDavis: boolean) {
-    
-    // Delete all previous card's unclicked actions
-    if (this.iDavis.conversation) {
-      let lastIndex: any = this.iDavis.conversation.length - 2;
-      if (lastIndex > -1 && this.iDavis.conversation[lastIndex].visual.card 
-        && this.iDavis.conversation[lastIndex].visual.card.attachments && this.iDavis.conversation[lastIndex].visual.card.attachments.length > 0 
-        && this.iDavis.conversation[lastIndex].visual.card.attachments[this.iDavis.conversation[lastIndex].visual.card.attachments.length - 1].actions) {
-        this.iDavis.conversation[lastIndex].visual.card.attachments[this.iDavis.conversation[lastIndex].visual.card.attachments.length - 1].actions = null;
-      }
-    }
-    
     message.isDavis = isDavis;
     message.timestamp = this.iDavis.getTimestamp();
     this.showProcessingIndicator = false;
@@ -139,7 +142,7 @@ export class DavisBaseComponent implements OnInit, AfterViewInit {
   ngOnInit() {
     this.iDavis.isBreadcrumbsVisible = true;
     this.davisMode = this.modes.noMic;
-    this.iDavis.focusDavisInputOnKeyPress();
+    this.iDavis.focusDavisInputOnKeyDown();
     
     if (!this.iDavis.values.user.email || !this.iDavis.davisVersion) {
       this.iDavis.getDavisUser()
@@ -170,8 +173,9 @@ export class DavisBaseComponent implements OnInit, AfterViewInit {
   }
   
   ngAfterViewInit() {
+    if (this.davisMode.name === 'noMic') this.renderer.invokeElementMethod(this.davisIn.nativeElement, 'focus');
     if (this.iDavis.conversation.length > 0) {
-      window.scrollTo(0,document.body.scrollHeight);
+      this.iDavis.windowScrollBottom(1);
     }
   }
 }

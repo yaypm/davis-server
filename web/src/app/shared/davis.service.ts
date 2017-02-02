@@ -18,7 +18,7 @@ export class DavisService {
   isBreadcrumbsVisible: boolean = false;
   isUserMenuVisible: boolean = false;
   isIframeTile: boolean = false;
-  
+
   conversation: Array<any> = [];
   
   route_names: any = {
@@ -27,6 +27,9 @@ export class DavisService {
     '/configuration#user': 'Account settings',
     '/configuration#users': 'Account settings',
     '/configuration#dynatrace': 'Account settings',
+    '/configuration#filters': 'Account settings',
+    '/configuration#notification-filters': 'Account settings',
+    '/configuration#notification-source': 'Account settings',
     '/configuration#slack': 'Account settings',
     '/configuration#chrome': 'Account settings',
   };
@@ -127,9 +130,7 @@ export class DavisService {
   handleError(error: Response | any): any {
     let errMsg: string;
     if (error instanceof Response) {
-      const body = error.json() || '';
-      const err = body.error || JSON.stringify(body);
-      errMsg = `${error.status} - ${error.statusText || ''} ${err}`;
+      errMsg = `${error.status} - ${error.statusText}`;
     } else {
       errMsg = error.message ? error.message : error.toString();
     }
@@ -169,10 +170,20 @@ export class DavisService {
     $('html, body').animate({ scrollTop: $(document).height() }, speed);
   }
   
-  focusDavisInputOnKeyPress() : void {
-    $(document).keypress(function(event) {
-      if (window.location.pathname === '/davis' && !$('#davisInput').is(":focus")) {
+  log(output: any): void {
+    console.log(output);
+  }
+
+  focusDavisInputOnKeyDown() : void {
+    var self = this;
+    var last = -1;
+    var last2 = -1;
+    $(document).keydown(function(event) {
+      if (last2 !== event.which) last2 = last;
+      last = event.which;
+      if (window.location.pathname === '/davis' && event.which != 17 && last != 17 && last2 != 17 && !$('#davisInput').is(":focus")) {
         $('#davisInput').focus();
+        self.windowScrollBottom('slow');
       }
     });
   }

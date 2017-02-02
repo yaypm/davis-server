@@ -2,18 +2,17 @@
     "intents": [
         "./problem",
         "./routing",
+        "./pager",
         "./help",
         "./davisVersion",
         "./launch",
         "./problemDetails",
-        "./scalability",
         "./stop",
         "./thanks",
         "./unknown",
         "./userActivity",
         "./problemNotification",
         "./pushLink",
-        "./autoFollowUp",
-        "./lastProblem"
+        "./autoFollowUp"
     ]
 }

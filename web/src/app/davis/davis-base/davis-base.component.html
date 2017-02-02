@@ -1,20 +1,23 @@
 <form (ngSubmit)="doSubmit()" #form="ngForm">
   <div class="layout is-flex has-islands">
     <div class="island island--full-width" style="background-color: transparent; margin: 0; padding: 0">
-      <div *ngFor="let message of iDavis.conversation" class="layout is-flex has-islands">
-        <davis-card class="island island--center" style="background-color: transparent; position: relative; padding: 0" [message]="message" [isDavis]="message.isDavis" 
+      <div *ngFor="let message of iDavis.conversation; let i = index;" class="layout is-flex has-islands">
+        <davis-card class="island island--center" style="background-color: transparent; position: relative; padding: 0" 
+          [message]="message" [isDavis]="message.isDavis"
           (toggleProcessingIndicator)="showProcessingIndicator = !showProcessingIndicator"></davis-card>
       </div>
       <div *ngIf="showProcessingIndicator" class="layout is-flex has-islands">
-        <davis-card class="island island--center" style="background-color: transparent; position: relative; padding: 0" [message]="{}" [isDavis]="true" 
+        <davis-card class="island island--center" style="background-color: transparent; position: relative; padding: 0" 
+          [message]="{}" [isDavis]="true"
           (toggleProcessingIndicator)="showProcessingIndicator = !showProcessingIndicator"></davis-card>
       </div>
-      <div *ngIf="iDavis.conversation.length < 1 && !iDavis.isIframeTile" class="layout is-flex has-islands">
+      <div *ngIf="iDavis.conversation.length < 1 && !iDavis.isIframeTile" class="layout is-flex has-islands" 
+        [class.fadeIn]="iDavis.conversation.length < 1"
+        [class.slideDownDavisCard]="iDavis.conversation.length < 1">
         <div class="island island--center" style="height: 299px; border: 0.5px solid #ececec">
           <svg style="fill: #004999; width: 175px; height: 175px; display: block; margin: 0 auto; margin-top: 20px">
             <use xlink:href="#davis"></use>
           </svg>
-          <!--<img style="width: 250px; display: block; margin: 0 auto; margin-top: 73px" src="/assets/images/davis-logo.png">-->
           <div style="text-align: center; margin-top: 15px; padding: 0px 16px">
             Davis here, your DevOps assistant, ask me something below!
           </div>
@@ -23,21 +26,22 @@
     </div>
   </div>
   <div class="chat-spacer"></div>
-  <div class="island island--full-width island--davisInput island--davisInput-border-full-width">
+  <div class="island island--full-width island--davisInput island--davisInput-border-full-width" 
+    [class.fadeIn]="iDavis.conversation.length < 1" 
+    [class.slideUpDavisInput]="iDavis.conversation.length < 1">
     <div class="layout is-flex has-islands is-flex--compact" style="padding-bottom: 0;">
       <div class="island island--center island--davisInput-border">         
         <label for="davisInput" class="label label--compact">
             {{ davisMode.title }}
         </label>
         <div class="input-button-wrapper" [class.input-button-wrapper-focus]="isDavisInputFocused">
-          <input type="text" id="davisInput" 
+          <input #davisIn type="text" id="davisInput" 
             name="davisInput" class="input-button-input" 
             [(ngModel)]="davisInput"
             [attr.placeholder]="placeholder"
             (keyup.enter)="doSubmit()"
             (focus)="isDavisInputFocused = true; toggleListening(false)"
-            (blur)="isDavisInputFocused = false"
-            [attr.autofocus]="davisMode.name === 'noMic'">
+            (blur)="isDavisInputFocused = false">
           
           <div *ngIf="davisMode.name !== 'noMic' && davisInput.length < 1" class="input-button-button" (click)="toggleListening(!isDavisListening)">
             <svg class="icon icon--black icon--input-button-img" [class.input-button-img-password-masked]="isDavisInputFocused || !isDavisListening">

@@ -1,4 +1,10 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit,
+         AfterViewInit,
+         ElementRef,
+         Renderer,
+         ViewChild,
+         Input, Output, 
+         EventEmitter }           from '@angular/core';
 
 // Services
 import { ConfigService }          from '../config.service';
@@ -10,11 +16,12 @@ import * as _                     from 'lodash';
   selector: 'config-user',
   templateUrl: './config-user.component.html',
 })
-export class ConfigUserComponent implements OnInit {
+export class ConfigUserComponent implements OnInit, AfterViewInit {
 
   @Input() isMyUser: boolean;
   @Input() isNewUser: boolean;
   @Output() showUsersList: EventEmitter<any> = new EventEmitter();
+  @ViewChild('first') first: ElementRef;
 
   submitted: boolean = false;
   submitButton: string = (this.iConfig.isWizard) ? 'Continue' : 'Save';
@@ -28,6 +35,7 @@ export class ConfigUserComponent implements OnInit {
   user: any;
 
   constructor(
+    private renderer: Renderer,
     public iDavis: DavisService,
     public iConfig: ConfigService) {}
 
@@ -41,33 +49,42 @@ export class ConfigUserComponent implements OnInit {
       this.iConfig.values.otherUser.name.last = this.iDavis.safariAutoCompletePolyFill(this.iConfig.values.otherUser.name.last, 'last');
       this.iConfig.values.otherUser.email = this.iDavis.safariAutoCompletePolyFill(this.iConfig.values.otherUser.email, 'email');
       this.iConfig.values.otherUser.admin = this.iDavis.safariAutoCompletePolyFill(this.iConfig.values.otherUser.admin, 'admin');
+      this.iConfig.values.otherUser.password = this.iDavis.safariAutoCompletePolyFill(this.iConfig.values.otherUser.password, 'password');
       this.iConfig.values.otherUser.timezone = this.iDavis.safariAutoCompletePolyFill(this.iConfig.values.otherUser.timezone, 'timezone');
-      this.iConfig.values.otherUser.alexa_ids = this.iDavis.safariAutoCompletePolyFill(this.iConfig.values.otherUser.alexa_ids, 'alexa_ids');
+      this.iConfig.values.otherUser.alexa_id = this.iDavis.safariAutoCompletePolyFill(this.iConfig.values.otherUser.alexa_id, 'alexa_id');
     } else {
       this.iDavis.values.user.name.first = this.iDavis.safariAutoCompletePolyFill(this.iDavis.values.user.name.first, 'first');
       this.iDavis.values.user.name.last = this.iDavis.safariAutoCompletePolyFill(this.iDavis.values.user.name.last, 'last');
       this.iDavis.values.user.email = this.iDavis.safariAutoCompletePolyFill(this.iDavis.values.user.email, 'email');
+      this.iDavis.values.user.password = this.iDavis.safariAutoCompletePolyFill(this.iDavis.values.user.password, 'password');
       this.iDavis.values.user.timezone = this.iDavis.safariAutoCompletePolyFill(this.iDavis.values.user.timezone, 'timezone');
-      this.iDavis.values.user.alexa_ids = this.iDavis.safariAutoCompletePolyFill(this.iDavis.values.user.alexa_ids, 'alexa_ids');
+      this.iDavis.values.user.alexa_id = this.iDavis.safariAutoCompletePolyFill(this.iDavis.values.user.alexa_id, 'alexa_id');
     }
     
-    this.user = (!this.iConfig.isWizard && !this.isMyUser) ? this.iConfig.values.otherUser : this.iDavis.values.user;
+    if (this.iDavis.values.user.password === '') delete this.iDavis.values.user.password;
+    if (this.iConfig.values.otherUser.password === '') delete this.iConfig.values.otherUser.password;
     
+    this.user = (!this.iConfig.isWizard && !this.isMyUser) ? _.cloneDeep(this.iConfig.values.otherUser) : _.cloneDeep(this.iDavis.values.user);
+    
+    // Remove properties that shouldn't persist through user save 
+    if (this.user.alexa_id) delete this.user.alexa_id;
+
     if ((!this.iConfig.isWizard && !this.isNewUser) || (!this.iConfig.isWizard && this.isMyUser)) {
       this.iConfig.updateDavisUser(this.user)
         .then(response => {
           if (!response.success) throw new Error(response.message);
-          
-          this.iConfig.values.original.user = _.cloneDeep(this.user);
+
           this.isDirty = false;
           this.iConfig.status['user'].success = true;
           this.submitButton = 'Save';
-          if (!this.isMyUser) {
-            this.showUsersList.emit();
-          }
+          if (this.iDavis.values.user.password) delete this.iDavis.values.user.password;
+          if (this.iConfig.values.otherUser.password) delete this.iConfig.values.otherUser.password;
+          this.iConfig.values.original.user = _.cloneDeep(this.iDavis.values.user);
+          if (!this.isMyUser) this.showUsersList.emit();
         })
         .catch(err => {
           this.iConfig.displayError(err, 'user');
+          this.submitButton = this.submitButtonDefault;
         });
     } else {
       this.iConfig.addDavisUser(this.user)
@@ -87,8 +104,8 @@ export class ConfigUserComponent implements OnInit {
             this.isDirty = false;
             
             // Authenticate new user, update token
-            this.iDavis.values.authenticate.email = this.iDavis.values.user.email;
-            this.iDavis.values.authenticate.password = this.iDavis.values.user.password;
+            this.iDavis.values.authenticate.email = this.user.email;
+            this.iDavis.values.authenticate.password = this.user.password;
             this.iDavis.getJwtToken()
               .then(
                 response => {
@@ -100,6 +117,8 @@ export class ConfigUserComponent implements OnInit {
                   sessionStorage.setItem('token', response.token);
                   sessionStorage.setItem('isAdmin', response.admin);
                   this.submitButton = this.submitButtonDefault;
+                  if (this.iDavis.values.user.password) delete this.iDavis.values.user.password;
+                  if (this.iConfig.values.otherUser.password) delete this.iConfig.values.otherUser.password;
                   
                   // Delete admin@localhost user
                   this.deleteUser('admin@localhost');
@@ -141,6 +160,19 @@ export class ConfigUserComponent implements OnInit {
   }
 
   validate() {
+    if (this.isMyUser) {
+      if (this.iDavis.values.user.alexa_id && this.iDavis.values.user.alexa_id.trim().length > 0) {
+        this.iDavis.values.user.alexa_ids = [this.iDavis.values.user.alexa_id];
+      } else {
+        this.iDavis.values.user.alexa_ids = [];
+      }
+    } else if (this.iConfig.values.otherUser) {
+      if (this.iConfig.values.otherUser.alexa_id && this.iConfig.values.otherUser.alexa_id.trim().length > 0) {
+        this.iConfig.values.otherUser.alexa_ids = [this.iConfig.values.otherUser.alexa_id];
+      } else {
+        this.iConfig.values.otherUser.alexa_ids = [];
+      }
+    }
     this.isDirty = (this.isMyUser) ? !_.isEqual(this.iDavis.values.user, this.iConfig.values.original.user) : !_.isEqual(this.iConfig.values.otherUser, this.iConfig.values.original.otherUser);
   }
 
@@ -156,6 +188,12 @@ export class ConfigUserComponent implements OnInit {
     if (this.isNewUser) {
       this.submitButtonDefault = 'Add User';
       this.submitButton = 'Add User';
+    } else {
+      if (this.iConfig.values.otherUser && this.iConfig.values.otherUser.alexa_ids && this.iConfig.values.otherUser.alexa_ids.length > 0) {
+        this.iConfig.values.otherUser.alexa_id = this.iConfig.values.otherUser.alexa_ids[0];
+      } else if (this.iDavis.values.user && this.iDavis.values.user.alexa_ids && this.iDavis.values.user.alexa_ids.length > 0) {
+        this.iDavis.values.user.alexa_id = this.iDavis.values.user.alexa_ids[0];
+      }
     }
 
     this.detectedTimezone = this.iDavis.getTimezone();
@@ -164,12 +202,12 @@ export class ConfigUserComponent implements OnInit {
     } else if (this.isNewUser){
       this.iConfig.values.otherUser.timezone = this.iDavis.getTimezone();
     }
-     
-    setTimeout(() => {
-      if (document.getElementsByName('first')[0]) {
-        document.getElementsByName('first')[0].focus();
-      }
-      this.validate();
-    }, 200);
+  }
+  
+  ngAfterViewInit() {
+    if (this.isNewUser || this.iConfig.isWizard) {
+      this.renderer.invokeElementMethod(this.first.nativeElement, 'focus');
+    }
+    this.validate();
   }
 }

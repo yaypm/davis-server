@@ -1,27 +1,35 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,
+         AfterViewInit,
+         ElementRef,
+         Renderer,
+         ViewChild }     from '@angular/core';
 
 // Services
 import { ConfigService } from '../config.service';
 import { DavisService }  from '../../davis.service';
-import * as _ from "lodash";
+import * as _            from "lodash";
 
 @Component({
   selector: 'config-alexa',
   templateUrl: './config-alexa.component.html',
 })
-export class ConfigAlexaComponent implements OnInit {
+export class ConfigAlexaComponent implements OnInit, AfterViewInit {
+  
+  @ViewChild('alexaIds') alexaIds: ElementRef;
+  
   submitted: boolean = false;
   submitButton: string = (this.iConfig.isWizard) ? 'Skip' : 'Save';
   isDirty: boolean = false;
 
   constructor(
+    private renderer: Renderer,
     public iDavis: DavisService,
     public iConfig: ConfigService) { }
 
   doSubmit() {
     this.submitted = true;
-    this.iDavis.values.user.alexa_ids = this.iDavis.safariAutoCompletePolyFill(this.iDavis.values.user.alexa_ids, 'alexa_ids');
-    if (this.iDavis.values.user.alexa_ids) {
+    this.iDavis.values.user.alexa_id = this.iDavis.safariAutoCompletePolyFill(this.iDavis.values.user.alexa_id, 'alexa_id');
+    if (this.iDavis.values.user.alexa_ids.length > 0) {
       this.submitButton = 'Saving...';
       this.iConfig.connectAlexa()
         .then(response => {
@@ -41,7 +49,12 @@ export class ConfigAlexaComponent implements OnInit {
   }
 
   validate() {
-    if (this.iDavis.values.user.alexa_ids) {
+    if (this.iDavis.values.user.alexa_id && this.iDavis.values.user.alexa_id.trim().length > 0) {
+      this.iDavis.values.user.alexa_ids = [this.iDavis.values.user.alexa_id];
+    } else {
+      this.iDavis.values.user.alexa_ids = [];
+    }
+    if (this.iDavis.values.user.alexa_ids && this.iDavis.values.user.alexa_ids.length > 0) {
       this.submitButton = 'Continue';
     } else {
       this.submitButton = 'Skip';
@@ -53,7 +66,9 @@ export class ConfigAlexaComponent implements OnInit {
     this.submitButton = (this.iConfig.isWizard) ? 'Continue' : 'Save';
   }
 
-  ngOnInit() {
-    document.getElementsByName('alexa_ids')[0].focus();
+  ngOnInit() {}
+  
+  ngAfterViewInit() {
+    this.renderer.invokeElementMethod(this.alexaIds.nativeElement, 'focus');
   }
 }

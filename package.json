@@ -19,7 +19,6 @@
     "debug-test": "mocha tests/all --debug-brk",
     "lint": "eslint lib && echo",
     "jsdoc": "jsdoc -r lib",
-    "publish": "gulp publish",
     "heroku-postbuild": "gulp --gulpfile heroku.gulpfile.js get-dist",
     "precompile:watch": "gulp clean",
     "compile:watch": "webpack --watch --display-error-details --progress"
@@ -90,7 +89,7 @@
     "rxjs": "5.0.1",
     "ts-node": "1.2.1",
     "tslint": "^3.15.1",
-    "typescript": "~2.0.10",
+    "typescript": "~2.1.5",
     "uglify-js": "^2.7.4",
     "webpack": "^1.14.0",
     "webpack-merge": "^2.0.0",

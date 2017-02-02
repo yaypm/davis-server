@@ -247,12 +247,7 @@ describe('Express', () => {
       .send(genPayload('launch davis'))
       .then(res => {
         res.body.response.outputSpeech.should.have.property('ssml');
-        [
-          "<speak>What's up?</speak>",
-          '<speak>How can I be of service?</speak>',
-          '<speak>How can I help you?</speak>',
-        ].indexOf(res.body.response.outputSpeech.ssml)
-          .should.be.greaterThan(-1);
+        res.body.response.shouldEndSession.should.be.false;
       })
   });
 
@@ -276,7 +271,7 @@ describe('Express', () => {
       .send({ phrase: 'What happened yesterday' })
       .then(res => {
         res.body.success.should.eql(true);
-        res.body.intents.should.eql(['problem']);
+        res.body.intents.should.eql(['problem', 'showPage']);
       });
   });
 
@@ -287,7 +282,115 @@ describe('Express', () => {
       .send({ phrase: 'the first one' })
       .then(res => {
         res.body.success.should.eql(true);
-        res.body.intents.should.eql(['routing', 'problemDetails']);
+        res.body.intents.should.eql(['routing', 'pageRoute', 'problemDetails']);
+      });
+  });
+
+  it('should go back to the problem list', () => {
+    return chai.request(app)
+      .post('/api/v1/web')
+      .set('X-Access-Token', token)
+      .send({ phrase: 'back' })
+      .then(res => {
+        res.body.success.should.eql(true);
+        res.body.intents.should.eql(['setPage', 'showPage']);
+      });
+  });
+
+  it('should go to the last page', () => {
+    return chai.request(app)
+      .post('/api/v1/web')
+      .set('X-Access-Token', token)
+      .send({ phrase: 'last page' })
+      .then(res => {
+        const match = res.body.response.visual.card.attachments[0].footer.match(/^Page (\d+) of (\d+)$/);
+        match[1].should.eql(match[2]);
+        res.body.success.should.eql(true);
+        res.body.intents.should.eql(['setPage', 'showPage']);
+      });
+  });
+
+  it('should not be able to go after the last page', () => {
+    return chai.request(app)
+      .post('/api/v1/web')
+      .set('X-Access-Token', token)
+      .send({ phrase: 'next page' })
+      .then(res => {
+        res.body.response.visual.card.attachments[0].text.should.match(/^Already on the last page/);
+        res.body.success.should.eql(true);
+        res.body.intents.should.eql(['setPage']);
+      });
+  });
+
+  it('should go to the first page', () => {
+    return chai.request(app)
+      .post('/api/v1/web')
+      .set('X-Access-Token', token)
+      .send({ phrase: 'first page' })
+      .then(res => {
+        res.body.response.visual.card.attachments[0].footer.should.match(/^Page 1/);
+        res.body.success.should.eql(true);
+        res.body.intents.should.eql(['setPage', 'showPage']);
+      });
+  });
+
+  it('should not be able to go before the first page', () => {
+    return chai.request(app)
+      .post('/api/v1/web')
+      .set('X-Access-Token', token)
+      .send({ phrase: 'previous page' })
+      .then(res => {
+        res.body.response.visual.card.attachments[0].text.should.match(/^Already on the first page/)
+        res.body.success.should.eql(true);
+        res.body.intents.should.eql(['setPage']);
+      });
+  });
+
+  it('should go to the next page', () => {
+    return chai.request(app)
+      .post('/api/v1/web')
+      .set('X-Access-Token', token)
+      .send({ phrase: 'next' })
+      .then(res => {
+        res.body.response.visual.card.attachments[0].footer.should.match(/^Page 2/);
+        res.body.success.should.eql(true);
+        res.body.intents.should.eql(['setPage', 'showPage']);
+      });
+  });
+
+  it('should go to the previous page', () => {
+    return chai.request(app)
+      .post('/api/v1/web')
+      .set('X-Access-Token', token)
+      .send({ phrase: 'back' })
+      .then(res => {
+        res.body.response.visual.card.attachments[0].footer.should.match(/^Page 1/);
+        res.body.success.should.eql(true);
+        res.body.intents.should.eql(['setPage', 'showPage']);
+      });
+  });
+
+  it('should button click to the next page', () => {
+    return chai.request(app)
+      .post('/api/v1/web')
+      .set('X-Access-Token', token)
+      .send({ intent: 'pageRoute', button: { name: 'Next', value: 3 } })
+      .then(res => {
+        res.body.response.visual.card.attachments[0].footer.should.match(/^Page 2/);
+        res.body.success.should.eql(true);
+        res.body.intents.should.eql(['pageRoute', 'showPage']);
+      });
+  });
+
+  it('should button click to the previous page', () => {
+    return chai.request(app)
+      .post('/api/v1/web')
+      .set('X-Access-Token', token)
+      .send({ intent: 'pageRoute', button: { name: 'Previous', value: 0 } })
+      .then(res => {
+        res.body.response.visual.card.attachments[0].footer.should.match(/^Page 1/);
+        res.body.success.should.eql(true);
+        res.body.intents.should.eql(['pageRoute', 'showPage']);
       });
   });
 
@@ -429,14 +532,14 @@ describe('Express', () => {
       });
   });
 
-  it('Should route to lastProblem', () => {
+  it('Should route to last problem', () => {
     return chai.request(app)
       .post('/api/v1/web')
       .set('X-Access-Token', token)
       .send({ phrase: 'what was my most recent issue' })
       .then(res => {
         res.body.success.should.eql(true);
-        res.body.intents.should.eql(['lastProblem', 'problemDetails']);
+        res.body.intents.should.eql(['problem', 'problemDetails']);
       });
   });
 

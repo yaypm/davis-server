@@ -104,11 +104,41 @@ export class ConfigService {
       .catch(this.iDavis.handleError);
   }
   
-  addDavisFilter(filters: any): Promise<any> {
+  addDavisFilter(filter: any): Promise<any> {
     let headers = new Headers({ 'Content-Type': 'application/json', 'x-access-token': this.iDavis.token });
     let options = new RequestOptions({ headers: headers });
 
-    return this.http.post(`/api/v1/system/filters`, filters, options)
+    return this.http.post(`/api/v1/system/filters`, filter, options)
+      .toPromise()
+      .then(this.iDavis.extractData)
+      .catch(this.iDavis.handleError);
+  }
+  
+  updateDavisFilter(filter: any): Promise<any> {
+    let headers = new Headers({ 'Content-Type': 'application/json', 'x-access-token': this.iDavis.token });
+    let options = new RequestOptions({ headers: headers });
+
+    return this.http.put(`/api/v1/system/filters/${filter._id}`, filter, options)
+      .toPromise()
+      .then(this.iDavis.extractData)
+      .catch(this.iDavis.handleError);
+  }
+  
+  removeDavisFilter(filter: any): Promise<any> {
+    let headers = new Headers({ 'Content-Type': 'application/json', 'x-access-token': this.iDavis.token });
+    let options = new RequestOptions({ headers: headers });
+
+    return this.http.delete(`/api/v1/system/filters/${filter._id}`, options)
+      .toPromise()
+      .then(this.iDavis.extractData)
+      .catch(this.iDavis.handleError);
+  }
+  
+  getDavisNotificationsEndpoint(): Promise<any> {
+    let headers = new Headers({ 'Content-Type': 'application/json', 'x-access-token': this.iDavis.token } );
+    let options = new RequestOptions({ headers: headers });
+
+    return this.http.get('/api/v1/events/problems', options)
       .toPromise()
       .then(this.iDavis.extractData)
       .catch(this.iDavis.handleError);
@@ -163,6 +193,16 @@ export class ConfigService {
       .then(this.iDavis.extractData)
       .catch(this.iDavis.handleError);
   }
+  
+  getSlackChannels(): Promise<any> {
+    let headers = new Headers({ 'Content-Type': 'application/json', 'x-access-token': this.iDavis.token });
+    let options = new RequestOptions({ headers: headers });
+
+    return this.http.get('/api/v1/system/slack/currentChannels', options)
+      .toPromise()
+      .then(this.iDavis.extractData)
+      .catch(this.iDavis.handleError);
+  }
 
   connectSlack(): Promise<any> {
     let headers = new Headers({ 'Content-Type': 'application/json', 'x-access-token': this.iDavis.token });
@@ -179,6 +219,16 @@ export class ConfigService {
     let options = new RequestOptions({ headers: headers });
 
     return this.http.post('/api/v1/system/slack/start', {}, options)
+      .toPromise()
+      .then(this.iDavis.extractData)
+      .catch(this.iDavis.handleError);
+  }
+  
+  removeSlackAppConfig(): Promise<any> {
+    let headers = new Headers({ 'Content-Type': 'application/json', 'x-access-token': this.iDavis.token });
+    let options = new RequestOptions({ headers: headers });
+
+    return this.http.post(`/api/v1/system/slack/delete`, {}, options)
       .toPromise()
       .then(this.iDavis.extractData)
       .catch(this.iDavis.handleError);

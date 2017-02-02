@@ -3,7 +3,7 @@
     <div class="config-title">
       User Accounts
     </div>
-    <a href="https://github.com/Dynatrace/davis-server/wiki/Getting%20Started" target="_blank" class="config-help">
+    <a href="https://github.com/Dynatrace/davis-server/wiki/User-Accounts" target="_blank" class="config-help">
       {{ iConfig.helpLinkText }}
     </a>
   </div>
@@ -38,7 +38,7 @@
     <div class="island--scrollable-table">
       <table *ngIf="!addUser && !editUser" class="table">
         <tbody>
-          <tr *ngFor='let user of users | filterUsersByName:filterName' (click)="editMode(user)">
+          <tr *ngFor="let user of users | filterUsersByName:filterName" (click)="editMode(user)">
             <td>
               {{ user.name.last }}, {{ user.name.first }}
             </td>

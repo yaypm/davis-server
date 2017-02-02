@@ -1,6 +1,7 @@
 <form (ngSubmit)="doSubmit()" #form="ngForm">
-<div class="layout is-flex has-islands">
-  <div *ngIf="iConfig.isWizard || isMyUser" class="island--full-width" 
+<div class="layout is-flex has-islands" [class.fadeInSlow]="iConfig.isWizard" [class.slideInRight]="iConfig.isWizard">
+  <div *ngIf="iConfig.isWizard || isMyUser" class="island--full-width"
+    [class.wizard-border]="iConfig.isWizard"
     [class.island--full-width-sidebar]="!iConfig.isWizard">
     <div class="config-title">
       {{ (iConfig.isWizard) ?  'Create Administrator Account' : 'My Account' }}
@@ -8,17 +9,29 @@
     <div *ngIf="iConfig.isWizard" class="wizard-step-number">
       Step 2 of 4
     </div>
-    <a href="https://github.com/Dynatrace/davis-server/wiki/Getting%20Started" target="_blank" class="config-help">
+    <a href="https://github.com/Dynatrace/davis-server/wiki/User-Accounts" target="_blank" class="config-help">
       {{ iConfig.helpLinkText }}
     </a>
   </div>
-  <div *ngIf="iConfig.status['user'].success === false" class="island--full-width island--error" 
+  <div *ngIf="iConfig.status['user'].success === false" class="island--full-width island--error island--error-container" 
+    [class.wizard-border]="iConfig.isWizard"
     [class.island--full-width-sidebar]="!iConfig.isWizard"
     [class.island--my-account-error]="!iConfig.isWizard && isMyUser"
     [class.island--user-accounts-error]="!isMyUser">
-    {{ iConfig.status['user'].error }}
+    <div class="island--error-text">
+      {{ iConfig.status['user'].error }}
+    </div>
+    <div class="island--error-button">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" 
+        class="icon icon--black icon--error-button" 
+        (click)="iConfig.status['user'].success = null;">
+        <use xlink:href="#clear"></use>
+      </svg>
+    </div>
   </div>
-  <div class="island--full-width" [class.island--full-width-sidebar]="!iConfig.isWizard">
+  <div class="island--full-width"
+    [class.wizard-border]="iConfig.isWizard"
+    [class.island--full-width-sidebar]="!iConfig.isWizard">
     <div class="island island--center" 
       [class.island--left]="!iConfig.isWizard" 
       [class.island--user-accounts]="!iConfig.isWizard && !isMyUser" 
@@ -31,14 +44,14 @@
             </label>
             
             <!-- isMyUser -->
-            <input type="text" name="first"
+            <input #first type="text" name="first"
               class="inputfield" id="first"
               *ngIf="isMyUser"
               [(ngModel)]="iDavis.values.user.name.first" 
               (keyup)="validate()" required>
               
              <!-- !isMyUser -->
-            <input type="text" name="first" 
+            <input #first type="text" name="first" 
               class="inputfield" id="first"
               *ngIf="!isMyUser"
               [(ngModel)]="iConfig.values.otherUser.name.first" 
@@ -130,22 +143,16 @@
             </label>
             
             <!-- isMyUser -->
-            <select *ngIf="isMyUser" id="timezone" name="timezone" 
+            <select *ngIf="isMyUser" id="timezone" name="timezone" class="select"
               [(ngModel)]="iDavis.values.user.timezone"
-              (ngModelChange)="onTimezoneChange($event); validate()"
-              [class.select-opened]="isSelectOpened" 
-              (click)="isSelectOpened = !isSelectOpened" 
-              (blur)="isSelectOpened = false;" required>
+              (ngModelChange)="onTimezoneChange($event); validate()" required>
               <option *ngFor="let tz of iConfig.timezones" [value]="tz">{{tz}}</option>
             </select>
             
              <!-- !isMyUser -->
-            <select *ngIf="!isMyUser" id="timezone" name="timezone" 
+            <select *ngIf="!isMyUser" id="timezone" name="timezone" class="select" 
               [(ngModel)]="iConfig.values.otherUser.timezone" 
-              (ngModelChange)="onTimezoneChange($event); validate()"
-              [class.select-opened]="isSelectOpened" 
-              (click)="isSelectOpened = !isSelectOpened" 
-              (blur)="isSelectOpened = false;" required>
+              (ngModelChange)="onTimezoneChange($event); validate()" required>
               <option *ngFor="let tz of iConfig.timezones" [value]="tz">{{tz}}</option>
             </select>
           </div>
@@ -185,20 +192,20 @@
         </div>
       </div>
       <div class="island island--full" *ngIf="!iConfig.isWizard">          
-        <label for="alexa_ids" class="label">
+        <label for="alexa_id" class="label">
           Alexa User ID
         </label>
         
         <!-- isMyUser -->
-        <input type="text" class="inputfield" id="alexa_ids" name="alexa_ids" 
+        <input type="text" class="inputfield" id="alexa_id" name="alexa_id" 
             *ngIf="isMyUser"
-            [(ngModel)]="iDavis.values.user.alexa_ids"
+            [(ngModel)]="iDavis.values.user.alexa_id"
             (keyup)="validate()">
             
         <!-- !isMyUser -->
-        <input type="text" class="inputfield" id="alexa_ids" name="alexa_ids" 
+        <input type="text" class="inputfield" id="alexa_id" name="alexa_id" 
             *ngIf="!isMyUser"
-            [(ngModel)]="iConfig.values.otherUser.alexa_ids"
+            [(ngModel)]="iConfig.values.otherUser.alexa_id"
             (keyup)="validate()">
       </div>
       <div class="island island--full" *ngIf="!iConfig.isWizard && !isMyUser && iDavis.isAdmin && !isNewUser">

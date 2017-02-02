@@ -8,10 +8,13 @@
 // Imports
 // ----------------------------------------------------------------------------
 // Angular
-import { Component, OnInit }            from '@angular/core';
+import { Component, OnInit,
+         AfterViewInit,
+         ElementRef,
+         Renderer,
+         ViewChild }                    from '@angular/core';
 import { Router, ActivatedRoute, 
-         NavigationExtras 
-}                                       from '@angular/router';
+         NavigationExtras }             from '@angular/router';
 import { ConfigService }                from '../../shared/config/config.service';
 import { DavisService }                 from '../../shared/davis.service';
 import * as _                           from "lodash";
@@ -27,7 +30,10 @@ declare var ruxitApi: any;
   templateUrl: './auth-login.component.html',
 })
 
-export class AuthLoginComponent  implements OnInit {
+export class AuthLoginComponent  implements OnInit, AfterViewInit {
+  
+  @ViewChild('emailInput') emailInput: ElementRef;
+  
   // Initialize form submission
   submitted: boolean = false;
   loginError: string = null;
@@ -41,7 +47,12 @@ export class AuthLoginComponent  implements OnInit {
   // ------------------------------------------------------
   // Inject services
   // ------------------------------------------------------
-  constructor(public iDavis: DavisService, public iConfig: ConfigService, public router: Router, public route: ActivatedRoute) {
+  constructor(
+    private renderer: Renderer,
+    public iDavis: DavisService, 
+    public iConfig: ConfigService, 
+    public router: Router, 
+    public route: ActivatedRoute) {
     this.iConfig.titleGlobal = '';
   }
 
@@ -113,6 +124,10 @@ export class AuthLoginComponent  implements OnInit {
       .subscribe(value => {
         if (value !== 'None') this.navigationExtras.fragment = value;
       });
+  }
+  
+  ngAfterViewInit() {
+    this.renderer.invokeElementMethod(this.emailInput.nativeElement, 'focus');
   }
 
 }
