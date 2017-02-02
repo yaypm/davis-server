@@ -16,6 +16,7 @@ export class DavisCardComponent implements OnInit {
   @Output() toggleProcessingIndicator: EventEmitter<any> = new EventEmitter();
   
   updated: boolean = false;
+  updating: boolean = false;
 
   constructor(
     public iDavis: DavisService,
@@ -45,14 +46,18 @@ export class DavisCardComponent implements OnInit {
         result.response.timestamp = this.iDavis.getTimestamp();
         
         if (intent === 'pageRoute') {
-          this.updated = true;
-          this.message = result.response;
+          this.updating = true;
+          setTimeout(() => {
+            this.updating = false;
+            this.updated = true;
+            this.message = result.response;
+          }, 600);
           setTimeout(() => {
             this.iDavis.windowScrollBottom(1);
-          }, 100);
+          }, 700);
           setTimeout(() => {
             this.updated = false;
-          }, 2000);
+          }, 1000);
         } else {
           this.toggleProcessingIndicator.emit();
           this.iDavis.conversation.push(result.response);

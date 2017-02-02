@@ -23,7 +23,7 @@
         [innerHTML]="message.visual.card.text | slackTagConversionPipe:{isAttachment: false, isSentence: true}" class="card-push-animation" style="font-size: 14px"></div>
       <div *ngIf="message.visual && message.visual.card && message.visual.card.attachments && message.visual.card.attachments.length > 0" 
         class="card-attachments card-push-animation"
-        [class.fadeIn]="updated">
+        [class.fadeOut]="updating" [class.fadeIn]="updated">
         <div *ngFor="let attachment of message.visual.card.attachments" 
           class="card-attachment"
           [class.card-content-text-only]="!((attachment.title || attachment.fields || attachment.actions || attachment.actionClicked) || (attachment.author && attachment.author === 'filtered'))">
