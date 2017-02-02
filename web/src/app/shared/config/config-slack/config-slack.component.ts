@@ -107,6 +107,12 @@ export class ConfigSlackComponent implements OnInit, AfterViewInit {
   ngAfterViewInit() {
     if (this.iConfig.isWizard || !this.iConfig.values.slack.clientId || this.iConfig.values.slack.clientId.length < 1) {
       this.renderer.invokeElementMethod(this.clientId.nativeElement, 'focus');
+      setTimeout(() => {
+        this.validate();
+      }, 300);
+      setTimeout(() => {
+        this.validate();
+      }, 1000);
     }
     new Clipboard('.clipboard');
   }
