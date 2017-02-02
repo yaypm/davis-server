@@ -11,9 +11,9 @@
       [class.triangle-left-error]="message.visual && message.visual.card && message.visual.card.error"></div>
     <div class="island" [class.island--isDavis]="isDavis" [class.island--isUser]="!isDavis" 
       [class.island--error]="message.visual && message.visual.card && message.visual.card.error" 
-      style="padding: 17.5px 16px; margin: 0; border: 0.5px solid #ececec; z-index: 99">
+      style="padding: 17.5px 16px; margin: 0; border: 0.5px solid #ececec; z-index: 99; min-height: 58px">
       <div *ngIf="message === {}">
-        <div class="typing-indicator">
+        <div class="typing-indicator" style="margin-top: 4px">
           <span></span>
           <span></span>
           <span></span>
@@ -31,7 +31,7 @@
             class="card-bar" [style.border-color]="attachment.color"></div>
           <div class="card-content" [class.card-content-text-only]="!((attachment.title || attachment.fields || attachment.actions || attachment.actionClicked) || (attachment.author && attachment.author === 'filtered'))">
             <div *ngIf="attachment.author && attachment.author === 'filtered'" style="color: #b7b7b7">
-              <svg style="fill: #00A6FB; width: 15px; height: 15px; vertical-align: sub;">
+              <svg style="fill: #00A6FB; width: 15px; height: 15px; vertical-align: sub">
                 <use xlink:href="#filter"></use>
               </svg>
               filtered

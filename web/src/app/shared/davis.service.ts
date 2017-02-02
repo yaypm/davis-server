@@ -27,6 +27,9 @@ export class DavisService {
     '/configuration#user': 'Account settings',
     '/configuration#users': 'Account settings',
     '/configuration#dynatrace': 'Account settings',
+    '/configuration#filters': 'Account settings',
+    '/configuration#notification-filters': 'Account settings',
+    '/configuration#notification-source': 'Account settings',
     '/configuration#slack': 'Account settings',
     '/configuration#chrome': 'Account settings',
   };
@@ -167,6 +170,10 @@ export class DavisService {
     $('html, body').animate({ scrollTop: $(document).height() }, speed);
   }
   
+  log(output: any): void {
+    console.log(output);
+  }
+
   focusDavisInputOnKeyDown() : void {
     var self = this;
     var last = -1;

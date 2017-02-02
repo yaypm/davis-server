@@ -36,6 +36,7 @@ export class SlackTagConversionPipe implements PipeTransform {
             let date = fragment.substring(0, fragment.indexOf('>'));
             let text = date.substring(date.indexOf('|') + 1);
             if (!options.isSentence) text = text.charAt(0).toUpperCase() + text.slice(1);
+            text = text.replace('sun', 'Sun').replace('mon', 'Mon').replace('tue', 'Tue').replace('wed', 'Wed').replace('thu', 'Thu').replace('fri', 'Fri').replace('sa', 'Sa');
             exploded[index] = fragment.replace(fragment.substring(0, fragment.indexOf('>') + 1), text);
           }
         });

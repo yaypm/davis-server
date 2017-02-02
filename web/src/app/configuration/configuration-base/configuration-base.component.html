@@ -1,7 +1,8 @@
 <div class="layout is-flex config-background">
   <nav class="sidebar sidebar-sm" [class.hide-sm]="!iDavis.isSidebarVisible">
     <span *ngFor="let item of sidebarItems | filterSidebarItemsByAdminPipe:iDavis.isAdmin:iConfig.values.original.slack.clientId">
-      <a *ngIf="!item.items" class="sidebar__item" [class.is-active]="iConfig.view === item.key" (click)="iConfig.selectView(item.key); iDavis.isSidebarVisible = false; expandedSection = ''; sidebarItems.notifications.expanded = false;">
+      <a *ngIf="!item.items" class="sidebar__item" [class.is-active]="iConfig.view === item.key" 
+        (click)="iConfig.selectView(item.key); iDavis.isSidebarVisible = false; expandedSection = ''; sidebarItems.notifications.expanded = false;">
         <span class="sidebar__headline">{{ item.name }}</span>
       </a>
       <div *ngIf="item.items" class="expandable" 
@@ -10,7 +11,8 @@
         [class.is-active]="expandedSection === item.key || ((iConfig.view === item.key || iConfig.view.indexOf('notification') > -1) && expandedSection === '' && item.expanded !== false)">
         <a class="sidebar__item expandable__trigger expandable__trigger--right" 
           [class.closed]="(expandedSection !== item.key || !item.expanded) && iConfig.view !== item.key"
-          (click)="item.expanded = (item.expanded === null) ? false : !item.expanded; (item.expanded) ? iConfig.selectView('notification-filters') : null; expandedSection = (item.expanded) ? item.key : '';">
+          (click)="item.expanded = (item.expanded === null && iConfig.view.indexOf('notification') > -1) ? false : !item.expanded; 
+            (item.expanded && iConfig.view.indexOf('notification') < 0) ? iConfig.selectView('notification-filters') : null; expandedSection = (item.expanded) ? item.key : '';">
           <span class="sidebar__headline">{{ item.name }}</span>
           <span class="sidebar__info">{{ item.description }}</span>
         </a>
