@@ -18,6 +18,7 @@ export class DavisService {
   isBreadcrumbsVisible: boolean = false;
   isUserMenuVisible: boolean = false;
   isIframeTile: boolean = false;
+  isScrolledToBottom: boolean = true;
 
   conversation: Array<any> = [];
   
@@ -167,7 +168,19 @@ export class DavisService {
   }
   
   windowScrollBottom(speed: any): void {
+    this.isScrolledToBottom = true;
     $('html, body').animate({ scrollTop: $(document).height() }, speed);
+  }
+  
+  windowScrolled(): void {
+    var self = this;
+    $(window).scroll(function() {
+      if($(window).scrollTop() + $(window).height() > $(document).height() - 100) {
+        self.isScrolledToBottom = true;
+      } else {
+        self.isScrolledToBottom = false;
+      }
+    });
   }
   
   log(output: any): void {

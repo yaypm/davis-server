@@ -1,15 +1,17 @@
-import { Component, OnInit, Input, Output, EventEmitter, Pipe, PipeTransform } from '@angular/core';
+import { Component, OnInit, AfterViewInit, 
+         Input, Output, EventEmitter, Pipe, 
+         PipeTransform }                      from '@angular/core';
 
 // Services
-import { ConfigService } from '../../config/config.service';
-import { DavisService }  from '../../davis.service';
-import * as _ from "lodash";
+import { ConfigService }                      from '../../config/config.service';
+import { DavisService }                       from '../../davis.service';
+import * as _                                 from "lodash";
 
 @Component({
   selector: 'davis-card',
   templateUrl: './davis-card.component.html',
 })
-export class DavisCardComponent implements OnInit {
+export class DavisCardComponent implements OnInit, AfterViewInit {
   
   @Input() message: any;
   @Input() isDavis: boolean;
@@ -45,10 +47,8 @@ export class DavisCardComponent implements OnInit {
         }
         result.response.timestamp = this.iDavis.getTimestamp();
         this.toggleProcessingIndicator.emit();
+        if (this.iDavis.conversation.length > 20) this.iDavis.conversation.shift();
         this.iDavis.conversation.push(result.response);
-        setTimeout(() => {
-          this.iDavis.windowScrollBottom('slow');
-        }, 100);
       })
       .catch(err => {
         if (typeof err !== 'string' && err.message) err = err.message;
@@ -60,4 +60,8 @@ export class DavisCardComponent implements OnInit {
   doSubmit() {}
   
   ngOnInit() {}
+  
+  ngAfterViewInit() {
+    this.iDavis.windowScrollBottom('slow');
+  }
 }

@@ -445,6 +445,27 @@ input:-webkit-autofill {
 ::-webkit-scrollbar-corner {
   background: transparent; }
   
+.scroll-to-bottom-button {
+  position: fixed;
+  right: 10px;
+  bottom: 50%;
+  z-index: 1003;
+  width: 35px;
+  height: 35px;
+  border-radius: 3px;
+  background-color: black;
+  opacity: 0.4; 
+  cursor: pointer; }
+  
+.scroll-to-bottom-button:hover {
+  opacity: 0.6; }
+
+.icon--scroll-to-bottom {
+  width: 30px;
+  height: 30px;
+  margin: 2px auto;
+  display: block; }
+  
 /* Error message styling */
 .island--error-container {
   overflow: auto; }
@@ -472,10 +493,13 @@ input:-webkit-autofill {
 /* Small screen size */
 @media (max-width: 599px) {
   
+  .scroll-to-bottom-button {
+    right: 10px;
+    bottom: 60%; }
+  
   .davis-logo {
     width: 396px;
-    height: auto;
-  }
+    height: auto; }
   
   .island--half--left {
     margin:0; }
@@ -844,6 +868,12 @@ input:-webkit-autofill {
   	border-top: 10px solid transparent;
   	border-bottom: 10px solid transparent;
   	border-left: 10px solid #ececec; } }
+  	
+@media (min-width: 790px) {
+  
+  .scroll-to-bottom-button {
+    right: 30px;
+    bottom: 30px; } }
     
 form.card-form {
   min-height: 0; }
