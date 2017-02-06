@@ -905,12 +905,15 @@ form.card-form {
 
 .card-field {
 	float: left;
-	width: 260px;
+	width: 100%;
 	margin-bottom: 2px;
 	margin-right: 10px; }
 	
 .card-field-wrap {
   clear: both; }
+  
+.card-field-short {
+  width: 260px; }
   
 .card-field-many-rows {
   margin-bottom: 10px; }

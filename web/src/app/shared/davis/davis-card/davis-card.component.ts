@@ -23,8 +23,6 @@ export class DavisCardComponent implements OnInit {
     public iConfig: ConfigService) { }
     
   addToConvo(intent: string, name: string, value: string) {
-    // Disabled card updating
-    // if (intent !== 'pageRoute') 
     this.toggleProcessingIndicator.emit();
     this.iDavis.askDavisIntent(intent, name, value)
       .then(result => {
@@ -46,28 +44,11 @@ export class DavisCardComponent implements OnInit {
           result.response.isDavis = true;
         }
         result.response.timestamp = this.iDavis.getTimestamp();
-        
-        // Disabled card updating
-        // if (intent === 'pageRoute') {
-        //   this.updating = true;
-        //   setTimeout(() => {
-        //     this.updating = false;
-        //     this.updated = true;
-        //     this.message = result.response;
-        //   }, 600);
-        //   setTimeout(() => {
-        //     this.iDavis.windowScrollBottom(1);
-        //   }, 700);
-        //   setTimeout(() => {
-        //     this.updated = false;
-        //   }, 1000);
-        // } else {
-          this.toggleProcessingIndicator.emit();
-          this.iDavis.conversation.push(result.response);
-          setTimeout(() => {
-            this.iDavis.windowScrollBottom('slow');
-          }, 100);
-        // }
+        this.toggleProcessingIndicator.emit();
+        this.iDavis.conversation.push(result.response);
+        setTimeout(() => {
+          this.iDavis.windowScrollBottom('slow');
+        }, 100);
       })
       .catch(err => {
         if (typeof err !== 'string' && err.message) err = err.message;

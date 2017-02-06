@@ -42,7 +42,8 @@
              <div class="card-text" [innerHTML]="attachment.text | slackTagConversionPipe:{isAttachment: true, isSentence: true}"></div>
              <div *ngIf="attachment.fields" class="card-fields">
                 <div *ngFor="let field of attachment.fields; let i = index" class="card-field" 
-                  [class.card-field-wrap]="i % 2 == 0" 
+                  [class.card-field-wrap]="(i > 0 && !attachment.fields[i - 1].short) || !field.short"
+                  [class.card-field-short]="field.short"
                   [class.card-field-many-rows]="attachment.fields.length > 4">
                   <div class="card-field-title" [innerHTML]="field.title | slackTagConversionPipe:{isAttachment: true}"></div>
                   <div class="card-field-value" [innerHTML]="field.value | slackTagConversionPipe:{isAttachment: true}"></div>
