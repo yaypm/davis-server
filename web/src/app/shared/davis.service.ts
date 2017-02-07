@@ -19,6 +19,7 @@ export class DavisService {
   isUserMenuVisible: boolean = false;
   isIframeTile: boolean = false;
   isScrolledToBottom: boolean = true;
+  isAddingToConvo: boolean = false;
 
   conversation: Array<any> = [];
   

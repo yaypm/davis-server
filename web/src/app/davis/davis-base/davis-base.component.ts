@@ -119,6 +119,7 @@ export class DavisBaseComponent implements OnInit, AfterViewInit {
     message.timestamp = this.iDavis.getTimestamp();
     this.showProcessingIndicator = false;
     if (this.iDavis.conversation.length > 20) this.iDavis.conversation.shift();
+    this.iDavis.isAddingToConvo = true;
     this.iDavis.conversation.push(message);
   }
   
