@@ -1,0 +1,27 @@
+<form #form="ngForm" style="min-height: 0;">
+  <div style="float: left">
+    <input #keyInput [(ngModel)]="tag.key" name="key" type="text" class="tag-input tag-input-key" autocomplete="off"
+      (focus)="keyFocused = true" (blur)="keyFocused = false" (keyup)="(keys[tag.key]) ? tag.value = keys[tag.key].values[0] : tag.value = ''">
+    <div *ngIf="!keys[tag.key] && !valueFocused" class="tag-list tag-list-keys" style="position: absolute; z-index: 900">
+      <div *ngFor="let key of keys | tagPipe:tag.key" class="tag-list-item" (click)="values = key.values; tag.key = key.key; valueInput.focus()">
+        {{ key.key }}
+      </div>
+    </div>
+  </div>
+  <div style="float: left">
+    <input #valueInput [(ngModel)]="tag.value" name="value" type="text" class="tag-input tag-input-value" autocomplete="off"
+      (focus)="valueFocused = true" (blur)="valueFocused = false">
+    <div *ngIf="keys[tag.key] && ((values | tagPipe:tag.value).length > 1 || ((values | tagPipe:tag.value).length === 1 && (values | tagPipe:tag.value)[0] !== tag.value))" 
+      class="tag-list tag-list-values" style="position: absolute; z-index: 900">
+      <div *ngFor="let value of values | tagPipe:tag.value" class="tag-list-item" (click)="tag.value = value;">
+        {{ value }}
+      </div>
+    </div>
+  </div>
+  <span *ngIf="tag.key !== ''" class="tag" tabindex="1">
+    <button *ngIf="tag.value === '' && tag.key !== ''" class="tag__delete" (click)="tag.key = ''">Delete</button>
+    <span class="tag__key">{{ tag.key }}</span>
+    <span *ngIf="tag.value !== ''" class="tag__value">: {{ tag.value }}</span>
+    <button *ngIf="tag.value !== ''" class="tag__delete" (click)="tag.value = ''">Delete</button>
+  </span>
+</form>
