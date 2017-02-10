@@ -17,18 +17,14 @@ export class TagsInputComponent implements OnInit, AfterViewInit {
   // @Input() isDavis: boolean;
   // @Output() toggleProcessingIndicator: EventEmitter<any> = new EventEmitter();
   
-  tag: any = {
-    key: 'Browser Type', 
-    value: 'Robot',
-  };
   tags: any = [];
 
   constructor(
     public iDavis: DavisService,
-    public iConfig: ConfigService) { }
+    public iConfig: ConfigService) {}
   
   ngOnInit() {
-    this.tags.push(this.tag);
+    this.tags.push({key: null, value: null});
   }
   
   ngAfterViewInit() {}

@@ -1000,8 +1000,7 @@ form.card-form {
   border-radius: 3px;
   font-size: 10px;
   color: white;
-  background-color: #d3571a;
-}
+  background-color: #d3571a; }
 
 .scope-tag {
   display: inline-block;
@@ -1011,14 +1010,38 @@ form.card-form {
   border-radius: 3px;
   font-size: 9px;
   color: #898989;
-  border: 1px solid #898989;
-}
+  border: 1px solid #898989; }
 
 .scope-tag-enabled {
   border-color: transparent;
   background-color: #00a1b2;
-  color: white;
-}
+  color: white; }
+
+/* Tags */
+.tag-list {
+  position: absolute; 
+  top: 20px;
+  left: 10px;
+  z-index: 900;
+  background-color: white;
+  border: 1px solid #cccccc;
+  border-bottom-left-radius: 3px;
+  border-bottom-right-radius: 3px;
+  font-size: 12px; }
+
+.tag-list-item {
+  cursor: pointer;
+  padding: 4px 8px;
+  text-align: left; }
+
+.tag-list-item:hover, .tag-list-item-highlighted {
+  background-color: #e1f7f9; }
+
+.tag__key, .tag__value {
+  font-size: 12px; }
+
+.display-none {
+  display: none; }
 
 a:hover .root-cause {
   text-decoration: none;

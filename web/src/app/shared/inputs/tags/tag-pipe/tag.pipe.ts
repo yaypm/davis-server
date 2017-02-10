@@ -25,6 +25,12 @@ export class TagPipe implements PipeTransform {
           return key.key.toLowerCase().includes(str); 
         });
       }
+    } else if (!Array.isArray(keys)) {
+      let array = [];
+      for (let key in keys) {
+        array.push({key: key, value: keys[key]});
+      } 
+      keys = array;
     }
     
     return keys;

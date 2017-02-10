@@ -17,7 +17,7 @@ import { TagComponent }             from "./tag/tag.component";
 import { TagsInputComponent }       from "./input/input.component";
 
 // Services
-import { TagPipe }   from './tag-pipe/tag.pipe';
+import { TagPipe }                  from './tag-pipe/tag.pipe';
 
 // ----------------------------------------------------------------------------
 // Module
@@ -38,6 +38,7 @@ import { TagPipe }   from './tag-pipe/tag.pipe';
     FormsModule,
   ],
   providers: [
+    TagPipe,
   ],
 })
 
