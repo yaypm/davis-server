@@ -43,13 +43,13 @@
             (focus)="isDavisInputFocused = true; toggleListening(false)"
             (blur)="isDavisInputFocused = false">
           
-          <div *ngIf="davisMode.name !== 'noMic' && davisInput.length < 1" class="input-button-button" (click)="toggleListening(!isDavisListening)">
+          <div *ngIf="davisMode.name !== 'noMic' && davisInput.length < 1 && !showProcessingIndicator" class="input-button-button" (click)="toggleListening(!isDavisListening)">
             <svg class="icon icon--black icon--input-button-img" [class.input-button-img-password-masked]="isDavisInputFocused || !isDavisListening">
               <use xlink:href="#mic"></use>
             </svg>
           </div>
           
-          <div *ngIf="davisInput && davisInput.length > 0" class="input-button-button" (click)="doSubmit()">
+          <div *ngIf="davisInput && davisInput.length > 0 && !showProcessingIndicator" class="input-button-button" (click)="doSubmit()">
             <svg class="icon icon--black icon--input-button-img">
               <use xlink:href="#send"></use>
             </svg>

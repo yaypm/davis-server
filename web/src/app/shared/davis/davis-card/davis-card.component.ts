@@ -1,32 +1,32 @@
-import { Component, OnInit, Input, Output, EventEmitter, Pipe, PipeTransform } from '@angular/core';
+import { Component, OnInit, AfterViewInit,
+         Input, Output, EventEmitter, Pipe,
+         PipeTransform }                      from '@angular/core';
 
 // Services
-import { ConfigService } from '../../config/config.service';
-import { DavisService }  from '../../davis.service';
-import * as _ from "lodash";
+import { ConfigService }                      from '../../config/config.service';
+import { DavisService }                       from '../../davis.service';
+import * as _                                 from "lodash";
 
 @Component({
   selector: 'davis-card',
   templateUrl: './davis-card.component.html',
 })
-export class DavisCardComponent implements OnInit {
-  
+export class DavisCardComponent implements OnInit, AfterViewInit {
+
   @Input() message: any;
   @Input() isDavis: boolean;
   @Output() toggleProcessingIndicator: EventEmitter<any> = new EventEmitter();
-  
+
   updated: boolean = false;
   updating: boolean = false;
 
   constructor(
     public iDavis: DavisService,
     public iConfig: ConfigService) { }
-    
-  addToConvo(intent: string, name: string, value: string) {
-    // Disabled card updating
-    // if (intent !== 'pageRoute') 
+
+  addToConvo(callback_id: string, name: string, value: string) {
     this.toggleProcessingIndicator.emit();
-    this.iDavis.askDavisIntent(intent, name, value)
+    this.iDavis.askDavisButton(callback_id, name, value)
       .then(result => {
         if (!result.success) throw new Error(result.response);
         if (typeof result.response === 'string') {
@@ -46,28 +46,10 @@ export class DavisCardComponent implements OnInit {
           result.response.isDavis = true;
         }
         result.response.timestamp = this.iDavis.getTimestamp();
-        
-        // Disabled card updating
-        // if (intent === 'pageRoute') {
-        //   this.updating = true;
-        //   setTimeout(() => {
-        //     this.updating = false;
-        //     this.updated = true;
-        //     this.message = result.response;
-        //   }, 600);
-        //   setTimeout(() => {
-        //     this.iDavis.windowScrollBottom(1);
-        //   }, 700);
-        //   setTimeout(() => {
-        //     this.updated = false;
-        //   }, 1000);
-        // } else {
-          this.toggleProcessingIndicator.emit();
-          this.iDavis.conversation.push(result.response);
-          setTimeout(() => {
-            this.iDavis.windowScrollBottom('slow');
-          }, 100);
-        // }
+        this.toggleProcessingIndicator.emit();
+        if (this.iDavis.conversation.length > 20) this.iDavis.conversation.shift();
+        this.iDavis.isAddingToConvo = true;
+        this.iDavis.conversation.push(result.response);
       })
       .catch(err => {
         if (typeof err !== 'string' && err.message) err = err.message;
@@ -77,6 +59,13 @@ export class DavisCardComponent implements OnInit {
   }
 
   doSubmit() {}
-  
+
   ngOnInit() {}
+
+  ngAfterViewInit() {
+    if (this.iDavis.isAddingToConvo) {
+      this.iDavis.windowScrollBottom('slow');
+      this.iDavis.isAddingToConvo = false;
+    }
+  }
 }

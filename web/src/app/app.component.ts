@@ -43,6 +43,7 @@ export class AppComponent {
       
       // Detect embedding in Dynatrace iFrame tile
       this.iDavis.isIframeTile = this.iDavis.isIframeTileDetected();
+      this.iDavis.windowScrolled();
     }
 
 }

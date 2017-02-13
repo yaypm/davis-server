@@ -18,9 +18,11 @@ export class DavisService {
   isBreadcrumbsVisible: boolean = false;
   isUserMenuVisible: boolean = false;
   isIframeTile: boolean = false;
+  isScrolledToBottom: boolean = true;
+  isAddingToConvo: boolean = false;
 
   conversation: Array<any> = [];
-  
+
   route_names: any = {
     '/wizard': 'Setup',
     '/configuration': 'Account settings',
@@ -33,34 +35,34 @@ export class DavisService {
     '/configuration#slack': 'Account settings',
     '/configuration#chrome': 'Account settings',
   };
-  
+
   values: any = new DavisModel().davis.values;
 
   constructor (private http: Http, private router: Router) { }
-  
+
   goToPage(location: string): void {
     if (this.router.url !== '/wizard') {
-      
+
       if (location === '/davis') {
         this.windowScrollBottom(1);
       } else {
         this.windowScrollTop();
       }
-      
+
       this.router.navigate([location]);
       this.isUserMenuVisible = false;
     }
   }
-  
+
   toggleUserMenu(): void {
     this.isUserMenuVisible = !this.isUserMenuVisible;
   }
-  
+
   logOut(): void {
-    
+
     this.values.authenticate = new DavisModel().davis.values.authenticate;
     this.values.user = new DavisModel().davis.values.user;
-    
+
     this.isUserMenuVisible = false;
     this.isAuthenticated = false;
     this.isAdmin = false;
@@ -81,7 +83,7 @@ export class DavisService {
       .then(this.extractData)
       .catch(this.handleError);
   }
-  
+
   getDavisUser(): Promise<any> {
     let headers = new Headers({ 'Content-Type': 'application/json', 'x-access-token': this.token });
     let options = new RequestOptions({ headers: headers });
@@ -91,7 +93,7 @@ export class DavisService {
       .then(this.extractData)
       .catch(this.handleError);
   }
-  
+
   getDavisVersion(): Promise<any> {
     let headers = new Headers({ 'Content-Type': 'application/json', 'x-access-token': this.token });
     let options = new RequestOptions({ headers: headers });
@@ -101,7 +103,7 @@ export class DavisService {
       .then(this.extractData)
       .catch(this.handleError);
   }
-  
+
   askDavisPhrase(phrase: string) {
     let headers = new Headers({ 'Content-Type': 'application/json', 'x-access-token': this.token });
     let options = new RequestOptions({ headers: headers });
@@ -111,12 +113,12 @@ export class DavisService {
       .then(this.extractData)
       .catch(this.handleError);
   }
-  
-  askDavisIntent(intent: string, name: string, value: string) {
+
+  askDavisButton(callback_id: string, name: string, value: string) {
     let headers = new Headers({ 'Content-Type': 'application/json', 'x-access-token': this.token });
     let options = new RequestOptions({ headers: headers });
-    
-    return this.http.post(`/api/v1/web`, { button: { name: name, value: value }, intent: intent }, options)
+
+    return this.http.post(`/api/v1/web`, { button: { name: name, value: value }, callback_id: callback_id }, options)
       .toPromise()
       .then(this.extractData)
       .catch(this.handleError);
@@ -137,7 +139,7 @@ export class DavisService {
     console.error(errMsg);
     return Promise.reject(errMsg);
   }
-  
+
   isIframeTileDetected(): boolean {
     let result = false;
     try {
@@ -145,11 +147,11 @@ export class DavisService {
     } catch (e) {
       result = true;
     }
-    
+
     if (result) {
       $('body').addClass('iFrameTile');
     }
-    
+
     return result;
   }
 
@@ -161,15 +163,27 @@ export class DavisService {
     this.isUserMenuVisible = false;
     window.open(url);
   }
-  
+
   windowScrollTop(): void {
     window.scrollTo(0, 0);
   }
-  
+
   windowScrollBottom(speed: any): void {
+    this.isScrolledToBottom = true;
     $('html, body').animate({ scrollTop: $(document).height() }, speed);
   }
-  
+
+  windowScrolled(): void {
+    var self = this;
+    $(window).scroll(function() {
+      if($(window).scrollTop() + $(window).height() > $(document).height() - 100) {
+        self.isScrolledToBottom = true;
+      } else {
+        self.isScrolledToBottom = false;
+      }
+    });
+  }
+
   log(output: any): void {
     console.log(output);
   }
@@ -187,15 +201,15 @@ export class DavisService {
       }
     });
   }
-  
+
   blurDavisInput(): void {
     $('#davisInput').blur();
   }
-  
+
   addToChrome(): void {
     window.open('https://chrome.google.com/webstore/detail/kighaljfkdkpbneahajiknoiinbckfpg');
   }
-  
+
   clickElem(id: string): void {
     document.getElementById(id).click();
   }
@@ -203,19 +217,19 @@ export class DavisService {
   getTimezone(): string {
     return momentz.tz.guess();
   }
-  
+
   getTimestamp(): string {
     return moment().format('LTS');
   }
-  
+
   safariAutoCompletePolyFill(input: string, id: string): string {
     let value = $(`#${id}`).val();
-    
+
     // Checkbox workaround
     if( $(`#${id}`).attr('type') === 'checkbox' ) {
       value = $(`#${id}`).is(':checked');
     }
-    
+
     if (value && input !== value) input = value;
     return input;
   }
