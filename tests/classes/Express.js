@@ -374,7 +374,7 @@ describe('Express', () => {
     return chai.request(app)
       .post('/api/v1/web')
       .set('X-Access-Token', token)
-      .send({ intent: 'pageRoute', button: { name: 'Next', value: 3 } })
+      .send({ callback_id: 'pageRoute', button: { name: 'Next', value: 3 } })
       .then(res => {
         res.body.response.visual.card.attachments[0].footer.should.match(/^Page 2/);
         res.body.success.should.eql(true);
@@ -386,7 +386,7 @@ describe('Express', () => {
     return chai.request(app)
       .post('/api/v1/web')
       .set('X-Access-Token', token)
-      .send({ intent: 'pageRoute', button: { name: 'Previous', value: 0 } })
+      .send({ callback_id: 'pageRoute', button: { name: 'Previous', value: 0 } })
       .then(res => {
         res.body.response.visual.card.attachments[0].footer.should.match(/^Page 1/);
         res.body.success.should.eql(true);
