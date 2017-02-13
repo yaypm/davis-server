@@ -1,5 +1,5 @@
-import { Component, OnInit, AfterViewInit, 
-         Input, Output, EventEmitter, Pipe, 
+import { Component, OnInit, AfterViewInit,
+         Input, Output, EventEmitter, Pipe,
          PipeTransform }                      from '@angular/core';
 
 // Services
@@ -12,21 +12,21 @@ import * as _                                 from "lodash";
   templateUrl: './davis-card.component.html',
 })
 export class DavisCardComponent implements OnInit, AfterViewInit {
-  
+
   @Input() message: any;
   @Input() isDavis: boolean;
   @Output() toggleProcessingIndicator: EventEmitter<any> = new EventEmitter();
-  
+
   updated: boolean = false;
   updating: boolean = false;
 
   constructor(
     public iDavis: DavisService,
     public iConfig: ConfigService) { }
-    
-  addToConvo(intent: string, name: string, value: string) {
+
+  addToConvo(callback_id: string, name: string, value: string) {
     this.toggleProcessingIndicator.emit();
-    this.iDavis.askDavisIntent(intent, name, value)
+    this.iDavis.askDavisButton(callback_id, name, value)
       .then(result => {
         if (!result.success) throw new Error(result.response);
         if (typeof result.response === 'string') {
@@ -59,9 +59,9 @@ export class DavisCardComponent implements OnInit, AfterViewInit {
   }
 
   doSubmit() {}
-  
+
   ngOnInit() {}
-  
+
   ngAfterViewInit() {
     if (this.iDavis.isAddingToConvo) {
       this.iDavis.windowScrollBottom('slow');
