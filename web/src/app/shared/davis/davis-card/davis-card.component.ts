@@ -48,6 +48,7 @@ export class DavisCardComponent implements OnInit, AfterViewInit {
         result.response.timestamp = this.iDavis.getTimestamp();
         this.toggleProcessingIndicator.emit();
         if (this.iDavis.conversation.length > 20) this.iDavis.conversation.shift();
+        this.iDavis.isAddingToConvo = true;
         this.iDavis.conversation.push(result.response);
       })
       .catch(err => {
@@ -62,6 +63,9 @@ export class DavisCardComponent implements OnInit, AfterViewInit {
   ngOnInit() {}
   
   ngAfterViewInit() {
-    this.iDavis.windowScrollBottom('slow');
+    if (this.iDavis.isAddingToConvo) {
+      this.iDavis.windowScrollBottom('slow');
+      this.iDavis.isAddingToConvo = false;
+    }
   }
 }

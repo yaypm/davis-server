@@ -1,4 +1,8 @@
 <form (ngSubmit)="doSubmit()" #form="ngForm">
+<div style="position:absolute;height:0px; overflow:hidden; ">
+  Username <input type="text" name="fake_safari_username" tabindex="-1">
+  Password <input type="password" name="fake_safari_password" tabindex="-1">
+</div>
 <div class="layout is-flex has-islands" [class.fadeInSlow]="iConfig.isWizard" [class.slideInRight]="iConfig.isWizard">
   <div class="island--full-width" 
     [class.wizard-border]="iConfig.isWizard"
