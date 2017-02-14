@@ -6,14 +6,26 @@ import * as $                           from 'jquery';
 export class TagPipe implements PipeTransform {
   transform(keys: any, str: string): any {
     if (str && str.length > 0) {
-      str = str.toLowerCase();
+      str = str.toLowerCase().trim();
       if (Array.isArray(keys)) {
         keys = _.filter(keys, (key: any) => { 
           let result = false;
+          let isMultipleWordMatch = false;
           let words = key.split(' ');
-          if (words.length > 0) {
+          let strs = str.split(' ');
+          
+          if (words.length > 1) {
             words.forEach((word: string) => {
-              if (!result) result = word.toLowerCase().indexOf(str) === 0;
+              if (strs.length > 1) {
+                strs.forEach((st: string) => {
+                  if (!isMultipleWordMatch) isMultipleWordMatch = word.toLowerCase().indexOf(st) === 0;
+                });
+                // Once false: result is always false
+                if (!result) result = isMultipleWordMatch;
+              } else {
+                // Once True: result is always true
+                if (!result) result = word.toLowerCase().indexOf(str) === 0;
+              }
             });
           } else {
             result = key.toLowerCase().indexOf(str) === 0;

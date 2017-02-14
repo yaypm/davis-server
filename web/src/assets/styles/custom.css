@@ -1020,14 +1020,19 @@ form.card-form {
 /* Tags */
 .tag-list {
   position: absolute; 
-  top: 20px;
-  left: 10px;
+  top: 22px;
   z-index: 900;
   background-color: white;
   border: 1px solid #cccccc;
   border-bottom-left-radius: 3px;
   border-bottom-right-radius: 3px;
   font-size: 12px; }
+  
+.tag-list-keys {
+  left: 10px; }
+  
+.tag-list-values {
+  right: 10px; }
 
 .tag-list-item {
   cursor: pointer;
@@ -1040,8 +1045,32 @@ form.card-form {
 .tag__key, .tag__value {
   font-size: 12px; }
 
+.tag-span {
+  display: inline-block; 
+  min-width: 20px;
+  height: 22px;
+  vertical-align: text-bottom; }
+  
+.tag-input {
+  font-weight: inherit;
+  font-family: inherit;
+  background: none;
+  border: 0px;
+  outline: 0px;
+  min-width: 20px;
+  height: 22px;
+  vertical-align: text-bottom;
+  width: 84px; }
+  
+.tag__delete {
+  vertical-align: baseline; }
+
 .display-none {
   display: none; }
+  
+.position-off-screen {
+  position: fixed;
+  left: -1200px; }
 
 a:hover .root-cause {
   text-decoration: none;

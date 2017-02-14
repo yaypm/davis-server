@@ -2,26 +2,39 @@
   <span class="tag" tabindex="-1" style="overflow: visible">
     <button *ngIf="tag.value === '' && tag.key !== ''" class="tag__delete" tabindex="-1" (click)="tag.key = ''"></button>
     <span class="tag__key">
-      <input #keyInput [(ngModel)]="tag.key" name="key" type="text" class="tag-input tag-input-key tag__key" style="background: none; border: 0; outline: 0; min-width: 20px; width: 20px; margin-left: -1px;" autocomplete="off"
-        *ngIf="!keys[tag.key] || keyFocused"
-        (blur)="keyFocused = false"
-        (keyup)="keyInputKeyUp($event)">
-      <span *ngIf="keys[tag.key] && !keyFocused" (click)="focusKeyInput()">{{ tag.key }}:</span>
-      <div *ngIf="!keys[tag.key]" class="tag-list tag-list-keys">
-        <div *ngFor="let key of keys | tagPipe:tag.key" class="tag-list-item" [class.tag-list-item-highlighted]="highlighted.key === key.key" (click)="values = key.values; tag.key = key.key; valueInput.focus();">
+      <input #keyInput [(ngModel)]="tag.key" name="key" type="text" autocomplete="off"
+        class="tag-input tag-input-key tag__key" 
+        style="font-weight: inherit; font-family: inherit; background: none; border: 0; outline: 0; min-width: 20px;"
+        [hidden]="keys[tag.key] && !keyFocused"
+        [style.width.px]="keySpan.offsetWidth + 8"
+        (keyup)="keyInputGeneralKeyUp($event)"
+        (keydown.enter)="keyInputSpecialKeyUp($event)"
+        (keyup.arrowUp)="keyInputSpecialKeyUp($event)"
+        (keyup.arrowDown)="keyInputSpecialKeyUp($event)"
+        (focus)="keyFocused = true"
+        (blur)="keyFocused = false">
+      <span #keySpan class="tag-span" [class.position-off-screen]="keyFocused" (click)="focusKeyInput()">{{ tag.key }}{{ (tag.key && tag.key.length > 0) ? ':' : null }}</span>
+      <div *ngIf="keyFocused && !keys[tag.key]" class="tag-list tag-list-keys">
+        <div *ngFor="let key of keys | tagPipe:tag.key" class="tag-list-item" [class.tag-list-item-highlighted]="highlighted.key === key.key || (keys | tagPipe:tag.key).length === 1" (mousedown)="focusValueInput(key)">
           {{ key.key }}
         </div>
       </div>
     </span>
-    <span *ngIf="keys[tag.key]" class="tag__value">
-      <input #valueInput [(ngModel)]="tag.value" name="value" type="text" class="tag-input tag-input-value tag__value" style="background: none; border: 0; outline: 0; min-width: 20px; width: 20px;" autocomplete="off"
-        *ngIf="values.indexOf(tag.value) < 0"
-        (keyup)="valueInputKeyUp($event)"
-        (focus)="valueFocused = true" (blur)="valueFocused = false">
-      <span *ngIf="!valueFocused && values.indexOf(tag.value) > -1" (click)="focusValueInput()">{{ tag.value }}</span>
-      <div *ngIf="keys[tag.key] && ((values | tagPipe:tag.value).length > 1 || ((values | tagPipe:tag.value).length === 1 && (values | tagPipe:tag.value)[0] !== tag.value))" 
+    <span [hidden]="!keys[tag.key]" class="tag__value">
+      <input #valueInput [(ngModel)]="tag.value" name="value" type="text" autocomplete="off"
+        class="tag-input tag-input-value tag__value" 
+        style="font-weight: inherit; font-family: inherit; background: none; border: 0; outline: 0; min-width: 20px;"
+        [style.width.px]="valueSpan.offsetWidth + 8"
+        [hidden]="!values || !valueFocused"
+        (keydown.enter)="valueInputSpecialKeyUp($event)"
+        (keyup.arrowUp)="valueInputSpecialKeyUp($event)"
+        (keyup.arrowDown)="valueInputSpecialKeyUp($event)"
+        (focus)="valueFocused = true"
+        (blur)="valueFocused = false">
+      <span #valueSpan class="tag-span" [class.position-off-screen]="valueFocused || !values || values.length < 1" (click)="focusValueInput(null)">{{ tag.value }}</span>
+      <div *ngIf="valueFocused && keys[tag.key] && ((values | tagPipe:tag.value).length > 1 || (valueFocused && (values | tagPipe:tag.value).length === 1 && (values | tagPipe:tag.value)[0] !== tag.value))" 
         class="tag-list tag-list-values">
-        <div *ngFor="let value of values | tagPipe:tag.value" class="tag-list-item" [class.tag-list-item-highlighted]="highlighted.value === value" (click)="tag.value = value;">
+        <div *ngFor="let value of values | tagPipe:tag.value" class="tag-list-item" [class.tag-list-item-highlighted]="highlighted.value === value" (mousedown)="tag.value = value">
           {{ value }}
         </div>
       </div>

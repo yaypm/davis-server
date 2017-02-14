@@ -1,4 +1,5 @@
 import { Component, OnInit, AfterViewInit, 
+         ChangeDetectorRef,
          ViewChild, ElementRef,
          Input, EventEmitter, Pipe, 
          PipeTransform }                      from '@angular/core';
@@ -19,6 +20,8 @@ export class TagComponent implements OnInit, AfterViewInit {
 
   @ViewChild('keyInput') keyInput: ElementRef;
   @ViewChild('valueInput') valueInput: ElementRef;
+  @ViewChild('keySpan') keySpan: ElementRef;
+  @ViewChild('valueSpan') valueSpan: ElementRef;
   
   keys: any = {
     'Browser Type': {
@@ -55,14 +58,25 @@ export class TagComponent implements OnInit, AfterViewInit {
   valueFocused: boolean = false;
 
   constructor(
+    public cdRef:ChangeDetectorRef,
     public tagPipe: TagPipe,
     public iDavis: DavisService,
     public iConfig: ConfigService) { }
     
-  keyInputKeyUp(event: any) {
-    (this.keys[this.tag.key]) ? this.values = this.keys[this.tag.key].values : this.tag.value = ''; 
-    if (this.tag.key) {
-      this.keyInput.nativeElement.style.width = ((this.tag.key.length * 7) - 4) + 'px';
+  keyInputGeneralKeyUp(event: any) {
+    if (this.keys[this.tag.key]) { 
+      this.values = this.keys[this.tag.key].values;
+    } else {
+      this.values = [];
+      this.tag.value = '';
+    }
+  }
+    
+  keyInputSpecialKeyUp(event: any) {
+    if (this.keys[this.tag.key]) { 
+      this.values = this.keys[this.tag.key].values;
+    } else {
+      this.tag.value = '';
     }
     
     let keysFilteredArray = this.tagPipe.transform(this.keys, this.tag.key);
@@ -84,16 +98,16 @@ export class TagComponent implements OnInit, AfterViewInit {
         this.highlighted.key = keysFilteredArray[0].key;
       }
     } else if (event.keyCode === 13) {
-      if (highlightedIndex > -1) this.tag.key = keysFilteredArray[highlightedIndex].key;
+      if (highlightedIndex > -1 && keysFilteredArray[highlightedIndex]) this.tag.key = keysFilteredArray[highlightedIndex].key;
+      if (keysFilteredArray && keysFilteredArray.length === 1) this.tag.key = keysFilteredArray[0].key;
       if (this.keys[this.tag.key]) this.values = this.keys[this.tag.key].values;
-      this.focusValueInput();
+      this.focusValueInput(null);
     }
   }
   
-  valueInputKeyUp(event: any) {
-    if (this.tag.value) {
-      this.valueInput.nativeElement.style.width = ((this.tag.value.length * 7) - 4) + 'px';
-    }
+  valueInputSpecialKeyUp(event: any) {
+    
+    // event.preventDefault();
     
     let valuesFilteredArray = this.tagPipe.transform(this.values, this.tag.value);
     let highlightedIndex = _.findIndex(valuesFilteredArray, (o: any) => { return o && o == this.highlighted.value; });
@@ -114,25 +128,33 @@ export class TagComponent implements OnInit, AfterViewInit {
         this.highlighted.value = valuesFilteredArray[0];
       }
     } else if (event.keyCode === 13) {
-      if (highlightedIndex > -1) this.tag.value = valuesFilteredArray[highlightedIndex];
+      if (highlightedIndex > -1 && valuesFilteredArray[highlightedIndex]) this.tag.value = valuesFilteredArray[highlightedIndex];
+      if (valuesFilteredArray && valuesFilteredArray.length === 1) this.tag.value = valuesFilteredArray[0];
       this.valueInput.nativeElement.blur();
     }
   }
   
   focusKeyInput() {
     this.keyFocused = true;
+    // Stack Overflow workaround for ngIf timing issue 
+    // http://stackoverflow.com/questions/37355768/how-to-check-whether-ngif-has-taken-effect
     setTimeout(() => {
-      this.keyInput.nativeElement.style.width = ((this.tag.key.length * 7) - 4) + 'px';
       this.keyInput.nativeElement.focus();
-    }, 120);
+    }, 0);
   }
   
-  focusValueInput() {
+  focusValueInput(key: any) {
+    if (key && key.value) {
+      this.values = key.value.values; 
+      this.tag.key = key.value.key;
+    } else if (key) {
+      this.values = key.values;
+      this.tag.key = key.key;
+    }
     this.valueFocused = true;
     setTimeout(() => {
-      this.valueInput.nativeElement.style.width = ((this.tag.value.length * 7) - 4) + 'px';
       this.valueInput.nativeElement.focus();
-    }, 220);
+    }, 0);
   }
   
   ngOnInit() {}

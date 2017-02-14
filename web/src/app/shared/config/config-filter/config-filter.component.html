@@ -122,22 +122,6 @@
         <div class="layout__container layout--half">
           <div class="island island--half island--half--left">
             <div class="checkbox--section-title">
-              Status
-            </div>
-            <div *ngFor="let status of filterOptions.status; let i = index; let l = last;" [class.checkbox--row]="!l">
-              <input type="checkbox" class="checkbox" id="{{ status.text }}" name="{{ status.text }}"
-                [(ngModel)]="filterOptions.status[i].enabled"
-                [attr.disabled]="(!iDavis.isAdmin) ? true : null"
-                (change)="validate()" />
-              <label for="{{ status.text }}" class="checkbox__label">
-                <span class="checkbox__caption">{{ status.text }}</span>
-              </label>
-            </div>
-          </div>
-        </div>
-        <div class="layout__container layout--half">
-          <div class="island island--half island--half--right">
-            <div class="checkbox--section-title">
               Impact
             </div>
             <div *ngFor="let impact of filterOptions.impact; let i = index; let l = last;" [class.checkbox--row]="!l">
@@ -151,10 +135,8 @@
             </div>
           </div>
         </div>
-      </div>
-      <div class="layout is-flex has-islands island--half">
         <div class="layout__container layout--half">
-          <div class="island island--half island--half--left">
+          <div class="island island--half island--half--right">
             <div class="checkbox--section-title">
               Severity Level
             </div>
@@ -165,6 +147,24 @@
                 (change)="validate()" />
               <label for="{{ severityLevel.text }}" class="checkbox__label">
                 <span class="checkbox__caption">{{ severityLevel.text }}</span>
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="isNotifications" class="layout is-flex has-islands island--half">
+        <div class="layout__container layout--half">
+          <div class="island island--half island--half--left">
+            <div class="checkbox--section-title">
+              Status
+            </div>
+            <div *ngFor="let status of filterOptions.status; let i = index; let l = last;" [class.checkbox--row]="!l">
+              <input type="checkbox" class="checkbox" id="{{ status.text }}" name="{{ status.text }}"
+                [(ngModel)]="filterOptions.status[i].enabled"
+                [attr.disabled]="(!iDavis.isAdmin) ? true : null"
+                (change)="validate()" />
+              <label for="{{ status.text }}" class="checkbox__label">
+                <span class="checkbox__caption">{{ status.text }}</span>
               </label>
             </div>
           </div>
