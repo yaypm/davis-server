@@ -10,7 +10,8 @@ export class TagPipe implements PipeTransform {
       if (Array.isArray(keys)) {
         keys = _.filter(keys, (key: any) => { 
           let result = false;
-          let isMultipleWordMatch = false;
+          let isMatch = false;
+          let isAllWordMatch = true;
           let words = key.split(' ');
           let strs = str.split(' ');
           
@@ -18,15 +19,16 @@ export class TagPipe implements PipeTransform {
             words.forEach((word: string) => {
               if (strs.length > 1) {
                 strs.forEach((st: string) => {
-                  if (!isMultipleWordMatch) isMultipleWordMatch = word.toLowerCase().indexOf(st) === 0;
+                  if (!isMatch) isMatch = word.toLowerCase().indexOf(st) === 0;
                 });
                 // Once false: result is always false
-                if (!result) result = isMultipleWordMatch;
+                if (isAllWordMatch) isAllWordMatch = isMatch;
               } else {
                 // Once True: result is always true
                 if (!result) result = word.toLowerCase().indexOf(str) === 0;
               }
             });
+            if (strs.length > 1) result = isAllWordMatch;
           } else {
             result = key.toLowerCase().indexOf(str) === 0;
           }

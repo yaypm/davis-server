@@ -1,6 +1,7 @@
-import { Component, OnInit, AfterViewInit, 
-         ChangeDetectorRef,
-         ViewChild, ElementRef,
+import { Component, OnChanges, 
+         OnInit, AfterViewInit,
+         QueryList, SimpleChange,
+         ViewChild, ViewChildren, ElementRef,
          Input, EventEmitter, Pipe, 
          PipeTransform }                      from '@angular/core';
 import { TagPipe }                            from '../tag-pipe/tag.pipe';
@@ -17,11 +18,14 @@ import * as _                                 from "lodash";
 export class TagComponent implements OnInit, AfterViewInit {
   
   @Input() tag: any;
+  @Input() focus: boolean;
 
   @ViewChild('keyInput') keyInput: ElementRef;
   @ViewChild('valueInput') valueInput: ElementRef;
   @ViewChild('keySpan') keySpan: ElementRef;
   @ViewChild('valueSpan') valueSpan: ElementRef;
+  @ViewChildren('keysList') keysList: QueryList<ElementRef>;
+  @ViewChildren('valuesList') valuesList: QueryList<ElementRef>;
   
   keys: any = {
     'Browser Type': {
@@ -58,7 +62,6 @@ export class TagComponent implements OnInit, AfterViewInit {
   valueFocused: boolean = false;
 
   constructor(
-    public cdRef:ChangeDetectorRef,
     public tagPipe: TagPipe,
     public iDavis: DavisService,
     public iConfig: ConfigService) { }
@@ -86,16 +89,20 @@ export class TagComponent implements OnInit, AfterViewInit {
     if (event.keyCode === 38) {
       if (highlightedIndex > 0) {
         this.highlighted.key = keysFilteredArray[highlightedIndex - 1].key;
+        this.keysList.toArray()[highlightedIndex - 1].nativeElement.scrollIntoView(false);
       } else {
         this.highlighted.key = keysFilteredArray[keysFilteredArray.length - 1].key;
+        this.keysList.toArray()[keysFilteredArray.length - 1].nativeElement.scrollIntoView(false);
       }
       
     // Down arrow key pressed
     } else if (event.keyCode === 40) {
       if (highlightedIndex < keysFilteredArray.length - 1) {
         this.highlighted.key = keysFilteredArray[highlightedIndex + 1].key;
+        this.keysList.toArray()[highlightedIndex + 1].nativeElement.scrollIntoView(false);
       } else {
         this.highlighted.key = keysFilteredArray[0].key;
+        this.keysList.toArray()[0].nativeElement.scrollIntoView(false);
       }
     } else if (event.keyCode === 13) {
       if (highlightedIndex > -1 && keysFilteredArray[highlightedIndex]) this.tag.key = keysFilteredArray[highlightedIndex].key;
@@ -107,8 +114,6 @@ export class TagComponent implements OnInit, AfterViewInit {
   
   valueInputSpecialKeyUp(event: any) {
     
-    // event.preventDefault();
-    
     let valuesFilteredArray = this.tagPipe.transform(this.values, this.tag.value);
     let highlightedIndex = _.findIndex(valuesFilteredArray, (o: any) => { return o && o == this.highlighted.value; });
     
@@ -116,16 +121,20 @@ export class TagComponent implements OnInit, AfterViewInit {
     if (event.keyCode === 38) {
       if (highlightedIndex > 0) {
         this.highlighted.value = valuesFilteredArray[highlightedIndex - 1];
+        this.valuesList.toArray()[highlightedIndex - 1].nativeElement.scrollIntoView(false);
       } else {
         this.highlighted.value = valuesFilteredArray[valuesFilteredArray.length - 1];
+        this.valuesList.toArray()[valuesFilteredArray.length - 1].nativeElement.scrollIntoView(false);
       }
       
     // Down arrow key pressed
     } else if (event.keyCode === 40) {
       if (highlightedIndex < valuesFilteredArray.length - 1) {
         this.highlighted.value = valuesFilteredArray[highlightedIndex + 1];
+        this.valuesList.toArray()[highlightedIndex + 1].nativeElement.scrollIntoView(false);
       } else {
         this.highlighted.value = valuesFilteredArray[0];
+        this.valuesList.toArray()[0].nativeElement.scrollIntoView(false);
       }
     } else if (event.keyCode === 13) {
       if (highlightedIndex > -1 && valuesFilteredArray[highlightedIndex]) this.tag.value = valuesFilteredArray[highlightedIndex];
@@ -155,6 +164,19 @@ export class TagComponent implements OnInit, AfterViewInit {
     setTimeout(() => {
       this.valueInput.nativeElement.focus();
     }, 0);
+  }
+  
+  clearKey() {
+    this.values = []; 
+    this.tag.value = ''; 
+    this.tag.key = '';
+  }
+  
+  ngOnChanges(changes: {[propKey: string]: SimpleChange}) {
+    if (changes['focus'] && this.tag.focus) {
+      this.focusKeyInput();
+      this.tag.focus = false;
+    }
   }
   
   ngOnInit() {}

@@ -1,6 +1,6 @@
 <form #form="ngForm" style="min-height: 0;">
-  <span class="tag" tabindex="-1" style="overflow: visible">
-    <button *ngIf="tag.value === '' && tag.key !== ''" class="tag__delete" tabindex="-1" (click)="tag.key = ''"></button>
+  <span class="tag" [class.tag-empty]="!tag.key || tag.key === ''" [class.tag-no-value]="tag.key !== '' && tag.value === ''" style="overflow: visible">
+    <button *ngIf="(tag.value === '' && tag.key !== '') || (valueFocused && tag.value === '')" class="tag__delete" tabindex="-1" (click)="clearKey(); focusKeyInput();"></button>
     <span class="tag__key">
       <input #keyInput [(ngModel)]="tag.key" name="key" type="text" autocomplete="off"
         class="tag-input tag-input-key tag__key" 
@@ -8,14 +8,14 @@
         [hidden]="keys[tag.key] && !keyFocused"
         [style.width.px]="keySpan.offsetWidth + 8"
         (keyup)="keyInputGeneralKeyUp($event)"
-        (keydown.enter)="keyInputSpecialKeyUp($event)"
+        (keyup.enter)="keyInputSpecialKeyUp($event)"
         (keyup.arrowUp)="keyInputSpecialKeyUp($event)"
         (keyup.arrowDown)="keyInputSpecialKeyUp($event)"
         (focus)="keyFocused = true"
-        (blur)="keyFocused = false">
+        (blur)="keyFocused = false; (keys[tag.key]) ? null : tag.key = '';">
       <span #keySpan class="tag-span" [class.position-off-screen]="keyFocused" (click)="focusKeyInput()">{{ tag.key }}{{ (tag.key && tag.key.length > 0) ? ':' : null }}</span>
       <div *ngIf="keyFocused && !keys[tag.key]" class="tag-list tag-list-keys">
-        <div *ngFor="let key of keys | tagPipe:tag.key" class="tag-list-item" [class.tag-list-item-highlighted]="highlighted.key === key.key || (keys | tagPipe:tag.key).length === 1" (mousedown)="focusValueInput(key)">
+        <div #keysList *ngFor="let key of keys | tagPipe:tag.key" class="tag-list-item" [class.tag-list-item-highlighted]="highlighted.key === key.key || (keys | tagPipe:tag.key).length === 1" (mousedown)="focusValueInput(key)">
           {{ key.key }}
         </div>
       </div>
@@ -30,15 +30,15 @@
         (keyup.arrowUp)="valueInputSpecialKeyUp($event)"
         (keyup.arrowDown)="valueInputSpecialKeyUp($event)"
         (focus)="valueFocused = true"
-        (blur)="valueFocused = false">
+        (blur)="valueFocused = false; (values.indexOf(tag.value) > -1) ? null : tag.value = '';">
       <span #valueSpan class="tag-span" [class.position-off-screen]="valueFocused || !values || values.length < 1" (click)="focusValueInput(null)">{{ tag.value }}</span>
       <div *ngIf="valueFocused && keys[tag.key] && ((values | tagPipe:tag.value).length > 1 || (valueFocused && (values | tagPipe:tag.value).length === 1 && (values | tagPipe:tag.value)[0] !== tag.value))" 
         class="tag-list tag-list-values">
-        <div *ngFor="let value of values | tagPipe:tag.value" class="tag-list-item" [class.tag-list-item-highlighted]="highlighted.value === value" (mousedown)="tag.value = value">
+        <div #valuesList *ngFor="let value of values | tagPipe:tag.value" class="tag-list-item" [class.tag-list-item-highlighted]="highlighted.value === value" (mousedown)="tag.value = value">
           {{ value }}
         </div>
       </div>
     </span>
-    <button *ngIf="tag.value && tag.value !== ''" class="tag__delete" tabindex="-1" (click)="tag.value = ''"></button>
+    <button *ngIf="!keyFocused && tag.value && tag.value !== ''" class="tag__delete" tabindex="-1" (click)="tag.value = ''; focusValueInput();"></button>
   </span>
 </form>

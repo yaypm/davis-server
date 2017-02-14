@@ -331,8 +331,7 @@ label.theme--dark-label {
   background-color: white; }
   
 .input-button-wrapper:hover {
-  border-color: #a0a0a0;
-}
+  border-color: #a0a0a0; }
 
 .input-button-wrapper-focus {
   outline: none;
@@ -340,12 +339,10 @@ label.theme--dark-label {
   
 .input-button-wrapper-disabled {
   background-color: #f2f2f2;
-  color: #cccccc;
-}
+  color: #cccccc; }
 
 .input-button-wrapper-disabled:hover {
-  border-color: #cccccc;
-}
+  border-color: #cccccc; }
 
 input[type=text].input-button-input, input[type=email].input-button-input, input[type=password].input-button-input {
   float: left;
@@ -1018,10 +1015,37 @@ form.card-form {
   color: white; }
 
 /* Tags */
+.tag {
+  float: left;
+  margin: 4px 5px 4px 0px; }
+  
+.tag-empty {
+  border: 0;
+  background-color: transparent; }
+  
+.tag-no-value {
+  border: 1px solid #dadada;
+  background-color: transparent; }
+
+.tags-wrapper {
+  display: inline-block;
+  cursor: text;
+  width: 100%;
+  min-height: 32px;
+  padding-left: 11px;
+  background-color: white;
+  border: 1px solid #cccccc;
+  border-radius: 3px; }
+  
+.tags-wrapper:hover {
+  border-color: #a0a0a0; }
+
 .tag-list {
-  position: absolute; 
+  position: absolute;
   top: 22px;
   z-index: 900;
+  max-height: 200px;
+  overflow: auto;
   background-color: white;
   border: 1px solid #cccccc;
   border-bottom-left-radius: 3px;
