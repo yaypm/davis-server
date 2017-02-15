@@ -2,7 +2,7 @@ import { Component, OnChanges,
          OnInit, AfterViewInit,
          QueryList, SimpleChange,
          ViewChild, ViewChildren, ElementRef,
-         Input, EventEmitter, Pipe, 
+         Input, Output, EventEmitter, Pipe, 
          PipeTransform }                      from '@angular/core';
 import { TagPipe }                            from '../tag-pipe/tag.pipe';
 
@@ -17,8 +17,10 @@ import * as _                                 from "lodash";
 })
 export class TagComponent implements OnInit, AfterViewInit {
   
+  @Input() keys: Array<any>;
   @Input() tag: any;
   @Input() focus: boolean;
+  @Output() deleteEmptyTags: EventEmitter<any> = new EventEmitter();
 
   @ViewChild('keyInput') keyInput: ElementRef;
   @ViewChild('valueInput') valueInput: ElementRef;
@@ -27,39 +29,17 @@ export class TagComponent implements OnInit, AfterViewInit {
   @ViewChildren('keysList') keysList: QueryList<ElementRef>;
   @ViewChildren('valuesList') valuesList: QueryList<ElementRef>;
   
-  keys: any = {
-    'Browser Type': {
-      key: 'Browser Type',
-      values: [
-        'Desktop Browser',
-        'Mobile Browser',
-        'Robot',
-      ],
-    },
-    'Browser Family': {
-      key: 'Browser Family',
-      values: [
-        'Chrome',
-        'Firefox',
-        'Safari',
-      ],
-    },
-    'Browser Version': {
-      key: 'Browser Version',
-      values: [
-        'Chrome 11',
-        'Chrome 18',
-        'Chrome 22',
-      ],
-    },
-  };
-  values: any = [];
+  values: Array<any> = [];
   highlighted: any = {
     key: '',
-    value: '',
+    value: {
+      name: '',
+      entityId: '',
+    },
   };
   keyFocused: boolean = false;
   valueFocused: boolean = false;
+  testValue: any = {};
 
   constructor(
     public tagPipe: TagPipe,
@@ -71,7 +51,10 @@ export class TagComponent implements OnInit, AfterViewInit {
       this.values = this.keys[this.tag.key].values;
     } else {
       this.values = [];
-      this.tag.value = '';
+      this.tag.value = {
+        name: '',
+        entityId: '',
+      };
     }
   }
     
@@ -79,7 +62,10 @@ export class TagComponent implements OnInit, AfterViewInit {
     if (this.keys[this.tag.key]) { 
       this.values = this.keys[this.tag.key].values;
     } else {
-      this.tag.value = '';
+      this.tag.value = {
+        name: '',
+        entityId: '',
+      };
     }
     
     let keysFilteredArray = this.tagPipe.transform(this.keys, this.tag.key);
@@ -114,8 +100,8 @@ export class TagComponent implements OnInit, AfterViewInit {
   
   valueInputSpecialKeyUp(event: any) {
     
-    let valuesFilteredArray = this.tagPipe.transform(this.values, this.tag.value);
-    let highlightedIndex = _.findIndex(valuesFilteredArray, (o: any) => { return o && o == this.highlighted.value; });
+    let valuesFilteredArray = this.tagPipe.transform(this.values, this.tag.value.name);
+    let highlightedIndex = _.findIndex(valuesFilteredArray, (o: any) => { return o && o.entityId == this.highlighted.value.entityId; });
     
     // Up arrow key pressed
     if (event.keyCode === 38) {
@@ -137,8 +123,16 @@ export class TagComponent implements OnInit, AfterViewInit {
         this.valuesList.toArray()[0].nativeElement.scrollIntoView(false);
       }
     } else if (event.keyCode === 13) {
-      if (highlightedIndex > -1 && valuesFilteredArray[highlightedIndex]) this.tag.value = valuesFilteredArray[highlightedIndex];
-      if (valuesFilteredArray && valuesFilteredArray.length === 1) this.tag.value = valuesFilteredArray[0];
+      if (highlightedIndex > -1 && valuesFilteredArray[highlightedIndex]) {
+        this.tag.value.name = valuesFilteredArray[highlightedIndex].name;
+        this.tag.value.entityId = valuesFilteredArray[highlightedIndex].entityId;
+        this.testValue = valuesFilteredArray[highlightedIndex];
+      }
+      if (valuesFilteredArray && valuesFilteredArray.length === 1) {
+        this.tag.value.name = valuesFilteredArray[0].name;
+        this.tag.value.entityId = valuesFilteredArray[0].entityId;
+        this.testValue = valuesFilteredArray[0];
+      }
       this.valueInput.nativeElement.blur();
     }
   }
@@ -166,9 +160,23 @@ export class TagComponent implements OnInit, AfterViewInit {
     }, 0);
   }
   
+  cloneDeep(item: any): any {
+    return _.cloneDeep(item);
+  }
+  
+  includes(items: Array<any>, item: any): boolean {
+    return _.includes(items, item);
+  }
+  
+  includesDuplicateNames(items: Array<any>, name: string): boolean {
+    return _.filter(items, (item: any) => { 
+      return item.name === name; 
+    }).length > 1;
+  }
+  
   clearKey() {
     this.values = []; 
-    this.tag.value = ''; 
+    this.tag.value = { name: '', entityId: '' };
     this.tag.key = '';
   }
   

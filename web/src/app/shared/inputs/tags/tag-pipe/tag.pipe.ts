@@ -7,14 +7,17 @@ export class TagPipe implements PipeTransform {
   transform(keys: any, str: string): any {
     if (str && str.length > 0) {
       str = str.toLowerCase().trim();
+      
+      // Tag values filter
       if (Array.isArray(keys)) {
         keys = _.filter(keys, (key: any) => { 
           let result = false;
           let isMatch = false;
           let isAllWordMatch = true;
-          let words = key.split(' ');
+          let words = key.name.split(' ');
           let strs = str.split(' ');
           
+          // Multiple word support
           if (words.length > 1) {
             words.forEach((word: string) => {
               if (strs.length > 1) {
@@ -29,16 +32,21 @@ export class TagPipe implements PipeTransform {
               }
             });
             if (strs.length > 1) result = isAllWordMatch;
+            
+          // Single word support
           } else {
-            result = key.toLowerCase().indexOf(str) === 0;
+            result = key.name.toLowerCase().indexOf(str) === 0;
           }
           return result;
         });
+        
+      // Tag keys filter
       } else {
         keys = _.filter(keys, (key: any) => { 
           return key.key.toLowerCase().includes(str); 
         });
       }
+    // if str is empty
     } else if (!Array.isArray(keys)) {
       let array = [];
       for (let key in keys) {

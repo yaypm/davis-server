@@ -1044,6 +1044,7 @@ form.card-form {
   position: absolute;
   top: 22px;
   z-index: 900;
+  max-width: 300px;
   max-height: 200px;
   overflow: auto;
   background-color: white;
@@ -1056,7 +1057,7 @@ form.card-form {
   left: 10px; }
   
 .tag-list-values {
-  right: 10px; }
+  left: 50%; }
 
 .tag-list-item {
   cursor: pointer;

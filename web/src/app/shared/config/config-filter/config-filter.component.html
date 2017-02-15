@@ -21,7 +21,7 @@
             <label for="first" class="label">
               Name
             </label>
-            <input #name type="text" name="name"
+            <input #name type="text" name="name" autocomplete="off"
               class="inputfield" id="name"
               [(ngModel)]="iConfig.values.filter.name" 
               [attr.disabled]="(!iDavis.isAdmin) ? true : null"
@@ -31,7 +31,7 @@
         <div class="layout__container layout--half">
           <div class="island island--half island--half--right">
             <div style="text-align: center; margin-top: 30px;">
-              <input type="checkbox" class="checkbox" id="enabled" name="enabled"
+              <input type="checkbox" class="checkbox" id="enabled" name="enabled" autocomplete="off"
                 [(ngModel)]="iConfig.values.filter.enabled"
                 [attr.disabled]="(!iDavis.isAdmin) ? true : null"
                 (change)="validate()" />
@@ -128,7 +128,7 @@
               Impact
             </div>
             <div *ngFor="let impact of filterOptions.impact; let i = index; let l = last;" [class.checkbox--row]="!l">
-              <input type="checkbox" class="checkbox" id="{{ impact.text }}" name="{{ impact.text }}" 
+              <input type="checkbox" class="checkbox" id="{{ impact.text }}" name="{{ impact.text }}" autocomplete="off"
                 [(ngModel)]="filterOptions.impact[i].enabled"
                 [attr.disabled]="(!iDavis.isAdmin) ? true : null"
                 (change)="validate()" />
@@ -144,7 +144,7 @@
               Severity Level
             </div>
             <div *ngFor="let severityLevel of filterOptions.severityLevel; let i = index; let l = last;" [class.checkbox--row]="!l">
-              <input type="checkbox" class="checkbox" id="{{ severityLevel.text }}" name="{{ severityLevel.text }}"
+              <input type="checkbox" class="checkbox" id="{{ severityLevel.text }}" name="{{ severityLevel.text }}" autocomplete="off"
                 [(ngModel)]="filterOptions.severityLevel[i].enabled"
                 [attr.disabled]="(!iDavis.isAdmin) ? true : null"
                 (change)="validate()" />
@@ -162,7 +162,7 @@
               Status
             </div>
             <div *ngFor="let status of filterOptions.status; let i = index; let l = last;" [class.checkbox--row]="!l">
-              <input type="checkbox" class="checkbox" id="{{ status.text }}" name="{{ status.text }}"
+              <input type="checkbox" class="checkbox" id="{{ status.text }}" name="{{ status.text }}" autocomplete="off"
                 [(ngModel)]="filterOptions.status[i].enabled"
                 [attr.disabled]="(!iDavis.isAdmin) ? true : null"
                 (change)="validate()" />

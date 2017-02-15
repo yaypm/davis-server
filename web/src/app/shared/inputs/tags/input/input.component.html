@@ -1,3 +1,4 @@
 <div class="tags-wrapper" (click)="addTag()">
-  <tag *ngFor="let tag of tags" [tag]="tag" [focus]="tag.focus" (click)="preventParentClick($event)"></tag>
+  <tag *ngFor="let tag of tags" [keys]="keys" [tag]="tag" [focus]="tag.focus" 
+    (deleteEmptyTags)="deleteEmptyTags()" (click)="preventParentClick($event)"></tag>
 </div>

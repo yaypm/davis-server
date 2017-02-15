@@ -143,6 +143,26 @@ export class ConfigService {
       .then(this.iDavis.extractData)
       .catch(this.iDavis.handleError);
   }
+  
+  getDynatraceApplications(): Promise<any> {
+    let headers = new Headers({ 'Content-Type': 'application/json', 'x-access-token': this.iDavis.token } );
+    let options = new RequestOptions({ headers: headers });
+
+    return this.http.get('/api/v1/dynatrace/applications', options)
+      .toPromise()
+      .then(this.iDavis.extractData)
+      .catch(this.iDavis.handleError);
+  }
+  
+  getDynatraceServices(): Promise<any> {
+    let headers = new Headers({ 'Content-Type': 'application/json', 'x-access-token': this.iDavis.token } );
+    let options = new RequestOptions({ headers: headers });
+
+    return this.http.get('/api/v1/dynatrace/services', options)
+      .toPromise()
+      .then(this.iDavis.extractData)
+      .catch(this.iDavis.handleError);
+  }
 
   getDynatrace(): Promise<any> {
     let headers = new Headers({ 'Content-Type': 'application/json', 'x-access-token': this.iDavis.token } );
