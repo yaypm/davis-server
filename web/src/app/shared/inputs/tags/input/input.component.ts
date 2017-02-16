@@ -13,11 +13,8 @@ import * as _                                 from "lodash";
 })
 export class TagsInputComponent implements OnInit, AfterViewInit {
   
-  // @Input() message: any;
-  // @Input() isDavis: boolean;
-  // @Output() toggleProcessingIndicator: EventEmitter<any> = new EventEmitter();
-  
-  tags: any = [];
+  @Input() tags: any;
+
   keys: any = {
     'Application': {
       key: 'Application',
@@ -28,6 +25,7 @@ export class TagsInputComponent implements OnInit, AfterViewInit {
       values: [],
     },
   };
+  focus: Array<boolean> = [];
 
   constructor(
     public iDavis: DavisService,
@@ -36,16 +34,23 @@ export class TagsInputComponent implements OnInit, AfterViewInit {
   addTag() {
     let obj = this.tags[this.tags.length - 1];
     if (obj.key && obj.key.length > 0 && obj.value && obj.value.name.length > 0) {
-      this.tags.push({ key: null, value: { name: null, entityId: null }, focus: true });
+      this.tags.push({ key: null, value: { name: null, entityId: null } });
+      this.focus.push(true);
     } else {
-      this.tags[this.tags.length - 1].focus = true;
+      this.focus[this.focus.length - 1] = false;
+      setTimeout(() => {
+        this.focus[this.focus.length - 1] = true;
+      },0);
     }
   }
   
   deleteEmptyTags() {
     let index = this.tags.length;
     while (index--) {
-      if (this.tags[index].key.length < 1 && index < this.tags.length && this.tags.length > 1) this.tags.splice(index, 1);
+      if (this.tags[index].key.length < 1 && index < this.tags.length && this.tags.length > 1) {
+        this.tags.splice(index, 1);
+        this.focus.splice(index, 1);
+      }
     }
   }
   
@@ -54,7 +59,11 @@ export class TagsInputComponent implements OnInit, AfterViewInit {
   }
   
   ngOnInit() {
-    this.tags.push({ key: null, value: { name: null, entityId: null }, focus: false });
+    this.tags.forEach((tag: any) => {
+      this.focus.push(false);
+    });
+    this.tags.push({ key: null, value: { name: null, entityId: null } });
+    this.focus.push(false);
     
     this.iConfig.getDynatraceApplications()
       .then(response => {

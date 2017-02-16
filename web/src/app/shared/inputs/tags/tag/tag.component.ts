@@ -143,6 +143,7 @@ export class TagComponent implements OnInit, AfterViewInit {
     // http://stackoverflow.com/questions/37355768/how-to-check-whether-ngif-has-taken-effect
     setTimeout(() => {
       this.keyInput.nativeElement.focus();
+      this.focus = false;
     }, 0);
   }
   
@@ -158,6 +159,18 @@ export class TagComponent implements OnInit, AfterViewInit {
     setTimeout(() => {
       this.valueInput.nativeElement.focus();
     }, 0);
+  }
+  
+  focusInput() {
+    if (this.tag.value.name && this.tag.value.name.length > 0) {
+      this.focusValueInput(null);
+    } else {
+      this.focusKeyInput();
+    }
+  }
+  
+  preventParentClick(event: any) {
+    event.stopPropagation();
   }
   
   cloneDeep(item: any): any {
@@ -181,9 +194,13 @@ export class TagComponent implements OnInit, AfterViewInit {
   }
   
   ngOnChanges(changes: {[propKey: string]: SimpleChange}) {
-    if (changes['focus'] && this.tag.focus) {
-      this.focusKeyInput();
-      this.tag.focus = false;
+    if (changes['focus'] && this.focus) {
+      if (this.tag.key && this.tag.key.length > 0) {
+        this.focusValueInput(null);
+      } else {
+        this.focusKeyInput();
+      }
+      this.focus = false;
     }
   }
   

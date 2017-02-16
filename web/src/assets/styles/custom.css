@@ -1020,6 +1020,7 @@ form.card-form {
   margin: 4px 5px 4px 0px; }
   
 .tag-empty {
+  cursor: text;
   border: 0;
   background-color: transparent; }
   
@@ -1068,12 +1069,15 @@ form.card-form {
   background-color: #e1f7f9; }
 
 .tag__key, .tag__value {
+  cursor: text;
   font-size: 12px; }
 
 .tag-span {
   display: inline-block; 
+  cursor: text;
   min-width: 20px;
   height: 22px;
+  line-height: 22px;
   vertical-align: text-bottom; }
   
 .tag-input {
@@ -1084,6 +1088,7 @@ form.card-form {
   outline: 0px;
   min-width: 20px;
   height: 22px;
+  line-height: 22px;
   vertical-align: text-bottom;
   width: 84px; }
   
