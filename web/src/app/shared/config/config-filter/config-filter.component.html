@@ -175,13 +175,11 @@
         <div class="layout__container layout--half">
         </div>
       </div>
-      <div class="island island--full" *ngIf="iDavis.isAdmin && !isNewFilter">
-        <button type="button" class="btn btn--secondary btn--secondary--delete"
+      <div *ngIf="iDavis.isAdmin" class="island island--center island--submit">
+        <button *ngIf="iDavis.isAdmin && !isNewFilter" type="button" class="btn btn--secondary btn--secondary--delete"
             (click)="deleteFilter(iConfig.values.filter)">
             {{ (confirmDeleteFilter) ? 'Confirm Delete Filter' : 'Delete Filter' }}
         </button>
-      </div>
-      <div *ngIf="iDavis.isAdmin" class="island island--center island--submit">
         <button type="submit" class="btn btn--primary btn--submit"
             [attr.disabled]="(!form.valid || submitButton === 'Adding...' || submitButton === 'Saving...' || !isDirty) ? true : null">
             {{ submitButton }}
