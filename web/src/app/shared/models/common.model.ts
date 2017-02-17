@@ -22,7 +22,8 @@ export class CommonModel {
     status: [],
     impact: [],
     severityLevel: [],
-    entityID: [],
+    entity: [],
+    entityTags: [],
     excludeEventType: [],
     tags: {
       includes: [],

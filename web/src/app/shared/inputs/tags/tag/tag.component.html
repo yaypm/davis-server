@@ -33,7 +33,7 @@
         (keyup.arrowDown)="valueInputSpecialKeyUp($event)"
         (click)="preventParentClick($event)"
         (focus)="valueFocused = true"
-        (blur)="valueFocused = false; focus = false; (includes(values, testValue)) ? null : tag.value = { name: '', entityId: '' }; deleteEmptyTags.emit();">
+        (blur)="valueFocused = false; focus = false; (!testValue.name || includes(values, testValue)) ? null : tag.value = { _id: '', name: '', entityId: '' }; deleteEmptyTags.emit();">
       <span #valueSpan class="tag-span" 
         [class.position-off-screen]="valueFocused || !values || values.length < 1" 
           (click)="preventParentClick($event); focusValueInput(null)">
@@ -42,11 +42,11 @@
       <div *ngIf="valueFocused && keys[tag.key] && ((values | tagPipe:tag.value.name).length > 1 || (valueFocused && (values | tagPipe:tag.value.name).length === 1 && (values | tagPipe:tag.value.name)[0] !== tag.value))" 
         class="tag-list tag-list-values">
         <div #valuesList *ngFor="let value of values | tagPipe:tag.value.name" class="tag-list-item" [title]="value.name + ' (' + value.entityId + ')'" [class.tag-list-item-highlighted]="highlighted.value === value" 
-          (mousedown)="tag.value.name = value.name; tag.value.entityId = value.entityId; testValue = value;">
+          (mousedown)="tag.value._id = value._id; tag.value.name = value.name; tag.value.entityId = value.entityId; testValue = value;">
           {{ value.name }}{{ (includesDuplicateNames(values, value.name)) ? ' (' + value.entityId + ')' : null }}
         </div>
       </div>
     </span>
-    <button *ngIf="tag.key && tag.key !== '' && tag.value && tag.value.name !== ''" class="tag__delete" tabindex="-1" (mousedown)="tag.value = { name: '', entityId: '' }; focusValueInput();"></button>
+    <button *ngIf="tag.key && tag.key !== '' && tag.value && tag.value.name !== ''" class="tag__delete" tabindex="-1" (mousedown)="clearKey(); deleteEmptyTags.emit()"></button>
   </span>
 </form>

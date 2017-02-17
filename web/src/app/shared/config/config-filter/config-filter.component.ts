@@ -47,6 +47,13 @@ export class ConfigFilterComponent implements OnInit, OnChanges, AfterViewInit {
     this.iConfig.values.filter.name = this.iDavis.safariAutoCompletePolyFill(this.iConfig.values.filter.name, 'name');
     this.iConfig.values.filter.origin = this.iDavis.safariAutoCompletePolyFill(this.iConfig.values.filter.origin, 'origin');
     
+    if (this.iConfig.values.filter.entityTags.length > 0) {
+      this.iConfig.values.filter.entity = [];
+      this.iConfig.values.filter.entityTags.forEach((tag: any) => {
+        if (tag.value && tag.value._id) this.iConfig.values.filter.entity.push(tag.value._id);
+      });
+    }
+    
     this.buildScope();
     
     // Safari autocomplete polyfill - Update any autofilled checkboxes
@@ -259,6 +266,21 @@ export class ConfigFilterComponent implements OnInit, OnChanges, AfterViewInit {
         if (exploded.length > 1 && exploded[0] === 'slack') this.filterScope.team_id = exploded[1];
         if (exploded.length > 2 && exploded[0] === 'slack') this.filterScope.channel_id = exploded[2];
       }
+    }
+    
+    // Convert entity model to match tag model
+    if (this.iConfig.values.filter.entity && this.iConfig.values.filter.entity.length > 0) {
+      this.iConfig.values.filter.entityTags = [];
+      this.iConfig.values.filter.entity.forEach((entity: any, index: number) => {
+        this.iConfig.values.filter.entityTags.push({
+          key: (entity.category === 'applications') ? 'Application' : 'Service',
+          value: {
+            _id: entity._id,
+            name: entity.name,
+            entityId: entity.entityId,
+          },
+        });
+      });
     }
     
     setTimeout(() => {

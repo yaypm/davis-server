@@ -33,6 +33,7 @@ export class TagComponent implements OnInit, AfterViewInit {
   highlighted: any = {
     key: '',
     value: {
+      _id: '',
       name: '',
       entityId: '',
     },
@@ -52,6 +53,7 @@ export class TagComponent implements OnInit, AfterViewInit {
     } else {
       this.values = [];
       this.tag.value = {
+        _id: '',
         name: '',
         entityId: '',
       };
@@ -63,6 +65,7 @@ export class TagComponent implements OnInit, AfterViewInit {
       this.values = this.keys[this.tag.key].values;
     } else {
       this.tag.value = {
+        _id: '',
         name: '',
         entityId: '',
       };
@@ -124,11 +127,13 @@ export class TagComponent implements OnInit, AfterViewInit {
       }
     } else if (event.keyCode === 13) {
       if (highlightedIndex > -1 && valuesFilteredArray[highlightedIndex]) {
+        this.tag.value._id = valuesFilteredArray[highlightedIndex]._id;
         this.tag.value.name = valuesFilteredArray[highlightedIndex].name;
         this.tag.value.entityId = valuesFilteredArray[highlightedIndex].entityId;
         this.testValue = valuesFilteredArray[highlightedIndex];
       }
       if (valuesFilteredArray && valuesFilteredArray.length === 1) {
+        this.tag.value._id = valuesFilteredArray[0]._id;
         this.tag.value.name = valuesFilteredArray[0].name;
         this.tag.value.entityId = valuesFilteredArray[0].entityId;
         this.testValue = valuesFilteredArray[0];
@@ -189,7 +194,7 @@ export class TagComponent implements OnInit, AfterViewInit {
   
   clearKey() {
     this.values = []; 
-    this.tag.value = { name: '', entityId: '' };
+    this.tag.value = { _id: '', name: '', entityId: '' };
     this.tag.key = '';
   }
   
@@ -204,7 +209,11 @@ export class TagComponent implements OnInit, AfterViewInit {
     }
   }
   
-  ngOnInit() {}
+  ngOnInit() {
+    if (this.tag.key && this.tag.value && this.tag.value.name) {
+      this.values = this.keys[this.tag.key].values;
+    }
+  }
   
   ngAfterViewInit() {}
 }

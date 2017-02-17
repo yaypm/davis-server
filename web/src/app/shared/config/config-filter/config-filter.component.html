@@ -118,7 +118,7 @@
           <label for="source" class="label">
             Entities
           </label>
-          <tags-input [tags]="iConfig.values.filter.entityID"></tags-input>
+          <tags-input [tags]="iConfig.values.filter.entityTags" (tagsChange)="validate()"></tags-input>
         </div>
       </div>
       <div class="layout is-flex has-islands island--half">

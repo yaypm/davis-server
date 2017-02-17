@@ -14,6 +14,7 @@ import * as _                                 from "lodash";
 export class TagsInputComponent implements OnInit, AfterViewInit {
   
   @Input() tags: any;
+  @Output() tagsChange: EventEmitter<any> = new EventEmitter();
 
   keys: any = {
     'Application': {
@@ -33,9 +34,10 @@ export class TagsInputComponent implements OnInit, AfterViewInit {
     
   addTag() {
     let obj = this.tags[this.tags.length - 1];
-    if (obj.key && obj.key.length > 0 && obj.value && obj.value.name.length > 0) {
-      this.tags.push({ key: null, value: { name: null, entityId: null } });
+    if (!obj || (obj.key && obj.key.length > 0 && obj.value && obj.value.name && obj.value.name.length > 0)) {
+      this.tags.push({ key: null, value: { _id: null, name: null, entityId: null } });
       this.focus.push(true);
+      this.tagsChange.emit();
     } else {
       this.focus[this.focus.length - 1] = false;
       setTimeout(() => {
@@ -47,9 +49,11 @@ export class TagsInputComponent implements OnInit, AfterViewInit {
   deleteEmptyTags() {
     let index = this.tags.length;
     while (index--) {
-      if (this.tags[index].key.length < 1 && index < this.tags.length && this.tags.length > 1) {
+      if ((!this.tags[index].key || (this.tags[index].key && this.tags[index].key.length < 1)) 
+        && index < this.tags.length && this.tags.length > 1) {
         this.tags.splice(index, 1);
         this.focus.splice(index, 1);
+        this.tagsChange.emit();
       }
     }
   }
@@ -62,15 +66,13 @@ export class TagsInputComponent implements OnInit, AfterViewInit {
     this.tags.forEach((tag: any) => {
       this.focus.push(false);
     });
-    this.tags.push({ key: null, value: { name: null, entityId: null } });
-    this.focus.push(false);
     
     this.iConfig.getDynatraceApplications()
       .then(response => {
         if (!response.success) throw new Error(response.message);
         
         response.applications.forEach((application: any) => {
-          this.keys['Application'].values.push({ name: application.name, entityId: application.entityId });
+          this.keys['Application'].values.push({ _id: application._id, name: application.name, entityId: application.entityId });
         });
         return this.iConfig.getDynatraceServices();
       })
@@ -78,12 +80,15 @@ export class TagsInputComponent implements OnInit, AfterViewInit {
         if (!response.success) throw new Error(response.message);
         
         response.services.forEach((service: any) => {
-         this.keys['Service'].values.push({ name: service.name, entityId: service.entityId });
+         this.keys['Service'].values.push({ _id: service._id, name: service.name, entityId: service.entityId });
         });
       })
       .catch(err => {
         this.iConfig.displayError(err, 'filter');
       });
+      
+    this.iConfig.values.original.filter = _.cloneDeep(this.iConfig.values.filter);
+    this.tagsChange.emit();
   }
   
   ngAfterViewInit() {}
