@@ -30,6 +30,9 @@ import { FilterFiltersByNamePipe }                from './config-filters-pipe/co
 import { FilterUsersByNamePipe }                  from './config-users-pipe/config-users.pipe';
 import { FilterSidebarItemsByAdminPipe }          from './config-sidebar-pipe/config-sidebar.pipe';
 
+// Modules
+import { TagsModule }                             from '../inputs/tags/tags.module';
+
 // ----------------------------------------------------------------------------
 // Module
 // ----------------------------------------------------------------------------
@@ -67,6 +70,7 @@ import { FilterSidebarItemsByAdminPipe }          from './config-sidebar-pipe/co
   imports: [
     CommonModule,
     FormsModule,
+    TagsModule,
   ],
   providers: [
     ConfigService,

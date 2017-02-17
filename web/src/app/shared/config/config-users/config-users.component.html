@@ -15,7 +15,7 @@
   </div>         
   <div *ngIf="!addUser && !editUser" class="island--full-width island--full-width-sidebar island--center island--left">     
     <div class="input-button-wrapper" [class.input-button-wrapper-focus]="isFilterFocused" style="margin-top: -5px; margin-bottom: 15px">
-        <input #filter type="text" 
+        <input #filter type="text" autocomplete="off"
             class="users-table-filter-input input-button-input"
             placeholder="Filter by name" 
             (keyup)="updateFilter(filter)"
