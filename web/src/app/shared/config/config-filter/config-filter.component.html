@@ -122,7 +122,7 @@
         </div>
       </div>
       <div class="layout is-flex has-islands island--half">
-        <div class="layout__container layout--half">
+        <div class="layout__container layout--third">
           <div class="island island--half island--half--left">
             <div class="checkbox--section-title">
               Impact
@@ -138,7 +138,7 @@
             </div>
           </div>
         </div>
-        <div class="layout__container layout--half">
+        <div class="layout__container layout--third">
           <div class="island island--half island--half--right">
             <div class="checkbox--section-title">
               Severity Level
@@ -154,10 +154,8 @@
             </div>
           </div>
         </div>
-      </div>
-      <div *ngIf="isNotifications" class="layout is-flex has-islands island--half">
-        <div class="layout__container layout--half">
-          <div class="island island--half island--half--left">
+        <div class="layout__container layout--third">
+          <div *ngIf="isNotifications" class="island island--half island--half--left">
             <div class="checkbox--section-title">
               Status
             </div>
@@ -171,8 +169,6 @@
               </label>
             </div>
           </div>
-        </div>
-        <div class="layout__container layout--half">
         </div>
       </div>
       <div *ngIf="iDavis.isAdmin" class="island island--center island--submit">
