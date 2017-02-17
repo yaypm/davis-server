@@ -26,11 +26,11 @@
         [class.fadeOut]="updating" [class.fadeIn]="updated">
         <div *ngFor="let attachment of message.visual.card.attachments" 
           class="card-attachment"
-          [class.card-content-text-only]="!((attachment.title || attachment.fields || attachment.actions || attachment.actionClicked) || (attachment.author && attachment.author === 'filtered'))">
-          <div *ngIf="(attachment.title || attachment.fields || attachment.actions || attachment.actionClicked) || (attachment.author && attachment.author === 'filtered')" 
+          [class.card-content-text-only]="!((attachment.title || attachment.fields || attachment.actions || attachment.actionClicked) || (attachment.author_name && attachment.author_name === 'filtered'))">
+          <div *ngIf="(attachment.title || attachment.fields || attachment.actions || attachment.actionClicked) || (attachment.author_name && attachment.author_name === 'filtered')" 
             class="card-bar" [style.border-color]="attachment.color"></div>
-          <div class="card-content" [class.card-content-text-only]="!((attachment.title || attachment.fields || attachment.actions || attachment.actionClicked) || (attachment.author && attachment.author === 'filtered'))">
-            <div *ngIf="attachment.author && attachment.author === 'filtered'" style="color: #b7b7b7">
+          <div class="card-content" [class.card-content-text-only]="!((attachment.title || attachment.fields || attachment.actions || attachment.actionClicked) || (attachment.author_name && attachment.author_name === 'filtered'))">
+            <div *ngIf="attachment.author_name && attachment.author_name === 'filtered'" style="color: #b7b7b7">
               <svg style="fill: #00A6FB; width: 15px; height: 15px; vertical-align: sub">
                 <use xlink:href="#filter"></use>
               </svg>
