@@ -13,6 +13,7 @@
         "./userActivity",
         "./problemNotification",
         "./pushLink",
-        "./autoFollowUp"
+        "./autoFollowUp",
+        "./debug/chartDebug"
     ]
 }
