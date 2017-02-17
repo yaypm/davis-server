@@ -212,14 +212,12 @@
             [(ngModel)]="iConfig.values.otherUser.alexa_id"
             (keyup)="validate()">
       </div>
-      <div class="island island--full" *ngIf="!iConfig.isWizard && !isMyUser && iDavis.isAdmin && !isNewUser">
-        <button type="button" class="btn btn--secondary btn--secondary--delete"
+      <div class="island island--center island--submit">
+        <button *ngIf="!iConfig.isWizard && !isMyUser && iDavis.isAdmin && !isNewUser" type="button" class="btn btn--secondary btn--secondary--delete"
             [attr.disabled]="(isMyUser) ? true : null"
             (click)="deleteUser(iConfig.values.otherUser.email)">
             {{ (confirmDeleteUser) ? 'Confirm Delete User' : 'Delete User' }}
         </button>
-      </div>
-      <div class="island island--center island--submit">
         <button type="submit" class="btn btn--primary btn--submit"
             [attr.disabled]="(!form.valid || submitButton === 'Saving...' || submitButton === 'Adding User...' || !isDirty) ? true : null">
             {{ submitButton }}
