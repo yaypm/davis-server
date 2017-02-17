@@ -39,9 +39,9 @@ export class TagsInputComponent implements OnInit, AfterViewInit {
       this.focus.push(true);
       this.tagsChange.emit();
     } else {
-      this.focus[this.focus.length - 1] = false;
       setTimeout(() => {
         this.focus[this.focus.length - 1] = true;
+        this.focus = _.cloneDeep(this.focus);
       },0);
     }
   }
@@ -56,6 +56,7 @@ export class TagsInputComponent implements OnInit, AfterViewInit {
         this.tagsChange.emit();
       }
     }
+    this.tagsChange.emit();
   }
   
   preventParentClick(event: any) {
@@ -63,9 +64,11 @@ export class TagsInputComponent implements OnInit, AfterViewInit {
   }
   
   ngOnInit() {
-    this.tags.forEach((tag: any) => {
-      this.focus.push(false);
-    });
+    if (this.tags) {
+      this.tags.forEach((tag: any) => {
+        this.focus.push(false);
+      });
+    }
     
     this.iConfig.getDynatraceApplications()
       .then(response => {

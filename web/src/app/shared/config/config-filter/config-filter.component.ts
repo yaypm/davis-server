@@ -124,7 +124,17 @@ export class ConfigFilterComponent implements OnInit, OnChanges, AfterViewInit {
         });
       }
     }
-    this.isDirty = !_.isEqual(this.iConfig.values.filter, this.iConfig.values.original.filter);
+    
+    // Verify all entities have a value
+    let validValues = true;
+    if (this.iConfig.values.filter.entityTags) {
+      this.iConfig.values.filter.entityTags.forEach((tag: any) => {
+        if (validValues && !tag.value._id) validValues = false;
+      });
+    }
+    this.isDirty = (validValues || (this.iConfig.values.filter.entityTags.length === 1 && 
+      this.iConfig.values.filter.entityTags[0].value.name === '')) 
+      ? !_.isEqual(this.iConfig.values.filter, this.iConfig.values.original.filter) : false;
   }
   
   removeNullProperties(filter: any): any {
@@ -269,8 +279,8 @@ export class ConfigFilterComponent implements OnInit, OnChanges, AfterViewInit {
     }
     
     // Convert entity model to match tag model
+    this.iConfig.values.filter.entityTags = [];
     if (this.iConfig.values.filter.entity && this.iConfig.values.filter.entity.length > 0) {
-      this.iConfig.values.filter.entityTags = [];
       this.iConfig.values.filter.entity.forEach((entity: any, index: number) => {
         this.iConfig.values.filter.entityTags.push({
           key: (entity.category === 'applications') ? 'Application' : 'Service',

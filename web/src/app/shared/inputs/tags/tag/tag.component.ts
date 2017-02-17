@@ -19,7 +19,8 @@ export class TagComponent implements OnInit, AfterViewInit {
   
   @Input() keys: Array<any>;
   @Input() tag: any;
-  @Input() focus: boolean;
+  @Input() focus: Array<boolean>;
+  @Input() focusIndex: number;
   @Output() deleteEmptyTags: EventEmitter<any> = new EventEmitter();
 
   @ViewChild('keyInput') keyInput: ElementRef;
@@ -57,6 +58,20 @@ export class TagComponent implements OnInit, AfterViewInit {
         name: '',
         entityId: '',
       };
+    }
+    if (event.keyCode === 8 && (this.tag.key === '' || !this.tag.key) && this.iConfig.values.filter.entityTags.length > 1) {
+      this.iConfig.values.filter.entityTags[this.iConfig.values.filter.entityTags.length - 2] = {
+        key: '',
+        value: {
+          _id: '',
+          name: '',
+          entityId: '',
+        },
+      };
+      this.tag.key = ' ';
+      this.deleteEmptyTags.emit();
+      this.focusKeyInput();
+      this.tag.key = '';
     }
   }
     
@@ -148,7 +163,8 @@ export class TagComponent implements OnInit, AfterViewInit {
     // http://stackoverflow.com/questions/37355768/how-to-check-whether-ngif-has-taken-effect
     setTimeout(() => {
       this.keyInput.nativeElement.focus();
-      this.focus = false;
+      this.focus[this.focusIndex] = false;
+      this.focus[this.focusIndex] = true;
     }, 0);
   }
   
@@ -163,6 +179,7 @@ export class TagComponent implements OnInit, AfterViewInit {
     this.valueFocused = true;
     setTimeout(() => {
       this.valueInput.nativeElement.focus();
+      this.focus[this.focusIndex] = true;
     }, 0);
   }
   
@@ -199,13 +216,12 @@ export class TagComponent implements OnInit, AfterViewInit {
   }
   
   ngOnChanges(changes: {[propKey: string]: SimpleChange}) {
-    if (changes['focus'] && this.focus) {
+    if (changes['focus'] && this.focus[this.focusIndex]) {
       if (this.tag.key && this.tag.key.length > 0) {
         this.focusValueInput(null);
       } else {
         this.focusKeyInput();
       }
-      this.focus = false;
     }
   }
   

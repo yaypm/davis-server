@@ -1,6 +1,6 @@
 <form #form="ngForm" style="min-height: 0;">
-  <span class="tag" [class.tag-empty]="!tag.key || tag.key === ''" [class.tag-no-value]="tag.key !== '' && tag.value.name === ''" style="overflow: visible" (click)="focusInput()">
-    <button *ngIf="(tag.value.name === '' && tag.key !== '') || (valueFocused && tag.value.name === '')" class="tag__delete" tabindex="-1" (click)="clearKey(); focusKeyInput()"></button>
+  <span class="tag" [class.tag-empty]="!tag.key || tag.key === ''" [class.tag-no-value]="tag.key && tag.key !== '' && (!tag.value.name || tag.value.name === '')" style="overflow: visible" (click)="focusInput()">
+    <button *ngIf="(tag.value.name === '' && tag.key !== '' && tag.key) || (valueFocused && tag.value.name === '')" class="tag__delete" tabindex="-1" (click)="clearKey(); focusKeyInput()"></button>
     <span class="tag__key">
       <input #keyInput [(ngModel)]="tag.key" name="key" type="text" autocomplete="off" spellcheck="false"
         class="tag-input tag-input-key tag__key"
@@ -12,8 +12,8 @@
         (keyup.arrowUp)="keyInputSpecialKeyUp($event)"
         (keyup.arrowDown)="keyInputSpecialKeyUp($event)"
         (click)="preventParentClick($event)"
-        (focus)="keyFocused = true"
-        (blur)="keyFocused = false; focus = false; (keys[tag.key]) ? null : tag.key = ''; deleteEmptyTags.emit()">
+        (focus)="keyFocused = true; focus[focusIndex] = true"
+        (blur)="keyFocused = false; focus[focusIndex] = false; (keys[tag.key]) ? null : tag.key = ''; deleteEmptyTags.emit()">
       <span #keySpan class="tag-span" [class.position-off-screen]="keyFocused" (click)="preventParentClick($event); focusKeyInput()">{{ tag.key }}{{ (tag.key && tag.key.length > 0) ? ':' : null }}</span>
       <div *ngIf="keyFocused && !keys[tag.key]" class="tag-list tag-list-keys">
         <div #keysList *ngFor="let key of keys | tagPipe:tag.key" class="tag-list-item" [class.tag-list-item-highlighted]="highlighted.key === key.key || (keys | tagPipe:tag.key).length === 1" 
@@ -32,8 +32,8 @@
         (keyup.arrowUp)="valueInputSpecialKeyUp($event)"
         (keyup.arrowDown)="valueInputSpecialKeyUp($event)"
         (click)="preventParentClick($event)"
-        (focus)="valueFocused = true"
-        (blur)="valueFocused = false; focus = false; (!testValue.name || includes(values, testValue)) ? null : tag.value = { _id: '', name: '', entityId: '' }; deleteEmptyTags.emit();">
+        (focus)="valueFocused = true; focus[focusIndex] = true"
+        (blur)="valueFocused = false; focus[focusIndex] = false; (!testValue.name || includes(values, testValue)) ? null : tag.value = { _id: '', name: '', entityId: '' }; deleteEmptyTags.emit()">
       <span #valueSpan class="tag-span" 
         [class.position-off-screen]="valueFocused || !values || values.length < 1" 
           (click)="preventParentClick($event); focusValueInput(null)">

@@ -1017,14 +1017,17 @@ form.card-form {
 /* Tags */
 .tag {
   float: left;
-  margin: 4px 5px 4px 0px; }
+  margin: 3px 5px 3px 0px; }
   
-.tag-empty {
+.tag:hover {
+  background-color: #e6e6e6; }
+  
+.tag-empty, .tag-empty:hover {
   cursor: text;
   border: 0;
   background-color: transparent; }
   
-.tag-no-value {
+.tag-no-value, .tag-no-value:hover {
   border: 1px solid #dadada;
   background-color: transparent; }
 
@@ -1033,13 +1036,17 @@ form.card-form {
   cursor: text;
   width: 100%;
   min-height: 32px;
-  padding-left: 11px;
+  padding-left: 6px;
   background-color: white;
   border: 1px solid #cccccc;
   border-radius: 3px; }
   
 .tags-wrapper:hover {
   border-color: #a0a0a0; }
+  
+.tags-wrapper-focused, .tags-wrapper-focused:hover {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(204, 204, 204, 0.8); }
 
 .tag-list {
   position: absolute;
@@ -1093,8 +1100,8 @@ form.card-form {
   width: 84px; }
   
 .tag__delete {
-  vertical-align: baseline; }
-
+  vertical-align: 14%; }
+  
 .display-none {
   display: none; }
   
