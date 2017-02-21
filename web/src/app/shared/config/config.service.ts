@@ -255,12 +255,10 @@ export class ConfigService {
   }
   
   displayError(message: string, category: string): void {
+    if (message.indexOf('403') > -1) this.iDavis.logOut();
     if (category) {
       this.status[category].success = false;
       this.status[category].error = message || 'Sorry an error occurred, please try again.';
-    }
-    if (typeof message === 'string' && message.indexOf('invalid token') > -1) {
-      this.iDavis.logOut();
     }
   }
 }

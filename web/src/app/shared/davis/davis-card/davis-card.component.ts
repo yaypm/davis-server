@@ -52,9 +52,13 @@ export class DavisCardComponent implements OnInit, AfterViewInit {
         this.iDavis.conversation.push(result.response);
       })
       .catch(err => {
-        if (typeof err !== 'string' && err.message) err = err.message;
-        let message = { visual: { card: { text: err, error: true } }, isDavis: true };
-        this.iDavis.conversation.push(message);
+        if (typeof err === 'string' && err.indexOf('403') > -1) {
+            this.iDavis.logOut();
+        } else {
+          if (typeof err !== 'string' && err.message) err = err.message;
+          let message = { visual: { card: { text: err, error: true } }, isDavis: true };
+          this.iDavis.conversation.push(message);
+        }
       });
   }
 

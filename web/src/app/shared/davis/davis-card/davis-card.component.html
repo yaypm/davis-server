@@ -1,7 +1,7 @@
 <form (ngSubmit)="doSubmit()" #form="ngForm" class="card-form">
   <div *ngIf="message || updated" class="layout is-flex has-islands" style="padding: 0">
     <div [class.circle-left]="isDavis" [class.circle-right]="!isDavis">
-      {{ (isDavis) ? null : iDavis.values.user.name.first[0].toUpperCase() + iDavis.values.user.name.last[0].toUpperCase() }}
+      {{ (isDavis || !iDavis.values.user.name.first[0]) ? null : iDavis.values.user.name.first[0].toUpperCase() + iDavis.values.user.name.last[0].toUpperCase() }}
       <svg *ngIf="isDavis" class="icon icon--white icon--dynatrace-signet">
         <use xlink:href="#dynatrace-signet"></use>
       </svg>

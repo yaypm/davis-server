@@ -13,6 +13,7 @@ export class DavisService {
   isAdmin: boolean = false;
   isAuthenticated: boolean = false;
   davisVersion: string;
+  globalError: string;
 
   token: string;
   isBreadcrumbsVisible: boolean = false;
@@ -136,8 +137,12 @@ export class DavisService {
     } else {
       errMsg = error.message ? error.message : error.toString();
     }
-    console.error(errMsg);
     return Promise.reject(errMsg);
+  }
+  
+  testGlobalErrorHandler() {
+    let test = null;
+    test = test[0].toUpperCase();
   }
 
   isIframeTileDetected(): boolean {

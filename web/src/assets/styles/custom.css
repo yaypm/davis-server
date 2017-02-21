@@ -142,6 +142,13 @@ form {
 .island--login-error-height {
   height: 410px; }
   
+.island--global-error {
+  position: fixed;
+  top: 44px;
+  z-index: 1000;
+  margin: 0;
+  border-radius: 0; }
+  
 .config-background {
   background-color: #f8f8f8; }
 
@@ -761,6 +768,9 @@ input:-webkit-autofill {
   .chat-spacer {
     width: 100%; 
     height: 125px; }
+    
+  .island--global-error {
+    top: 74px; }
   
   .island--davisInput {
     background-color: transparent;  }

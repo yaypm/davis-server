@@ -295,6 +295,18 @@
     </ul>
   </div>
 </div>
+<div *ngIf="iDavis.globalError" class="island--full-width island--error island--error-container island--global-error"> 
+  <div class="island--error-text">
+    {{ iDavis.globalError }}
+  </div>
+  <div class="island--error-button">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" 
+      class="icon icon--black icon--error-button" 
+      (click)="iDavis.globalError = null">
+      <use xlink:href="#clear"></use>
+    </svg>
+  </div>
+</div>
 <div class="breadcrumbs--spacer"></div>
 <div *ngIf="!iDavis.isScrolledToBottom && router.url === '/davis'" (click)="iDavis.windowScrollBottom('slow')" class="scroll-to-bottom-button">
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon icon--white icon--scroll-to-bottom">

@@ -99,7 +99,8 @@ export class ConfigGuard implements CanActivate {
   // ------------------------------------------------------
   CheckUserError(error: any) {
     this.iConfig.isWizard = false;
-    this.router.navigate(["/auth/login"], this.navigationExtras);
+    this.iDavis.logOut();
+    // this.router.navigate(["/auth/login"], this.navigationExtras);
     return false;
   }
 }
