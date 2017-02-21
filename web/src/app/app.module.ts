@@ -37,6 +37,9 @@ import { DavisGuard }   from "./auth/auth-guard/davis-guard.service";
 import { WizardGuard }  from "./auth/auth-guard/wizard-guard.service";
 import { DavisService } from "./shared/davis.service";
 
+// Dyntrace error reporter 
+declare var dtrum: any;
+
 @Injectable()
 class MyErrorHandler implements ErrorHandler {
   
@@ -50,6 +53,9 @@ class MyErrorHandler implements ErrorHandler {
   handleError(error: any) {
     console.log(error);
     this.iDavis.globalError = "Oops! Something went wrong, please refresh this tab if issues persist.";
+    if  (typeof dtrum !== "undefined") {
+      dtrum.reportError(Error);
+    }
   }
 }
 
