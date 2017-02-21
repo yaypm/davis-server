@@ -1100,7 +1100,7 @@ form.card-form {
   width: 84px; }
   
 .tag__delete {
-  vertical-align: 14%; }
+  vertical-align: baseline; }
   
 .display-none {
   display: none; }

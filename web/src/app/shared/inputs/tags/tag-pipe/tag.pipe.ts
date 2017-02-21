@@ -17,6 +17,8 @@ export class TagPipe implements PipeTransform {
           let words = key.name.split(' ');
           let strs = str.split(' ');
           
+          if (key.name.toLowerCase() === str) return false;
+          
           // Multiple word support
           if (words.length > 1) {
             words.forEach((word: string) => {
