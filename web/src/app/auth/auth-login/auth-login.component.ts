@@ -20,7 +20,7 @@ import { DavisService }                 from '../../shared/davis.service';
 import * as _                           from "lodash";
 import * as $                           from 'jquery';
 
-declare var ruxitApi: any;
+declare var dtrum: any;
 
 // ----------------------------------------------------------------------------
 // Class
@@ -97,7 +97,8 @@ export class AuthLoginComponent  implements OnInit, AfterViewInit {
           if (!response.user.name.last) this.iDavis.values.user.name.last = '';
         }
         this.iConfig.values.original.user = _.cloneDeep(this.iDavis.values.user);
-        if (typeof ruxitApi != "undefined") ruxitApi.tagSession(this.iDavis.values.authenticate.email);
+        if (typeof dtrum !== "undefined") dtrum.identifyUser(this.iDavis.values.authenticate.email);
+
         this.router.navigate([`/${(this.navigationExtras.fragment) ? 'configuration' : 'davis'}`], this.navigationExtras);
         this.submitButton = 'Sign in';
         return this.iDavis.getDavisVersion();
