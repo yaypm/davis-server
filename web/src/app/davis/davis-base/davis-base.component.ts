@@ -78,7 +78,8 @@ export class DavisBaseComponent implements OnInit, AfterViewInit {
   // Initialize component
   // ------------------------------------------------------
   
-  doSubmit() {
+  doSubmit(event: any) {
+    event.preventDefault();
     if (this.showProcessingIndicator) return;
     let phrase = this.iDavis.safariAutoCompletePolyFill(this.davisInput, 'davisInput').trim();
     if (phrase.length > 0) {
@@ -105,9 +106,13 @@ export class DavisBaseComponent implements OnInit, AfterViewInit {
           }
         })
         .catch(err => {
-          if (typeof err !== 'string' && err.message) err = err.message;
-          this.addToConvo( { visual: { card: { text: err, error: true } }}, true);
-          this.iDavis.windowScrollBottom('slow');
+          if (typeof err === 'string' && err.indexOf('403') > -1) {
+            this.iDavis.logOut();
+          } else {
+            if (typeof err !== 'string' && err.message) err = err.message;
+            this.addToConvo( { visual: { card: { text: err, error: true } }}, true);
+            this.iDavis.windowScrollBottom('slow');
+          }
         });
     } else {
       this.davisInput = '';

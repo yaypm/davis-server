@@ -89,7 +89,7 @@
           <label for="clientId" class="label">
             Client ID
           </label>
-          <input #clientId type="text" id="clientId" class="inputfield" name="clientId" 
+          <input #clientId type="text" id="clientId" class="inputfield" name="clientId" autocomplete="off"
             [attr.disabled]="(iConfig.values.original.slack.clientId) ? true : null"
             [(ngModel)]="iConfig.values.slack.clientId" (keyup)="validate()">
         </div>
@@ -100,11 +100,11 @@
           <div class="input-button-wrapper" 
             [class.input-button-wrapper-focus]="isSecretFocused" 
             [class.input-button-wrapper-disabled]="iConfig.values.original.slack.clientId">
-            <input *ngIf="isSecretMasked" type="password" name="clientSecret" id="clientSecret" class="input-button-input"
+            <input *ngIf="isSecretMasked" type="password" name="clientSecret" id="clientSecret" class="input-button-input" autocomplete="off"
                 [attr.disabled]="(iConfig.values.original.slack.clientId) ? true : null"
                 [(ngModel)]="iConfig.values.slack.clientSecret" 
                 (focus)="isSecretFocused = true" (blur)="isSecretFocused = false" (keyup)="validate()">
-            <input *ngIf="!isSecretMasked" type="text" name="clientSecret" id="clientSecret" class="input-button-input"
+            <input *ngIf="!isSecretMasked" type="text" name="clientSecret" id="clientSecret" class="input-button-input" autocomplete="off"
                 [attr.disabled]="(iConfig.values.original.slack.clientId) ? true : null"
                 [(ngModel)]="iConfig.values.slack.clientSecret" (focus)="isSecretFocused = true" (blur)="isSecretFocused = false" (keyup)="validate()">
             
@@ -120,7 +120,7 @@
             OAuth & Permissions - Redirect URL
           </label>
           <div class="input-button-wrapper" [class.input-button-wrapper-focus]="isRedirectUriFocused">
-              <input #redirectUri type="text" id="redirectUri" name="redirectUri" class="input-button-input" 
+              <input #redirectUri type="text" id="redirectUri" name="redirectUri" class="input-button-input" autocomplete="off"
                   [(ngModel)]="iConfig.values.slack.redirectUri"
                   (focus)="isRedirectUriFocused = true" (blur)="isRedirectUriFocused = false" (click)="iDavis.clickElem('redirectUriBtn')" readonly>
               
@@ -136,7 +136,7 @@
             Interactive Messages - Request URL
           </label>
           <div class="input-button-wrapper" [class.input-button-wrapper-focus]="isRequestUriFocused">
-              <input type="text" id="requestUri" name="requestUri" class="input-button-input" 
+              <input type="text" id="requestUri" name="requestUri" class="input-button-input" autocomplete="off"
                   [(ngModel)]="requestUri"
                   (focus)="isRequestUriFocused = true" (blur)="isRequestUriFocused = false" (click)="iDavis.clickElem('requestUriBtn')" readonly>
   

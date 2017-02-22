@@ -1,7 +1,7 @@
 <form (ngSubmit)="doSubmit()" #form="ngForm" class="card-form">
   <div *ngIf="message || updated" class="layout is-flex has-islands" style="padding: 0">
     <div [class.circle-left]="isDavis" [class.circle-right]="!isDavis">
-      {{ (isDavis) ? null : iDavis.values.user.name.first[0].toUpperCase() + iDavis.values.user.name.last[0].toUpperCase() }}
+      {{ (isDavis || !iDavis.values.user.name.first[0]) ? null : iDavis.values.user.name.first[0].toUpperCase() + iDavis.values.user.name.last[0].toUpperCase() }}
       <svg *ngIf="isDavis" class="icon icon--white icon--dynatrace-signet">
         <use xlink:href="#dynatrace-signet"></use>
       </svg>
@@ -12,8 +12,8 @@
     <div class="island" [class.island--isDavis]="isDavis" [class.island--isUser]="!isDavis" 
       [class.island--error]="message.visual && message.visual.card && message.visual.card.error" 
       style="padding: 17.5px 16px; margin: 0; border: 0.5px solid #ececec; z-index: 99; min-height: 58px">
-      <div *ngIf="message === {}">
-        <div class="typing-indicator" style="margin-top: 4px">
+      <div *ngIf="message === {} || updateState === 'updating'">
+        <div class="typing-indicator" [class.typing-indicator-centered]="updateState === 'updating'">
           <span></span>
           <span></span>
           <span></span>
@@ -23,14 +23,14 @@
         [innerHTML]="message.visual.card.text | slackTagConversionPipe:{isAttachment: false, isSentence: true}" class="card-push-animation" style="font-size: 14px"></div>
       <div *ngIf="message.visual && message.visual.card && message.visual.card.attachments && message.visual.card.attachments.length > 0" 
         class="card-attachments card-push-animation"
-        [class.fadeOut]="updating" [class.fadeIn]="updated">
+         [@update]="updateState">
         <div *ngFor="let attachment of message.visual.card.attachments" 
           class="card-attachment"
-          [class.card-content-text-only]="!((attachment.title || attachment.fields || attachment.actions || attachment.actionClicked) || (attachment.author && attachment.author === 'filtered'))">
-          <div *ngIf="(attachment.title || attachment.fields || attachment.actions || attachment.actionClicked) || (attachment.author && attachment.author === 'filtered')" 
+          [class.card-content-text-only]="!((attachment.title || attachment.fields || attachment.actions || attachment.actionClicked) || (attachment.author_name && attachment.author_name === 'filtered'))">
+          <div *ngIf="(attachment.title || attachment.fields || attachment.actions || attachment.actionClicked) || (attachment.author_name && attachment.author_name === 'filtered')" 
             class="card-bar" [style.border-color]="attachment.color"></div>
-          <div class="card-content" [class.card-content-text-only]="!((attachment.title || attachment.fields || attachment.actions || attachment.actionClicked) || (attachment.author && attachment.author === 'filtered'))">
-            <div *ngIf="attachment.author && attachment.author === 'filtered'" style="color: #b7b7b7">
+          <div class="card-content" [class.card-content-text-only]="!((attachment.title || attachment.fields || attachment.actions || attachment.actionClicked) || (attachment.author_name && attachment.author_name === 'filtered'))">
+            <div *ngIf="attachment.author_name && attachment.author_name === 'filtered'" style="color: #b7b7b7">
               <svg style="fill: #00A6FB; width: 15px; height: 15px; vertical-align: sub">
                 <use xlink:href="#filter"></use>
               </svg>

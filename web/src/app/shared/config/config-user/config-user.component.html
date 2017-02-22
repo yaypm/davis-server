@@ -48,14 +48,14 @@
             </label>
             
             <!-- isMyUser -->
-            <input #first type="text" name="first"
+            <input #first type="text" name="first" autocomplete="off"
               class="inputfield" id="first"
               *ngIf="isMyUser"
               [(ngModel)]="iDavis.values.user.name.first" 
               (keyup)="validate()" required>
               
              <!-- !isMyUser -->
-            <input #first type="text" name="first" 
+            <input #first type="text" name="first" autocomplete="off"
               class="inputfield" id="first"
               *ngIf="!isMyUser"
               [(ngModel)]="iConfig.values.otherUser.name.first" 
@@ -69,14 +69,14 @@
             </label>
             
             <!-- isMyUser -->
-            <input type="text" name="last" 
+            <input type="text" name="last" autocomplete="off"
               class="inputfield" id="last"
               *ngIf="isMyUser"
               [(ngModel)]="iDavis.values.user.name.last" 
               (keyup)="validate()" required>
                 
             <!-- !isMyUser -->
-            <input type="text" name="last"
+            <input type="text" name="last" autocomplete="off"
               class="inputfield" id="last"
               *ngIf="!isMyUser"
               [(ngModel)]="iConfig.values.otherUser.name.last" 
@@ -89,7 +89,7 @@
           Email
         </label>
         <!-- isMyUser -->
-        <input type="email" name="email" 
+        <input type="email" name="email" autocomplete="off"
           class="inputfield" id="email"
           *ngIf="isMyUser"
           [(ngModel)]="iDavis.values.user.email" 
@@ -97,7 +97,7 @@
           [attr.disabled]="(iConfig.isWizard) ? null : ''" required>
             
         <!-- !isMyUser -->
-        <input type="email" name="email" 
+        <input type="email" name="email" autocomplete="off"
           class="inputfield" id="email"
           *ngIf="!isMyUser"
           [(ngModel)]="iConfig.values.otherUser.email" 
@@ -113,20 +113,20 @@
             <div class="input-button-wrapper" [class.input-button-wrapper-focus]="isPasswordFocused">
               
                 <!-- isMyUser -->
-                <input *ngIf="isPasswordMasked && isMyUser" type="password" name="password" id="password" class="input-button-input" minlength="6" 
+                <input *ngIf="isPasswordMasked && isMyUser" type="password" name="password" id="password" class="input-button-input" minlength="6" autocomplete="off"
                     [(ngModel)]="iDavis.values.user.password" 
                     (focus)="isPasswordFocused = true" (blur)="isPasswordFocused = false" (keyup)="validate()"
                     [required]="(iConfig.isWizard) ? '' : null">
-                <input *ngIf="!isPasswordMasked && isMyUser" type="text" name="password" id="password" class="input-button-input" minlength="6" 
+                <input *ngIf="!isPasswordMasked && isMyUser" type="text" name="password" id="password" class="input-button-input" minlength="6" autocomplete="off"
                     [(ngModel)]="iDavis.values.user.password" (focus)="isPasswordFocused = true" (blur)="isPasswordFocused = false" (keyup)="validate()"
                     [required]="(iConfig.isWizard) ? '' : null">
                     
                 <!-- !isMyUser -->
-                <input *ngIf="isPasswordMasked && !isMyUser" type="password" name="password" id="password" class="input-button-input" minlength="6"
+                <input *ngIf="isPasswordMasked && !isMyUser" type="password" name="password" id="password" class="input-button-input" minlength="6" autocomplete="off"
                     [(ngModel)]="iConfig.values.otherUser.password" 
                     (focus)="isPasswordFocused = true" (blur)="isPasswordFocused = false"(keyup)="validate()"
                     [required]="(isNewUser) ? '' : null">
-                <input *ngIf="!isPasswordMasked && !isMyUser" type="text" name="password" id="password" class="input-button-input" minlength="6" 
+                <input *ngIf="!isPasswordMasked && !isMyUser" type="text" name="password" id="password" class="input-button-input" minlength="6" autocomplete="off"
                     [(ngModel)]="iConfig.values.otherUser.password" 
                     (focus)="isPasswordFocused = true" (blur)="isPasswordFocused = false" (keyup)="validate()"
                     [required]="(isNewUser) ? '' : null">
@@ -201,25 +201,23 @@
         </label>
         
         <!-- isMyUser -->
-        <input type="text" class="inputfield" id="alexa_id" name="alexa_id" 
+        <input type="text" class="inputfield" id="alexa_id" name="alexa_id" autocomplete="off"
             *ngIf="isMyUser"
             [(ngModel)]="iDavis.values.user.alexa_id"
             (keyup)="validate()">
             
         <!-- !isMyUser -->
-        <input type="text" class="inputfield" id="alexa_id" name="alexa_id" 
+        <input type="text" class="inputfield" id="alexa_id" name="alexa_id" autocomplete="off"
             *ngIf="!isMyUser"
             [(ngModel)]="iConfig.values.otherUser.alexa_id"
             (keyup)="validate()">
       </div>
-      <div class="island island--full" *ngIf="!iConfig.isWizard && !isMyUser && iDavis.isAdmin && !isNewUser">
-        <button type="button" class="btn btn--secondary btn--secondary--delete"
+      <div class="island island--center island--submit">
+        <button *ngIf="!iConfig.isWizard && !isMyUser && iDavis.isAdmin && !isNewUser" type="button" class="btn btn--secondary btn--secondary--delete"
             [attr.disabled]="(isMyUser) ? true : null"
             (click)="deleteUser(iConfig.values.otherUser.email)">
             {{ (confirmDeleteUser) ? 'Confirm Delete User' : 'Delete User' }}
         </button>
-      </div>
-      <div class="island island--center island--submit">
         <button type="submit" class="btn btn--primary btn--submit"
             [attr.disabled]="(!form.valid || submitButton === 'Saving...' || submitButton === 'Adding User...' || !isDirty) ? true : null">
             {{ submitButton }}

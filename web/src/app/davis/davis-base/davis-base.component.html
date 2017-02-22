@@ -1,4 +1,4 @@
-<form (ngSubmit)="doSubmit()" #form="ngForm">
+<form (ngSubmit)="doSubmit($event)" #form="ngForm">
   <div class="layout is-flex has-islands">
     <div class="island island--full-width" style="background-color: transparent; margin: 0; padding: 0">
       <div *ngFor="let message of iDavis.conversation; let i = index;" class="layout is-flex has-islands">
@@ -11,7 +11,7 @@
           [message]="{}" [isDavis]="true"
           (toggleProcessingIndicator)="showProcessingIndicator = !showProcessingIndicator"></davis-card>
       </div>
-      <div *ngIf="iDavis.conversation.length < 1 && !iDavis.isIframeTile" class="layout is-flex has-islands" 
+      <div *ngIf="iDavis.conversation.length < 1 && !iDavis.isIframeTile && !iDavis.globalError" class="layout is-flex has-islands" 
         [class.fadeIn]="iDavis.conversation.length < 1"
         [class.slideDownDavisCard]="iDavis.conversation.length < 1">
         <div class="island island--center" style="height: 299px; border: 0.5px solid #ececec">
@@ -35,11 +35,11 @@
             {{ davisMode.title }}
         </label>
         <div class="input-button-wrapper" [class.input-button-wrapper-focus]="isDavisInputFocused">
-          <input #davisIn type="text" id="davisInput" 
+          <input #davisIn type="text" id="davisInput"
             name="davisInput" class="input-button-input" 
             [(ngModel)]="davisInput"
             [attr.placeholder]="placeholder"
-            (keyup.enter)="doSubmit()"
+            (keyup.enter)="doSubmit($event)"
             (focus)="isDavisInputFocused = true; toggleListening(false)"
             (blur)="isDavisInputFocused = false">
           
@@ -49,7 +49,7 @@
             </svg>
           </div>
           
-          <div *ngIf="davisInput && davisInput.length > 0 && !showProcessingIndicator" class="input-button-button" (click)="doSubmit()">
+          <div *ngIf="davisInput && davisInput.length > 0 && !showProcessingIndicator" class="input-button-button" (click)="doSubmit($event)">
             <svg class="icon icon--black icon--input-button-img">
               <use xlink:href="#send"></use>
             </svg>

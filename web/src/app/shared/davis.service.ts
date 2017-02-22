@@ -13,6 +13,7 @@ export class DavisService {
   isAdmin: boolean = false;
   isAuthenticated: boolean = false;
   davisVersion: string;
+  globalError: string;
 
   token: string;
   isBreadcrumbsVisible: boolean = false;
@@ -59,10 +60,10 @@ export class DavisService {
   }
 
   logOut(): void {
-
     this.values.authenticate = new DavisModel().davis.values.authenticate;
     this.values.user = new DavisModel().davis.values.user;
 
+    this.conversation = [];
     this.isUserMenuVisible = false;
     this.isAuthenticated = false;
     this.isAdmin = false;
@@ -132,12 +133,20 @@ export class DavisService {
   handleError(error: Response | any): any {
     let errMsg: string;
     if (error instanceof Response) {
-      errMsg = `${error.status} - ${error.statusText}`;
+      if (error.status === 0) {
+        errMsg = 'The connection to Davis was lost!';
+      } else  {
+        errMsg = `${error.status} - ${error.statusText}`;
+      }
     } else {
       errMsg = error.message ? error.message : error.toString();
     }
-    console.error(errMsg);
     return Promise.reject(errMsg);
+  }
+  
+  testGlobalErrorHandler() {
+    let test = null;
+    test = test[0].toUpperCase();
   }
 
   isIframeTileDetected(): boolean {
