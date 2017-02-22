@@ -258,7 +258,11 @@ export class ConfigService {
     let errMsg: string;
     if (error instanceof Response) {
       if (error && error.status === 403) this.iDavis.logOut();
-      errMsg = `${error.status} - ${error.statusText}`;
+      if (error.status === 0) {
+        errMsg = 'The connection to Davis was lost!';
+      } else  {
+        errMsg = `${error.status} - ${error.statusText}`;
+      }
     } else {
       errMsg = error.message ? error.message : error.toString();
     }

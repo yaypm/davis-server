@@ -133,7 +133,11 @@ export class DavisService {
   handleError(error: Response | any): any {
     let errMsg: string;
     if (error instanceof Response) {
-      errMsg = `${error.status} - ${error.statusText}`;
+      if (error.status === 0) {
+        errMsg = 'The connection to Davis was lost!';
+      } else  {
+        errMsg = `${error.status} - ${error.statusText}`;
+      }
     } else {
       errMsg = error.message ? error.message : error.toString();
     }
