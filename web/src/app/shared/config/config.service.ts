@@ -254,11 +254,17 @@ export class ConfigService {
       .catch(this.iDavis.handleError);
   }
   
-  displayError(message: string, category: string): void {
-    if (message.indexOf('403') > -1) this.iDavis.logOut();
+  displayError(error: any, category: string): void {
+    let errMsg: string;
+    if (error instanceof Response) {
+      if (error && (error.status === 403 || error.status === 503)) this.iDavis.logOut();
+      errMsg = `${error.status} - ${error.statusText}`;
+    } else {
+      errMsg = error.message ? error.message : error.toString();
+    }
     if (category) {
       this.status[category].success = false;
-      this.status[category].error = message || 'Sorry an error occurred, please try again.';
+      this.status[category].error = errMsg || 'Sorry an error occurred, please try again.';
     }
   }
 }

@@ -100,10 +100,15 @@ export class ConfigurationBaseComponent implements OnInit {
       .fragment
       .map(fragment => fragment || 'None')
       .subscribe(value => {
-        if (this.sidebarItems[value]) {
-          this.iConfig.selectView(value);
-        } else if (value.indexOf('notification') > -1) {
-          this.iConfig.selectView(value);
+        if (this.iDavis.isAdmin || value.indexOf('notification-filters') > -1 
+          || (this.sidebarItems[value] && !this.sidebarItems[value].admin)) {
+          if (this.sidebarItems[value]) {
+            this.iConfig.selectView(value);
+          } else if (value.indexOf('notification') > -1) {
+            this.iConfig.selectView(value);
+          } else {
+            this.iConfig.selectView('user');
+          }
         } else {
           this.iConfig.selectView('user');
         }

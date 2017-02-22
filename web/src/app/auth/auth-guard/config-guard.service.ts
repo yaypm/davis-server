@@ -50,7 +50,7 @@ export class ConfigGuard implements CanActivate {
     if (!this.iConfig.isWizard && !this.iDavis.token) {
       return this.CheckUser();
     } else {
-      return true;
+      return this.isAuthorized();
     }
   }
 
@@ -86,7 +86,7 @@ export class ConfigGuard implements CanActivate {
       this.iDavis.isAuthenticated = true;
       this.iDavis.isAdmin = sessionStorage.getItem('isAdmin') === 'true';
       this.iDavis.values.authenticate.email = sessionStorage.getItem('email');
-      return true;
+      return this.isAuthorized();
     } else {
       this.iConfig.isWizard = false;
       this.router.navigate(["/auth/login"], this.navigationExtras);
@@ -99,8 +99,22 @@ export class ConfigGuard implements CanActivate {
   // ------------------------------------------------------
   CheckUserError(error: any) {
     this.iConfig.isWizard = false;
-    this.iDavis.logOut();
-    // this.router.navigate(["/auth/login"], this.navigationExtras);
+    this.router.navigate(["/auth/login"], this.navigationExtras);
     return false;
+  }
+  
+  isAuthorized(): boolean {
+    if (!this.iDavis.isAdmin && (
+      this.navigationExtras.fragment === 'alexa'
+      || this.navigationExtras.fragment === 'dynatrace' 
+      || this.navigationExtras.fragment === 'slack' 
+      || this.navigationExtras.fragment === 'notification-source'
+    )) {
+      this.navigationExtras.fragment = '';
+      this.router.navigate(["/davis"], this.navigationExtras);
+      return false;
+    } else {
+      return true;
+    }
   }
 }

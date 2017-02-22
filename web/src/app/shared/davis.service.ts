@@ -60,10 +60,10 @@ export class DavisService {
   }
 
   logOut(): void {
-
     this.values.authenticate = new DavisModel().davis.values.authenticate;
     this.values.user = new DavisModel().davis.values.user;
 
+    this.conversation = [];
     this.isUserMenuVisible = false;
     this.isAuthenticated = false;
     this.isAdmin = false;
