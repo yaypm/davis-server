@@ -257,7 +257,7 @@ export class ConfigService {
   displayError(error: any, category: string): void {
     let errMsg: string;
     if (error instanceof Response) {
-      if (error && (error.status === 403 || error.status === 503)) this.iDavis.logOut();
+      if (error && error.status === 403) this.iDavis.logOut();
       errMsg = `${error.status} - ${error.statusText}`;
     } else {
       errMsg = error.message ? error.message : error.toString();
