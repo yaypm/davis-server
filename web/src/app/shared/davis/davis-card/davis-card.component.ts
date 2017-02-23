@@ -71,6 +71,7 @@ export class DavisCardComponent implements OnInit, AfterViewInit {
         } else {
           this.message = result.response;
           this.updateState = 'updated';
+          this.iDavis.windowScrollBottom('slow');
         }
       })
       .catch(err => {

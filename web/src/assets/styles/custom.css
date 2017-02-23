@@ -291,6 +291,10 @@ label.theme--dark-label {
 .nav__btn-highlighted {
   background-color: #525252; }
   
+/* IE11 fix, but breaks other browsers */
+/*.nav__brand {*/
+/*  top: -30px; }*/
+  
 .btn--submit {
   float: right; }
   
@@ -390,6 +394,14 @@ input:invalid {
     
 input:-webkit-autofill {
   -webkit-box-shadow: 0 0 0px 1000px white inset; }
+  
+input::-ms-clear {
+  display: none; }
+
+input[type=text].input-button-input:-ms-input-placeholder, 
+input[type=email].input-button-input:-ms-input-placeholder, 
+input[type=password].input-button-input:-ms-input-placeholder {
+   color: #cccccc; }
   
 .select[disabled] {
   background-color: #f2f2f2;
