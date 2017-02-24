@@ -48,9 +48,9 @@ export class ConfigurationBaseComponent implements OnInit {
       admin: false,
       expanded: null,
       items: {
-        'notification-filters': {
-          key: 'notification-filters',
-          name: 'Filters',
+        'notification-rules': {
+          key: 'notification-rules',
+          name: 'Rules',
           admin: false,
         },
         'notification-source': {
@@ -100,7 +100,7 @@ export class ConfigurationBaseComponent implements OnInit {
       .fragment
       .map(fragment => fragment || 'None')
       .subscribe(value => {
-        if (this.iDavis.isAdmin || value.indexOf('notification-filters') > -1 
+        if (this.iDavis.isAdmin || value.indexOf('notification-rules') > -1 
           || (this.sidebarItems[value] && !this.sidebarItems[value].admin)) {
           if (this.sidebarItems[value]) {
             this.iConfig.selectView(value);

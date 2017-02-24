@@ -18,7 +18,7 @@ import { ConfigChromeComponent }                  from "./config-chrome/config-c
 import { ConfigDynatraceComponent }               from "./config-dynatrace/config-dynatrace.component";
 import { ConfigFilterComponent }                  from "./config-filter/config-filter.component";
 import { ConfigFiltersComponent }                 from "./config-filters/config-filters.component";
-import { ConfigNotificationFiltersComponent }     from "./config-notification-filters/config-notification-filters.component";
+import { ConfigNotificationRulesComponent }     from "./config-notification-rules/config-notification-rules.component";
 import { ConfigNotificationSourceComponent }      from "./config-notification-source/config-notification-source.component";
 import { ConfigSlackComponent }                   from "./config-slack/config-slack.component";
 import { ConfigUserComponent }                    from "./config-user/config-user.component";
@@ -44,7 +44,7 @@ import { TimezoneModule }                         from '../inputs/timezone/timez
     ConfigDynatraceComponent,
     ConfigFilterComponent,
     ConfigFiltersComponent,
-    ConfigNotificationFiltersComponent,
+    ConfigNotificationRulesComponent,
     ConfigNotificationSourceComponent,
     ConfigSlackComponent,
     ConfigUserComponent,
@@ -59,7 +59,7 @@ import { TimezoneModule }                         from '../inputs/timezone/timez
     ConfigDynatraceComponent,
     ConfigFilterComponent,
     ConfigFiltersComponent,
-    ConfigNotificationFiltersComponent,
+    ConfigNotificationRulesComponent,
     ConfigNotificationSourceComponent,
     ConfigSlackComponent,
     ConfigUserComponent,

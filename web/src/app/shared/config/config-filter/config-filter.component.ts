@@ -33,6 +33,7 @@ export class ConfigFilterComponent implements OnInit, OnChanges, AfterViewInit {
   submitButtonDefault: string;
   isDirty: boolean = false;
   confirmDeleteFilter: boolean = false;
+  filterOrRule: string = 'Filter';
 
   constructor(
     private renderer: Renderer,
@@ -194,6 +195,7 @@ export class ConfigFilterComponent implements OnInit, OnChanges, AfterViewInit {
   }
   
   init() {
+    this.filterOrRule = (this.isNotifications) ? 'Rule' : 'Filter';
     this.iConfig.getDavisUsers()
       .then(response => {
         if (!response.success) throw new Error(response.message);
