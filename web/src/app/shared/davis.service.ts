@@ -31,7 +31,7 @@ export class DavisService {
     '/configuration#users': 'Account settings',
     '/configuration#dynatrace': 'Account settings',
     '/configuration#filters': 'Account settings',
-    '/configuration#notification-filters': 'Account settings',
+    '/configuration#notification-rules': 'Account settings',
     '/configuration#notification-source': 'Account settings',
     '/configuration#slack': 'Account settings',
     '/configuration#chrome': 'Account settings',
