@@ -32,6 +32,7 @@ import { FilterSidebarItemsByAdminPipe }          from './config-sidebar-pipe/co
 
 // Modules
 import { TagsModule }                             from '../inputs/tags/tags.module';
+import { TimezoneModule }                         from '../inputs/timezone/timezone.module';
 
 // ----------------------------------------------------------------------------
 // Module
@@ -71,6 +72,7 @@ import { TagsModule }                             from '../inputs/tags/tags.modu
     CommonModule,
     FormsModule,
     TagsModule,
+    TimezoneModule,
   ],
   providers: [
     ConfigService,

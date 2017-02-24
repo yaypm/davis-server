@@ -30,6 +30,7 @@ export class ConfigUserComponent implements OnInit, AfterViewInit {
   isPasswordMasked: boolean = true;
   isSelectOpened: boolean = false;
   isDirty: boolean = false;
+  isValidTimezone: boolean = true;
   detectedTimezone: string = '';
   confirmDeleteUser: boolean = false;
   user: any;
@@ -179,14 +180,7 @@ export class ConfigUserComponent implements OnInit, AfterViewInit {
       }
     }
     this.isDirty = (this.isMyUser) ? !_.isEqual(this.iDavis.values.user, this.iConfig.values.original.user) : !_.isEqual(this.iConfig.values.otherUser, this.iConfig.values.original.otherUser);
-  }
-
-  onTimezoneChange(tz: string) {
-    if (this.isMyUser) {
-       this.iDavis.values.user.timezone = tz;
-    } else {
-       this.iConfig.values.otherUser.timezone = tz;
-    }
+    if (!this.isValidTimezone) this.isDirty = false;
   }
 
   ngOnInit() {
