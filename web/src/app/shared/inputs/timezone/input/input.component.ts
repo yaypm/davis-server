@@ -64,6 +64,7 @@ export class TimezoneInputComponent implements OnInit, AfterViewInit {
       if (highlightedIndex > -1 && timezonesFilteredArray[highlightedIndex]) this.value = timezonesFilteredArray[highlightedIndex].name;
       if (timezonesFilteredArray && timezonesFilteredArray.length === 1) this.value = timezonesFilteredArray[0].name;
       this.timezoneInput.nativeElement.blur();
+      this.validate();
     }
   }
   

@@ -2,7 +2,11 @@
   <div class="input-button-wrapper" [class.input-button-wrapper-focus]="isTimezoneFocused">
     <input #timezoneInput type="text" name="timezone" id="timezone" class="input-button-input" autocomplete="off"
       [(ngModel)]="value" 
-      (focus)="isTimezoneFocused = true" (blur)="isTimezoneFocused = false" (keydown)="timezoneInputKeyUp($event)" (keyup)="validate()"
+      (click)="timezoneInput.select()"
+      (focus)="isTimezoneFocused = true" 
+      (blur)="isTimezoneFocused = false" 
+      (keydown)="timezoneInputKeyUp($event)" 
+      (keyup)="validate()"
       [required]="(iConfig.isWizard) ? '' : null">
     
     <div class="input-button-button" title="My Location" (click)="value = iDavis.getTimezone(); valid = true; timezoneChange.emit({name: value, valid: valid})">
