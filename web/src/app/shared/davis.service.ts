@@ -2,10 +2,13 @@ import {Injectable}                from '@angular/core';
 import { Router }                  from '@angular/router';
 import { Http, Response }          from '@angular/http';
 import { Headers, RequestOptions } from '@angular/http';
+import { Subject }                 from 'rxjs/Subject';
+import { Observable }              from 'rxjs/Observable';
 import { DavisModel }              from './models/davis.model';
 import * as moment                 from 'moment';
 import * as momentz                from 'moment-timezone';
 import * as $                      from 'jquery';
+import * as io                     from 'socket.io-client';
 
 @Injectable()
 export class DavisService {
@@ -16,6 +19,9 @@ export class DavisService {
   globalError: string;
 
   token: string;
+  chromeToken: string;
+  newNotificationCount: number = 0;
+  isTyping: boolean = false;
   isBreadcrumbsVisible: boolean = false;
   isUserMenuVisible: boolean = false;
   isIframeTile: boolean = false;
@@ -23,6 +29,8 @@ export class DavisService {
   isAddingToConvo: boolean = false;
 
   conversation: Array<any> = [];
+  url: string;  
+  socket: any;
 
   route_names: any = {
     '/wizard': 'Setup',
@@ -68,9 +76,13 @@ export class DavisService {
     this.isAuthenticated = false;
     this.isAdmin = false;
     this.token = null;
+    if (this.socket) this.socket.disconnect();
+    this.socket = null;
     sessionStorage.removeItem('email');
     sessionStorage.removeItem('token');
+    sessionStorage.removeItem('chromeToken');
     sessionStorage.removeItem('isAdmin');
+    sessionStorage.removeItem('conversation');
     this.windowScrollTop();
     this.router.navigate(["/auth/login"]);
   }
@@ -123,6 +135,50 @@ export class DavisService {
       .toPromise()
       .then(this.extractData)
       .catch(this.handleError);
+  }
+  
+  getChromeToken() {
+    let headers = new Headers({ 'Content-Type': 'application/json', 'x-access-token': this.token });
+    let options = new RequestOptions({ headers: headers });
+
+    return this.http.post(`/api/v1/webAuth`, {}, options)
+      .toPromise()
+      .then(this.extractData)
+      .catch(this.handleError);
+  }
+  
+  connectSocket() {
+    if (!this.socket && this.chromeToken) {
+      this.socket = io();
+      console.log('socket attempting to connect');
+      this.socket.on(this.chromeToken, (card: any) => {
+        console.log('message sent via socket');
+        this.newNotificationCount++;
+        if (this.isTyping) {
+          let typingPollingInterval = setInterval(() => {
+            if (!this.isTyping) {
+              this.stopTypingPollingInterval(typingPollingInterval);
+              this.conversation.push({ visual: { card: card }, isDavis: true, isNotif:  true, timestamp: this.getTimestamp() });
+              sessionStorage.setItem('conversation', JSON.stringify(this.conversation));
+              this.windowScrollBottom('slow');
+            }
+            this.isTyping = false;
+          }, 5000);
+        } else {
+          this.conversation.push({ visual: { card: card }, isDavis: true, isNotif:  true, timestamp: this.getTimestamp() });
+          sessionStorage.setItem('conversation', JSON.stringify(this.conversation));
+          this.windowScrollBottom('slow');
+        }
+      });
+      this.socket.on('connect', () => {
+        console.log('socket connected');
+        this.socket.emit('registerSocket', {id: this.socket.id, email: this.values.user.email, token: this.chromeToken, isWeb: true });
+      });
+    }
+  }
+  
+  stopTypingPollingInterval(interval: any) {
+    clearInterval(interval);
   }
 
   extractData(res: Response): any {

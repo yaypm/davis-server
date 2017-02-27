@@ -39,6 +39,7 @@
             name="davisInput" class="input-button-input" 
             [(ngModel)]="davisInput"
             [attr.placeholder]="placeholder"
+            (keydown)="iDavis.isTyping = true"
             (keyup.enter)="doSubmit($event)"
             (focus)="isDavisInputFocused = true; toggleListening(false)"
             (blur)="isDavisInputFocused = false">

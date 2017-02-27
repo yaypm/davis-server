@@ -1,9 +1,13 @@
 <form (ngSubmit)="doSubmit()" #form="ngForm" class="card-form">
   <div *ngIf="message || updated" class="layout is-flex has-islands" style="padding: 0">
-    <div [class.circle-left]="isDavis" [class.circle-right]="!isDavis">
+    <div [class.circle-left]="isDavis" [class.circle-left-notification-resolved]="message.isNotif && message.visual.card.attachments[1].fields[3].value === 'Resolved'" 
+      [class.circle-left-notification-unresolved]="message.isNotif && message.visual.card.attachments[1].fields[3].value !== 'Resolved'" [class.circle-right]="!isDavis">
       {{ (isDavis || !iDavis.values.user.name.first[0]) ? null : iDavis.values.user.name.first[0].toUpperCase() + iDavis.values.user.name.last[0].toUpperCase() }}
-      <svg *ngIf="isDavis" class="icon icon--white icon--dynatrace-signet">
+      <svg *ngIf="isDavis && !message.isNotif" class="icon icon--white icon--dynatrace-signet">
         <use xlink:href="#dynatrace-signet"></use>
+      </svg>
+      <svg *ngIf="message.isNotif" class="icon icon--white icon--notification">
+        <use xlink:href="#notification"></use>
       </svg>
     </div>
     <div [class.triangle-left-border]="isDavis" [class.triangle-right-border]="!isDavis"></div>

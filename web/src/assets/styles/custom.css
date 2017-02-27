@@ -1,6 +1,5 @@
 body.iFrameTile {
-  background-color: white;
-}
+  background-color: white; }
  
 form {
   width: 100%;
@@ -288,8 +287,18 @@ label.theme--dark-label {
 .nav__user-menu-section-break-small {
   height: 8px; }
   
+.nav__btn {
+  position: relative;
+  float: right; }
+  
 .nav__btn-highlighted {
   background-color: #525252; }
+  
+.nav__btn--notification {
+  background-color: #dc172a; }
+  
+.nav__btn--notification:hover {
+  background-color: #e74d59; }
   
 /* IE11 fix, but breaks other browsers */
 /*.nav__brand {*/
@@ -715,6 +724,15 @@ input[type=password].input-button-input:-ms-input-placeholder {
   width: 36px;
   height: 36px;
   margin-top: -2px; }
+  
+.icon--notification {
+  width: 25px;
+  height: 25px;
+  -webkit-backface-visibility: hidden;
+  -webkit-transform: translateZ(0) scale(1.0, 1.0);
+  backface-visibility: hidden;
+  transform: translateZ(0) scale(1.0, 1.0);
+  margin-top: -1px; }
 
 .island--isDavis {
   background-color: white; }
@@ -742,6 +760,38 @@ input[type=password].input-button-input:-ms-input-placeholder {
   font-size: 16px;
   padding-top: 7.5px;
   text-align: center; }
+  
+@-webkit-keyframes pulsate-resolved {
+  0%   {-webkit-transform: translateZ(0) scale(1,1);     background-color: #00a1b2;}
+  50%  {-webkit-transform: translateZ(0) scale(1.2,1.2); background-color: #7dc540;}
+  100% {-webkit-transform: translateZ(0) scale(1,1);     background-color: #00a1b2;} }
+  
+@keyframes pulsate-resolved {
+  0%   {transform: translateZ(0) scale(1,1);     background-color: #00a1b2;}
+  50%  {transform: translateZ(0) scale(1.2,1.2); background-color: #7dc540;}
+  100% {transform: translateZ(0) scale(1,1);     background-color: #00a1b2;} }
+  
+.circle-left-notification-resolved {
+  -webkit-animation: pulsate-resolved 6s infinite ease-in-out;
+  animation: pulsate-resolved 6s infinite ease-in-out;
+  -webkit-backface-visibility: hidden;
+  background-color: #7dc540; }
+
+@-webkit-keyframes pulsate-unresolved {
+  0%   {-webkit-transform: translateZ(0) scale(1,1);     background-color: #00a1b2;}
+  50%  {-webkit-transform: translateZ(0) scale(1.2,1.2); background-color: #dc172a;}
+  100% {-webkit-transform: translateZ(0) scale(1,1);     background-color: #00a1b2;} }
+  
+@keyframes pulsate-unresolved {
+  0%   {transform: translateZ(0) scale(1,1);     background-color: #00a1b2;}
+  50%  {transform: translateZ(0) scale(1.2,1.2); background-color: #dc172a;}
+  100% {transform: translateZ(0) scale(1,1);     background-color: #00a1b2;} }
+  
+.circle-left-notification-unresolved {
+  -webkit-animation: pulsate-unresolved 6s infinite ease-in-out;
+  animation: pulsate-unresolved 6s infinite ease-in-out;
+  backface-visibility: hidden;
+  background-color: #dc172a; }
   
 .triangle-left {}
 
@@ -814,6 +864,15 @@ input[type=password].input-button-input:-ms-input-placeholder {
     margin-top: -1px;
     width: 50px; 
     height: 50px; }
+    
+  .icon--notification {
+    width: 35px;
+    height: 35px;
+    -webkit-backface-visibility: hidden;
+    -webkit-transform: translateZ(0) scale(1.0, 1.0);
+    backface-visibility: hidden;
+    transform: translateZ(0) scale(1.0, 1.0);
+    margin-top: 1px; }
 
   .circle-left {
     position: absolute; 
@@ -823,7 +882,7 @@ input[type=password].input-button-input:-ms-input-placeholder {
     height: 56px; 
     font-size: 25px; 
     padding-top: 9px; }
-  
+    
   .triangle-left {
     position: absolute;
     z-index: 100;
@@ -920,7 +979,7 @@ form.card-form {
 	float: left;
 	width: 100%;
 	padding: 0px 10px 0px 0px;
-	margin: 2px; }
+	margin: 2px 0px; }
 
 .card-bar {
 	display: table-cell;

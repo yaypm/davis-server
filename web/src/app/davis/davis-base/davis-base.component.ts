@@ -126,6 +126,7 @@ export class DavisBaseComponent implements OnInit, AfterViewInit {
     if (this.iDavis.conversation.length > 20) this.iDavis.conversation.shift();
     this.iDavis.isAddingToConvo = true;
     this.iDavis.conversation.push(message);
+    sessionStorage.setItem('conversation', JSON.stringify(this.iDavis.conversation));
   }
   
   toggleListening(isListening: boolean) {
@@ -147,10 +148,12 @@ export class DavisBaseComponent implements OnInit, AfterViewInit {
     this.davisMode = this.modes.noMic;
     this.iDavis.focusDavisInputOnKeyDown();
     
+    if (sessionStorage.getItem('conversation')) this.iDavis.conversation = JSON.parse(sessionStorage.getItem('conversation'));
+    
     if (!this.iDavis.values.user.email || !this.iDavis.davisVersion) {
       this.iDavis.getDavisUser()
         .then(response => {
-          if (!response.success) throw new Error(response.message); 
+          if (!response.success) throw new Error(response.message);
           this.iDavis.values.user = response.user;
           
           // Backwards compatibility, was once optional
