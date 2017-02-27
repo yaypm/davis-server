@@ -1,7 +1,7 @@
 <div class="layout is-flex has-islands" style="max-width: 640px">
   <div class="island--full-width island--full-width-sidebar island--left">
     <div class="config-title">
-      Notification Filters
+      Notification Rules
     </div>
     <a href="https://github.com/Dynatrace/davis-server/wiki/Notifications" target="_blank" class="config-help">
       {{ iConfig.helpLinkText }}
@@ -9,8 +9,8 @@
   </div>
   <div *ngIf="iDavis.isAdmin" class="island--full-width island--full-width-sidebar island--center island--left" style="padding-top: 20px">
     <div class="tabs">
-      <button class="tab" [class.is-active]="addFilter" (click)="addMode()">Add Filter</button>
-      <button class="tab" [class.is-active]="!addFilter" (click)="addFilter = false; editFilter = false; getFilters()">Edit Filter</button>
+      <button class="tab" [class.is-active]="addFilter" (click)="addMode()">Add Rule</button>
+      <button class="tab" [class.is-active]="!addFilter" (click)="addFilter = false; editFilter = false; getFilters()">Edit Rule</button>
     </div>
   </div>         
   <div *ngIf="!addFilter && !editFilter" class="island--full-width island--full-width-sidebar island--center island--left">     

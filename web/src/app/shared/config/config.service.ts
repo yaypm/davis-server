@@ -24,7 +24,6 @@ export class ConfigService {
   // Initialize view
   view: string = "dynatrace";
   helpLinkText: string = 'How to complete this step';
-  timezones: any = require('./../../../../../lib/config/timezones');
   titleGlobal: string = '';
   isWizard: boolean = false;
   isSidebarVisible: boolean = false;

@@ -147,18 +147,10 @@
             </label>
             
             <!-- isMyUser -->
-            <select *ngIf="isMyUser" id="timezone" name="timezone" class="select"
-              [(ngModel)]="iDavis.values.user.timezone"
-              (ngModelChange)="onTimezoneChange($event); validate()" required>
-              <option *ngFor="let tz of iConfig.timezones" [value]="tz">{{tz}}</option>
-            </select>
+            <timezone-input *ngIf="isMyUser" [value]="iDavis.values.user.timezone" (timezoneChange)="iDavis.values.user.timezone = $event.name; isValidTimezone = $event.valid; validate()"></timezone-input>
             
              <!-- !isMyUser -->
-            <select *ngIf="!isMyUser" id="timezone" name="timezone" class="select" 
-              [(ngModel)]="iConfig.values.otherUser.timezone" 
-              (ngModelChange)="onTimezoneChange($event); validate()" required>
-              <option *ngFor="let tz of iConfig.timezones" [value]="tz">{{tz}}</option>
-            </select>
+            <timezone-input *ngIf="!isMyUser" [value]="iConfig.values.otherUser.timezone" (timezoneChange)="iConfig.values.otherUser.timezone = $event.name; isValidTimezone = $event.valid; validate()"></timezone-input>
           </div>
         </div>
       </div>
@@ -185,14 +177,6 @@
           </div>
         </div>
         <div class="layout__container layout--half layout--half--small">
-          <div class="island island--half island--half--right" 
-            *ngIf="detectedTimezone && ((isMyUser && iDavis.values.user.timezone != detectedTimezone) 
-              || (!isMyUser && iConfig.values.otherUser.timezone != detectedTimezone))">                 
-            <button type="button" class="btn btn--secondary btn--submit"
-                (click)="(isMyUser) ? iDavis.values.user.timezone = detectedTimezone : iConfig.values.otherUser.timezone = detectedTimezone; validate()">
-                Detect Timezone
-            </button>
-          </div>
         </div>
       </div>
       <div class="island island--full" *ngIf="!iConfig.isWizard">          
