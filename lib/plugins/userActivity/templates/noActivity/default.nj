@@ -1,0 +1,5 @@
+{%- if customTimeRange -%}
+{{ timeRange | friendlyTimeRange(user) | capitalize }}
+{%- else -%}
+In the last 24 hours
+{%- endif -%}, none of your apps experienced any user actions.
