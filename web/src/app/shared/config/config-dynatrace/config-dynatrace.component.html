@@ -1,4 +1,8 @@
 <form (ngSubmit)="doSubmit()" #form="ngForm">
+<div style="position:absolute;height:0px; overflow:hidden; ">
+  Username <input type="text" name="fake_safari_username" tabindex="-1">
+  Password <input type="password" name="fake_safari_password" tabindex="-1">
+</div>
 <div class="layout is-flex has-islands" [class.fadeInSlow]="iConfig.isWizard" [class.slideInRight]="iConfig.isWizard">
   <div class="island--full-width" 
     [class.wizard-border]="iConfig.isWizard"
@@ -34,7 +38,7 @@
       <label for="url" class="label">
         Dynatrace Tenant URL
       </label>
-      <input #url type="text" name="url"
+      <input #url type="text" name="url" autocomplete="off"
         class="inputfield" id="url"
         [(ngModel)]="iConfig.values.dynatrace.url" 
         (keyup)="validate()" required>
@@ -44,10 +48,10 @@
         Dynatrace API Token
       </label>
       <div class="input-button-wrapper" [class.input-button-wrapper-focus]="isTokenFocused">
-          <input *ngIf="isTokenMasked" id="token" type="password" name="token" class="input-button-input" 
+          <input *ngIf="isTokenMasked" id="token" type="password" name="token" class="input-button-input" autocomplete="off"
               [(ngModel)]="iConfig.values.dynatrace.token" 
               (focus)="isTokenFocused = true" (blur)="isTokenFocused = false" (keyup)="validate()" required>
-          <input *ngIf="!isTokenMasked" id="token" type="text" name="token" class="input-button-input" 
+          <input *ngIf="!isTokenMasked" id="token" type="text" name="token" class="input-button-input" autocomplete="off"
               [(ngModel)]="iConfig.values.dynatrace.token" 
               (focus)="isTokenFocused = true" (blur)="isTokenFocused = false" (keyup)="validate()" required>
           <div class="input-button-button" (click)="isTokenMasked = !isTokenMasked">
@@ -66,13 +70,13 @@
               <label for="apiUrl" class="label">
                 Dynatrace API URL
               </label>
-              <input type="text" name="apiUrl"
+              <input type="text" name="apiUrl" autocomplete="off"
                 class="inputfield" id="apiUrl"
                 [(ngModel)]="iConfig.values.dynatrace.apiUrl" 
                 (keyup)="validate()">
             </div>
             <div class="island island--center" [class.island--left]="!iConfig.isWizard">
-              <input type="checkbox" class="checkbox" id="strictSSL" name="strictSSL"
+              <input type="checkbox" class="checkbox" id="strictSSL" name="strictSSL" autocomplete="off"
                 [(ngModel)]="iConfig.values.dynatrace.strictSSL"
                 (change)="validate()">
               <label for="strictSSL" class="checkbox__label">

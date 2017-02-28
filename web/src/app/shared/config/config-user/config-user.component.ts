@@ -30,6 +30,7 @@ export class ConfigUserComponent implements OnInit, AfterViewInit {
   isPasswordMasked: boolean = true;
   isSelectOpened: boolean = false;
   isDirty: boolean = false;
+  isValidTimezone: boolean = true;
   detectedTimezone: string = '';
   confirmDeleteUser: boolean = false;
   user: any;
@@ -61,13 +62,13 @@ export class ConfigUserComponent implements OnInit, AfterViewInit {
       this.iDavis.values.user.alexa_id = this.iDavis.safariAutoCompletePolyFill(this.iDavis.values.user.alexa_id, 'alexa_id');
     }
     
-    if (this.iDavis.values.user.password === '') delete this.iDavis.values.user.password;
-    if (this.iConfig.values.otherUser.password === '') delete this.iConfig.values.otherUser.password;
+    if (this.iDavis.values.user.password === '' || typeof this.iDavis.values.user.password === 'undefined') delete this.iDavis.values.user.password;
+    if (this.iConfig.values.otherUser.password === '' || typeof this.iConfig.values.otherUser.password === 'undefined') delete this.iConfig.values.otherUser.password;
     
     this.user = (!this.iConfig.isWizard && !this.isMyUser) ? _.cloneDeep(this.iConfig.values.otherUser) : _.cloneDeep(this.iDavis.values.user);
     
     // Remove properties that shouldn't persist through user save 
-    if (this.user.alexa_id) delete this.user.alexa_id;
+    if (this.user.alexa_id || this.user.alexa_id === '') delete this.user.alexa_id;
 
     if ((!this.iConfig.isWizard && !this.isNewUser) || (!this.iConfig.isWizard && this.isMyUser)) {
       this.iConfig.updateDavisUser(this.user)
@@ -79,8 +80,13 @@ export class ConfigUserComponent implements OnInit, AfterViewInit {
           this.submitButton = 'Save';
           if (this.iDavis.values.user.password) delete this.iDavis.values.user.password;
           if (this.iConfig.values.otherUser.password) delete this.iConfig.values.otherUser.password;
-          this.iConfig.values.original.user = _.cloneDeep(this.iDavis.values.user);
-          if (!this.isMyUser) this.showUsersList.emit();
+          if (this.isMyUser) {
+            this.iDavis.values.user.__v++;
+            this.user.__v++;
+            this.iConfig.values.original.user = _.cloneDeep(this.user);
+          } else {
+            this.showUsersList.emit();
+          }
         })
         .catch(err => {
           this.iConfig.displayError(err, 'user');
@@ -174,14 +180,7 @@ export class ConfigUserComponent implements OnInit, AfterViewInit {
       }
     }
     this.isDirty = (this.isMyUser) ? !_.isEqual(this.iDavis.values.user, this.iConfig.values.original.user) : !_.isEqual(this.iConfig.values.otherUser, this.iConfig.values.original.otherUser);
-  }
-
-  onTimezoneChange(tz: string) {
-    if (this.isMyUser) {
-       this.iDavis.values.user.timezone = tz;
-    } else {
-       this.iConfig.values.otherUser.timezone = tz;
-    }
+    if (!this.isValidTimezone) this.isDirty = false;
   }
 
   ngOnInit() {

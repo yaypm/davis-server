@@ -18,7 +18,7 @@ import { ConfigChromeComponent }                  from "./config-chrome/config-c
 import { ConfigDynatraceComponent }               from "./config-dynatrace/config-dynatrace.component";
 import { ConfigFilterComponent }                  from "./config-filter/config-filter.component";
 import { ConfigFiltersComponent }                 from "./config-filters/config-filters.component";
-import { ConfigNotificationFiltersComponent }     from "./config-notification-filters/config-notification-filters.component";
+import { ConfigNotificationRulesComponent }     from "./config-notification-rules/config-notification-rules.component";
 import { ConfigNotificationSourceComponent }      from "./config-notification-source/config-notification-source.component";
 import { ConfigSlackComponent }                   from "./config-slack/config-slack.component";
 import { ConfigUserComponent }                    from "./config-user/config-user.component";
@@ -30,6 +30,10 @@ import { FilterFiltersByNamePipe }                from './config-filters-pipe/co
 import { FilterUsersByNamePipe }                  from './config-users-pipe/config-users.pipe';
 import { FilterSidebarItemsByAdminPipe }          from './config-sidebar-pipe/config-sidebar.pipe';
 
+// Modules
+import { TagsModule }                             from '../inputs/tags/tags.module';
+import { TimezoneModule }                         from '../inputs/timezone/timezone.module';
+
 // ----------------------------------------------------------------------------
 // Module
 // ----------------------------------------------------------------------------
@@ -40,7 +44,7 @@ import { FilterSidebarItemsByAdminPipe }          from './config-sidebar-pipe/co
     ConfigDynatraceComponent,
     ConfigFilterComponent,
     ConfigFiltersComponent,
-    ConfigNotificationFiltersComponent,
+    ConfigNotificationRulesComponent,
     ConfigNotificationSourceComponent,
     ConfigSlackComponent,
     ConfigUserComponent,
@@ -55,7 +59,7 @@ import { FilterSidebarItemsByAdminPipe }          from './config-sidebar-pipe/co
     ConfigDynatraceComponent,
     ConfigFilterComponent,
     ConfigFiltersComponent,
-    ConfigNotificationFiltersComponent,
+    ConfigNotificationRulesComponent,
     ConfigNotificationSourceComponent,
     ConfigSlackComponent,
     ConfigUserComponent,
@@ -67,6 +71,8 @@ import { FilterSidebarItemsByAdminPipe }          from './config-sidebar-pipe/co
   imports: [
     CommonModule,
     FormsModule,
+    TagsModule,
+    TimezoneModule,
   ],
   providers: [
     ConfigService,

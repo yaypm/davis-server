@@ -78,16 +78,16 @@ export class DavisBaseComponent implements OnInit, AfterViewInit {
   // Initialize component
   // ------------------------------------------------------
   
-  doSubmit() {
+  doSubmit(event: any) {
+    event.preventDefault();
+    if (this.showProcessingIndicator) return;
     let phrase = this.iDavis.safariAutoCompletePolyFill(this.davisInput, 'davisInput').trim();
     if (phrase.length > 0) {
       this.addToConvo( { visual: { card: { text: phrase } } }, false);
       this.iDavis.windowScrollBottom('slow');
       this.davisInput = '';
       this.showProcessingIndicator = true;
-      setTimeout(() => {
-        this.iDavis.windowScrollBottom('slow');
-      }, 200);
+      this.iDavis.windowScrollBottom('slow');
       this.iDavis.askDavisPhrase(phrase)
         .then(response => {
           if (!response.success) throw new Error(response.response);
@@ -103,15 +103,16 @@ export class DavisBaseComponent implements OnInit, AfterViewInit {
           if (response.response.visual.card || response.response.visual.card.text) {
             this.addToConvo(response.response, true);
             this.iDavis.blurDavisInput();
-            setTimeout(() => {
-              this.iDavis.windowScrollBottom('slow');
-            }, 100);
           }
         })
         .catch(err => {
-          if (typeof err !== 'string' && err.message) err = err.message;
-          this.addToConvo( { visual: { card: { text: err, error: true } }}, true);
-          this.iDavis.windowScrollBottom('slow');
+          if (typeof err === 'string' && err.indexOf('403') > -1) {
+            this.iDavis.logOut();
+          } else {
+            if (typeof err !== 'string' && err.message) err = err.message;
+            this.addToConvo( { visual: { card: { text: err, error: true } }}, true);
+            this.iDavis.windowScrollBottom('slow');
+          }
         });
     } else {
       this.davisInput = '';
@@ -122,6 +123,8 @@ export class DavisBaseComponent implements OnInit, AfterViewInit {
     message.isDavis = isDavis;
     message.timestamp = this.iDavis.getTimestamp();
     this.showProcessingIndicator = false;
+    if (this.iDavis.conversation.length > 20) this.iDavis.conversation.shift();
+    this.iDavis.isAddingToConvo = true;
     this.iDavis.conversation.push(message);
   }
   

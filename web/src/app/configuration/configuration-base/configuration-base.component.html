@@ -12,7 +12,7 @@
         <a class="sidebar__item expandable__trigger expandable__trigger--right" 
           [class.closed]="(expandedSection !== item.key || !item.expanded) && iConfig.view !== item.key"
           (click)="item.expanded = (item.expanded === null && iConfig.view.indexOf('notification') > -1) ? false : !item.expanded; 
-            (item.expanded && iConfig.view.indexOf('notification') < 0) ? iConfig.selectView('notification-filters') : null; expandedSection = (item.expanded) ? item.key : '';">
+            (item.expanded && iConfig.view.indexOf('notification') < 0) ? iConfig.selectView('notification-rules') : null; expandedSection = (item.expanded) ? item.key : '';">
           <span class="sidebar__headline">{{ item.name }}</span>
           <span class="sidebar__info">{{ item.description }}</span>
         </a>
@@ -29,10 +29,10 @@
     <config-user *ngIf="iConfig.view === 'user'" [isNewUser]="false" [isMyUser]="true"></config-user>
     <config-users *ngIf="iConfig.view === 'users'"></config-users>
     <config-filters *ngIf="iConfig.view === 'filters'"></config-filters>
-    <config-notification-filters *ngIf="iConfig.view === 'notification-filters'"></config-notification-filters>
-    <config-notification-source *ngIf="iConfig.view === 'notification-source'"></config-notification-source>
-    <config-dynatrace *ngIf="iConfig.view === 'dynatrace'"></config-dynatrace>
-    <config-slack *ngIf="iConfig.view === 'slack'"></config-slack>
+    <config-notification-rules *ngIf="iConfig.view === 'notification-rules'"></config-notification-rules>
+    <config-notification-source *ngIf="iConfig.view === 'notification-source' && iDavis.isAdmin"></config-notification-source>
+    <config-dynatrace *ngIf="iConfig.view === 'dynatrace' && iDavis.isAdmin"></config-dynatrace>
+    <config-slack *ngIf="iConfig.view === 'slack' && iDavis.isAdmin"></config-slack>
     <config-chrome *ngIf="iConfig.view === 'chrome'"></config-chrome>
   </div>
 </div>
