@@ -59,6 +59,7 @@ export class DavisCardComponent implements OnInit, AfterViewInit {
           result.response.isDavis = true;
         }
         result.response.timestamp = this.iDavis.getTimestamp();
+        result.response.moment = Date();
         
         // Add new card
         if (name !== 'Next' && name !== 'Previous') {

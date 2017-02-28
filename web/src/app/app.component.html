@@ -225,7 +225,7 @@
           <use xlink:href="#user"></use>
         </svg>
       </a>
-      <a *ngIf="iDavis.newNotificationCount > 0" class="nav__btn nav__btn--notification btn--icon" (click)="iDavis.newNotificationCount = 0; iDavis.goToPage('/davis'); iDavis.isSidebarVisible = false">
+      <a *ngIf="iDavis.newNotificationCount > 0 && router.url !== '/davis'" class="nav__btn nav__btn--notification btn--icon" (click)="iDavis.newNotificationCount = 0; iDavis.goToPage('/davis'); iDavis.isSidebarVisible = false">
         <svg *ngIf="iDavis.newNotificationCount === 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon icon--white icon--nav__btn">
           <use xlink:href="#notification"></use>
         </svg>

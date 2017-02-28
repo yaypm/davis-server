@@ -83,13 +83,6 @@ export class AuthLoginComponent  implements OnInit, AfterViewInit {
         sessionStorage.setItem('email',  this.iDavis.values.authenticate.email);
         sessionStorage.setItem('token', response.token);
         sessionStorage.setItem('isAdmin', response.admin);
-        return this.iDavis.getChromeToken();
-      })
-      .then(response => {
-        sessionStorage.removeItem('chromeToken');
-        sessionStorage.setItem('chromeToken', response.token);
-        this.iDavis.chromeToken = response.token;
-        this.iDavis.connectSocket();
         return this.iDavis.getDavisUser();
       })
       .then(response => {
@@ -117,6 +110,13 @@ export class AuthLoginComponent  implements OnInit, AfterViewInit {
           throw new Error(response.message); 
         }
         this.iDavis.davisVersion = response.version;
+        return this.iDavis.getChromeToken();
+      })
+      .then(response => {
+        sessionStorage.removeItem('chromeToken');
+        sessionStorage.setItem('chromeToken', response.token);
+        this.iDavis.chromeToken = response.token;
+        this.iDavis.connectSocket();
       })
       .catch(err => {
         this.loginError = err.message || 'Sorry an error occurred, please try again.';

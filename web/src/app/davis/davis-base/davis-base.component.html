@@ -2,6 +2,12 @@
   <div class="layout is-flex has-islands">
     <div class="island island--full-width" style="background-color: transparent; margin: 0; padding: 0">
       <div *ngFor="let message of iDavis.conversation; let i = index;" class="layout is-flex has-islands">
+        <div *ngIf="iDavis.conversation[i - 1] && hoursApart(iDavis.conversation[i - 1].moment, message.moment) > 0" class="timebreak"
+          style="background-color: transparent; position: relative; padding: 0">
+          <div class="timebreak-text">
+            {{ hoursApart(iDavis.conversation[i - 1].moment, message.moment) }} hour{{ (hoursApart(iDavis.conversation[i - 1].moment, message.moment) > 1) ? 's' : null }} ago
+          </div>
+        </div>
         <davis-card class="island island--center" style="background-color: transparent; position: relative; padding: 0" 
           [message]="message" [isDavis]="message.isDavis"
           (toggleProcessingIndicator)="showProcessingIndicator = !showProcessingIndicator"></davis-card>

@@ -728,10 +728,6 @@ input[type=password].input-button-input:-ms-input-placeholder {
 .icon--notification {
   width: 25px;
   height: 25px;
-  -webkit-backface-visibility: hidden;
-  -webkit-transform: translateZ(0) scale(1.0, 1.0);
-  backface-visibility: hidden;
-  transform: translateZ(0) scale(1.0, 1.0);
   margin-top: -1px; }
 
 .island--isDavis {
@@ -743,6 +739,19 @@ input[type=password].input-button-input:-ms-input-placeholder {
   
 .island--error {
   background-color: #fdb8b8; }
+  
+.timebreak {
+  width: 100%; }
+  
+.timebreak-text {
+  font-size: 12px;
+  color: #b7b7b7;
+  width: 100%;
+  height: 25px;
+  max-width: 500px;
+  margin: 15px auto 70px auto;
+  text-align: center;
+  border-bottom: 1px solid #b7b7b7; }
 
 .expandable__trigger {
   cursor: pointer; }
@@ -761,37 +770,49 @@ input[type=password].input-button-input:-ms-input-placeholder {
   padding-top: 7.5px;
   text-align: center; }
   
+.circle-left-notification:hover {
+  cursor: pointer;
+  background-color: #006f77; }
+
+.icon--notification-show {
+  display: none; }
+
+.circle-left-notification:hover .icon--notification-hide {
+  display: none; }
+
+.circle-left-notification:hover .icon--notification-show {
+  display: inline-block;
+  margin-top: 2px; }
+  
 @-webkit-keyframes pulsate-resolved {
-  0%   {-webkit-transform: translateZ(0) scale(1,1);     background-color: #00a1b2;}
-  50%  {-webkit-transform: translateZ(0) scale(1.2,1.2); background-color: #7dc540;}
-  100% {-webkit-transform: translateZ(0) scale(1,1);     background-color: #00a1b2;} }
+  0%   {background-color: #00a1b2;}
+  50%  {background-color: #7dc540;}
+  100% {background-color: #00a1b2;} }
   
 @keyframes pulsate-resolved {
-  0%   {transform: translateZ(0) scale(1,1);     background-color: #00a1b2;}
-  50%  {transform: translateZ(0) scale(1.2,1.2); background-color: #7dc540;}
-  100% {transform: translateZ(0) scale(1,1);     background-color: #00a1b2;} }
+  0%   {background-color: #00a1b2;}
+  50%  {background-color: #7dc540;}
+  100% {background-color: #00a1b2;} }
   
 .circle-left-notification-resolved {
-  -webkit-animation: pulsate-resolved 6s infinite ease-in-out;
-  animation: pulsate-resolved 6s infinite ease-in-out;
-  -webkit-backface-visibility: hidden;
-  background-color: #7dc540; }
+  -webkit-animation: pulsate-resolved 1.5s 3 ease-in-out;
+  animation: pulsate-resolved 1.5s 3 ease-in-out;
+  background-color: #00a1b2; }
 
 @-webkit-keyframes pulsate-unresolved {
-  0%   {-webkit-transform: translateZ(0) scale(1,1);     background-color: #00a1b2;}
-  50%  {-webkit-transform: translateZ(0) scale(1.2,1.2); background-color: #dc172a;}
-  100% {-webkit-transform: translateZ(0) scale(1,1);     background-color: #00a1b2;} }
+  0%   {background-color: #00a1b2;}
+  50%  {background-color: #dc172a;}
+  100% {background-color: #00a1b2;} }
   
 @keyframes pulsate-unresolved {
-  0%   {transform: translateZ(0) scale(1,1);     background-color: #00a1b2;}
-  50%  {transform: translateZ(0) scale(1.2,1.2); background-color: #dc172a;}
-  100% {transform: translateZ(0) scale(1,1);     background-color: #00a1b2;} }
+  0%   {background-color: #00a1b2;}
+  50%  {background-color: #dc172a;}
+  100% {background-color: #00a1b2;} }
   
 .circle-left-notification-unresolved {
-  -webkit-animation: pulsate-unresolved 6s infinite ease-in-out;
-  animation: pulsate-unresolved 6s infinite ease-in-out;
-  backface-visibility: hidden;
-  background-color: #dc172a; }
+  -webkit-animation: pulsate-unresolved 1.5s 3 ease-in-out;
+  animation: pulsate-unresolved 1.5s 3 ease-in-out;
+  background-color: #00a1b2; }
   
 .triangle-left {}
 
@@ -868,10 +889,6 @@ input[type=password].input-button-input:-ms-input-placeholder {
   .icon--notification {
     width: 35px;
     height: 35px;
-    -webkit-backface-visibility: hidden;
-    -webkit-transform: translateZ(0) scale(1.0, 1.0);
-    backface-visibility: hidden;
-    transform: translateZ(0) scale(1.0, 1.0);
     margin-top: 1px; }
 
   .circle-left {
