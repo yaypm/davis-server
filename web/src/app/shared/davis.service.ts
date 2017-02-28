@@ -292,6 +292,10 @@ export class DavisService {
   clickElem(id: string): void {
     document.getElementById(id).click();
   }
+  
+  getMoment(): any {
+    return moment();
+  }
 
   getTimezone(): string {
     return momentz.tz.guess();
