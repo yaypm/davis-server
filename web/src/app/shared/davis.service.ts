@@ -20,6 +20,7 @@ export class DavisService {
 
   token: string;
   chromeToken: string;
+  fullScreenImageUrl: string;
   newNotificationCount: number = 0;
   isTyping: boolean = false;
   isBreadcrumbsVisible: boolean = false;

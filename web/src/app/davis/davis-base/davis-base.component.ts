@@ -148,7 +148,7 @@ export class DavisBaseComponent implements OnInit, AfterViewInit {
   hoursApart(prevMessageMoment: any, messageMoment: any): number {
     let res = 0;
     if (prevMessageMoment && messageMoment) {
-      res = Math.floor(moment.duration(moment(messageMoment).diff(moment(prevMessageMoment))).asMinutes());
+      res = Math.floor(moment.duration(moment(messageMoment).diff(moment(prevMessageMoment))).asHours());
     }
     return res;
   }

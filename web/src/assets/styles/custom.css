@@ -40,8 +40,7 @@ form {
   font-size: 18px; }
   
 .wizard-border {
-  border: 0.5px solid #ececec;
-}
+  border: 0.5px solid #ececec; }
   
 .layout--two-thirds {
   flex-basis: 66.66%; }
@@ -772,6 +771,47 @@ input[type=password].input-button-input:-ms-input-placeholder {
   
 .card-close-button:hover .icon--close {
   fill: #cccccc; }
+  
+.card-image-url {
+  position: relative;
+  clear: both;
+	float: left;
+	max-width: 400px;
+	max-height: 500px;
+	margin: 5px 10px 5px 0px;
+	cursor: pointer; }
+	
+.card-image-url-fullscreen {
+  position: fixed;
+  clear: none;
+  float: none;
+  top: 35%;
+  left: 0;
+  right: 0;
+  z-index: 100000;
+  max-width: none;
+  max-height: none;
+  width: 90%;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: white;
+  cursor: pointer; }
+
+.card-thumb-url-wrapper {
+	display: table-cell;
+	width: 25%;
+	height: 100%;
+	vertical-align: middle;
+	padding-left: 5px; }
+
+.card-thumb-url {
+	position: relative;
+	float: right;
+	min-width: 30px;
+	max-height: 75px; }
+
+.card-content-with-thumb-url {
+  width: 75%; }
 
 .circle-left {
   position: absolute;
@@ -912,6 +952,7 @@ input[type=password].input-button-input:-ms-input-placeholder {
     position: absolute; 
     margin-top: 1px; 
     margin-left: -72px; 
+    z-index: 102;
     width: 56px; 
     height: 56px; 
     font-size: 25px; 
@@ -1073,24 +1114,6 @@ form.card-form {
 .card-action {
   float: left;
   margin: 2.5px 5px 2.5px 0px; }
-
-.card-image-url {
-	float: left;
-	max-width: 400px;
-	max-height: 500px;
-	margin: 10px 20px 10px 0px;
-	cursor: pointer; }
-
-.card-thumb-url-wrapper {
-	display: table-cell;
-	height: 100%;
-	vertical-align: middle;
-	padding-left: 10px; }
-
-.card-thumb-url {
-	position: relative;
-	float: right;
-	height: 75px; }
 	
 .card-timestamp {
   clear: both;
