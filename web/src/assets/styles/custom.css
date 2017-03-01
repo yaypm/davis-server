@@ -755,6 +755,23 @@ input[type=password].input-button-input:-ms-input-placeholder {
 
 .expandable__trigger {
   cursor: pointer; }
+  
+.card-close-button {
+  position: absolute;
+  top: 5px;
+  right: 0px;
+  background: transparent;
+  border: 0;
+  outline: 0; 
+  cursor: pointer; }
+  
+.icon--close {
+  width: 25px;
+  height: 25px;
+  fill: #f2f2f2; }
+  
+.card-close-button:hover .icon--close {
+  fill: #cccccc; }
 
 .circle-left {
   position: absolute;
@@ -770,7 +787,7 @@ input[type=password].input-button-input:-ms-input-placeholder {
   padding-top: 7.5px;
   text-align: center; }
   
-.circle-left-notification:hover {
+.circle-left-notification:hover.circle-left-notification-interactive {
   cursor: pointer;
   background-color: #006f77; }
 
@@ -782,7 +799,7 @@ input[type=password].input-button-input:-ms-input-placeholder {
 
 .circle-left-notification:hover .icon--notification-show {
   display: inline-block;
-  margin-top: 2px; }
+  margin-top: 0px; }
   
 @-webkit-keyframes pulsate-resolved {
   0%   {background-color: #00a1b2;}
@@ -899,6 +916,9 @@ input[type=password].input-button-input:-ms-input-placeholder {
     height: 56px; 
     font-size: 25px; 
     padding-top: 9px; }
+    
+  .circle-left-notification:hover .icon--notification-show {
+    margin-top: 2px; }
     
   .triangle-left {
     position: absolute;
