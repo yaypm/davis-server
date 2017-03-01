@@ -8,7 +8,7 @@
 // Imports
 // ----------------------------------------------------------------------------
 // Angular
-import { Component, OnInit,
+import { Component, OnInit, OnDestroy,
          AfterViewInit,
          ElementRef,
          Renderer,
@@ -43,6 +43,7 @@ export class AuthLoginComponent  implements OnInit, AfterViewInit {
   navigationExtras: NavigationExtras = {
     preserveFragment: false //This may need to be set to true in the future, possible Angular bug
   };
+  connection: any;
 
   // ------------------------------------------------------
   // Inject services
@@ -78,6 +79,7 @@ export class AuthLoginComponent  implements OnInit, AfterViewInit {
         sessionStorage.removeItem('email');
         sessionStorage.removeItem('token');
         sessionStorage.removeItem('isAdmin');
+        sessionStorage.removeItem('conversation');
         sessionStorage.setItem('email',  this.iDavis.values.authenticate.email);
         sessionStorage.setItem('token', response.token);
         sessionStorage.setItem('isAdmin', response.admin);
@@ -108,6 +110,13 @@ export class AuthLoginComponent  implements OnInit, AfterViewInit {
           throw new Error(response.message); 
         }
         this.iDavis.davisVersion = response.version;
+        return this.iDavis.getChromeToken();
+      })
+      .then(response => {
+        sessionStorage.removeItem('chromeToken');
+        sessionStorage.setItem('chromeToken', response.token);
+        this.iDavis.chromeToken = response.token;
+        this.iDavis.connectSocket();
       })
       .catch(err => {
         this.loginError = err.message || 'Sorry an error occurred, please try again.';

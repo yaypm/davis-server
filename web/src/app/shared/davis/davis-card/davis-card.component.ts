@@ -59,6 +59,7 @@ export class DavisCardComponent implements OnInit, AfterViewInit {
           result.response.isDavis = true;
         }
         result.response.timestamp = this.iDavis.getTimestamp();
+        result.response.moment = this.iDavis.getMoment();
         
         // Add new card
         if (name !== 'Next' && name !== 'Previous') {
@@ -66,6 +67,7 @@ export class DavisCardComponent implements OnInit, AfterViewInit {
           if (this.iDavis.conversation.length > 20) this.iDavis.conversation.shift();
           this.iDavis.isAddingToConvo = true;
           this.iDavis.conversation.push(result.response);
+          sessionStorage.setItem('conversation', JSON.stringify(this.iDavis.conversation));
           
         // Update card if page change
         } else {
@@ -81,6 +83,7 @@ export class DavisCardComponent implements OnInit, AfterViewInit {
           if (typeof err !== 'string' && err.message) err = err.message;
           let message = { visual: { card: { text: err, error: true } }, isDavis: true };
           this.iDavis.conversation.push(message);
+          sessionStorage.setItem('conversation', JSON.stringify(this.iDavis.conversation));
         }
       });
   }

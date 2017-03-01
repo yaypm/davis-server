@@ -9,7 +9,7 @@
 // ----------------------------------------------------------------------------
 // Angular
 import { Http, Headers }        from "@angular/http";
-import { Component,
+import { Component, OnInit,
          AfterViewInit }        from "@angular/core";
 import { Router }               from "@angular/router";
 
@@ -45,5 +45,7 @@ export class AppComponent {
       this.iDavis.isIframeTile = this.iDavis.isIframeTileDetected();
       this.iDavis.windowScrolled();
     }
+    
+    ngOnInit() {}
 
 }
