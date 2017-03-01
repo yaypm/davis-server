@@ -1,3 +1,30 @@
+<a name="0.11.0"></a>
+# [0.11.0](https://github.com/Dynatrace/davis-server/compare/v0.10.0...v0.11.0) (2017-02-28)
+
+
+### Bug Fixes
+
+* [#213](https://github.com/Dynatrace/davis-server/issues/213) continue retry after RTM close ([5479482](https://github.com/Dynatrace/davis-server/commit/5479482))
+* chrome token generated on every user creation instead of server start ([91f0594](https://github.com/Dynatrace/davis-server/commit/91f0594))
+* failed socket authentication should disconnect socket ([dc7a7d4](https://github.com/Dynatrace/davis-server/commit/dc7a7d4))
+* generate chromeToken if it does not exist on auth ([e74264f](https://github.com/Dynatrace/davis-server/commit/e74264f))
+* Handles server lost errors ([c276879](https://github.com/Dynatrace/davis-server/commit/c276879)), closes [#230](https://github.com/Dynatrace/davis-server/issues/230)
+* Non admin users can access admin only sections of configuration in special case [#228](https://github.com/Dynatrace/davis-server/issues/228) ([7965d5d](https://github.com/Dynatrace/davis-server/commit/7965d5d))
+* Web UI configuration inputs get populated with wrong values in Safari [#211](https://github.com/Dynatrace/davis-server/issues/211) ([d7ea727](https://github.com/Dynatrace/davis-server/commit/d7ea727))
+
+
+### Features
+
+* Add Global Exception Handler [#221](https://github.com/Dynatrace/davis-server/issues/221). fix: Davis web throws an exception if the JWT token has expired. [#218](https://github.com/Dynatrace/davis-server/issues/218) ([c02adc6](https://github.com/Dynatrace/davis-server/commit/c02adc6))
+* Add Global Exception Handler. Added dtrum support [#221](https://github.com/Dynatrace/davis-server/issues/221) ([3fe61bd](https://github.com/Dynatrace/davis-server/commit/3fe61bd))
+* Add tags input to filter config. Still need save/edit support [#181](https://github.com/Dynatrace/davis-server/issues/181) ([e906357](https://github.com/Dynatrace/davis-server/commit/e906357))
+* Allow web UI cards to be updated instead of added when flipping through pages [#227](https://github.com/Dynatrace/davis-server/issues/227) ([a8f766b](https://github.com/Dynatrace/davis-server/commit/a8f766b))
+* Instead of using setTimeout for determining when to scroll (web UI), use lifecycle hook for card being added [#207](https://github.com/Dynatrace/davis-server/issues/207). Add scroll to bottom button [#209](https://github.com/Dynatrace/davis-server/issues/209) ([29f3cfe](https://github.com/Dynatrace/davis-server/commit/29f3cfe))
+* Rename Notification Filters to Notification Rules [#229](https://github.com/Dynatrace/davis-server/issues/229) ([8164976](https://github.com/Dynatrace/davis-server/commit/8164976))
+* Timezone Improvements [#222](https://github.com/Dynatrace/davis-server/issues/222) ([7075d87](https://github.com/Dynatrace/davis-server/commit/7075d87))
+
+
+
 <a name="0.10.0"></a>
 # [0.10.0](https://github.com/Dynatrace/davis-server/compare/v0.9.0...v0.10.0) (2017-02-03)
 
