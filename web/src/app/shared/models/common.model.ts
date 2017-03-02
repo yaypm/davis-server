@@ -34,6 +34,7 @@ export class CommonModel {
   dynatrace: any = {
     url: '',
     apiUrl: '',
+    davisUrl: '',
     token: '',
     strictSSL: true,
   };

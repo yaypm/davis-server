@@ -298,7 +298,7 @@
       <span style="float: right; margin-right: 8px; margin-bottom: 5px">v{{ iDavis.davisVersion }}</span>
     </div>
   </div>
-  <div *ngIf="iDavis.isUserMenuVisible || iDavis.fullScreenImageUrl" class="disable_screen" (click)="iDavis.isUserMenuVisible = false; iDavis.fullScreenImageUrl = null">
+  <div *ngIf="iDavis.isUserMenuVisible || iDavis.fullScreenImageUrl" class="disable-screen" [class.disable-screen-image]="iDavis.fullScreenImageUrl" (click)="iDavis.isUserMenuVisible = false; iDavis.fullScreenImageUrl = null">
   </div>
   <img *ngIf="iDavis.fullScreenImageUrl" [src]="iDavis.fullScreenImageUrl" class="card-image-url-fullscreen"
     (click)="iDavis.fullScreenImageUrl = null">
