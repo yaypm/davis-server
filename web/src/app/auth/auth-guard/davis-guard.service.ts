@@ -68,11 +68,14 @@ export class DavisGuard implements CanActivate {
       return false;
     } else if (sessionStorage.getItem('token') 
         && sessionStorage.getItem('isAdmin')
+        && sessionStorage.getItem('chromeToken')
         && sessionStorage.getItem('email')) {
       this.iConfig.isWizard = false;
       this.iDavis.token = sessionStorage.getItem('token'); 
       this.iDavis.isAuthenticated = true;
       this.iDavis.isAdmin = sessionStorage.getItem('isAdmin') === 'true';
+      this.iDavis.chromeToken = sessionStorage.getItem('chromeToken');
+      if (!this.iDavis.socket) this.iDavis.connectSocket();
       this.iDavis.values.authenticate.email = sessionStorage.getItem('email');
       return true;
     } else {

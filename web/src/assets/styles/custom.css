@@ -1,6 +1,5 @@
 body.iFrameTile {
-  background-color: white;
-}
+  background-color: white; }
  
 form {
   width: 100%;
@@ -41,8 +40,7 @@ form {
   font-size: 18px; }
   
 .wizard-border {
-  border: 0.5px solid #ececec;
-}
+  border: 0.5px solid #ececec; }
   
 .layout--two-thirds {
   flex-basis: 66.66%; }
@@ -288,8 +286,18 @@ label.theme--dark-label {
 .nav__user-menu-section-break-small {
   height: 8px; }
   
+.nav__btn {
+  position: relative;
+  float: right; }
+  
 .nav__btn-highlighted {
   background-color: #525252; }
+  
+.nav__btn--notification {
+  background-color: #dc172a; }
+  
+.nav__btn--notification:hover {
+  background-color: #e74d59; }
   
 /* IE11 fix, but breaks other browsers */
 /*.nav__brand {*/
@@ -715,6 +723,11 @@ input[type=password].input-button-input:-ms-input-placeholder {
   width: 36px;
   height: 36px;
   margin-top: -2px; }
+  
+.icon--notification {
+  width: 25px;
+  height: 25px;
+  margin-top: -1px; }
 
 .island--isDavis {
   background-color: white; }
@@ -725,9 +738,80 @@ input[type=password].input-button-input:-ms-input-placeholder {
   
 .island--error {
   background-color: #fdb8b8; }
+  
+.timebreak {
+  width: 100%; }
+  
+.timebreak-text {
+  font-size: 12px;
+  color: #b7b7b7;
+  width: 100%;
+  height: 25px;
+  max-width: 500px;
+  margin: 15px auto 70px auto;
+  text-align: center;
+  border-bottom: 1px solid #b7b7b7; }
 
 .expandable__trigger {
   cursor: pointer; }
+  
+.card-close-button {
+  position: absolute;
+  top: 5px;
+  right: 0px;
+  background: transparent;
+  border: 0;
+  outline: 0; 
+  cursor: pointer; }
+  
+.icon--close {
+  width: 25px;
+  height: 25px;
+  fill: #f2f2f2; }
+  
+.card-close-button:hover .icon--close {
+  fill: #cccccc; }
+  
+.card-image-url {
+  position: relative;
+  clear: both;
+	float: left;
+	max-width: 400px;
+	max-height: 500px;
+	margin: 5px 10px 5px 0px;
+	cursor: pointer; }
+	
+.card-image-url-fullscreen {
+  position: fixed;
+  clear: none;
+  float: none;
+  top: 35%;
+  left: 0;
+  right: 0;
+  z-index: 100000;
+  max-width: none;
+  max-height: none;
+  width: 90%;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: white;
+  cursor: pointer; }
+
+.card-thumb-url-wrapper {
+	display: table-cell;
+	width: 25%;
+	height: 100%;
+	vertical-align: middle;
+	padding-left: 5px; }
+
+.card-thumb-url {
+	position: relative;
+	float: right;
+	min-width: 30px;
+	max-height: 75px; }
+
+.card-content-with-thumb-url {
+  width: 75%; }
 
 .circle-left {
   position: absolute;
@@ -742,6 +826,50 @@ input[type=password].input-button-input:-ms-input-placeholder {
   font-size: 16px;
   padding-top: 7.5px;
   text-align: center; }
+  
+.circle-left-notification:hover.circle-left-notification-interactive {
+  cursor: pointer;
+  background-color: #006f77; }
+
+.icon--notification-show {
+  display: none; }
+
+.circle-left-notification:hover .icon--notification-hide {
+  display: none; }
+
+.circle-left-notification:hover .icon--notification-show {
+  display: inline-block;
+  margin-top: 0px; }
+  
+@-webkit-keyframes pulsate-resolved {
+  0%   {background-color: #00a1b2;}
+  50%  {background-color: #7dc540;}
+  100% {background-color: #00a1b2;} }
+  
+@keyframes pulsate-resolved {
+  0%   {background-color: #00a1b2;}
+  50%  {background-color: #7dc540;}
+  100% {background-color: #00a1b2;} }
+  
+.circle-left-notification-resolved {
+  -webkit-animation: pulsate-resolved 1.5s 3 ease-in-out;
+  animation: pulsate-resolved 1.5s 3 ease-in-out;
+  background-color: #00a1b2; }
+
+@-webkit-keyframes pulsate-unresolved {
+  0%   {background-color: #00a1b2;}
+  50%  {background-color: #dc172a;}
+  100% {background-color: #00a1b2;} }
+  
+@keyframes pulsate-unresolved {
+  0%   {background-color: #00a1b2;}
+  50%  {background-color: #dc172a;}
+  100% {background-color: #00a1b2;} }
+  
+.circle-left-notification-unresolved {
+  -webkit-animation: pulsate-unresolved 1.5s 3 ease-in-out;
+  animation: pulsate-unresolved 1.5s 3 ease-in-out;
+  background-color: #00a1b2; }
   
 .triangle-left {}
 
@@ -814,16 +942,25 @@ input[type=password].input-button-input:-ms-input-placeholder {
     margin-top: -1px;
     width: 50px; 
     height: 50px; }
+    
+  .icon--notification {
+    width: 35px;
+    height: 35px;
+    margin-top: 1px; }
 
   .circle-left {
     position: absolute; 
     margin-top: 1px; 
     margin-left: -72px; 
+    z-index: 102;
     width: 56px; 
     height: 56px; 
     font-size: 25px; 
     padding-top: 9px; }
-  
+    
+  .circle-left-notification:hover .icon--notification-show {
+    margin-top: 2px; }
+    
   .triangle-left {
     position: absolute;
     z-index: 100;
@@ -920,7 +1057,7 @@ form.card-form {
 	float: left;
 	width: 100%;
 	padding: 0px 10px 0px 0px;
-	margin: 2px; }
+	margin: 2px 0px; }
 
 .card-bar {
 	display: table-cell;
@@ -977,24 +1114,6 @@ form.card-form {
 .card-action {
   float: left;
   margin: 2.5px 5px 2.5px 0px; }
-
-.card-image-url {
-	float: left;
-	max-width: 400px;
-	max-height: 500px;
-	margin: 10px 20px 10px 0px;
-	cursor: pointer; }
-
-.card-thumb-url-wrapper {
-	display: table-cell;
-	height: 100%;
-	vertical-align: middle;
-	padding-left: 10px; }
-
-.card-thumb-url {
-	position: relative;
-	float: right;
-	height: 75px; }
 	
 .card-timestamp {
   clear: both;
