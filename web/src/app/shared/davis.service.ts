@@ -158,10 +158,10 @@ export class DavisService {
         this.globalError = 'Push notifications are disabled due to a socket connection error';
       });
       this.socket.on(this.chromeToken, (card: any) => {
-        if (this.chromeToken) this.displayNotification(card, false);
+        if (this.chromeToken && typeof card !== 'string') this.displayNotification(card, false);
       });
       this.socket.on('message', (card: any) => {
-        this.displayNotification(card, true);
+        if (typeof card !== 'string') this.displayNotification(card, true);
       });
     }
   }
