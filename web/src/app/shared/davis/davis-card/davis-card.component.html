@@ -2,9 +2,9 @@
   <div *ngIf="message || updated" class="layout is-flex has-islands" style="padding: 0">
     <div [class.circle-left]="isDavis"
       [class.circle-left-notification]="message && (message.isNotif || (message.visual  && message.visual.card && message.visual.card.error))"
-      [class.circle-left-notification-resolved]="message && message.isNotif && message.visual.card.attachments[1].fields[3].value === 'Resolved' 
+      [class.circle-left-notification-resolved]="message && message.isNotif && message.visual.card.attachments && message.visual.card.attachments[1].fields[3].value === 'Resolved' 
         && message === iDavis.conversation[iDavis.conversation.length - 1]"
-      [class.circle-left-notification-unresolved]="message && message.isNotif && message.visual.card.attachments[1].fields[3].value !== 'Resolved' 
+      [class.circle-left-notification-unresolved]="message && message.isNotif && message.visual.card.attachments && message.visual.card.attachments[1].fields[3].value !== 'Resolved' 
         && message === iDavis.conversation[iDavis.conversation.length - 1]" 
       [class.circle-left-notification-interactive]="false"
       [class.circle-right]="!isDavis" 
@@ -46,12 +46,12 @@
         </button>
         <div *ngFor="let attachment of message.visual.card.attachments" 
           class="card-attachment"
-          [class.card-content-text-only]="!((attachment.title || attachment.fields || attachment.actions || attachment.actionClicked) || (attachment.author_name && attachment.author_name === 'filtered'))">
-          <div *ngIf="(attachment.title || attachment.fields || attachment.actions || attachment.actionClicked) || (attachment.author_name && attachment.author_name === 'filtered')" 
+          [class.card-content-text-only]="!((attachment.title || attachment.fields || attachment.actions || attachment.actionClicked || attachment.image_url || attachment.thumb_url) || (attachment.author_name && attachment.author_name === 'filtered'))">
+          <div *ngIf="(attachment.title || attachment.fields || attachment.actions || attachment.actionClicked || attachment.image_url || attachment.thumb_url) || (attachment.author_name && attachment.author_name === 'filtered')" 
             class="card-bar" [style.border-color]="attachment.color"></div>
           <div class="card-content" 
             [class.card-content-with-thumb-url]="attachment.thumb_url"
-            [class.card-content-text-only]="!((attachment.title || attachment.fields || attachment.actions || attachment.actionClicked) || (attachment.author_name && attachment.author_name === 'filtered'))">
+            [class.card-content-text-only]="!((attachment.title || attachment.fields || attachment.actions || attachment.actionClicked || attachment.image_url || attachment.thumb_url) || (attachment.author_name && attachment.author_name === 'filtered'))">
             <div *ngIf="attachment.author_name" style="color: #b7b7b7; margin-top: -6px">
               <svg *ngIf="attachment.author_name === 'filtered'" style="fill: #00A6FB; width: 15px; height: 15px; vertical-align: sub">
                 <use xlink:href="#filter"></use>

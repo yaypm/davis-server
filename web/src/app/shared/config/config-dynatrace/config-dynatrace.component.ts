@@ -22,6 +22,7 @@ export class ConfigDynatraceComponent implements OnInit, AfterViewInit {
   isTokenMasked: boolean = true;
   isDirty: boolean = false;
   isAdvancedExpanded: boolean = false;
+  isHTTPS: boolean = false;
 
   constructor(
     private renderer: Renderer,
@@ -36,7 +37,15 @@ export class ConfigDynatraceComponent implements OnInit, AfterViewInit {
     if (this.iConfig.values.dynatrace.url.slice(-1) === '/') {
       this.iConfig.values.dynatrace.url = this.iConfig.values.dynatrace.url.substring(0, this.iConfig.values.dynatrace.url.length - 1);
     }
+    this.iConfig.values.davis.url = `${window.location.protocol}//${window.location.host}`;
     this.iConfig.connectDynatrace()
+      .then(response => {
+        if (!response.success) { 
+          this.resetSubmitButton(); 
+          throw new Error(response.message); 
+        }
+        return this.iConfig.setDavis();
+      })
       .then(response => {
         if (!response.success) { 
           this.resetSubmitButton(); 
@@ -73,10 +82,14 @@ export class ConfigDynatraceComponent implements OnInit, AfterViewInit {
   ngOnInit() {}
   
   ngAfterViewInit() {
-    if (window.location.protocol === 'http') {
-      this.iConfig.status['dynatrace'].error = 'Warning, please note that "https://" is required for Davis to interact with Alexa, Slack, and Watson APIs!';
+    if (window.location.protocol === 'http:') {
+      this.iConfig.status['dynatrace'].error = 'Warning, please note that a valid SSL certificate is required to use davis!';
       this.iConfig.status['dynatrace'].success = false;
+      if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.01') this.isHTTPS = true;
+    } else {
+      this.isHTTPS = true;
     }
+    
     if (this.iConfig.isWizard) {
       this.renderer.invokeElementMethod(this.url.nativeElement, 'focus');
       setTimeout(() => {
