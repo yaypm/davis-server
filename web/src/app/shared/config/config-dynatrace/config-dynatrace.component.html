@@ -93,7 +93,7 @@
     </div>
     <div class="island island--center island--submit" [class.island--left]="!iConfig.isWizard">
       <button type="submit" role="button" class="btn btn--primary btn--submit"
-          [attr.disabled]="(!form.valid || submitButton === 'Saving...' || !isDirty || !isHTTPS) ? true : null">
+          [attr.disabled]="(!form.valid || submitButton === 'Saving...' || !isDirty || !isSSL) ? true : null">
           {{ submitButton }}
       </button>
     </div>
