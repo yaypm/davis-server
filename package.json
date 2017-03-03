@@ -125,7 +125,7 @@
     "morgan": "^1.7.0",
     "natural": "^0.4.0",
     "nunjucks": "^3.0.0",
-    "phantom-chartjs": "^0.2.2",
+    "phantom-chartjs": "0.2.3",
     "rand-token": "^0.2.1",
     "request": "^2.79.0",
     "request-promise": "^4.1.1",
