@@ -193,13 +193,22 @@ describe('ResponseBuilder', () => {
           show: {
             attachments: [
               {
-                fallback: 'test response.  Who am I?',
+                fallback: 'test response.',
                 mrkdwn_in: [
                   'text',
                   'pretext',
                   'fields',
                 ],
-                text: 'test response.  Who am I?',
+                text: 'test response.',
+              },
+              {
+                fallback: 'Who am I?',
+                mrkdwn_in: [
+                  'text',
+                  'pretext',
+                  'fields',
+                ],
+                text: 'Who am I?',
               }
             ],
           },
