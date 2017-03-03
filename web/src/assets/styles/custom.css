@@ -331,7 +331,7 @@ label.theme--dark-label {
   margin: 0 auto;
   margin-bottom: 40px; }
   
-.disable_screen {
+.disable-screen {
   position: fixed;
   top: 44px;
   left: 0;
@@ -339,6 +339,9 @@ label.theme--dark-label {
   width: 100%;
   height: calc(100% - 44px);
   background-color: rgba(0, 0, 0, 0.3); }
+
+.disable-screen-image {
+  background-color: rgba(0, 0, 0, 0.8); }
   
 /* Input field with inline button */
 .input-button-wrapper {
@@ -776,8 +779,6 @@ input[type=password].input-button-input:-ms-input-placeholder {
   position: relative;
   clear: both;
 	float: left;
-	max-width: 400px;
-	max-height: 500px;
 	margin: 5px 10px 5px 0px;
 	cursor: pointer; }
 	
@@ -785,7 +786,7 @@ input[type=password].input-button-input:-ms-input-placeholder {
   position: fixed;
   clear: none;
   float: none;
-  top: 35%;
+  top: 85px;
   left: 0;
   right: 0;
   z-index: 100000;
@@ -1270,6 +1271,21 @@ a:hover .root-cause {
 a:hover .root-cause:hover {
   background-color: #92380e;
 }
+
+a:hover .root-cause {
+  text-decoration: none;
+}
+
+.island--error-text a {
+  font-weight: bold;
+  color: #454646; }
+
+.island--error-text a:hover {
+  cursor: pointer;
+  color: black; }
+  
+.island--error-text .btn--secondary:hover {
+  background-color: #ffeae8; }
 
 /* Typing indicator */
 .typing-indicator {

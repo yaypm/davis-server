@@ -22,6 +22,7 @@ export class ConfigDynatraceComponent implements OnInit, AfterViewInit {
   isTokenMasked: boolean = true;
   isDirty: boolean = false;
   isAdvancedExpanded: boolean = false;
+  isSSL: boolean = false;
 
   constructor(
     private renderer: Renderer,
@@ -70,13 +71,18 @@ export class ConfigDynatraceComponent implements OnInit, AfterViewInit {
     this.submitButton = (this.iConfig.isWizard) ? 'Continue' : 'Save';
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    if (this.iConfig.isWizard) sessionStorage.removeItem('conversation');
+  }
   
   ngAfterViewInit() {
-    if (window.location.protocol === 'http') {
-      this.iConfig.status['dynatrace'].error = 'Warning, please note that "https://" is required for Davis to interact with Alexa, Slack, and Watson APIs!';
+    if (window.location.protocol === 'http:' && window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.01') {
+      this.iConfig.status['dynatrace'].error = 'Warning, please note that a valid SSL certificate is required to use davis!';
       this.iConfig.status['dynatrace'].success = false;
+    } else {
+      this.isSSL = true;
     }
+    
     if (this.iConfig.isWizard) {
       this.renderer.invokeElementMethod(this.url.nativeElement, 'focus');
       setTimeout(() => {

@@ -21,7 +21,11 @@
     [class.wizard-border]="iConfig.isWizard"
     [class.island--full-width-sidebar]="!iConfig.isWizard">
     <div class="island--error-text">
-      {{ iConfig.status['dynatrace'].error }}
+      {{ iConfig.status['dynatrace'].error }}&nbsp;&nbsp;&nbsp;
+      <a *ngIf="iConfig.status['dynatrace'].error.indexOf('SSL') > -1" 
+        href="https://github.com/Dynatrace/davis-server/wiki/Getting%20Started#ssl-configuration" target="_blank">
+        SSL Configuration Help
+      </a>
     </div>
     <div class="island--error-button">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" 
@@ -89,7 +93,7 @@
     </div>
     <div class="island island--center island--submit" [class.island--left]="!iConfig.isWizard">
       <button type="submit" role="button" class="btn btn--primary btn--submit"
-          [attr.disabled]="(!form.valid || submitButton === 'Saving...' || !isDirty) ? true : null">
+          [attr.disabled]="(!form.valid || submitButton === 'Saving...' || !isDirty || !isSSL) ? true : null">
           {{ submitButton }}
       </button>
     </div>
