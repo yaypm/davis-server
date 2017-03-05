@@ -555,21 +555,25 @@ describe('Express', () => {
   );
 
   it('Should get all aliases', () => {
-    return new AliasModel({
-      name: "My Web App",
-      category: "applications",
-      entityId: "QWERTY",
-      display: {
-        audible: "My web app",
-        visual: "My Web App",
-      },
-      aliases: ["appweb", "davisweb"],
-    }).save()
+    AliasModel.collection.remove()
+      .then(() => {
+        return new AliasModel({
+          name: "My Web App",
+          category: "applications",
+          entityId: "QWERTY",
+          display: {
+            audible: "My web app",
+            visual: "My Web App",
+          },
+          aliases: ["appweb", "davisweb"],
+        }).save()
+      })
       .then(() =>
         chai.request(app)
           .get('/api/v1/system/aliases')
           .set('X-Access-Token', token)
           .then(res => {
+            console.log(res.body.applications);
             res.body.applications.length.should.eql(1);
             res.body.applications[0].name.should.eql("My Web App");
           }));

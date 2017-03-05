@@ -43,16 +43,6 @@ export class ConfigService {
     this.location.go(`/${ (this.isWizard) ? 'wizard' : 'configuration'}#${newView}`);
   }
   
-  setDavis(): Promise<any> {
-    let headers = new Headers({ 'Content-Type': 'application/json', 'x-access-token': this.iDavis.token });
-    let options = new RequestOptions({ headers: headers });
-
-    return this.http.post(`/api/v1/system/davis`, this.values.davis, options)
-      .toPromise()
-      .then(this.iDavis.extractData)
-      .catch(this.iDavis.handleError);
-  }
-  
   getDavisConfiguration(): Promise<any> {
     let headers = new Headers({ 'Content-Type': 'application/json', 'x-access-token': this.iDavis.token });
     let options = new RequestOptions({ headers: headers });
