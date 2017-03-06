@@ -2,6 +2,12 @@
 ## [0.11.1](https://github.com/Dynatrace/davis-server/compare/v0.11.0...v0.11.1) (2017-03-06)
 
 
+### Bug Fixes
+
+* [#247](https://github.com/Dynatrace/davis-server/issues/247) Multiple RTM connections ([63bb8c6](https://github.com/Dynatrace/davis-server/commit/63bb8c6))
+* Drop index on empty DB error ([ffb0b86](https://github.com/Dynatrace/davis-server/commit/ffb0b86))
+
+
 
 <a name="0.11.0"></a>
 # [0.11.0](https://github.com/Dynatrace/davis-server/compare/v0.10.0...v0.11.0) (2017-02-28)
