@@ -783,19 +783,14 @@ input[type=password].input-button-input:-ms-input-placeholder {
 	cursor: pointer; }
 	
 .card-image-url-fullscreen {
+  margin: auto;
   position: fixed;
-  clear: none;
-  float: none;
-  top: 85px;
+  top: 0;
   left: 0;
+  bottom: 0;
   right: 0;
   z-index: 100000;
-  max-width: none;
-  max-height: none;
-  width: 90%;
-  margin: 0 auto;
   padding: 20px;
-  background-color: white;
   cursor: pointer; }
 
 .card-thumb-url-wrapper {

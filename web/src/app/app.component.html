@@ -331,7 +331,7 @@
   </div>
 </div>
 <div class="breadcrumbs--spacer"></div>
-<div *ngIf="!iDavis.isScrolledToBottom && router.url === '/davis'" (click)="iDavis.windowScrollBottom('slow')" class="scroll-to-bottom-button">
+<div *ngIf="!iDavis.isScrolledToBottom && router.url === '/davis' && !iDavis.fullScreenImageUrl" (click)="iDavis.windowScrollBottom('slow')" class="scroll-to-bottom-button">
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon icon--white icon--scroll-to-bottom">
     <use xlink:href="#scrollToBottom"></use>
   </svg>
