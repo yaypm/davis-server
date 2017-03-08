@@ -795,20 +795,38 @@ input[type=password].input-button-input:-ms-input-placeholder {
 	cursor: pointer; }
 	
 .card-image-url-fullscreen {
+  margin: auto;
   position: fixed;
-  clear: none;
-  float: none;
-  top: 85px;
+  top: 0;
   left: 0;
+  bottom: 0;
   right: 0;
   z-index: 100000;
-  max-width: none;
-  max-height: none;
-  width: 90%;
-  margin: 0 auto;
-  padding: 20px;
+  width: calc(100% - 20px);
+  padding: 5px;
   background-color: white;
   cursor: pointer; }
+  
+.card-image-url-fullscreen-close-btn {
+  margin: auto;
+  position: fixed;
+  left: calc(50% - 10px);
+  bottom: 10%;
+  z-index: 100001;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background-color: #6d6d6d;
+  opacity: 0.6; }
+  
+.card-image-url-fullscreen-close-btn:hover {
+  opacity: 0.8;
+}
+  
+.card-image-url-fullscreen-close-btn .icon--error-button {
+  fill: white;
+  width: 60px;
+  height: 60px; }
 
 .card-thumb-url-wrapper {
 	display: table-cell;
@@ -907,6 +925,9 @@ input[type=password].input-button-input:-ms-input-placeholder {
 .triangle-right-border {}
     
 @media (min-width: 700px) {
+  
+  .card-image-url-fullscreen {
+    width: calc(100% - 200px); }
   
   .sidebar-sm {
     width: 284px;

@@ -276,7 +276,8 @@
         Report an issue
       </div>
     </div>
-    <div class="nav__user-menu-section-item-wrapper" (click)="iDavis.windowOpen('https://github.com/Dynatrace/davis-server/blob/master/CHANGELOG.md')">
+    <div class="nav__user-menu-section-item-wrapper" 
+      (click)="iDavis.windowOpen('https://github.com/Dynatrace/davis-server/blob/master/CHANGELOG.md')">
       <div class="nav__user-menu-section-item">
         What's new?
       </div>
@@ -286,7 +287,9 @@
         Dynatrace blog
       </div>
     </div>
-    <div class="nav__user-menu-section-break" [class.nav__user-menu-section-break-small]="!iDavis.isAuthenticated || iConfig.isWizard"></div>
+    <div class="nav__user-menu-section-break" 
+      [class.nav__user-menu-section-break-small]="!iDavis.isAuthenticated || iConfig.isWizard">
+    </div>
     <div *ngIf="iDavis.isAuthenticated && !iConfig.isWizard" class="nav__user-menu-section-item-wrapper" (click)="iDavis.logOut()">
       <div class="nav__user-menu-section-item">
         Sign out
@@ -298,10 +301,19 @@
       <span style="float: right; margin-right: 8px; margin-bottom: 5px">v{{ iDavis.davisVersion }}</span>
     </div>
   </div>
-  <div *ngIf="iDavis.isUserMenuVisible || iDavis.fullScreenImageUrl" class="disable-screen" [class.disable-screen-image]="iDavis.fullScreenImageUrl" (click)="iDavis.isUserMenuVisible = false; iDavis.fullScreenImageUrl = null">
+  <div *ngIf="iDavis.isUserMenuVisible || iDavis.fullScreenImageUrl" class="disable-screen" 
+    [class.disable-screen-image]="iDavis.fullScreenImageUrl" 
+    (click)="iDavis.isUserMenuVisible = false; iDavis.fullScreenImageUrl = null">
   </div>
   <img *ngIf="iDavis.fullScreenImageUrl" [src]="iDavis.fullScreenImageUrl" class="card-image-url-fullscreen"
     (click)="iDavis.fullScreenImageUrl = null">
+  <div *ngIf="iDavis.fullScreenImageUrl" class="card-image-url-fullscreen-close-btn">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" 
+      class="icon icon--black icon--error-button" 
+      (click)="iDavis.fullScreenImageUrl = null">
+      <use xlink:href="#clear"></use>
+    </svg>
+  </div>
   <div *ngIf="iDavis.isBreadcrumbsVisible && !iDavis.isIframeTile">
     <ul class="breadcrumbs">
       <li class="breadcrumbs__item">
@@ -331,7 +343,7 @@
   </div>
 </div>
 <div class="breadcrumbs--spacer"></div>
-<div *ngIf="!iDavis.isScrolledToBottom && router.url === '/davis'" (click)="iDavis.windowScrollBottom('slow')" class="scroll-to-bottom-button">
+<div *ngIf="!iDavis.isScrolledToBottom && router.url === '/davis' && !iDavis.fullScreenImageUrl" (click)="iDavis.windowScrollBottom('slow')" class="scroll-to-bottom-button">
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon icon--white icon--scroll-to-bottom">
     <use xlink:href="#scrollToBottom"></use>
   </svg>
