@@ -5,7 +5,7 @@
         <div *ngIf="iDavis.conversation[i - 1] && hoursApart(iDavis.conversation[i - 1].moment, message.moment) > 0" class="timebreak"
           style="background-color: transparent; position: relative; padding: 0">
           <div class="timebreak-text">
-            {{ hoursApart(iDavis.conversation[i - 1].moment, message.moment) }} hour{{ (hoursApart(iDavis.conversation[i - 1].moment, message.moment) > 1) ? 's' : null }} ago
+            Over {{ hoursApart(iDavis.conversation[i - 1].moment, message.moment) }} hour{{ (hoursApart(iDavis.conversation[i - 1].moment, message.moment) > 1) ? 's' : null }} apart
           </div>
         </div>
         <davis-card class="island island--center" style="background-color: transparent; position: relative; padding: 0" 

@@ -767,6 +767,10 @@ input[type=password].input-button-input:-ms-input-placeholder {
   outline: 0; 
   cursor: pointer; }
   
+.card-close-button-error {
+  position: absolute;
+  top: 16px; }
+  
 .icon--close {
   width: 25px;
   height: 25px;
@@ -774,6 +778,14 @@ input[type=password].input-button-input:-ms-input-placeholder {
   
 .card-close-button:hover .icon--close {
   fill: #cccccc; }
+  
+.icon--close-error {
+  width: 25px;
+  height: 25px;
+  fill: white; }
+  
+.card-close-button:hover .icon--close-error {
+  fill: #e6e6e6; }
   
 .card-image-url {
   position: relative;
