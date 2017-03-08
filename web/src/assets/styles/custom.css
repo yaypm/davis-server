@@ -794,6 +794,27 @@ input[type=password].input-button-input:-ms-input-placeholder {
   padding: 5px;
   background-color: white;
   cursor: pointer; }
+  
+.card-image-url-fullscreen-close-btn {
+  margin: auto;
+  position: fixed;
+  left: calc(50% - 10px);
+  bottom: 10%;
+  z-index: 100001;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background-color: #6d6d6d;
+  opacity: 0.6; }
+  
+.card-image-url-fullscreen-close-btn:hover {
+  opacity: 0.8;
+}
+  
+.card-image-url-fullscreen-close-btn .icon--error-button {
+  fill: white;
+  width: 60px;
+  height: 60px; }
 
 .card-thumb-url-wrapper {
 	display: table-cell;
