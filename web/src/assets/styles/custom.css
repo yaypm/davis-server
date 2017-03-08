@@ -790,7 +790,9 @@ input[type=password].input-button-input:-ms-input-placeholder {
   bottom: 0;
   right: 0;
   z-index: 100000;
-  padding: 20px;
+  width: calc(100% - 20px);
+  padding: 5px;
+  background-color: white;
   cursor: pointer; }
 
 .card-thumb-url-wrapper {
@@ -890,6 +892,9 @@ input[type=password].input-button-input:-ms-input-placeholder {
 .triangle-right-border {}
     
 @media (min-width: 700px) {
+  
+  .card-image-url-fullscreen {
+    width: calc(100% - 200px); }
   
   .sidebar-sm {
     width: 284px;
