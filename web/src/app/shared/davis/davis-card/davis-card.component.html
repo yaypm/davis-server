@@ -34,7 +34,7 @@
           <span></span>
         </div>
       </div>
-      <button class="card-close-button" title="Remove Notification"
+      <button type="button" class="card-close-button" title="Remove Message"
         [class.card-close-button-error]="message.visual && message.visual.card && message.visual.card.error"
         (click)="(message && (message.isNotif || (message.visual && message.visual.card && message.visual.card.error))) ? iDavis.deleteNotification(message) : null">
         <svg *ngIf="message && (message.isNotif || (message.visual && message.visual.card && message.visual.card.error))" class="icon icon--close" 
