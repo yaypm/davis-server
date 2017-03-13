@@ -10,6 +10,7 @@ export class CommonModel {
     },
     admin: false,
     owner: '',
+    demo: false,
   };
 
   filter: any = {
