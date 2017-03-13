@@ -49,8 +49,9 @@ export class ConfigUserComponent implements OnInit, AfterViewInit {
       this.iConfig.values.otherUser.name.first = this.iDavis.safariAutoCompletePolyFill(this.iConfig.values.otherUser.name.first, 'first');
       this.iConfig.values.otherUser.name.last = this.iDavis.safariAutoCompletePolyFill(this.iConfig.values.otherUser.name.last, 'last');
       this.iConfig.values.otherUser.email = this.iDavis.safariAutoCompletePolyFill(this.iConfig.values.otherUser.email, 'email');
-      this.iConfig.values.otherUser.admin = this.iDavis.safariAutoCompletePolyFill(this.iConfig.values.otherUser.admin, 'admin');
       this.iConfig.values.otherUser.password = this.iDavis.safariAutoCompletePolyFill(this.iConfig.values.otherUser.password, 'password');
+      this.iConfig.values.otherUser.admin = this.iDavis.safariAutoCompletePolyFill(this.iConfig.values.otherUser.admin, 'admin');
+      this.iConfig.values.otherUser.demo = this.iDavis.safariAutoCompletePolyFill(this.iConfig.values.otherUser.demo, 'demo');
       this.iConfig.values.otherUser.timezone = this.iDavis.safariAutoCompletePolyFill(this.iConfig.values.otherUser.timezone, 'timezone');
       this.iConfig.values.otherUser.alexa_id = this.iDavis.safariAutoCompletePolyFill(this.iConfig.values.otherUser.alexa_id, 'alexa_id');
     } else {
@@ -58,6 +59,7 @@ export class ConfigUserComponent implements OnInit, AfterViewInit {
       this.iDavis.values.user.name.last = this.iDavis.safariAutoCompletePolyFill(this.iDavis.values.user.name.last, 'last');
       this.iDavis.values.user.email = this.iDavis.safariAutoCompletePolyFill(this.iDavis.values.user.email, 'email');
       this.iDavis.values.user.password = this.iDavis.safariAutoCompletePolyFill(this.iDavis.values.user.password, 'password');
+      this.iDavis.values.user.demo = this.iDavis.safariAutoCompletePolyFill(this.iDavis.values.user.demo, 'demo');
       this.iDavis.values.user.timezone = this.iDavis.safariAutoCompletePolyFill(this.iDavis.values.user.timezone, 'timezone');
       this.iDavis.values.user.alexa_id = this.iDavis.safariAutoCompletePolyFill(this.iDavis.values.user.alexa_id, 'alexa_id');
     }
@@ -179,7 +181,11 @@ export class ConfigUserComponent implements OnInit, AfterViewInit {
         this.iConfig.values.otherUser.alexa_ids = [];
       }
     }
-    this.isDirty = (this.isMyUser) ? !_.isEqual(this.iDavis.values.user, this.iConfig.values.original.user) : !_.isEqual(this.iConfig.values.otherUser, this.iConfig.values.original.otherUser);
+    
+    // Remove alexa_id property for _.isEqual() to work correctly
+    let user = (this.isMyUser) ? _.cloneDeep(this.iDavis.values.user) :  _.cloneDeep(this.iConfig.values.otherUser);
+    delete user.alexa_id;
+    this.isDirty = (this.isMyUser) ? !_.isEqual(user, this.iConfig.values.original.user) : !_.isEqual(user, this.iConfig.values.original.otherUser);
     if (!this.isValidTimezone) this.isDirty = false;
   }
 

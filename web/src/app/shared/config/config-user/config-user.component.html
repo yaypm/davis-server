@@ -177,6 +177,24 @@
           </div>
         </div>
         <div class="layout__container layout--half layout--half--small">
+          <div class="island island--half island--half--left" style="padding-top: 14px;">
+            
+            <!-- isMyUser -->
+            <input type="checkbox" class="checkbox" id="demo" name="demo"
+              [(ngModel)]="iDavis.values.user.demo"
+              *ngIf="isMyUser"
+              (change)="validate()">
+                
+            <!-- !isMyUser -->
+            <input type="checkbox" class="checkbox" id="demo" name="demo"
+              [(ngModel)]="iConfig.values.otherUser.demo"
+              *ngIf="!isMyUser"
+              (change)="validate()">
+              
+            <label for="demo" class="checkbox__label">
+              <span class="checkbox__caption">Demo Mode</span>
+            </label>
+          </div>
         </div>
       </div>
       <div class="island island--full" *ngIf="!iConfig.isWizard">          
