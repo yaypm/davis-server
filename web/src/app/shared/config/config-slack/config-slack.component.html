@@ -47,10 +47,10 @@
               </a>
             </li>
             <li>
-              Copy and paste the Client ID and Client Secret from your Slack App's Basic Information page to the inputs below
+              Copy and paste Client ID and Client Secret from your Slack App's Basic Information page to the inputs below
             </li>
             <li>
-              Copy and paste the Redirect URL and Request URL from below to the corresponding pages' inputs in your Slack App's configuration
+              Copy and paste Request URL to "Interactive Messages" and Redirect URL to "OAuth & Permissions" from below to the inputs in your Slack App's configuration
             </li>
             <li>
               Create a new bot user within the "Bot Users" section found in your Slack App's configuration and click the "Connect" button below
@@ -115,22 +115,6 @@
             </div>
           </div>
         </div>
-        <div class="island island--full">         
-          <label for="redirectUri" class="label">
-            OAuth & Permissions - Redirect URL
-          </label>
-          <div class="input-button-wrapper" [class.input-button-wrapper-focus]="isRedirectUriFocused">
-              <input #redirectUri type="text" id="redirectUri" name="redirectUri" class="input-button-input" autocomplete="off"
-                  [(ngModel)]="iConfig.values.slack.redirectUri"
-                  (focus)="isRedirectUriFocused = true" (blur)="isRedirectUriFocused = false" (click)="iDavis.clickElem('redirectUriBtn')" readonly>
-              
-              <div id="redirectUriBtn" class="input-button-button clipboard" data-clipboard-target="#redirectUri">
-                <svg class="icon icon--black icon--input-button-img" [class.input-button-img-password-masked]="!isRedirectUriFocused">
-                  <use xlink:href="#cut"></use>
-                </svg>
-              </div>
-          </div>
-        </div>      
         <div class="island island--full">
           <label for="requestUri" class="label">
             Interactive Messages - Request URL
@@ -142,6 +126,22 @@
   
               <div id="requestUriBtn" class="input-button-button clipboard" data-clipboard-target="#requestUri">
                 <svg class="icon icon--black icon--input-button-img" [class.input-button-img-password-masked]="!isRequestUriFocused">
+                  <use xlink:href="#cut"></use>
+                </svg>
+              </div>
+          </div>
+        </div>
+        <div class="island island--full">         
+          <label for="redirectUri" class="label">
+            OAuth & Permissions - Redirect URL
+          </label>
+          <div class="input-button-wrapper" [class.input-button-wrapper-focus]="isRedirectUriFocused">
+              <input #redirectUri type="text" id="redirectUri" name="redirectUri" class="input-button-input" autocomplete="off"
+                  [(ngModel)]="iConfig.values.slack.redirectUri"
+                  (focus)="isRedirectUriFocused = true" (blur)="isRedirectUriFocused = false" (click)="iDavis.clickElem('redirectUriBtn')" readonly>
+              
+              <div id="redirectUriBtn" class="input-button-button clipboard" data-clipboard-target="#redirectUri">
+                <svg class="icon icon--black icon--input-button-img" [class.input-button-img-password-masked]="!isRedirectUriFocused">
                   <use xlink:href="#cut"></use>
                 </svg>
               </div>
