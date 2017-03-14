@@ -185,6 +185,7 @@ export class ConfigUserComponent implements OnInit, AfterViewInit {
     // Remove alexa_id property for _.isEqual() to work correctly
     let user = (this.isMyUser) ? _.cloneDeep(this.iDavis.values.user) :  _.cloneDeep(this.iConfig.values.otherUser);
     delete user.alexa_id;
+    if (typeof this.iConfig.values.original.otherUser.alexa_id === 'string') delete this.iConfig.values.original.otherUser.alexa_id;
     this.isDirty = (this.isMyUser) ? !_.isEqual(user, this.iConfig.values.original.user) : !_.isEqual(user, this.iConfig.values.original.otherUser);
     if (!this.isValidTimezone) this.isDirty = false;
   }
