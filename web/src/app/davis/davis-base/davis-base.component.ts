@@ -181,6 +181,12 @@ export class DavisBaseComponent implements OnInit, AfterViewInit {
             throw new Error(response.message); 
           }
           this.iDavis.davisVersion = response.version;
+         return this.iConfig.getDynatrace();
+        })
+        .then(response => {
+          if (!response.success) throw new Error(response.message);
+          this.iConfig.values.dynatrace = response.dynatrace;
+          this.iConfig.values.original.dynatrace = _.cloneDeep(this.iConfig.values.dynatrace);
         })
         .catch(err => {
           this.iConfig.displayError(err, null);

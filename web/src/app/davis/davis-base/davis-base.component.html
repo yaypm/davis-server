@@ -20,12 +20,15 @@
       <div *ngIf="iDavis.conversation.length < 1 && !iDavis.isIframeTile && !iDavis.globalError" class="layout is-flex has-islands" 
         [class.fadeIn]="iDavis.conversation.length < 1"
         [class.slideDownDavisCard]="iDavis.conversation.length < 1">
-        <div class="island island--center" style="height: 299px; border: 0.5px solid #ececec">
-          <svg style="fill: #004999; width: 175px; height: 175px; display: block; margin: 0 auto; margin-top: 20px">
+        <div class="island island--center davis-card" style="height: 299px; border: 0.5px solid #ececec">
+          <svg>
             <use xlink:href="#davis"></use>
           </svg>
           <div style="text-align: center; margin-top: 15px; padding: 0px 16px">
             Davis here, your DevOps assistant, ask me something below!
+          </div>
+          <div *ngIf="iConfig.values.dynatrace.url && iConfig.values.dynatrace.url.length > 0" class="sidebar--connected sidebar--connected-card" style="text-align: center">
+            Connected Tenant: <a [href]="iConfig.values.dynatrace.url" target="_blank">{{ iConfig.values.dynatrace.url.replace('https://', '') }}</a>
           </div>
         </div>
       </div>

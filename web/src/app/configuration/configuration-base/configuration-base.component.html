@@ -6,13 +6,12 @@
         <span class="sidebar__headline">{{ item.name }}</span>
       </a>
       <div *ngIf="item.items" class="expandable" 
-        [class.expandable--expanded]="expandedSection === item.key || ((iConfig.view === item.key || iConfig.view.indexOf('notification') > -1) && expandedSection === '' && item.expanded !== false)"
-        [class.is-expanded]="expandedSection === item.key || ((iConfig.view === item.key || iConfig.view.indexOf('notification') > -1) && expandedSection === '' && item.expanded !== false)"
-        [class.is-active]="expandedSection === item.key || ((iConfig.view === item.key || iConfig.view.indexOf('notification') > -1) && expandedSection === '' && item.expanded !== false)">
+        [class.expandable--expanded]="isExpanded(item)"
+        [class.is-expanded]="isExpanded(item)"
+        [class.is-active]="isExpanded(item)">
         <a class="sidebar__item expandable__trigger expandable__trigger--right" 
           [class.closed]="(expandedSection !== item.key || !item.expanded) && iConfig.view !== item.key"
-          (click)="item.expanded = (item.expanded === null && iConfig.view.indexOf('notification') > -1) ? false : !item.expanded; 
-            (item.expanded && iConfig.view.indexOf('notification') < 0) ? iConfig.selectView('notification-rules') : null; expandedSection = (item.expanded) ? item.key : '';">
+          (click)="expandSection(item)">
           <span class="sidebar__headline">{{ item.name }}</span>
           <span class="sidebar__info">{{ item.description }}</span>
         </a>
@@ -24,6 +23,9 @@
         </div>
       </div>
     </span>
+    <div *ngIf="iConfig.values.dynatrace.url && iConfig.values.dynatrace.url.length > 0" class="sidebar--connected">
+      Connected Tenant: <a [href]="iConfig.values.dynatrace.url" target="_blank">{{ iConfig.values.dynatrace.url.replace('https://', '') }}</a>
+    </div>
   </nav>
   <div class="island island--connected">
     <config-user *ngIf="iConfig.view === 'user'" [isNewUser]="false" [isMyUser]="true"></config-user>

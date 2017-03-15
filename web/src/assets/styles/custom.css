@@ -220,6 +220,13 @@ body.theme--blue {
   0% { margin-left: 30%; }
   100% { margin-left: 0px; } }
 
+.davis-card svg {
+  fill: #004999;
+  width: 175px;
+  height: 175px;
+  display: block;
+  margin: 0 auto; }
+
 label.theme--dark-label {
   color: white; }
 
@@ -520,6 +527,9 @@ input[type=password].input-button-input:-ms-input-placeholder {
 /* Small screen size */
 @media (max-width: 599px) {
   
+  .davis-card svg {
+    height: 130px; }
+  
   .scroll-to-bottom-button {
     right: 10px;
     bottom: 60%; }
@@ -563,6 +573,26 @@ input[type=password].input-button-input:-ms-input-placeholder {
   
 .expandable__trigger.closed {
   background-color: #f2f2f2; }
+  
+.sidebar--connected {
+  font-size: 12px;
+  color: #cccccc;
+  margin: 20px; }
+  
+.sidebar--connected a {
+  color: #cccccc; }
+  
+.sidebar--connected a:hover {
+  color: #00a1b2; }
+  
+.sidebar--connected-card {
+  margin: 10px; }
+  
+.sidebar--connected-card a {
+  color: #cccccc; }
+  
+.sidebar--connected-card a:hover {
+  color: #004999; }
 
 /* Text */
 .text--warning {
