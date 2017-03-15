@@ -10,10 +10,10 @@ import { DavisService }   from '../../davis.service';
 import * as _ from "lodash";
 
 @Component({
-  selector: 'config-dynatrace',
-  templateUrl: './config-dynatrace.component.html',
+  selector: 'config-dynatrace-connect',
+  templateUrl: './config-dynatrace-connect.component.html',
 })
-export class ConfigDynatraceComponent implements OnInit, AfterViewInit {
+export class ConfigDynatraceConnectComponent implements OnInit, AfterViewInit {
 
   @ViewChild('url') url: ElementRef;
   
@@ -39,7 +39,7 @@ export class ConfigDynatraceComponent implements OnInit, AfterViewInit {
     }
     this.iConfig.connectDynatrace()
       .then(response => {
-        if (!response.success) { 
+        if (!response.success) {
           this.resetSubmitButton(); 
           throw new Error(response.message); 
         }

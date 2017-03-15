@@ -3,21 +3,21 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
 
-import { ConfigDynatraceComponent } from './config-dynatrace.component';
+import { ConfigDynatraceEntitiesComponent } from './config-dynatrace-entities.component';
 
-describe('ConfigDynatraceComponent', () => {
-  let component: ConfigDynatraceComponent;
-  let fixture: ComponentFixture<ConfigDynatraceComponent>;
+describe('ConfigDynatraceEntitiesComponent', () => {
+  let component: ConfigDynatraceEntitiesComponent;
+  let fixture: ComponentFixture<ConfigDynatraceEntitiesComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ConfigDynatraceComponent ]
+      declarations: [ ConfigDynatraceEntitiesComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ConfigDynatraceComponent);
+    fixture = TestBed.createComponent(ConfigDynatraceEntitiesComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

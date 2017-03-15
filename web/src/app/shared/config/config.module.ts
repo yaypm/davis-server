@@ -15,10 +15,11 @@ import { FormsModule }                            from "@angular/forms";
 // Components
 import { ConfigAlexaComponent }                   from "./config-alexa/config-alexa.component";
 import { ConfigChromeComponent }                  from "./config-chrome/config-chrome.component";
-import { ConfigDynatraceComponent }               from "./config-dynatrace/config-dynatrace.component";
+import { ConfigDynatraceConnectComponent }        from "./config-dynatrace-connect/config-dynatrace-connect.component";
+import { ConfigDynatraceEntitiesComponent }       from "./config-dynatrace-entities/config-dynatrace-entities.component";
 import { ConfigFilterComponent }                  from "./config-filter/config-filter.component";
 import { ConfigFiltersComponent }                 from "./config-filters/config-filters.component";
-import { ConfigNotificationRulesComponent }     from "./config-notification-rules/config-notification-rules.component";
+import { ConfigNotificationRulesComponent }       from "./config-notification-rules/config-notification-rules.component";
 import { ConfigNotificationSourceComponent }      from "./config-notification-source/config-notification-source.component";
 import { ConfigSlackComponent }                   from "./config-slack/config-slack.component";
 import { ConfigUserComponent }                    from "./config-user/config-user.component";
@@ -41,7 +42,8 @@ import { TimezoneModule }                         from '../inputs/timezone/timez
   declarations: [
     ConfigAlexaComponent,
     ConfigChromeComponent,
-    ConfigDynatraceComponent,
+    ConfigDynatraceConnectComponent,
+    ConfigDynatraceEntitiesComponent,
     ConfigFilterComponent,
     ConfigFiltersComponent,
     ConfigNotificationRulesComponent,
@@ -56,7 +58,8 @@ import { TimezoneModule }                         from '../inputs/timezone/timez
   exports: [
     ConfigAlexaComponent,
     ConfigChromeComponent,
-    ConfigDynatraceComponent,
+    ConfigDynatraceConnectComponent,
+    ConfigDynatraceEntitiesComponent,
     ConfigFilterComponent,
     ConfigFiltersComponent,
     ConfigNotificationRulesComponent,

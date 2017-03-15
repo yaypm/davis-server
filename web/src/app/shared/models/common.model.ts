@@ -32,6 +32,17 @@ export class CommonModel {
     },
   };
   
+  entity: any = {
+    name: '',
+    category: '',
+    entityId: '',
+    display: {
+      audible: '',
+      visual: '',
+    },
+    aliases: [],
+  };
+  
   dynatrace: any = {
     url: '',
     apiUrl: '',

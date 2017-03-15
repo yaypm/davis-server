@@ -85,9 +85,9 @@ export class ConfigurationBaseComponent implements OnInit {
           name: 'Infrastructure',
           admin: false,
         },
-        'dynatrace-source': {
-          key: 'dynatrace-source',
-          name: 'Connect to Dynatrace',
+        'dynatrace-connect': {
+          key: 'dynatrace-connect',
+          name: 'Connect to Tenant',
           admin: true,
         },
       }
@@ -217,6 +217,10 @@ export class ConfigurationBaseComponent implements OnInit {
       .then(response => {
         this.iConfig.values.notifications.uri = response.uri;
         this.iConfig.values.notifications.config = response.config;
+        return this.iConfig.getDynatraceEntities();
+      })
+      .then(response => {
+        // this.iConfig.values.entities = response;
         return this.iConfig.getDynatrace();
       })
       .then(response => {
