@@ -21,8 +21,9 @@ export class ConfigDynatraceEntitiesComponent implements OnInit, AfterViewInit {
   submitted: boolean = false;
   submitButton: string = 'Save';
   isDirty: boolean = false;
-  isAdvancedExpanded: boolean = false;
-  isSSL: boolean = false;
+  editEntity: boolean = false;
+  filterText: string = '';
+  aliases: Array<any> = [];
 
   constructor(
     private renderer: Renderer,
@@ -40,7 +41,7 @@ export class ConfigDynatraceEntitiesComponent implements OnInit, AfterViewInit {
     //       throw new Error(response.message); 
     //     }
         
-    //     this.iConfig.status['entities'].success = true;
+    //     this.iConfig.status['dynatrace-entities'].success = true;
     //     if (this.iConfig.isWizard) {
     //       this.iConfig.selectView('user');
     //     } else {
@@ -48,8 +49,18 @@ export class ConfigDynatraceEntitiesComponent implements OnInit, AfterViewInit {
     //     }
     //   })
     //   .catch(err => {
-    //     this.iConfig.displayError(err, 'dynatrace');
+    //     this.iConfig.displayError(err, 'dynatrace-entities');
     //   });
+  }
+  
+  editMode(entity: any) {
+    this.editEntity = true;
+    this.filterText = '';
+    this.aliases = entity.aliases;
+  }
+  
+  updateFilter(input: any) {
+    this.filterText = input.value;
   }
 
   validate() {

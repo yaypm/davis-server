@@ -27,12 +27,14 @@ import { ConfigUsersComponent }                   from "./config-users/config-us
 
 // Services
 import { ConfigService }                          from "./config.service";
+import { FilterDynatraceEntitiesPipe }            from './config-dynatrace-entities-pipe/config-dynatrace-entities.pipe';
 import { FilterFiltersByNamePipe }                from './config-filters-pipe/config-filters.pipe';
 import { FilterUsersByNamePipe }                  from './config-users-pipe/config-users.pipe';
 import { FilterSidebarItemsByAdminPipe }          from './config-sidebar-pipe/config-sidebar.pipe';
 
 // Modules
 import { TagsModule }                             from '../inputs/tags/tags.module';
+import { TagsGenericModule }                      from '../inputs/tags-generic/tags-generic.module';
 import { TimezoneModule }                         from '../inputs/timezone/timezone.module';
 
 // ----------------------------------------------------------------------------
@@ -51,6 +53,7 @@ import { TimezoneModule }                         from '../inputs/timezone/timez
     ConfigSlackComponent,
     ConfigUserComponent,
     ConfigUsersComponent,
+    FilterDynatraceEntitiesPipe,
     FilterFiltersByNamePipe,
     FilterUsersByNamePipe,
     FilterSidebarItemsByAdminPipe,
@@ -67,6 +70,7 @@ import { TimezoneModule }                         from '../inputs/timezone/timez
     ConfigSlackComponent,
     ConfigUserComponent,
     ConfigUsersComponent,
+    FilterDynatraceEntitiesPipe,
     FilterFiltersByNamePipe,
     FilterUsersByNamePipe,
     FilterSidebarItemsByAdminPipe,
@@ -75,6 +79,7 @@ import { TimezoneModule }                         from '../inputs/timezone/timez
     CommonModule,
     FormsModule,
     TagsModule,
+    TagsGenericModule,
     TimezoneModule,
   ],
   providers: [

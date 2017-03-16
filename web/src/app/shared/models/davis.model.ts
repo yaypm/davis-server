@@ -18,6 +18,8 @@ export class DavisModel {
       users: [],
       filter: new CommonModel().filter,
       entity: new CommonModel().entity,
+      applications: [],
+      services: [],
       dynatrace: new CommonModel().dynatrace,
       notifications: new CommonModel().notifications,
       slack: new CommonModel().slack,
@@ -32,17 +34,16 @@ export class DavisModel {
       },
     },
     status: {
-      user: new CommonModel().status,
-      users: new CommonModel().status,
-      filter: new CommonModel().status,
-      filters: new CommonModel().status,
-      entity: new CommonModel().status,
-      entities: new CommonModel().status,
-      dynatrace: new CommonModel().status,
-      alexa: new CommonModel().status,
-      slack: new CommonModel().status,
+      'user': new CommonModel().status,
+      'users': new CommonModel().status,
+      'filter': new CommonModel().status,
+      'filters': new CommonModel().status,
+      'dynatrace-entities': new CommonModel().status,
+      'dynatrace-connect': new CommonModel().status,
+      'alexa': new CommonModel().status,
+      'slack': new CommonModel().status,
     },
-  };   
+  };
   
   filterScope: any = {
     source: 'global',

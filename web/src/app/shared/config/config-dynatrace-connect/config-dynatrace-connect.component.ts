@@ -51,7 +51,7 @@ export class ConfigDynatraceConnectComponent implements OnInit, AfterViewInit {
           throw new Error(response.message); 
         }
         
-        this.iConfig.status['dynatrace'].success = true;
+        this.iConfig.status['dynatrace-connect'].success = true;
         if (this.iConfig.isWizard) {
           this.iConfig.selectView('user');
         } else {
@@ -59,7 +59,7 @@ export class ConfigDynatraceConnectComponent implements OnInit, AfterViewInit {
         }
       })
       .catch(err => {
-        this.iConfig.displayError(err, 'dynatrace');
+        this.iConfig.displayError(err, 'dynatrace-connect');
       });
   }
 
@@ -77,8 +77,8 @@ export class ConfigDynatraceConnectComponent implements OnInit, AfterViewInit {
   
   ngAfterViewInit() {
     if (window.location.protocol === 'http:' && window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.01') {
-      this.iConfig.status['dynatrace'].error = 'Warning, please note that a valid SSL certificate is required to use davis!';
-      this.iConfig.status['dynatrace'].success = false;
+      this.iConfig.status['dynatrace-connect'].error = 'Warning, please note that a valid SSL certificate is required to use davis!';
+      this.iConfig.status['dynatrace-connect'].success = false;
     } else {
       this.isSSL = true;
     }

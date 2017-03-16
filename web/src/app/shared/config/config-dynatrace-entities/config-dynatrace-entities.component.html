@@ -8,10 +8,10 @@
       {{ iConfig.helpLinkText }}
     </a>
   </div>
-  <div *ngIf="iConfig.status['entities'].success === false" class="island--full-width island--error island--error-container island--full-width-sidebar">
+  <div *ngIf="iConfig.status['dynatrace-entities'].success === false" class="island--full-width island--error island--error-container island--full-width-sidebar">
     <div class="island--error-text">
-      {{ iConfig.status['entities'].error }}&nbsp;&nbsp;&nbsp;
-      <a *ngIf="iConfig.status['dynatrace'].error.indexOf('SSL') > -1" 
+      {{ iConfig.status['dynatrace-entities'].error }}&nbsp;&nbsp;&nbsp;
+      <a *ngIf="iConfig.status['dynatrace-entities'].error.indexOf('SSL') > -1" 
         href="https://github.com/Dynatrace/davis-server/wiki/Getting%20Started#ssl-configuration" target="_blank">
         {{ category }} Help
       </a>
@@ -19,42 +19,69 @@
     <div class="island--error-button">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" 
         class="icon icon--black icon--error-button" 
-        (click)="iConfig.status['entities'].success = null;">
+        (click)="iConfig.status['dynatrace-entities'].success = null;">
         <use xlink:href="#clear"></use>
       </svg>
     </div>
   </div>
-  <div class="island--full-width island--full-width-sidebar">
-   <table class="table">
+  <div *ngIf="!editEntity" class="island--full-width island--full-width-sidebar island--center island--left">     
+    <div class="input-button-wrapper" [class.input-button-wrapper-focus]="isFilterFocused" style="margin-top: -5px; margin-bottom: 15px">
+      <input #filter type="text" id="filter" name="filter" autocomplete="off"
+        class="users-table-filter-input input-button-input"
+        placeholder="Filter by name or ID"
+        (keyup)="updateFilter(filter)"
+        (focus)="isFilterFocused = true"
+        (blur)="isFilterFocused = false">
+      <div id="clearBtn" class="input-button-button" *ngIf="filter && filter.value.length > 0" (click)="filter.value = '';filterText = ''">
+        <svg class="icon icon--black icon--input-button-img" [class.input-button-img-password-masked]="!isFilterFocused">
+          <use xlink:href="#clear"></use>
+        </svg>
+      </div>
+    </div>
+    <table class="table">
       <thead>
         <tr>
-          <th>Name</th>
-          <th style="width: 100px">Aliases</th>
+          <th class="entity-name-column">Name</th>
+          <th class="entity-id-column">ID</th>
         </tr>
       </thead>
     </table>
     <div class="island--scrollable-table">
-      <table class="table">
+      <table class="table entities">
         <tbody>
-          <tr *ngFor="let entity of iConfig.values.entities">
-            <td>
+          <tr *ngFor="let entity of iConfig.values[category.toLowerCase()] | filterDynatraceEntities:filterText" (click)="editMode(entity)">
+            <td class="entity-name-column">
               {{ entity.name }}
             </td>
-            <td style="width: 100px">
-              {{ entity.aliases.toString() }}
+            <td class="entity-id-column">
+              {{ entity.entityId }}
             </td>
           </tr>
         </tbody>
       </table>
     </div>
+    <h3 *ngIf="!iConfig.values[category.toLowerCase()] || (iConfig.values[category.toLowerCase()] | filterDynatraceEntities:filterText).length < 1" style="text-align: center; opacity: 0.2">None</h3>
   </div>
-  <div class="island--full-width island--full-width-sidebar">
-    <div class="island island--center island--submit island--left">
-      <button type="submit" role="button" class="btn btn--primary btn--submit"
-          [attr.disabled]="(!form.valid || submitButton === 'Saving...' || !isDirty || !isSSL) ? true : null">
-          {{ submitButton }}
-      </button>
+  <svg *ngIf="editEntity" class="icon--back" (click)="editEntity = false">
+    <use xlink:href="#back"></use>
+  </svg>
+ <span *ngIf="editEntity">
+   <div class="island--full-width island--full-width-sidebar">
+      <div class="island island--center island--left">
+        <label for="source" class="label">
+          Aliases
+        </label>
+        <tags-generic-input [tags]="aliases" (tagsChange)="validate()"></tags-generic-input>
+      </div>
     </div>
-  </div>
+    <div class="island--full-width island--full-width-sidebar">
+      <div class="island island--center island--submit island--left">
+        <button type="submit" role="button" class="btn btn--primary btn--submit"
+            [attr.disabled]="(!form.valid || submitButton === 'Saving...' || !isDirty || !isSSL) ? true : null">
+            {{ submitButton }}
+        </button>
+      </div>
+    </div>
+  </span>
 </div>
 </form>

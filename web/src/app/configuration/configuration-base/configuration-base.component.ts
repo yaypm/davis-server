@@ -80,11 +80,6 @@ export class ConfigurationBaseComponent implements OnInit {
           name: 'Services',
           admin: false,
         },
-        'dynatrace-infrastructure': {
-          key: 'dynatrace-infrastructure',
-          name: 'Infrastructure',
-          admin: false,
-        },
         'dynatrace-connect': {
           key: 'dynatrace-connect',
           name: 'Connect to Tenant',
@@ -142,17 +137,29 @@ export class ConfigurationBaseComponent implements OnInit {
 
     this.route
       .fragment
-      .map(fragment => fragment || 'None')
+      .map(fragment => fragment || '')
       .subscribe(value => {
-        if (this.iDavis.isAdmin || value.indexOf('notification-rules') > -1 
-          || (this.sidebarItems[value] && !this.sidebarItems[value].admin)) {
-          if (this.sidebarItems[value]) {
-            this.iConfig.selectView(value);
-          } else if (value.indexOf('notification') > -1 || value.indexOf('dynatrace') > -1) {
-            this.iConfig.selectView(value);
-          } else {
-            this.iConfig.selectView('user');
+        
+        // Check if section is nested inside expandable and user has permission
+        let isVisible = false;
+        if (!this.iDavis.isAdmin) {
+          if (!this.sidebarItems[value]) {
+            for (let key in this.sidebarItems) {
+              if (this.sidebarItems[key].prefix 
+                && value.indexOf(this.sidebarItems[key].prefix) > -1
+                && !this.sidebarItems[key].items[value].admin) {
+                isVisible = true;
+              }
+            } 
+          } else if (!this.sidebarItems[value].admin) {
+            isVisible = true;
           }
+        } else if (value.length > 0) {
+          isVisible = true;
+        }
+        
+        if (isVisible) {
+          this.iConfig.selectView(value);
         } else {
           this.iConfig.selectView('user');
         }
@@ -160,12 +167,12 @@ export class ConfigurationBaseComponent implements OnInit {
     
     this.iConfig.status['user'].success = null;
     this.iConfig.status['user'].error = null;
+    this.iConfig.status['dynatrace-entities'].success = null;
+    this.iConfig.status['dynatrace-entities'].error = null;
     this.iConfig.status['filter'].success = null;
     this.iConfig.status['filter'].error = null;
     this.iConfig.status['filters'].success = null;
     this.iConfig.status['filters'].error = null;
-    this.iConfig.status['dynatrace'].success = null;
-    this.iConfig.status['dynatrace'].error = null;
     this.iConfig.status['slack'].success = null;
     this.iConfig.status['slack'].error = null;
   
@@ -217,10 +224,18 @@ export class ConfigurationBaseComponent implements OnInit {
       .then(response => {
         this.iConfig.values.notifications.uri = response.uri;
         this.iConfig.values.notifications.config = response.config;
-        return this.iConfig.getDynatraceEntities();
+         return this.iConfig.getDynatraceApplications();
       })
       .then(response => {
-        // this.iConfig.values.entities = response;
+        this.iConfig.values.applications = response.applications;
+        return this.iConfig.getDynatraceServices();
+      })
+      .then(response => {
+        this.iConfig.values.services = response.services;
+        return this.iConfig.getDynatraceAliases();
+      })
+      .then(response => {
+        this.iConfig.values.aliases = response;
         return this.iConfig.getDynatrace();
       })
       .then(response => {

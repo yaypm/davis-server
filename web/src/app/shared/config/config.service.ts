@@ -22,7 +22,7 @@ import { DavisModel }               from '../models/davis.model';
 @Injectable()
 export class ConfigService {
   // Initialize view
-  view: string = "dynatrace";
+  view: string = "dynatrace-connect";
   helpLinkText: string = 'How to complete this step';
   titleGlobal: string = '';
   isWizard: boolean = false;
@@ -162,6 +162,26 @@ export class ConfigService {
       .then(this.iDavis.extractData)
       .catch(this.iDavis.handleError);
   }
+  
+  getDynatraceAliases(): Promise<any> {
+    let headers = new Headers({ 'Content-Type': 'application/json', 'x-access-token': this.iDavis.token } );
+    let options = new RequestOptions({ headers: headers });
+
+    return this.http.get('/api/v1/system/aliases', options)
+      .toPromise()
+      .then(this.iDavis.extractData)
+      .catch(this.iDavis.handleError);
+  }
+  
+  setDynatraceAliases(): Promise<any> {
+    let headers = new Headers({ 'Content-Type': 'application/json', 'x-access-token': this.iDavis.token } );
+    let options = new RequestOptions({ headers: headers });
+
+    return this.http.post('/api/v1/system/aliases', options)
+      .toPromise()
+      .then(this.iDavis.extractData)
+      .catch(this.iDavis.handleError);
+  }
 
   getDynatrace(): Promise<any> {
     let headers = new Headers({ 'Content-Type': 'application/json', 'x-access-token': this.iDavis.token } );
@@ -188,16 +208,6 @@ export class ConfigService {
     let options = new RequestOptions({ headers: headers });
 
     return this.http.get('/api/v1/system/config/dynatrace/validate', options)
-      .toPromise()
-      .then(this.iDavis.extractData)
-      .catch(this.iDavis.handleError);
-  }
-  
-  getDynatraceEntities(): Promise<any> {
-    let headers = new Headers({ 'Content-Type': 'application/json', 'x-access-token': this.iDavis.token } );
-    let options = new RequestOptions({ headers: headers });
-
-    return this.http.get('/api/v1/system/aliases', options)
       .toPromise()
       .then(this.iDavis.extractData)
       .catch(this.iDavis.handleError);

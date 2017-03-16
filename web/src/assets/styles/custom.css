@@ -574,24 +574,24 @@ input[type=password].input-button-input:-ms-input-placeholder {
 .expandable__trigger.closed {
   background-color: #f2f2f2; }
   
-.sidebar--connected {
+.connected {
   font-size: 12px;
   color: #cccccc;
   margin: 20px; }
   
-.sidebar--connected a {
+.connected a {
   color: #cccccc; }
   
-.sidebar--connected a:hover {
+.connected a:hover {
   color: #00a1b2; }
   
-.sidebar--connected-card {
+.connected-card {
   margin: 10px; }
   
-.sidebar--connected-card a {
+.connected-card a {
   color: #cccccc; }
   
-.sidebar--connected-card a:hover {
+.connected-card a:hover {
   color: #004999; }
 
 /* Text */
@@ -602,6 +602,17 @@ input[type=password].input-button-input:-ms-input-placeholder {
 .table tr:first-child:hover td, .table tr:nth-child(n):hover td{
   cursor: pointer;
   background-color: #e0f4fc; }
+  
+.entities {
+  table-layout: fixed; }
+  
+.entity-name-column {
+  word-wrap: break-word;
+  width: 60%; }
+  
+.entity-id-column {
+  word-wrap: break-word;
+  width: 40%; }
   
 /* Trumps */
 @media (min-width: 700px) {
@@ -953,6 +964,24 @@ input[type=password].input-button-input:-ms-input-placeholder {
 .triangle-right {}
 
 .triangle-right-border {}
+
+@media (min-height: 700px) and (min-width: 700px) {
+  .connected-sidebar {
+    position: absolute;
+    margin: 0;
+    bottom: 20px;
+    left: 20px;
+    width: 270px; }
+}
+
+@media (min-height: 900px) and (min-width: 700px) {
+  .connected-sidebar {
+    position: absolute;
+    margin: 0;
+    top: 840px;
+    left: 20px;
+    width: 270px; }
+}
     
 @media (min-width: 700px) {
   

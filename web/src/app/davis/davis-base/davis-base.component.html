@@ -27,7 +27,7 @@
           <div style="text-align: center; margin-top: 15px; padding: 0px 16px">
             Davis here, your DevOps assistant, ask me something below!
           </div>
-          <div *ngIf="iConfig.values.dynatrace.url && iConfig.values.dynatrace.url.length > 0" class="sidebar--connected sidebar--connected-card" style="text-align: center">
+          <div *ngIf="iConfig.values.dynatrace.url && iConfig.values.dynatrace.url.length > 0" class="connected connected-card" style="text-align: center">
             Connected Tenant: <a [href]="iConfig.values.dynatrace.url" target="_blank">{{ iConfig.values.dynatrace.url.replace('https://', '') }}</a>
           </div>
         </div>

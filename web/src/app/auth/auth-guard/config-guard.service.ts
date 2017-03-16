@@ -114,7 +114,7 @@ export class ConfigGuard implements CanActivate {
   isAuthorized(): boolean {
     if (!this.iDavis.isAdmin && (
       this.navigationExtras.fragment === 'alexa'
-      || this.navigationExtras.fragment === 'dynatrace' 
+      || this.navigationExtras.fragment === 'dynatrace-connect' 
       || this.navigationExtras.fragment === 'slack' 
       || this.navigationExtras.fragment === 'notification-source'
     )) {
