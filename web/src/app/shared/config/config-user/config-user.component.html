@@ -176,7 +176,7 @@
             </label>
           </div>
         </div>
-        <div class="layout__container layout--half layout--half--small">
+        <div *ngIf="!iConfig.isWizard" class="layout__container layout--half layout--half--small">
           <div class="island island--half island--half--left" style="padding-top: 14px;">
             
             <!-- isMyUser -->
@@ -192,14 +192,15 @@
               (change)="validate()">
               
             <label for="demo" class="checkbox__label">
-              <span class="checkbox__caption">Demo Mode</span>
+              <span class="checkbox__caption">Voice Navigation</span>
             </label>
+            <p class="hint" id="i9">Amazon Echo and <a (click)="iDavis.addToChrome()" style="cursor: pointer">Chrome Extension</a> Required</p>
           </div>
         </div>
       </div>
       <div class="island island--full" *ngIf="!iConfig.isWizard">          
         <label for="alexa_id" class="label">
-          Alexa User ID
+          Amazon Alexa User ID
         </label>
         
         <!-- isMyUser -->
@@ -213,6 +214,8 @@
             *ngIf="!isMyUser"
             [(ngModel)]="iConfig.values.otherUser.alexa_id"
             (keyup)="validate()">
+            
+        <p class="hint" id="i9">Manually connect to an Amazon Echo</p>
       </div>
       <div class="island island--center island--submit">
         <button *ngIf="!iConfig.isWizard && !isMyUser && iDavis.isAdmin && !isNewUser" type="button" class="btn btn--secondary btn--secondary--delete"
