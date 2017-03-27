@@ -38,7 +38,7 @@
     "@types/core-js": "0.9.35",
     "@types/jasmine": "^2.2.40",
     "@types/jquery": "^2.0.39",
-    "@types/lodash": "^4.14.44",
+    "@types/lodash": "ts2.0",
     "@types/moment-timezone": "^0.2.33",
     "@types/node": "^6.0.53",
     "angular2-router-loader": "^0.3.4",
