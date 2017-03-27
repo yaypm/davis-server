@@ -1,4 +1,5 @@
-import { Component, OnInit, AfterViewInit, 
+import { Component, OnInit, AfterViewInit,
+         ElementRef, ViewChild, ViewChildren,
          Input, Output, EventEmitter, Pipe, 
          PipeTransform }                      from '@angular/core';
 
@@ -15,6 +16,7 @@ export class TagsGenericInputComponent implements OnInit, AfterViewInit {
   
   @Input() tags: any;
   @Output() tagsChange: EventEmitter<any> = new EventEmitter();
+  @ViewChildren('tagInput') tagInputs: any;
 
   constructor(
     public iDavis: DavisService,
@@ -22,11 +24,9 @@ export class TagsGenericInputComponent implements OnInit, AfterViewInit {
     
   addTag() {
     let tag = this.tags[this.tags.length - 1];
-    if (!tag || tag.length > 0) {
+    if (typeof tag === 'undefined' || tag.length > 0) {
       this.tags.push('');
       this.tagsChange.emit();
-    } else {
-      // focus on existing empty tag
     }
   }
   
@@ -48,5 +48,9 @@ export class TagsGenericInputComponent implements OnInit, AfterViewInit {
     this.tagsChange.emit();
   }
   
-  ngAfterViewInit() {}
+  ngAfterViewInit() {
+    this.tagInputs.changes.subscribe((elements: any) => {
+      if (elements && elements.last && elements.last.nativeElement.value.trim() === '') elements.last.nativeElement.focus();
+    });
+  }
 }

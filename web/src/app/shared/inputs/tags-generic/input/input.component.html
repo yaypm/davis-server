@@ -4,9 +4,10 @@
       <input #tagInput [(ngModel)]="tags[i]" name="tag" type="text" autocomplete="off" spellcheck="false"
         class="tag-input tag-input-value tag__value"
         style="font-weight: inherit; font-family: inherit; background: none; border: 0; outline: 0; min-width: 20px;"
+        [attr.focus]="(tagInput.value === '') ? '' : null"
         (click)="preventParentClick($event)"
         (blur)="deleteEmptyTags()">
+      <button *ngIf="tags[i] && tags[i] !== ''" class="tag__delete" tabindex="-1" (mousedown)="tags[i] = ''; deleteEmptyTags()"></button>
     </span>
-    <button *ngIf="tags[i] && tags[i] !== ''" class="tag__delete" tabindex="-1" (mousedown)="tags[i] = ''; deleteEmptyTags()"></button>
   </div>
 </div>
