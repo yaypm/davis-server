@@ -573,7 +573,6 @@ describe('Express', () => {
           .get('/api/v1/system/aliases')
           .set('X-Access-Token', token)
           .then(res => {
-            console.log(res.body.applications);
             res.body.applications.length.should.eql(1);
             res.body.applications[0].name.should.eql("My Web App");
           }));
