@@ -1,13 +1,15 @@
-<div class="tags-wrapper" (click)="addTag()">
-  <div *ngFor="let tag of tags; let i = index;" (click)="preventParentClick($event)">
+<div class="tags-wrapper" (click)="addTag()" [class.tags-wrapper-focused]="focused">
+  <div *ngFor="let tag of tags; let i = index" (click)="preventParentClick($event)">
     <span class="tag" [class.tag-empty]="!tags[i] || tags[i] === ''" style="overflow: visible" (click)="tagInput.focus()">
       <input #tagInput [(ngModel)]="tags[i]" name="tag" type="text" autocomplete="off" spellcheck="false"
-        class="tag-input tag-input-value tag__value"
-        style="font-weight: inherit; font-family: inherit; background: none; border: 0; outline: 0; min-width: 20px;"
-        [attr.focus]="(tagInput.value === '') ? '' : null"
+        class="tag-input tag-input-value tag__value tag-input-generic"
+        [style.width.px]="tagInputWidthHelper.offsetWidth + 8"
+        (keydown)="typing = true"
         (click)="preventParentClick($event)"
-        (blur)="deleteEmptyTags()">
-      <button *ngIf="tags[i] && tags[i] !== ''" class="tag__delete" tabindex="-1" (mousedown)="tags[i] = ''; deleteEmptyTags()"></button>
+        (focus)="focused = true"
+        (blur)="(typing) ? null : deleteEmptyTags()">
+        <span #tagInputWidthHelper class="position-off-screen">{{ tags[i] }}</span>
+      <button *ngIf="tags[i] && tags[i] !== ''" class="tag__delete" style="margin-left: 0" tabindex="-1" (mousedown)="tags[i] = ''; deleteEmptyTags()"></button>
     </span>
   </div>
 </div>

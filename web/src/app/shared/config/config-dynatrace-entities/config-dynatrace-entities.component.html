@@ -62,26 +62,60 @@
     </div>
     <h3 *ngIf="!iConfig.values[category.toLowerCase()] || (iConfig.values[category.toLowerCase()] | filterDynatraceEntities:filterText).length < 1" style="text-align: center; opacity: 0.2">None</h3>
   </div>
-  <svg *ngIf="editEntity" class="icon--back" (click)="editEntity = false">
-    <use xlink:href="#back"></use>
-  </svg>
- <span *ngIf="editEntity">
-   <div class="island--full-width island--full-width-sidebar">
-      <div class="island island--center island--left">
-        <label for="source" class="label">
-          Aliases
-        </label>
-        <tags-generic-input [tags]="aliases" (tagsChange)="validate()"></tags-generic-input>
+  <div *ngIf="editEntity"class="island--full-width island--full-width-sidebar">
+    <svg class="icon--back" style="float: left; margin-top: 20px; margin-left: 0" (click)="editEntity = false">
+      <use xlink:href="#back"></use>
+    </svg>
+    <div class="entity-title">
+      <div style="font-size: 20px; word-wrap: break-word">
+        {{ iConfig.values.entity.name }}
+      </div>
+      <div style="font-size: 12px; word-wrap: break-word">
+        {{ iConfig.values.entity.entityId }}
       </div>
     </div>
-    <div class="island--full-width island--full-width-sidebar">
-      <div class="island island--center island--submit island--left">
-        <button type="submit" role="button" class="btn btn--primary btn--submit"
-            [attr.disabled]="(!form.valid || submitButton === 'Saving...' || !isDirty || !isSSL) ? true : null">
-            {{ submitButton }}
-        </button>
+    <div class="layout is-flex has-islands island--half island--center island--left" style="clear: both">
+      <div class="layout__container layout--half">
+        <div class="island island--half island--half--left">
+          <label for="visual" class="label">
+            Show
+          </label>
+          <input type="text" name="visual" autocomplete="off"
+            class="inputfield" id="visual"
+            [(ngModel)]="iConfig.values.entity.display.visual" 
+            (keyup)="validate()" required>
+          <p class="hint" style="margin-bottom: 0" id="i9">Used in Slack App and Web UI responses</p>
+        </div>
+      </div>
+      <div class="layout__container layout--half">
+        <div class="island island--half island--half--right">
+          <label for="audible" class="label">
+            Say
+          </label>
+          <input type="text" name="audible" autocomplete="off"
+            class="inputfield" id="audible"
+            [(ngModel)]="iConfig.values.entity.display.audible" 
+            (keyup)="validate()" required>
+          <p class="hint" style="margin-bottom: 0" id="i9">Used in Amazon Echo responses,<br>
+            <a (click)="iDavis.windowOpen('https://developer.amazon.com/public/solutions/alexa/alexa-skills-kit/docs/speech-synthesis-markup-language-ssml-reference')" style="cursor: pointer">
+              SSML tags</a> are supported
+          </p>
+        </div>
       </div>
     </div>
-  </span>
+    <div class="island island--center island--left">
+      <label for="source" class="label">
+        Aliases
+      </label>
+      <tags-generic-input [tags]="iConfig.values.entity.aliases" (tagsChange)="validate()"></tags-generic-input>
+      <p class="hint" style="margin-bottom: 0" id="i9">Used to help match application/service name in requests</p>
+    </div>
+    <div class="island island--center island--submit island--left">
+      <button type="submit" role="button" class="btn btn--primary btn--submit"
+          [attr.disabled]="(!form.valid || submitButton === 'Saving...' || !isDirty || !isSSL) ? true : null">
+          {{ submitButton }}
+      </button>
+    </div>
+  </div>
 </div>
 </form>

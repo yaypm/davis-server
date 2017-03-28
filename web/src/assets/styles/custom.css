@@ -614,6 +614,13 @@ input[type=password].input-button-input:-ms-input-placeholder {
   word-wrap: break-word;
   width: 40%; }
   
+.entity-title {
+  margin-top: 8px;
+  float: left;
+  text-align: center;
+  width: calc(100% - 80px);
+  max-width: 520px; }
+  
 /* Trumps */
 @media (min-width: 700px) {
   .hide-lg {
@@ -1332,6 +1339,11 @@ form.card-form {
   line-height: 22px;
   vertical-align: text-bottom;
   width: 84px; }
+  
+.tag-input-generic {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 300px; }
   
 .tag__delete {
   vertical-align: baseline; }

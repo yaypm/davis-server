@@ -56,7 +56,7 @@ export class ConfigDynatraceEntitiesComponent implements OnInit, AfterViewInit {
   editMode(entity: any) {
     this.editEntity = true;
     this.filterText = '';
-    this.aliases = entity.aliases;
+    this.iConfig.values.entity = entity;
   }
   
   updateFilter(input: any) {

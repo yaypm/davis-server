@@ -17,6 +17,9 @@ export class TagsGenericInputComponent implements OnInit, AfterViewInit {
   @Input() tags: any;
   @Output() tagsChange: EventEmitter<any> = new EventEmitter();
   @ViewChildren('tagInput') tagInputs: any;
+  
+  typing: boolean = false;
+  focused: boolean = false;
 
   constructor(
     public iDavis: DavisService,
@@ -38,19 +41,23 @@ export class TagsGenericInputComponent implements OnInit, AfterViewInit {
         this.tagsChange.emit();
       }
     }
+    this.focused = false;
   }
   
   preventParentClick(event: any) {
     event.stopPropagation();
   }
-  
+    
   ngOnInit() {
     this.tagsChange.emit();
   }
   
   ngAfterViewInit() {
     this.tagInputs.changes.subscribe((elements: any) => {
-      if (elements && elements.last && elements.last.nativeElement.value.trim() === '') elements.last.nativeElement.focus();
+      if (elements && elements.last && elements.last.nativeElement.value.trim() === '') {
+        elements.last.nativeElement.focus();
+        this.typing = false;
+      }
     });
   }
 }
