@@ -20,6 +20,7 @@ export class DavisModel {
       entity: new CommonModel().entity,
       applications: [],
       services: [],
+      entities: [],
       dynatrace: new CommonModel().dynatrace,
       notifications: new CommonModel().notifications,
       slack: new CommonModel().slack,

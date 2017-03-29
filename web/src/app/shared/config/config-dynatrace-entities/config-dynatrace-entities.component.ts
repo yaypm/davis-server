@@ -23,7 +23,6 @@ export class ConfigDynatraceEntitiesComponent implements OnInit, AfterViewInit {
   isDirty: boolean = false;
   editEntity: boolean = false;
   filterText: string = '';
-  aliases: Array<any> = [];
 
   constructor(
     private renderer: Renderer,
@@ -33,30 +32,49 @@ export class ConfigDynatraceEntitiesComponent implements OnInit, AfterViewInit {
   doSubmit() {
     this.submitted = true;
     this.submitButton = 'Saving...';
+    
+    // Delete last alias if empty
+    if (this.iConfig.values.entity.aliases[this.iConfig.values.entity.aliases.length - 1] === '') {
+      this.iConfig.values.entity.aliases.splice(this.iConfig.values.entity.aliases.length - 1, 1);
+    }
+    
+    let entity = {
+      aliasId: this.iConfig.values.entity._id,
+      audible: this.iConfig.values.entity.display.audible,
+      visual:  this.iConfig.values.entity.display.visual,
+      aliases: this.iConfig.values.entity.aliases,
+    };
    
-    // this.iConfig.connectDynatrace()
-    //   .then(response => {
-    //     if (!response.success) {
-    //       this.resetSubmitButton(); 
-    //       throw new Error(response.message); 
-    //     }
+    this.iConfig.setDynatraceAliases(entity, this.category)
+      .then(response => {
+        if (!response.success) {
+          this.resetSubmitButton();
+          throw new Error(response.message); 
+        }
         
-    //     this.iConfig.status['dynatrace-entities'].success = true;
-    //     if (this.iConfig.isWizard) {
-    //       this.iConfig.selectView('user');
-    //     } else {
-    //       this.resetSubmitButton();
-    //     }
-    //   })
-    //   .catch(err => {
-    //     this.iConfig.displayError(err, 'dynatrace-entities');
-    //   });
+        this.iConfig.status['dynatrace-entities'].success = true;
+        return this.iConfig.getDynatraceAliases();
+      })
+      .then(response => {
+        if (!response.success) {
+          this.resetSubmitButton();
+          throw new Error(response.message); 
+        }
+        
+        this.editEntity = false;
+        this.resetSubmitButton();
+      })
+      .catch(err => {
+        this.resetSubmitButton();
+        this.iConfig.displayError(err, 'dynatrace-entities');
+      });
   }
   
   editMode(entity: any) {
     this.editEntity = true;
     this.filterText = '';
     this.iConfig.values.entity = entity;
+    this.iConfig.values.original.entity = _.cloneDeep(entity);
   }
   
   updateFilter(input: any) {
@@ -64,16 +82,34 @@ export class ConfigDynatraceEntitiesComponent implements OnInit, AfterViewInit {
   }
 
   validate() {
-    this.isDirty = !_.isEqual(this.iConfig.values.entities, this.iConfig.values.original.entities);
+    let test = _.cloneDeep(this.iConfig.values.entity);
+    
+    // Delete empty alias
+    if (test.aliases[test.aliases.length - 1] === '' 
+      || typeof test.aliases[test.aliases.length - 1] !== 'string') {
+        test.aliases.splice(test.aliases.length - 1, 1);
+    }
+    this.isDirty = !_.isEqual(test, this.iConfig.values.original.entity);
   }
 
   resetSubmitButton() {
-    this.submitButton = (this.iConfig.isWizard) ? 'Continue' : 'Save';
+    this.submitButton = 'Save';
   }
 
   ngOnInit() {
   }
   
   ngAfterViewInit() {
+    this.iConfig.getDynatraceAliases()
+      .then(response => {
+        if (!response.success) {
+          throw new Error(response.message); 
+        }
+        this.iConfig.status['dynatrace-entities'].success = true;
+        this.iConfig.values.entities = response.aliases;
+      })
+      .catch(err => {
+        this.iConfig.displayError(err, 'dynatrace-entities');
+      });
   }
 }

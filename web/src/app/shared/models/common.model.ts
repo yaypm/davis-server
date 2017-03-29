@@ -33,6 +33,7 @@ export class CommonModel {
   };
   
   entity: any = {
+    _id: '',
     name: '',
     category: '',
     entityId: '',

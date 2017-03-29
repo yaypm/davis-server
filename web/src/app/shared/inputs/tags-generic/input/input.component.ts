@@ -18,7 +18,6 @@ export class TagsGenericInputComponent implements OnInit, AfterViewInit {
   @Output() tagsChange: EventEmitter<any> = new EventEmitter();
   @ViewChildren('tagInput') tagInputs: any;
   
-  typing: boolean = false;
   focused: boolean = false;
 
   constructor(
@@ -44,7 +43,19 @@ export class TagsGenericInputComponent implements OnInit, AfterViewInit {
     this.focused = false;
   }
   
-  preventParentClick(event: any) {
+  focusBlur(input: any) {
+    if (!input || input.length === 0) {
+      this.deleteEmptyTags();
+    }
+    this.focused = false;
+    this.tagsChange.emit();
+  }
+  
+  customTrackBy(index: number, obj: any): any {
+    return index;
+  }
+  
+  preventParentEvent(event: any) {
     event.stopPropagation();
   }
     
@@ -56,7 +67,6 @@ export class TagsGenericInputComponent implements OnInit, AfterViewInit {
     this.tagInputs.changes.subscribe((elements: any) => {
       if (elements && elements.last && elements.last.nativeElement.value.trim() === '') {
         elements.last.nativeElement.focus();
-        this.typing = false;
       }
     });
   }

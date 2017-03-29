@@ -92,16 +92,18 @@ export class ConfigDynatraceConnectComponent implements OnInit, AfterViewInit {
         this.validate();
       }, 1000);
     }
-    this.validate();
-    
-    this.iConfig.getDynatrace()
-      .then(response => {
-        if (!response.success) throw new Error(response.message);
-        this.iConfig.values.dynatrace = response.dynatrace;
-        this.iConfig.values.original.dynatrace = _.cloneDeep(this.iConfig.values.dynatrace);
-      })
-      .catch(err => {
-        this.iConfig.displayError(err, null);
-      });
+
+    if (!this.iConfig.isWizard) {
+      this.iConfig.getDynatrace()
+        .then(response => {
+          if (!response.success) throw new Error(response.message);
+          this.iConfig.values.dynatrace = response.dynatrace;
+          this.iConfig.values.original.dynatrace = _.cloneDeep(this.iConfig.values.dynatrace);
+          this.validate();
+        })
+        .catch(err => {
+          this.iConfig.displayError(err, null);
+        });
+    }
   }
 }

@@ -173,11 +173,11 @@ export class ConfigService {
       .catch(this.iDavis.handleError);
   }
   
-  setDynatraceAliases(): Promise<any> {
+  setDynatraceAliases(entity: any, category: string): Promise<any> {
     let headers = new Headers({ 'Content-Type': 'application/json', 'x-access-token': this.iDavis.token } );
     let options = new RequestOptions({ headers: headers });
 
-    return this.http.post('/api/v1/system/aliases', options)
+    return this.http.put(`/api/v1/system/aliases/${category}/${entity.aliasId}`, entity, options)
       .toPromise()
       .then(this.iDavis.extractData)
       .catch(this.iDavis.handleError);

@@ -218,7 +218,7 @@ export class ConfigUserComponent implements OnInit, AfterViewInit {
     }
     this.validate();
     
-    if (this.isMyUser) {
+    if (this.isMyUser && !this.iConfig.isWizard) {
       this.iDavis.getDavisUser()
         .then(response => {
           if (!response.success) throw new Error(response.message); 

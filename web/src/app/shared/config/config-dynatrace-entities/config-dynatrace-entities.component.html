@@ -1,20 +1,18 @@
-<form (ngSubmit)="doSubmit()" #form="ngForm">
+<form (keydown.enter)="$event.preventDefault()" (ngSubmit)="doSubmit()" #form="ngForm">
 <div class="layout is-flex has-islands">
   <div class="island--full-width island--full-width-sidebar">
     <div class="config-title">
       {{ category }}
     </div>
-    <a href="https://github.com/Dynatrace/davis-server/wiki/Setup%20Dynatrace" target="_blank" class="config-help">
+    <a href="https://github.com/Dynatrace/davis-server/wiki/Entity-Aliases" target="_blank" class="config-help">
       {{ iConfig.helpLinkText }}
     </a>
   </div>
-  <div *ngIf="iConfig.status['dynatrace-entities'].success === false" class="island--full-width island--error island--error-container island--full-width-sidebar">
+  <div *ngIf="iConfig.status['dynatrace-entities'].success === false" 
+    class="island--full-width island--error island--error-container island--full-width-sidebar"
+    style="margin: 12px 0px; padding: 16px; max-width: 600px">
     <div class="island--error-text">
-      {{ iConfig.status['dynatrace-entities'].error }}&nbsp;&nbsp;&nbsp;
-      <a *ngIf="iConfig.status['dynatrace-entities'].error.indexOf('SSL') > -1" 
-        href="https://github.com/Dynatrace/davis-server/wiki/Getting%20Started#ssl-configuration" target="_blank">
-        {{ category }} Help
-      </a>
+      {{ iConfig.status['dynatrace-entities'].error }}
     </div>
     <div class="island--error-button">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" 
@@ -49,7 +47,7 @@
     <div class="island--scrollable-table">
       <table class="table entities">
         <tbody>
-          <tr *ngFor="let entity of iConfig.values[category.toLowerCase()] | filterDynatraceEntities:filterText" (click)="editMode(entity)">
+          <tr *ngFor="let entity of iConfig.values.entities[category.toLowerCase()] | filterDynatraceEntities:filterText" (click)="editMode(entity)">
             <td class="entity-name-column">
               {{ entity.name }}
             </td>
@@ -60,7 +58,7 @@
         </tbody>
       </table>
     </div>
-    <h3 *ngIf="!iConfig.values[category.toLowerCase()] || (iConfig.values[category.toLowerCase()] | filterDynatraceEntities:filterText).length < 1" style="text-align: center; opacity: 0.2">None</h3>
+    <h3 *ngIf="!iConfig.values.entities[category.toLowerCase()] || (iConfig.values.entities[category.toLowerCase()] | filterDynatraceEntities:filterText).length < 1" style="text-align: center; opacity: 0.2">None</h3>
   </div>
   <div *ngIf="editEntity"class="island--full-width island--full-width-sidebar">
     <svg class="icon--back" style="float: left; margin-top: 20px; margin-left: 0" (click)="editEntity = false">
@@ -68,7 +66,7 @@
     </svg>
     <div class="entity-title">
       <div style="font-size: 20px; word-wrap: break-word">
-        {{ iConfig.values.entity.name }}
+        <a [href]="iConfig.values.dynatrace.url + ((iConfig.values.entity.category === 'applications') ? '/#uemapplications/uemappmetrics;uemapplicationId=' : '/#serviceOverview;id=') + iConfig.values.entity.entityId" target="_blank">{{ iConfig.values.entity.name }}</a>
       </div>
       <div style="font-size: 12px; word-wrap: break-word">
         {{ iConfig.values.entity.entityId }}
@@ -112,7 +110,7 @@
     </div>
     <div class="island island--center island--submit island--left">
       <button type="submit" role="button" class="btn btn--primary btn--submit"
-          [attr.disabled]="(!form.valid || submitButton === 'Saving...' || !isDirty || !isSSL) ? true : null">
+          [attr.disabled]="(!form.valid || submitButton === 'Saving...' || !isDirty) ? true : null">
           {{ submitButton }}
       </button>
     </div>
