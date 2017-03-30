@@ -35,7 +35,7 @@ export class TagsGenericInputComponent implements OnInit, AfterViewInit {
   deleteEmptyTags() {
     let index = this.tags.length;
     while (index--) {
-      if (this.tags[index].length < 1) {
+      if (typeof this.tags[index] !== 'string' || this.tags[index].length < 1) {
         this.tags.splice(index, 1);
         this.tagsChange.emit();
       }
@@ -44,7 +44,7 @@ export class TagsGenericInputComponent implements OnInit, AfterViewInit {
   }
   
   focusBlur(input: any) {
-    if (!input || input.length === 0) {
+    if (typeof input !== 'string' || input.length === 0) {
       this.deleteEmptyTags();
     }
     this.focused = false;
