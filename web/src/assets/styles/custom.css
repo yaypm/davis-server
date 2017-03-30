@@ -1183,7 +1183,7 @@ form.card-form {
 
 .card-content-text-only {
   padding-left: 0px;
-  margin-left: -2px; }
+  margin: 0px 0px 0px -2px; }
 
 .card-title {
 	float: left;
