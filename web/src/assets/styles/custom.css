@@ -413,6 +413,9 @@ input[type=text].input-button-input[disabled], input[type=email].input-button-in
 .input-button-img-password-masked {
   opacity: 0.3; }
   
+.inputfield {
+  text-overflow: ellipsis; }
+  
 input:invalid {
   box-shadow: none; }
     
