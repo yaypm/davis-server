@@ -41,6 +41,7 @@
         <tr>
           <th class="entity-name-column">Name</th>
           <th class="entity-id-column">ID</th>
+          <th class="entity-edited-column">Edited</th>
         </tr>
       </thead>
     </table>
@@ -53,6 +54,13 @@
             </td>
             <td class="entity-id-column">
               {{ entity.entityId }}
+            </td>
+            <td class="entity-edited-column">
+              <span *ngIf="entity.name !== entity.display.audible 
+                || entity.name !== entity.display.visual 
+                || entity.aliases.length > 1" style="margin-left: calc(50% - 6px);">
+                &#x2713;
+              </span>
             </td>
           </tr>
         </tbody>
