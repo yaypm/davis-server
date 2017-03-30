@@ -220,6 +220,13 @@ body.theme--blue {
   0% { margin-left: 30%; }
   100% { margin-left: 0px; } }
 
+.davis-card svg {
+  fill: #004999;
+  width: 175px;
+  height: 175px;
+  display: block;
+  margin: 0 auto; }
+
 label.theme--dark-label {
   color: white; }
 
@@ -520,6 +527,9 @@ input[type=password].input-button-input:-ms-input-placeholder {
 /* Small screen size */
 @media (max-width: 599px) {
   
+  .davis-card svg {
+    height: 130px; }
+  
   .scroll-to-bottom-button {
     right: 10px;
     bottom: 60%; }
@@ -563,6 +573,26 @@ input[type=password].input-button-input:-ms-input-placeholder {
   
 .expandable__trigger.closed {
   background-color: #f2f2f2; }
+  
+.connected {
+  font-size: 12px;
+  color: #cccccc;
+  margin: 20px; }
+  
+.connected a {
+  color: #cccccc; }
+  
+.connected a:hover {
+  color: #00a1b2; }
+  
+.connected-card {
+  margin: 10px; }
+  
+.connected-card a {
+  color: #cccccc; }
+  
+.connected-card a:hover {
+  color: #004999; }
 
 /* Text */
 .text--warning {
@@ -572,6 +602,24 @@ input[type=password].input-button-input:-ms-input-placeholder {
 .table tr:first-child:hover td, .table tr:nth-child(n):hover td{
   cursor: pointer;
   background-color: #e0f4fc; }
+  
+.entities {
+  table-layout: fixed; }
+  
+.entity-name-column {
+  word-wrap: break-word;
+  width: 60%; }
+  
+.entity-id-column {
+  word-wrap: break-word;
+  width: 40%; }
+  
+.entity-title {
+  margin-top: 8px;
+  float: left;
+  text-align: center;
+  width: calc(100% - 80px);
+  max-width: 520px; }
   
 /* Trumps */
 @media (min-width: 700px) {
@@ -923,6 +971,24 @@ input[type=password].input-button-input:-ms-input-placeholder {
 .triangle-right {}
 
 .triangle-right-border {}
+
+@media (min-height: 700px) and (min-width: 700px) {
+  .connected-sidebar {
+    position: absolute;
+    margin: 0;
+    bottom: 20px;
+    left: 20px;
+    width: 270px; }
+}
+
+@media (min-height: 900px) and (min-width: 700px) {
+  .connected-sidebar {
+    position: absolute;
+    margin: 0;
+    top: 840px;
+    left: 20px;
+    width: 270px; }
+}
     
 @media (min-width: 700px) {
   
@@ -1273,6 +1339,11 @@ form.card-form {
   line-height: 22px;
   vertical-align: text-bottom;
   width: 84px; }
+  
+.tag-input-generic {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 300px; }
   
 .tag__delete {
   vertical-align: baseline; }

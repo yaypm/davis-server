@@ -48,7 +48,7 @@ export class WizardBaseComponent implements OnInit {
         }
       })
       .catch(err => {
-        this.iConfig.displayError(err, 'dynatrace');
+        this.iConfig.displayError(err, 'dynatrace-connect');
       });
   }
 }

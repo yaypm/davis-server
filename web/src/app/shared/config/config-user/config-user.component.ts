@@ -217,5 +217,33 @@ export class ConfigUserComponent implements OnInit, AfterViewInit {
       this.renderer.invokeElementMethod(this.first.nativeElement, 'focus');
     }
     this.validate();
+    
+    if (this.isMyUser && !this.iConfig.isWizard) {
+      this.iDavis.getDavisUser()
+        .then(response => {
+          if (!response.success) throw new Error(response.message); 
+          this.iDavis.values.user = response.user;
+          this.iDavis.isAdmin = response.user.admin;
+          sessionStorage.setItem('isAdmin', response.user.admin);
+          if (this.iDavis.values.user.alexa_ids && this.iDavis.values.user.alexa_ids.length > 0) {
+            this.iDavis.values.user.alexa_id = this.iDavis.values.user.alexa_ids[0];
+          } else {
+            this.iDavis.values.user.alexa_id = '';
+          }
+          this.iDavis.values.user.password = '';
+  
+          // Backwards compatibility, was once optional
+          if (!response.user.name) {
+            this.iDavis.values.user.name = { first: '', last: '' };
+          } else {
+            if (!response.user.name.first) this.iDavis.values.user.name.first = '';
+            if (!response.user.name.last) this.iDavis.values.user.name.last = '';
+          }
+          this.iConfig.values.original.user = _.cloneDeep(this.iDavis.values.user);
+        })
+        .catch(err => {
+          this.iConfig.displayError(err, null);
+        });
+    }
   }
 }
