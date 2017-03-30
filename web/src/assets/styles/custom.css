@@ -147,6 +147,9 @@ form {
   margin: 0;
   border-radius: 0; }
   
+.card-field.card-field-short {
+    width: 260px; }
+  
 .config-background {
   background-color: #f8f8f8; }
 
@@ -523,6 +526,11 @@ input[type=password].input-button-input:-ms-input-placeholder {
   
 .icon--error-button:hover {
   opacity: 1.0; }
+  
+/* Small screen size */
+@media (max-width: 500px) {
+  .card-field.card-field-short {
+    width: auto; } }
 
 /* Small screen size */
 @media (max-width: 599px) {
@@ -539,7 +547,7 @@ input[type=password].input-button-input:-ms-input-placeholder {
     height: auto; }
   
   .island--half--left {
-    margin:0; }
+    margin: 0; }
     
   .layout--half--small.layout--half {
     flex-basis: 50%; } 
@@ -1171,8 +1179,7 @@ form.card-form {
 
 .card-content-text-only {
   padding-left: 0px;
-  margin-left: -2px;
-}
+  margin-left: -2px; }
 
 .card-title {
 	float: left;
@@ -1197,9 +1204,6 @@ form.card-form {
 	
 .card-field-wrap {
   clear: both; }
-  
-.card-field-short {
-  width: 260px; }
   
 .card-field-many-rows {
   margin-bottom: 10px; }
