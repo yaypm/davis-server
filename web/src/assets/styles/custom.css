@@ -88,6 +88,9 @@ form {
   margin: 0 auto;
   padding: 16px 0px; }
   
+.island--center.island--center-davisInput {
+  max-width: none; }
+  
 .island--left {
   margin: 0; }
   
@@ -630,12 +633,11 @@ input[type=password].input-button-input:-ms-input-placeholder {
   max-width: 520px; }
   
 /* Trumps */
-@media (min-width: 700px) {
+@media (min-width: 755px) {
   .hide-lg {
     display: none; } }
     
 /* Loading */
-
 .loading {
   height: 332px;
   margin: auto;
@@ -653,8 +655,7 @@ input[type=password].input-button-input:-ms-input-placeholder {
   -webkit-animation: rotate-all 1s linear infinite;
   animation: rotate-all 1s linear infinite; }
 
-.right-side,
-.left-side {
+.right-side, .left-side {
   width: 50%;
   height: 100%;
   position: absolute;
@@ -980,7 +981,7 @@ input[type=password].input-button-input:-ms-input-placeholder {
 
 .triangle-right-border {}
 
-@media (min-height: 700px) and (min-width: 700px) {
+@media (min-height: 700px) and (min-width: 755px) {
   .connected-sidebar {
     position: absolute;
     margin: 0;
@@ -989,7 +990,7 @@ input[type=password].input-button-input:-ms-input-placeholder {
     width: 270px; }
 }
 
-@media (min-height: 900px) and (min-width: 700px) {
+@media (min-height: 900px) and (min-width: 755px) {
   .connected-sidebar {
     position: absolute;
     margin: 0;
@@ -998,7 +999,7 @@ input[type=password].input-button-input:-ms-input-placeholder {
     width: 270px; }
 }
     
-@media (min-width: 700px) {
+@media (min-width: 755px) {
   
   .card-image-url-fullscreen {
     width: calc(100% - 200px); }
@@ -1022,6 +1023,9 @@ input[type=password].input-button-input:-ms-input-placeholder {
   
   .island--davisInput {
     background-color: transparent;  }
+    
+  .island--center.island--center-davisInput {
+    max-width: 600px; }
   
   .island--davisInput-border {
     padding: 16px;
