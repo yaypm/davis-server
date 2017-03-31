@@ -211,15 +211,17 @@
 <!-- Header -->
 <div *ngIf="!iDavis.isIframeTile && (iDavis.isAuthenticated || iConfig.isWizard)" style="position: fixed; width: 100%; top: 0; z-index: 1000">
   <div class="nav has-no-secondary">
-    <a class="nav__brand" style="cursor: pointer" (click)="iDavis.goToPage('/davis')">
-      <img class="nav__logo" src="https://help.dynatrace.com/assets/dynatrace-logo.svg" alt="dynatrace logo"/>
-    </a>
-    <div class="nav__buttongroup">
-      <a *ngIf="router.url.indexOf('/configuration') > -1" class="nav__btn btn--icon hide-lg" (click)="iDavis.isUserMenuVisible = false; iDavis.isSidebarVisible = !iDavis.isSidebarVisible">
+    <div *ngIf="router.url.indexOf('/configuration') > -1" class="nav__buttongroup" style="right: initial; left: 0">
+      <a class="nav__btn btn--icon hide-lg" (click)="iDavis.isUserMenuVisible = false; iDavis.isSidebarVisible = !iDavis.isSidebarVisible; iDavis.windowScrollTop()">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon icon--white icon--nav__btn">
           <use xlink:href="#sidebar"></use>
         </svg>
       </a>
+    </div>
+    <a class="nav__brand" [class.nav__brand-left-menu]="router.url.indexOf('/configuration') > -1" style="cursor: pointer" (click)="iDavis.goToPage('/davis')">
+      <img class="nav__logo" src="https://help.dynatrace.com/assets/dynatrace-logo.svg" alt="dynatrace logo"/>
+    </a>
+    <div class="nav__buttongroup">
       <a class="nav__btn btn--icon" [class.nav__btn-highlighted]="iDavis.isUserMenuVisible" (click)="iDavis.toggleUserMenu(); iDavis.isSidebarVisible = false">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon icon--white icon--nav__btn">
           <use xlink:href="#user"></use>
