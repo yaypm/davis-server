@@ -15,6 +15,7 @@
         "./webChecks",
         "./problemNotification",
         "./pushLink",
-        "./autoFollowUp"
+        "./autoFollowUp",
+        "./cancel"
     ]
 }
