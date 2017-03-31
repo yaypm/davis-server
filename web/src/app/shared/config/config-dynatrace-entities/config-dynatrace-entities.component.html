@@ -119,11 +119,11 @@
     <div class="island island--center island--submit island--left">
       <button *ngIf="iConfig.values.entity.name !== iConfig.values.entity.display.audible 
                 || iConfig.values.entity.name !== iConfig.values.entity.display.visual 
-                || (iConfig.values.entity.aliases.length > 1 && iConfig.values.entity.aliases[1].trim().length > 0)"
+                || (iConfig.values.entity.aliases.length > 0 && iConfig.values.entity.aliases[0].trim().length > 0)"
           type="button" class="btn btn--secondary btn--secondary--delete"
-          (click)="iConfig.values.entity.display.audible = iConfig.values.entity.name; 
-            iConfig.values.entity.display.visual = iConfig.values.entity.name; 
-            (iConfig.values.entity.aliases.length > 1 && iConfig.values.entity.aliases[1].length > 0) ? iConfig.values.entity.aliases.splice(1, iConfig.values.entity.aliases.length - 1) : null">
+          (click)="iConfig.values.entity.display.audible = iConfig.values.entity.name;
+            iConfig.values.entity.display.visual = iConfig.values.entity.name;
+            (iConfig.values.entity.aliases.length > 0 && iConfig.values.entity.aliases[0].length > 0) ? iConfig.values.entity.aliases.splice(0, iConfig.values.entity.aliases.length) : null">
           Reset
       </button>
       <button type="submit" role="button" class="btn btn--primary btn--submit"
