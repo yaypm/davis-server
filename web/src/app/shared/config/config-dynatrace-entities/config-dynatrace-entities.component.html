@@ -103,7 +103,7 @@
             [(ngModel)]="iConfig.values.entity.display.audible" 
             (keyup)="validate()" required>
           <p class="hint" style="margin-bottom: 0" id="i9">Used in Amazon Echo responses,<br>
-            <a (click)="iDavis.windowOpen('https://developer.amazon.com/public/solutions/alexa/alexa-skills-kit/docs/speech-synthesis-markup-language-ssml-reference')" style="cursor: pointer">
+            <a href="https://developer.amazon.com/public/solutions/alexa/alexa-skills-kit/docs/speech-synthesis-markup-language-ssml-reference" target="_blank" style="cursor: pointer">
               SSML tags</a> are supported
           </p>
         </div>
@@ -114,7 +114,7 @@
         Aliases
       </label>
       <tags-generic-input [tags]="iConfig.values.entity.aliases" (tagsChange)="validate()"></tags-generic-input>
-      <p class="hint" style="margin-bottom: 0" id="i9">Used to help match application/service name in requests</p>
+      <p class="hint" style="margin-bottom: 0" id="i9">Used to help match {{ category.toLowerCase().slice(0, -1) }} name in requests</p>
     </div>
     <div class="island island--center island--submit island--left">
       <button *ngIf="iConfig.values.entity.name !== iConfig.values.entity.display.audible 
