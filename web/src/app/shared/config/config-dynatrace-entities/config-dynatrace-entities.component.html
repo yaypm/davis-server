@@ -22,7 +22,7 @@
       </svg>
     </div>
   </div>
-  <div *ngIf="!editEntity" class="island--full-width island--full-width-sidebar island--center island--left">     
+  <div *ngIf="!editEntity" class="island--full-width island--full-width-sidebar island--center island--left" style="max-width: 1023px">     
     <div class="input-button-wrapper" [class.input-button-wrapper-focus]="isFilterFocused" style="margin-top: -5px; margin-bottom: 15px">
       <input #filter type="text" id="filter" name="filter" autocomplete="off"
         class="users-table-filter-input input-button-input"
@@ -45,7 +45,12 @@
         </tr>
       </thead>
     </table>
-    <div class="island--scrollable-table">
+    <div style="visibility: hidden; width: 100%" [style.height]="table.offsetHeight + 'px'" 
+      [style.minHeight]="((filters | filterFiltersByName:{str: filterName, origin: 'QUESTION'}).length < 1) ? null : '350px'">
+    </div>
+    <div #table class="island--scrollable-table" 
+      [style.maxHeight]="(iDavis.getWindowHeight() - 410) + 'px'"
+      (window:resize)="table.style.maxHeight = (iDavis.getWindowHeight() - 410) + 'px'">
       <table class="table entities">
         <tbody>
           <tr *ngFor="let entity of iConfig.values.entities[category.toLowerCase()] | filterDynatraceEntities:filterText" (click)="editMode(entity)">
@@ -123,7 +128,7 @@
           type="button" class="btn btn--secondary btn--secondary--delete"
           (click)="iConfig.values.entity.display.audible = iConfig.values.entity.name;
             iConfig.values.entity.display.visual = iConfig.values.entity.name;
-            (iConfig.values.entity.aliases.length > 0 && iConfig.values.entity.aliases[0].length > 0) ? iConfig.values.entity.aliases.splice(0, iConfig.values.entity.aliases.length) : null">
+            (iConfig.values.entity.aliases.length > 0) ? iConfig.values.entity.aliases.splice(0, iConfig.values.entity.aliases.length) && validate() : null">
           Reset
       </button>
       <button type="submit" role="button" class="btn btn--primary btn--submit"

@@ -265,6 +265,10 @@ export class DavisService {
       }
     });
   }
+  
+  getWindowHeight(): number {
+    return $(window).height();
+  }
 
   log(output: any): void {
     console.log(output);

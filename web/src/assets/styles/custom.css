@@ -2,8 +2,8 @@ body.iFrameTile {
   background-color: white; }
  
 form {
-  width: 100%;
-  min-height: 600px; } 
+  min-height: 0px;
+  width: 100%; } 
   
 .sidebar-sm {
   width: 100%;
@@ -16,7 +16,7 @@ form {
   display: none; }
   
 .breadcrumbs--spacer {
-  width: 100%; 
+  width: 100%;
   height: 44px; }
   
 .chat-spacer {
@@ -49,7 +49,7 @@ form {
   flex-basis: 33.33%; }
   
 .island--connected {
-  min-height: 800px; }
+  min-height: 624px; }
   
 .island--full-width {
   padding: 16px;
@@ -84,6 +84,7 @@ form {
   margin: 0; }
 
 .island--center {
+  position: relative;
   max-width: 600px;
   margin: 0 auto;
   padding: 16px 0px; }
@@ -95,8 +96,11 @@ form {
   margin: 0; }
   
 .island--scrollable-table {
+  position: absolute;
+  top: 112px;
+  width: 100%;
   margin-top: -20px;
-  max-height: 500px;
+  max-height: 450px;
   overflow-y: auto; }
   
 .island--my-account {
@@ -1016,17 +1020,7 @@ input[type=password].input-button-input:-ms-input-placeholder {
     margin: 0;
     bottom: 20px;
     left: 20px;
-    width: 270px; }
-}
-
-@media (min-height: 900px) and (min-width: 755px) {
-  .connected-sidebar {
-    position: absolute;
-    margin: 0;
-    top: 840px;
-    left: 20px;
-    width: 270px; }
-}
+    width: 270px; } }
     
 @media (min-width: 755px) {
   
