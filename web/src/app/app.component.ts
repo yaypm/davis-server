@@ -8,15 +8,17 @@
 // Imports
 // ----------------------------------------------------------------------------
 // Angular
-import { Http, Headers }        from "@angular/http";
+import { Http, Headers }            from "@angular/http";
 import { Component, OnInit,
-         AfterViewInit }        from "@angular/core";
-import { Router }               from "@angular/router";
+         AfterViewInit }            from "@angular/core";
+import { Router, NavigationEnd }    from "@angular/router";
 
 // Third party
 import "./rxjs-operators";
-import { ConfigService }        from "./shared/config/config.service";
-import { DavisService }         from "./shared/davis.service";
+import "rxjs/add/operator/filter";
+import 'rxjs/add/operator/pairwise';
+import { ConfigService }            from "./shared/config/config.service";
+import { DavisService }             from "./shared/davis.service";
 
 declare var dT_ : any;
 
@@ -26,7 +28,10 @@ declare var dT_ : any;
 @Component({
   selector:    "body",
   templateUrl: "./app.component.html",
-  host: {'[class.theme--dark]':'!iDavis.isAuthenticated && !iConfig.isWizard', '[class.theme--blue]':'iDavis.isAuthenticated || iConfig.isWizard'},
+  host: {"[class.theme--dark]": "!iDavis.isAuthenticated && !iConfig.isWizard", 
+         "[class.theme--blue-animation]": "iDavis.isAuthenticated && router.url.indexOf('configuration') < 0 && (!iDavis.previousLocationPath || iDavis.previousLocationPath.indexOf('auth') > -1 || iDavis.previousLocationPath.indexOf('configuration') > -1) && iDavis.conversation.length === 0",
+         "[class.theme--blue]": "iDavis.isAuthenticated",
+  },
 })
 
 export class AppComponent {
@@ -40,6 +45,12 @@ export class AppComponent {
       if(typeof dT_!='undefined' && dT_.initAngularNg){
         dT_.initAngularNg(http, Headers);
       }
+      
+      this.router.events
+        .filter(e => e instanceof NavigationEnd)
+        .pairwise().subscribe((e) => {
+          this.iDavis.previousLocationPath = e[0].url;
+        });
       
       // Detect embedding in Dynatrace iFrame tile
       this.iDavis.isIframeTile = this.iDavis.isIframeTileDetected();

@@ -166,10 +166,13 @@ form {
 
 body.theme--dark-background {
   background-color: #191919; }
-
+  
 body.theme--blue {
+  background-color: #f8f8f8; }
+
+body.theme--blue-animation {
   animation-name: darkToLight;
-  animation-duration: 3s;
+  animation-duration: 3s; 
   background-color: #f8f8f8; }
   
 @keyframes fadeIn {
@@ -432,6 +435,9 @@ input[type=text].input-button-input:-ms-input-placeholder,
 input[type=email].input-button-input:-ms-input-placeholder, 
 input[type=password].input-button-input:-ms-input-placeholder {
    color: #cccccc; }
+   
+.error {
+  background-color: #fdb8b8; }
   
 .select[disabled] {
   background-color: #f2f2f2;
@@ -515,6 +521,10 @@ input[type=password].input-button-input:-ms-input-placeholder {
 /* Error message styling */
 .island--error-container {
   overflow: auto; }
+  
+.island--error.island--error-container {
+  padding: 8px 11px;
+  margin: 0px auto 10px auto; }
 
 .island--error-text {
   float: left; 
@@ -830,6 +840,9 @@ input[type=password].input-button-input:-ms-input-placeholder {
   background-color: #e0f4fc; }
   
 .island--error {
+  padding: 16px;
+  margin: 12px 0px;
+  max-width: 600px;
   background-color: #fdb8b8; }
   
 .timebreak {

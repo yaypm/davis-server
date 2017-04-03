@@ -94,7 +94,7 @@ export class ConfigurationBaseComponent implements OnInit {
     },
     chrome: {
       key: 'chrome',
-      name: 'Chrome Extension',
+      name: 'Voice Navigation',
       admin: false,
     },
   };

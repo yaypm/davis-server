@@ -17,6 +17,7 @@ export class DavisService {
   isAuthenticated: boolean = false;
   davisVersion: string;
   globalError: string;
+  previousLocationPath: string;
 
   token: string;
   chromeToken: string;

@@ -55,7 +55,9 @@ export class ConfigDynatraceConnectComponent implements OnInit, AfterViewInit {
         if (this.iConfig.isWizard) {
           this.iConfig.selectView('user');
         } else {
+          this.iConfig.values.original.dynatrace = _.cloneDeep(this.iConfig.values.dynatrace);
           this.resetSubmitButton();
+          this.validate();
         }
       })
       .catch(err => {
