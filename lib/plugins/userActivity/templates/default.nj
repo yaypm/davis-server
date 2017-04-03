@@ -1,7 +1,0 @@
-{%- if customTimeRange -%}
-{{ timeRange | friendlyTimeRange(user) | capitalize }}
-{%- else -%}
-In the last 24 hours
-{%- endif -%}, {{ appName}} experienced an average of {{ average }} user actions per minute.
-The greatest load was {{ max }} user actions per minute, {{ maxTime | friendlyTime(user) }}.
-The least active time was {{ minTime | friendlyTime(user) }} when {% if min > 0 %}only {{ min }} user actions occurred.{% else %}no user actions occurred.{% endif %}
