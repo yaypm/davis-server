@@ -191,7 +191,8 @@ export class ConfigUserComponent implements OnInit, AfterViewInit {
     if (typeof this.iConfig.values.original.otherUser.alexa_id === 'string') delete this.iConfig.values.original.otherUser.alexa_id;
     this.isDirty = !_.isEqual(user, userOriginal);
     if (!this.isValidTimezone) this.isDirty = false;
-    if (user.alexa_ids[0] && user.alexa_ids[0].length > 0 && !(user.alexa_ids[0].indexOf('amzn1.ask.account.') > -1 || 'amzn1.ask.account.'.indexOf(user.alexa_ids[0]) > -1)) { 
+    if (user.alexa_ids[0] && user.alexa_ids[0].length > 0 && (!(user.alexa_ids[0].indexOf('amzn') > -1 
+      || 'amzn'.indexOf(user.alexa_ids[0]) > -1) || user.alexa_ids[0].indexOf('@') > -1)) { 
       this.isDirty = false;
       this.isValidAlexaID = false;
     } else {
@@ -224,6 +225,8 @@ export class ConfigUserComponent implements OnInit, AfterViewInit {
       this.renderer.invokeElementMethod(this.first.nativeElement, 'focus');
     }
     this.validate();
+    
+    if (this.iConfig.isWizard) this.iConfig.titleGlobal = 'Setup';
     
     if (this.isMyUser && !this.iConfig.isWizard) {
       this.iDavis.getDavisUser()

@@ -325,7 +325,8 @@
         <span *ngIf="router.url === '/davis'" class="breadcrumbs__last">davis</span>
       </li>
       <li class="breadcrumbs__item" *ngIf="router.url !== '/davis'">
-        <span class="breadcrumbs__last">{{ iDavis.route_names[router.url] }}</span>
+        <span *ngIf="router.url.indexOf('wizard') > -1" class="breadcrumbs__last">Set up</span>
+        <span *ngIf="router.url.indexOf('wizard') < 0" class="breadcrumbs__last">{{ iDavis.route_names[router.url] }}</span>
       </li>
     </ul>
   </div>
