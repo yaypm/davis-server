@@ -29,8 +29,8 @@ declare var dT_ : any;
   selector:    "body",
   templateUrl: "./app.component.html",
   host: {"[class.theme--dark]": "!iDavis.isAuthenticated && !iConfig.isWizard", 
-         "[class.theme--blue-animation]": "iDavis.isAuthenticated && router.url.indexOf('configuration') < 0 && (!iDavis.previousLocationPath || iDavis.previousLocationPath.indexOf('auth') > -1 || iDavis.previousLocationPath.indexOf('configuration') > -1) && iDavis.conversation.length === 0",
-         "[class.theme--blue]": "iDavis.isAuthenticated",
+         "[class.theme--blue-animation]": "(iDavis.isAuthenticated || iConfig.isWizard) && router.url.indexOf('configuration') < 0 && (!iDavis.previousLocationPath || iDavis.previousLocationPath.indexOf('auth') > -1 || iDavis.previousLocationPath.indexOf('configuration') > -1) && iDavis.conversation.length === 0",
+         "[class.theme--blue]": "iDavis.isAuthenticated || iConfig.isWizard",
   },
 })
 
