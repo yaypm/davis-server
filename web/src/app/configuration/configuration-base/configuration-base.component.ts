@@ -158,7 +158,7 @@ export class ConfigurationBaseComponent implements OnInit {
           isVisible = true;
         }
         
-        if (isVisible) {
+        if (isVisible && value !== 'configuration') {
           this.iConfig.selectView(value);
         } else {
           this.iConfig.selectView('user');

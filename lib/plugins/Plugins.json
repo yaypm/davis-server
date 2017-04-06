@@ -6,7 +6,6 @@
         "./help",
         "./davisVersion",
         "./launch",
-        "./openDynatrace",
         "./problemDetails",
         "./stop",
         "./thanks",
