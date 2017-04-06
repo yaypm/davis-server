@@ -9,7 +9,8 @@
 
 ### Features
 
-* Add push notification support to web UI and Chrome extension [#182](https://github.com/Dynatrace/davis-server/issues/182). feat: Add support for message history in web ui [#161](https://github.com/Dynatrace/davis-server/issues/161) ([44aace4](https://github.com/Dynatrace/davis-server/commit/44aace4))
+* Add push notification support to web UI and Chrome extension [#182](https://github.com/Dynatrace/davis-server/issues/182). 
+* Add support for message history in web ui [#161](https://github.com/Dynatrace/davis-server/issues/161) ([44aace4](https://github.com/Dynatrace/davis-server/commit/44aace4))
 * Added a cancel intent ([4fb91c2](https://github.com/Dynatrace/davis-server/commit/4fb91c2))
 * Create Open Dynatrace plugin [#245](https://github.com/Dynatrace/davis-server/issues/245) ([b270c61](https://github.com/Dynatrace/davis-server/commit/b270c61))
 * Image support in web UI cards [#238](https://github.com/Dynatrace/davis-server/issues/238) ([d986c65](https://github.com/Dynatrace/davis-server/commit/d986c65))
