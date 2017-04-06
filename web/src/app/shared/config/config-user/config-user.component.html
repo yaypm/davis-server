@@ -176,25 +176,49 @@
             </label>
           </div>
         </div>
-        <div class="layout__container layout--half layout--half--small">
+        <div *ngIf="!iConfig.isWizard" class="layout__container layout--half layout--half--small">
+          <div class="island island--half island--half--left" style="padding-top: 14px;">
+            
+            <!-- isMyUser -->
+            <input type="checkbox" class="checkbox" id="demo" name="demo"
+              [(ngModel)]="iDavis.values.user.demo"
+              *ngIf="isMyUser"
+              (change)="validate()">
+                
+            <!-- !isMyUser -->
+            <input type="checkbox" class="checkbox" id="demo" name="demo"
+              [(ngModel)]="iConfig.values.otherUser.demo"
+              *ngIf="!isMyUser"
+              (change)="validate()">
+              
+            <label for="demo" class="checkbox__label">
+              <span class="checkbox__caption">Voice Navigation</span>
+            </label>
+            <p class="hint" id="i9">Amazon Echo and <a (click)="iDavis.addToChrome()" style="cursor: pointer">Chrome Extension</a> Required</p>
+          </div>
         </div>
       </div>
       <div class="island island--full" *ngIf="!iConfig.isWizard">          
         <label for="alexa_id" class="label">
-          Alexa User ID
+          Amazon Alexa User ID<span *ngIf="!isValidAlexaID"> - <span style="color: #dc172a">Invalid</span></span> 
         </label>
         
         <!-- isMyUser -->
-        <input type="text" class="inputfield" id="alexa_id" name="alexa_id" autocomplete="off"
+        <input type="text" class="inputfield" [class.error]="!isValidAlexaID" id="alexa_id" name="alexa_id" autocomplete="off"
             *ngIf="isMyUser"
             [(ngModel)]="iDavis.values.user.alexa_id"
             (keyup)="validate()">
             
         <!-- !isMyUser -->
-        <input type="text" class="inputfield" id="alexa_id" name="alexa_id" autocomplete="off"
+        <input type="text" class="inputfield" [class.error]="!isValidAlexaID" id="alexa_id" name="alexa_id" autocomplete="off"
             *ngIf="!isMyUser"
             [(ngModel)]="iConfig.values.otherUser.alexa_id"
             (keyup)="validate()">
+            
+        <p class="hint" id="i9">
+          Manually connect to an Amazon Echo. 
+          <a href="https://github.com/Dynatrace/davis-server/wiki/Setup-Alexa#9---obtain-echo-userid-from-sample-request" target="_blank">Where can I find this?</a>
+        </p>
       </div>
       <div class="island island--center island--submit">
         <button *ngIf="!iConfig.isWizard && !isMyUser && iDavis.isAdmin && !isNewUser" type="button" class="btn btn--secondary btn--secondary--delete"

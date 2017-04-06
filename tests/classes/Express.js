@@ -527,8 +527,6 @@ describe('Express', () => {
       .then(res => {
         res.body.success.should.eql(true);
         res.body.intents.should.eql(['userActivity']);
-        res.body.response.visual.text.includes('In the last 24 hours').should.eql(true);
-        res.body.response.visual.text.includes('The greatest load').should.eql(true);
       });
   });
 
@@ -555,16 +553,19 @@ describe('Express', () => {
   );
 
   it('Should get all aliases', () => {
-    return new AliasModel({
-      name: "My Web App",
-      category: "applications",
-      entityId: "QWERTY",
-      display: {
-        audible: "My web app",
-        visual: "My Web App",
-      },
-      aliases: ["appweb", "davisweb"],
-    }).save()
+    AliasModel.collection.remove()
+      .then(() => {
+        return new AliasModel({
+          name: "My Web App",
+          category: "applications",
+          entityId: "QWERTY",
+          display: {
+            audible: "My web app",
+            visual: "My Web App",
+          },
+          aliases: ["appweb", "davisweb"],
+        }).save()
+      })
       .then(() =>
         chai.request(app)
           .get('/api/v1/system/aliases')

@@ -2,10 +2,13 @@ import {Injectable}                from '@angular/core';
 import { Router }                  from '@angular/router';
 import { Http, Response }          from '@angular/http';
 import { Headers, RequestOptions } from '@angular/http';
+import { Subject }                 from 'rxjs/Subject';
+import { Observable }              from 'rxjs/Observable';
 import { DavisModel }              from './models/davis.model';
 import * as moment                 from 'moment';
 import * as momentz                from 'moment-timezone';
 import * as $                      from 'jquery';
+import * as io                     from 'socket.io-client';
 
 @Injectable()
 export class DavisService {
@@ -14,8 +17,13 @@ export class DavisService {
   isAuthenticated: boolean = false;
   davisVersion: string;
   globalError: string;
+  previousLocationPath: string;
 
   token: string;
+  chromeToken: string;
+  fullScreenImageUrl: string;
+  newNotificationCount: number = 0;
+  isTyping: boolean = false;
   isBreadcrumbsVisible: boolean = false;
   isUserMenuVisible: boolean = false;
   isIframeTile: boolean = false;
@@ -23,13 +31,17 @@ export class DavisService {
   isAddingToConvo: boolean = false;
 
   conversation: Array<any> = [];
+  url: string;  
+  socket: any;
 
   route_names: any = {
     '/wizard': 'Setup',
     '/configuration': 'Account settings',
     '/configuration#user': 'Account settings',
     '/configuration#users': 'Account settings',
-    '/configuration#dynatrace': 'Account settings',
+    '/configuration#dynatrace-applications': 'Account settings',
+    '/configuration#dynatrace-services': 'Account settings',
+    '/configuration#dynatrace-connect': 'Account settings',
     '/configuration#filters': 'Account settings',
     '/configuration#notification-rules': 'Account settings',
     '/configuration#notification-source': 'Account settings',
@@ -68,9 +80,13 @@ export class DavisService {
     this.isAuthenticated = false;
     this.isAdmin = false;
     this.token = null;
+    if (this.socket) this.socket.disconnect();
+    this.socket = null;
     sessionStorage.removeItem('email');
     sessionStorage.removeItem('token');
+    sessionStorage.removeItem('chromeToken');
     sessionStorage.removeItem('isAdmin');
+    sessionStorage.removeItem('conversation');
     this.windowScrollTop();
     this.router.navigate(["/auth/login"]);
   }
@@ -123,6 +139,64 @@ export class DavisService {
       .toPromise()
       .then(this.extractData)
       .catch(this.handleError);
+  }
+  
+  getChromeToken() {
+    let headers = new Headers({ 'Content-Type': 'application/json', 'x-access-token': this.token });
+    let options = new RequestOptions({ headers: headers });
+
+    return this.http.post(`/api/v1/webAuth`, {}, options)
+      .toPromise()
+      .then(this.extractData)
+      .catch(this.handleError);
+  }
+  
+  connectSocket() {
+    if (!this.socket && this.chromeToken) {
+      this.socket = io();
+      this.socket.on('connect', () => {
+        this.socket.emit('registerSocket', {id: this.socket.id, email: this.values.user.email, token: this.chromeToken, isWeb: true });
+      });
+      this.socket.on('connect_failed', () => {
+        this.globalError = 'Push notifications are disabled due to a socket connection error';
+      });
+      this.socket.on(this.chromeToken, (card: any) => {
+        if (this.chromeToken && typeof card !== 'string') this.displayNotification(card, false);
+      });
+      this.socket.on('message', (card: any) => {
+        if (typeof card !== 'string') this.displayNotification(card, true);
+      });
+    }
+  }
+  
+  displayNotification(card: any, isToAll: boolean) {
+    this.newNotificationCount++;
+    if (this.isTyping) {
+      let typingPollingInterval = setInterval(() => {
+        if (!this.isTyping) {
+          this.stopTypingPollingInterval(typingPollingInterval);
+          this.conversation.push({ visual: { card: card }, isDavis: true, isNotif:  true, timestamp: this.getTimestamp() });
+          sessionStorage.setItem('conversation', JSON.stringify(this.conversation));
+          if (this.router.url === '/davis') this.windowScrollBottom('slow');
+        }
+        this.isTyping = false;
+      }, 5000);
+    } else {
+      this.conversation.push({ visual: { card: card }, isDavis: true, isNotif:  true, timestamp: this.getTimestamp() });
+      sessionStorage.setItem('conversation', JSON.stringify(this.conversation));
+      if (this.router.url === '/davis') this.windowScrollBottom('slow');
+    }
+  }
+  
+  deleteNotification(card: any) {
+    this.conversation.forEach((message: any, index: number) => {
+      if (message === card) this.conversation.splice(index, 1);
+    });
+    sessionStorage.setItem('conversation', JSON.stringify(this.conversation));
+  }
+  
+  stopTypingPollingInterval(interval: any) {
+    clearInterval(interval);
   }
 
   extractData(res: Response): any {
@@ -192,6 +266,10 @@ export class DavisService {
       }
     });
   }
+  
+  getWindowHeight(): number {
+    return $(window).height();
+  }
 
   log(output: any): void {
     console.log(output);
@@ -221,6 +299,10 @@ export class DavisService {
 
   clickElem(id: string): void {
     document.getElementById(id).click();
+  }
+  
+  getMoment(): any {
+    return moment();
   }
 
   getTimezone(): string {

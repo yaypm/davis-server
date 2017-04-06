@@ -17,6 +17,7 @@ import { Router }                 from '@angular/router';
 import { ConfigService }          from '../../shared/config/config.service';
 import { DavisService }           from '../../shared/davis.service';
 import * as _                     from 'lodash';
+import * as moment                from 'moment';
 
 // ----------------------------------------------------------------------------
 // Class
@@ -122,10 +123,12 @@ export class DavisBaseComponent implements OnInit, AfterViewInit {
   addToConvo(message: any, isDavis: boolean) {
     message.isDavis = isDavis;
     message.timestamp = this.iDavis.getTimestamp();
+    message.moment = this.iDavis.getMoment();
     this.showProcessingIndicator = false;
     if (this.iDavis.conversation.length > 20) this.iDavis.conversation.shift();
     this.iDavis.isAddingToConvo = true;
     this.iDavis.conversation.push(message);
+    sessionStorage.setItem('conversation', JSON.stringify(this.iDavis.conversation));
   }
   
   toggleListening(isListening: boolean) {
@@ -142,15 +145,25 @@ export class DavisBaseComponent implements OnInit, AfterViewInit {
     }
   }
   
+  hoursApart(prevMessageMoment: any, messageMoment: any): number {
+    let res = 0;
+    if (prevMessageMoment && messageMoment) {
+      res = Math.floor(moment.duration(moment(messageMoment).diff(moment(prevMessageMoment))).asHours());
+    }
+    return res;
+  }
+  
   ngOnInit() {
     this.iDavis.isBreadcrumbsVisible = true;
     this.davisMode = this.modes.noMic;
     this.iDavis.focusDavisInputOnKeyDown();
     
+    if (sessionStorage.getItem('conversation')) this.iDavis.conversation = JSON.parse(sessionStorage.getItem('conversation'));
+    
     if (!this.iDavis.values.user.email || !this.iDavis.davisVersion) {
       this.iDavis.getDavisUser()
         .then(response => {
-          if (!response.success) throw new Error(response.message); 
+          if (!response.success) throw new Error(response.message);
           this.iDavis.values.user = response.user;
           
           // Backwards compatibility, was once optional
@@ -168,6 +181,12 @@ export class DavisBaseComponent implements OnInit, AfterViewInit {
             throw new Error(response.message); 
           }
           this.iDavis.davisVersion = response.version;
+         return this.iConfig.getDynatrace();
+        })
+        .then(response => {
+          if (!response.success) throw new Error(response.message);
+          this.iConfig.values.dynatrace = response.dynatrace;
+          this.iConfig.values.original.dynatrace = _.cloneDeep(this.iConfig.values.dynatrace);
         })
         .catch(err => {
           this.iConfig.displayError(err, null);
@@ -179,6 +198,7 @@ export class DavisBaseComponent implements OnInit, AfterViewInit {
     if (this.davisMode.name === 'noMic') this.renderer.invokeElementMethod(this.davisIn.nativeElement, 'focus');
     if (this.iDavis.conversation.length > 0) {
       this.iDavis.windowScrollBottom(1);
+      this.iDavis.newNotificationCount = 0;
     }
   }
 }

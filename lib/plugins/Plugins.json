@@ -11,8 +11,10 @@
         "./thanks",
         "./unknown",
         "./userActivity",
+        "./webChecks",
         "./problemNotification",
         "./pushLink",
-        "./autoFollowUp"
+        "./autoFollowUp",
+        "./cancel"
     ]
 }

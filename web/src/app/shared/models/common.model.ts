@@ -10,6 +10,7 @@ export class CommonModel {
     },
     admin: false,
     owner: '',
+    demo: true,
   };
 
   filter: any = {
@@ -29,6 +30,18 @@ export class CommonModel {
       includes: [],
       excludes: [],
     },
+  };
+  
+  entity: any = {
+    _id: '',
+    name: '',
+    category: '',
+    entityId: '',
+    display: {
+      audible: '',
+      visual: '',
+    },
+    aliases: [],
   };
   
   dynatrace: any = {
