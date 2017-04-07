@@ -17,6 +17,7 @@
         "./autoFollowUp",
         "./cancel",
         "./topRootCauses",
-        "./catchUp"
+        "./catchUp",
+        "./addComment"
     ]
 }
