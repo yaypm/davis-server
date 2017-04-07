@@ -16,6 +16,7 @@
         "./pushLink",
         "./autoFollowUp",
         "./cancel",
-        "./topRootCauses"
+        "./topRootCauses",
+        "./catchUp"
     ]
 }
