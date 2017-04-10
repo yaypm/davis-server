@@ -11,6 +11,7 @@
         "./thanks",
         "./unknown",
         "./userActivity",
+        "./userActivityPrediction",
         "./webChecks",
         "./problemNotification",
         "./pushLink",
