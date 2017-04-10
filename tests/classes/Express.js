@@ -271,7 +271,7 @@ describe('Express', () => {
       .send({ phrase: 'What happened yesterday' })
       .then(res => {
         res.body.success.should.eql(true);
-        res.body.intents.should.eql(['problem', 'showPage']);
+        res.body.intents.should.eql(['problem']);
       });
   });
 
@@ -282,7 +282,7 @@ describe('Express', () => {
       .send({ phrase: 'the first one' })
       .then(res => {
         res.body.success.should.eql(true);
-        res.body.intents.should.eql(['routing', 'pageRoute', 'problemDetails']);
+        res.body.intents.should.eql(['routing', 'showPage', 'pageRoute', 'problemDetails']);
       });
   });
 
