@@ -22,7 +22,7 @@ import { DavisModel }               from '../models/davis.model';
 @Injectable()
 export class ConfigService {
   // Initialize view
-  view: string = "dynatrace";
+  view: string = "dynatrace-connect";
   helpLinkText: string = 'How to complete this step';
   titleGlobal: string = '';
   isWizard: boolean = false;
@@ -158,6 +158,26 @@ export class ConfigService {
     let options = new RequestOptions({ headers: headers });
 
     return this.http.get('/api/v1/dynatrace/services', options)
+      .toPromise()
+      .then(this.iDavis.extractData)
+      .catch(this.iDavis.handleError);
+  }
+  
+  getDynatraceAliases(): Promise<any> {
+    let headers = new Headers({ 'Content-Type': 'application/json', 'x-access-token': this.iDavis.token } );
+    let options = new RequestOptions({ headers: headers });
+
+    return this.http.get('/api/v1/system/aliases', options)
+      .toPromise()
+      .then(this.iDavis.extractData)
+      .catch(this.iDavis.handleError);
+  }
+  
+  setDynatraceAliases(entity: any, category: string): Promise<any> {
+    let headers = new Headers({ 'Content-Type': 'application/json', 'x-access-token': this.iDavis.token } );
+    let options = new RequestOptions({ headers: headers });
+
+    return this.http.put(`/api/v1/system/aliases/${category}/${entity.aliasId}`, entity, options)
       .toPromise()
       .then(this.iDavis.extractData)
       .catch(this.iDavis.handleError);

@@ -271,7 +271,7 @@ describe('Express', () => {
       .send({ phrase: 'What happened yesterday' })
       .then(res => {
         res.body.success.should.eql(true);
-        res.body.intents.should.eql(['problem', 'showPage']);
+        res.body.intents.should.eql(['problem']);
       });
   });
 
@@ -282,7 +282,7 @@ describe('Express', () => {
       .send({ phrase: 'the first one' })
       .then(res => {
         res.body.success.should.eql(true);
-        res.body.intents.should.eql(['routing', 'pageRoute', 'problemDetails']);
+        res.body.intents.should.eql(['routing', 'showPage', 'pageRoute', 'problemDetails']);
       });
   });
 
@@ -527,8 +527,6 @@ describe('Express', () => {
       .then(res => {
         res.body.success.should.eql(true);
         res.body.intents.should.eql(['userActivity']);
-        res.body.response.visual.text.includes('In the last 24 hours').should.eql(true);
-        res.body.response.visual.text.includes('The greatest load').should.eql(true);
       });
   });
 
@@ -573,7 +571,6 @@ describe('Express', () => {
           .get('/api/v1/system/aliases')
           .set('X-Access-Token', token)
           .then(res => {
-            console.log(res.body.applications);
             res.body.applications.length.should.eql(1);
             res.body.applications[0].name.should.eql("My Web App");
           }));

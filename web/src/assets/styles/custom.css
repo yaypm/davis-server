@@ -2,8 +2,8 @@ body.iFrameTile {
   background-color: white; }
  
 form {
-  width: 100%;
-  min-height: 600px; } 
+  min-height: 0px;
+  width: 100%; } 
   
 .sidebar-sm {
   width: 100%;
@@ -16,8 +16,8 @@ form {
   display: none; }
   
 .breadcrumbs--spacer {
-  width: 100%; 
-  height: 60px; }
+  width: 100%;
+  height: 44px; }
   
 .chat-spacer {
   width: 100%; 
@@ -49,7 +49,7 @@ form {
   flex-basis: 33.33%; }
   
 .island--connected {
-  min-height: 800px; }
+  min-height: 624px; }
   
 .island--full-width {
   padding: 16px;
@@ -84,16 +84,23 @@ form {
   margin: 0; }
 
 .island--center {
+  position: relative;
   max-width: 600px;
   margin: 0 auto;
   padding: 16px 0px; }
+  
+.island--center.island--center-davisInput {
+  max-width: none; }
   
 .island--left {
   margin: 0; }
   
 .island--scrollable-table {
+  position: absolute;
+  top: 112px;
+  width: 100%;
   margin-top: -20px;
-  max-height: 500px;
+  max-height: 450px;
   overflow-y: auto; }
   
 .island--my-account {
@@ -147,6 +154,9 @@ form {
   margin: 0;
   border-radius: 0; }
   
+.card-field.card-field-short {
+    width: 260px; }
+  
 .config-background {
   background-color: #f8f8f8; }
 
@@ -156,10 +166,13 @@ form {
 
 body.theme--dark-background {
   background-color: #191919; }
-
+  
 body.theme--blue {
+  background-color: #f8f8f8; }
+
+body.theme--blue-animation {
   animation-name: darkToLight;
-  animation-duration: 3s;
+  animation-duration: 3s; 
   background-color: #f8f8f8; }
   
 @keyframes fadeIn {
@@ -219,6 +232,13 @@ body.theme--blue {
 @keyframes slideInRight {
   0% { margin-left: 30%; }
   100% { margin-left: 0px; } }
+
+.davis-card svg {
+  fill: #004999;
+  width: 175px;
+  height: 175px;
+  display: block;
+  margin: 0 auto; }
 
 label.theme--dark-label {
   color: white; }
@@ -298,10 +318,9 @@ label.theme--dark-label {
   
 .nav__btn--notification:hover {
   background-color: #e74d59; }
-  
-/* IE11 fix, but breaks other browsers */
-/*.nav__brand {*/
-/*  top: -30px; }*/
+
+.nav__brand-left-menu {
+  left: 37px; }
   
 .btn--submit {
   float: right; }
@@ -400,6 +419,9 @@ input[type=text].input-button-input[disabled], input[type=email].input-button-in
 .input-button-img-password-masked {
   opacity: 0.3; }
   
+.inputfield {
+  text-overflow: ellipsis; }
+  
 input:invalid {
   box-shadow: none; }
     
@@ -413,6 +435,9 @@ input[type=text].input-button-input:-ms-input-placeholder,
 input[type=email].input-button-input:-ms-input-placeholder, 
 input[type=password].input-button-input:-ms-input-placeholder {
    color: #cccccc; }
+   
+.error {
+  background-color: #fdb8b8; }
   
 .select[disabled] {
   background-color: #f2f2f2;
@@ -496,6 +521,10 @@ input[type=password].input-button-input:-ms-input-placeholder {
 /* Error message styling */
 .island--error-container {
   overflow: auto; }
+  
+.island--error.island--error-container {
+  padding: 8px 11px;
+  margin: 0px auto 10px auto; }
 
 .island--error-text {
   float: left; 
@@ -516,9 +545,17 @@ input[type=password].input-button-input:-ms-input-placeholder {
   
 .icon--error-button:hover {
   opacity: 1.0; }
+  
+/* Small screen size */
+@media (max-width: 500px) {
+  .card-field.card-field-short {
+    width: auto; } }
 
 /* Small screen size */
 @media (max-width: 599px) {
+  
+  .davis-card svg {
+    height: 130px; }
   
   .scroll-to-bottom-button {
     right: 10px;
@@ -529,7 +566,7 @@ input[type=password].input-button-input:-ms-input-placeholder {
     height: auto; }
   
   .island--half--left {
-    margin:0; }
+    margin: 0; }
     
   .layout--half--small.layout--half {
     flex-basis: 50%; } 
@@ -563,6 +600,26 @@ input[type=password].input-button-input:-ms-input-placeholder {
   
 .expandable__trigger.closed {
   background-color: #f2f2f2; }
+  
+.connected {
+  font-size: 12px;
+  color: #cccccc;
+  margin: 20px; }
+  
+.connected a {
+  color: #cccccc; }
+  
+.connected a:hover {
+  color: #00a1b2; }
+  
+.connected-card {
+  margin: 10px; }
+  
+.connected-card a {
+  color: #cccccc; }
+  
+.connected-card a:hover {
+  color: #004999; }
 
 /* Text */
 .text--warning {
@@ -573,13 +630,57 @@ input[type=password].input-button-input:-ms-input-placeholder {
   cursor: pointer;
   background-color: #e0f4fc; }
   
+.entities {
+  table-layout: fixed; }
+  
+.entity-name-column {
+  word-wrap: break-word;
+  width: 60%; }
+  
+.entity-id-column {
+  word-wrap: break-word;
+  width: 30%; }
+  
+.entity-edited-column {
+  word-wrap: break-word;
+  width: 10%; }
+  
+.entity-title {
+  margin-top: 8px;
+  float: left;
+  text-align: center;
+  width: calc(100% - 80px);
+  max-width: 520px; }
+  
 /* Trumps */
-@media (min-width: 700px) {
+@media (min-width: 755px) {
   .hide-lg {
     display: none; } }
     
+@media (max-width: 754px) {
+  .hide-sm {
+    display: none; } }
+    
+@media (min-width: 700px) {
+  .island--connected {
+    margin-left: 12px;
+    margin-top: 12px;
+    margin-bottom: 12px;
+    margin-right: 12px;
+    width: inherit; } }
+    
+@media (min-width: 755px) {
+  .island--connected {
+    margin-left: 0;
+    margin-top: 0;
+    margin-bottom: 24px;
+    margin-right: 24px;
+    -webkit-box-flex: 1;
+    -ms-flex: 1 0 50%;
+    flex: 1 0 50%;
+    width: 50%; } }
+    
 /* Loading */
-
 .loading {
   height: 332px;
   margin: auto;
@@ -597,8 +698,7 @@ input[type=password].input-button-input:-ms-input-placeholder {
   -webkit-animation: rotate-all 1s linear infinite;
   animation: rotate-all 1s linear infinite; }
 
-.right-side,
-.left-side {
+.right-side, .left-side {
   width: 50%;
   height: 100%;
   position: absolute;
@@ -740,6 +840,9 @@ input[type=password].input-button-input:-ms-input-placeholder {
   background-color: #e0f4fc; }
   
 .island--error {
+  padding: 16px;
+  margin: 12px 0px;
+  max-width: 600px;
   background-color: #fdb8b8; }
   
 .timebreak {
@@ -767,6 +870,10 @@ input[type=password].input-button-input:-ms-input-placeholder {
   outline: 0; 
   cursor: pointer; }
   
+.card-close-button-error {
+  position: absolute;
+  top: 16px; }
+  
 .icon--close {
   width: 25px;
   height: 25px;
@@ -774,6 +881,14 @@ input[type=password].input-button-input:-ms-input-placeholder {
   
 .card-close-button:hover .icon--close {
   fill: #cccccc; }
+  
+.icon--close-error {
+  width: 25px;
+  height: 25px;
+  fill: white; }
+  
+.card-close-button:hover .icon--close-error {
+  fill: #e6e6e6; }
   
 .card-image-url {
   position: relative;
@@ -783,20 +898,38 @@ input[type=password].input-button-input:-ms-input-placeholder {
 	cursor: pointer; }
 	
 .card-image-url-fullscreen {
+  margin: auto;
   position: fixed;
-  clear: none;
-  float: none;
-  top: 85px;
+  top: 0;
   left: 0;
+  bottom: 0;
   right: 0;
   z-index: 100000;
-  max-width: none;
-  max-height: none;
-  width: 90%;
-  margin: 0 auto;
-  padding: 20px;
+  width: calc(100% - 20px);
+  padding: 5px;
   background-color: white;
   cursor: pointer; }
+  
+.card-image-url-fullscreen-close-btn {
+  margin: auto;
+  position: fixed;
+  left: calc(50% - 10px);
+  bottom: 10%;
+  z-index: 100001;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background-color: #6d6d6d;
+  opacity: 0.6; }
+  
+.card-image-url-fullscreen-close-btn:hover {
+  opacity: 0.8;
+}
+  
+.card-image-url-fullscreen-close-btn .icon--error-button {
+  fill: white;
+  width: 60px;
+  height: 60px; }
 
 .card-thumb-url-wrapper {
 	display: table-cell;
@@ -893,12 +1026,26 @@ input[type=password].input-button-input:-ms-input-placeholder {
 .triangle-right {}
 
 .triangle-right-border {}
+
+@media (min-height: 700px) and (min-width: 755px) {
+  .connected-sidebar {
+    position: absolute;
+    margin: 0;
+    bottom: 20px;
+    left: 20px;
+    width: 270px; } }
     
-@media (min-width: 700px) {
+@media (min-width: 755px) {
+  
+  .card-image-url-fullscreen {
+    width: calc(100% - 200px); }
   
   .sidebar-sm {
     width: 284px;
     flex: 0px 0px 284px; }
+    
+  .nav__brand-left-menu {
+    left: 0.75rem; }
   
   .breadcrumbs {
     display: flex; }
@@ -915,6 +1062,9 @@ input[type=password].input-button-input:-ms-input-placeholder {
   
   .island--davisInput {
     background-color: transparent;  }
+    
+  .island--center.island--center-davisInput {
+    max-width: 600px; }
   
   .island--davisInput-border {
     padding: 16px;
@@ -1072,8 +1222,7 @@ form.card-form {
 
 .card-content-text-only {
   padding-left: 0px;
-  margin-left: -2px;
-}
+  margin: 0px 0px 0px -2px; }
 
 .card-title {
 	float: left;
@@ -1098,9 +1247,6 @@ form.card-form {
 	
 .card-field-wrap {
   clear: both; }
-  
-.card-field-short {
-  width: 260px; }
   
 .card-field-many-rows {
   margin-bottom: 10px; }
@@ -1240,6 +1386,11 @@ form.card-form {
   line-height: 22px;
   vertical-align: text-bottom;
   width: 84px; }
+  
+.tag-input-generic {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 300px; }
   
 .tag__delete {
   vertical-align: baseline; }

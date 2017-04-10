@@ -17,6 +17,7 @@ export class DavisService {
   isAuthenticated: boolean = false;
   davisVersion: string;
   globalError: string;
+  previousLocationPath: string;
 
   token: string;
   chromeToken: string;
@@ -38,7 +39,9 @@ export class DavisService {
     '/configuration': 'Account settings',
     '/configuration#user': 'Account settings',
     '/configuration#users': 'Account settings',
-    '/configuration#dynatrace': 'Account settings',
+    '/configuration#dynatrace-applications': 'Account settings',
+    '/configuration#dynatrace-services': 'Account settings',
+    '/configuration#dynatrace-connect': 'Account settings',
     '/configuration#filters': 'Account settings',
     '/configuration#notification-rules': 'Account settings',
     '/configuration#notification-source': 'Account settings',
@@ -262,6 +265,10 @@ export class DavisService {
         self.isScrolledToBottom = false;
       }
     });
+  }
+  
+  getWindowHeight(): number {
+    return $(window).height();
   }
 
   log(output: any): void {

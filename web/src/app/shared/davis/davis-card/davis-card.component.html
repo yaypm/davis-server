@@ -17,7 +17,7 @@
       <svg *ngIf="message && message.isNotif" class="icon icon--white icon--notification" [class.icon--notification-hide]="false">
         <use xlink:href="#notification"></use>
       </svg>
-      <svg *ngIf="false && message && (message.isNotif || (message.visual  && message.visual.card && message.visual.card.error))" class="icon icon--white icon--notification icon--notification-show">
+      <svg *ngIf="false && message && (message.isNotif || (message.visual && message.visual.card && message.visual.card.error))" class="icon icon--white icon--notification icon--notification-show">
         <use xlink:href="#clear"></use>
       </svg>
     </div>
@@ -34,16 +34,19 @@
           <span></span>
         </div>
       </div>
+      <button type="button" class="card-close-button" title="Remove Message"
+        [class.card-close-button-error]="message.visual && message.visual.card && message.visual.card.error"
+        (click)="(message && (message.isNotif || (message.visual && message.visual.card && message.visual.card.error))) ? iDavis.deleteNotification(message) : null">
+        <svg *ngIf="message && (message.isNotif || (message.visual && message.visual.card && message.visual.card.error))" class="icon icon--close" 
+          [class.icon--close-error]="message.visual && message.visual.card && message.visual.card.error">
+          <use xlink:href="#clear"></use>
+        </svg>
+      </button>
       <div *ngIf="message.visual && message.visual.card && message.visual.card.text" 
         [innerHTML]="message.visual.card.text | slackTagConversionPipe:{isAttachment: false, isSentence: true}" class="card-push-animation" style="font-size: 14px"></div>
       <div *ngIf="message.visual && message.visual.card && message.visual.card.attachments && message.visual.card.attachments.length > 0"
         class="card-attachments card-push-animation"
          [@update]="updateState">
-        <button class="card-close-button" title="Remove Notification" (click)="(message && (message.isNotif || (message.visual  && message.visual.card && message.visual.card.error))) ? iDavis.deleteNotification(message) : null">
-          <svg *ngIf="message && (message.isNotif || (message.visual && message.visual.card && message.visual.card.error))" class="icon icon--close">
-            <use xlink:href="#clear"></use>
-          </svg>
-        </button>
         <div *ngFor="let attachment of message.visual.card.attachments" 
           class="card-attachment"
           [class.card-content-text-only]="!((attachment.title || attachment.fields || attachment.actions || attachment.actionClicked || attachment.image_url || attachment.thumb_url) || (attachment.author_name && attachment.author_name === 'filtered'))">

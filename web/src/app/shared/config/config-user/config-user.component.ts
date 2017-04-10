@@ -31,6 +31,7 @@ export class ConfigUserComponent implements OnInit, AfterViewInit {
   isSelectOpened: boolean = false;
   isDirty: boolean = false;
   isValidTimezone: boolean = true;
+  isValidAlexaID: boolean = true;
   detectedTimezone: string = '';
   confirmDeleteUser: boolean = false;
   user: any;
@@ -49,8 +50,9 @@ export class ConfigUserComponent implements OnInit, AfterViewInit {
       this.iConfig.values.otherUser.name.first = this.iDavis.safariAutoCompletePolyFill(this.iConfig.values.otherUser.name.first, 'first');
       this.iConfig.values.otherUser.name.last = this.iDavis.safariAutoCompletePolyFill(this.iConfig.values.otherUser.name.last, 'last');
       this.iConfig.values.otherUser.email = this.iDavis.safariAutoCompletePolyFill(this.iConfig.values.otherUser.email, 'email');
-      this.iConfig.values.otherUser.admin = this.iDavis.safariAutoCompletePolyFill(this.iConfig.values.otherUser.admin, 'admin');
       this.iConfig.values.otherUser.password = this.iDavis.safariAutoCompletePolyFill(this.iConfig.values.otherUser.password, 'password');
+      this.iConfig.values.otherUser.admin = this.iDavis.safariAutoCompletePolyFill(this.iConfig.values.otherUser.admin, 'admin');
+      this.iConfig.values.otherUser.demo = this.iDavis.safariAutoCompletePolyFill(this.iConfig.values.otherUser.demo, 'demo');
       this.iConfig.values.otherUser.timezone = this.iDavis.safariAutoCompletePolyFill(this.iConfig.values.otherUser.timezone, 'timezone');
       this.iConfig.values.otherUser.alexa_id = this.iDavis.safariAutoCompletePolyFill(this.iConfig.values.otherUser.alexa_id, 'alexa_id');
     } else {
@@ -58,6 +60,7 @@ export class ConfigUserComponent implements OnInit, AfterViewInit {
       this.iDavis.values.user.name.last = this.iDavis.safariAutoCompletePolyFill(this.iDavis.values.user.name.last, 'last');
       this.iDavis.values.user.email = this.iDavis.safariAutoCompletePolyFill(this.iDavis.values.user.email, 'email');
       this.iDavis.values.user.password = this.iDavis.safariAutoCompletePolyFill(this.iDavis.values.user.password, 'password');
+      this.iDavis.values.user.demo = this.iDavis.safariAutoCompletePolyFill(this.iDavis.values.user.demo, 'demo');
       this.iDavis.values.user.timezone = this.iDavis.safariAutoCompletePolyFill(this.iDavis.values.user.timezone, 'timezone');
       this.iDavis.values.user.alexa_id = this.iDavis.safariAutoCompletePolyFill(this.iDavis.values.user.alexa_id, 'alexa_id');
     }
@@ -179,8 +182,22 @@ export class ConfigUserComponent implements OnInit, AfterViewInit {
         this.iConfig.values.otherUser.alexa_ids = [];
       }
     }
-    this.isDirty = (this.isMyUser) ? !_.isEqual(this.iDavis.values.user, this.iConfig.values.original.user) : !_.isEqual(this.iConfig.values.otherUser, this.iConfig.values.original.otherUser);
+    
+    // Remove alexa_id property for _.isEqual() to work correctly
+    let user = (this.isMyUser) ? _.cloneDeep(this.iDavis.values.user) :  _.cloneDeep(this.iConfig.values.otherUser);
+    let userOriginal = (this.isMyUser) ? _.cloneDeep(this.iConfig.values.original.user) :  _.cloneDeep(this.iConfig.values.original.otherUser);
+    delete user.alexa_id;
+    delete userOriginal.alexa_id;
+    if (typeof this.iConfig.values.original.otherUser.alexa_id === 'string') delete this.iConfig.values.original.otherUser.alexa_id;
+    this.isDirty = !_.isEqual(user, userOriginal);
     if (!this.isValidTimezone) this.isDirty = false;
+    if (user.alexa_ids[0] && user.alexa_ids[0].length > 0 && (!(user.alexa_ids[0].indexOf('amzn') > -1 
+      || 'amzn'.indexOf(user.alexa_ids[0]) > -1) || user.alexa_ids[0].indexOf('@') > -1)) { 
+      this.isDirty = false;
+      this.isValidAlexaID = false;
+    } else {
+      this.isValidAlexaID = true;
+    }
   }
 
   ngOnInit() {
@@ -208,5 +225,35 @@ export class ConfigUserComponent implements OnInit, AfterViewInit {
       this.renderer.invokeElementMethod(this.first.nativeElement, 'focus');
     }
     this.validate();
+    
+    if (this.iConfig.isWizard) this.iConfig.titleGlobal = 'Setup';
+    
+    if (this.isMyUser && !this.iConfig.isWizard) {
+      this.iDavis.getDavisUser()
+        .then(response => {
+          if (!response.success) throw new Error(response.message); 
+          this.iDavis.values.user = response.user;
+          this.iDavis.isAdmin = response.user.admin;
+          sessionStorage.setItem('isAdmin', response.user.admin);
+          if (this.iDavis.values.user.alexa_ids && this.iDavis.values.user.alexa_ids.length > 0) {
+            this.iDavis.values.user.alexa_id = this.iDavis.values.user.alexa_ids[0];
+          } else {
+            this.iDavis.values.user.alexa_id = '';
+          }
+          this.iDavis.values.user.password = '';
+  
+          // Backwards compatibility, was once optional
+          if (!response.user.name) {
+            this.iDavis.values.user.name = { first: '', last: '' };
+          } else {
+            if (!response.user.name.first) this.iDavis.values.user.name.first = '';
+            if (!response.user.name.last) this.iDavis.values.user.name.last = '';
+          }
+          this.iConfig.values.original.user = _.cloneDeep(this.iDavis.values.user);
+        })
+        .catch(err => {
+          this.iConfig.displayError(err, null);
+        });
+    }
   }
 }
