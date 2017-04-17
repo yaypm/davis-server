@@ -15,6 +15,9 @@
         "./problemNotification",
         "./pushLink",
         "./autoFollowUp",
-        "./cancel"
+        "./cancel",
+        "./topRootCauses",
+        "./catchUp",
+        "./addComment"
     ]
 }
