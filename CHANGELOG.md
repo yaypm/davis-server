@@ -1,3 +1,15 @@
+<a name="0.13.0"></a>
+# [0.13.0](https://github.com/Dynatrace/davis-server/compare/v0.12.0...v0.13.0) (2017-04-17)
+
+
+### Features
+
+* add a comment to a problem ([6b925f2](https://github.com/Dynatrace/davis-server/commit/6b925f2))
+* Add catch up functionality ([823a959](https://github.com/Dynatrace/davis-server/commit/823a959))
+* User activity prediction for next half hour [#269](https://github.com/Dynatrace/davis-server/issues/269) ([dcee360](https://github.com/Dynatrace/davis-server/commit/dcee360))
+
+
+
 <a name="0.12.0"></a>
 # [0.12.0](https://github.com/Dynatrace/davis-server/compare/v0.11.1...v0.12.0) (2017-04-06)
 
@@ -9,7 +21,8 @@
 
 ### Features
 
-* Add push notification support to web UI and Chrome extension [#182](https://github.com/Dynatrace/davis-server/issues/182). feat: Add support for message history in web ui [#161](https://github.com/Dynatrace/davis-server/issues/161) ([44aace4](https://github.com/Dynatrace/davis-server/commit/44aace4))
+* Add push notification support to web UI and Chrome extension [#182](https://github.com/Dynatrace/davis-server/issues/182). 
+* Add support for message history in web ui [#161](https://github.com/Dynatrace/davis-server/issues/161) ([44aace4](https://github.com/Dynatrace/davis-server/commit/44aace4))
 * Added a cancel intent ([4fb91c2](https://github.com/Dynatrace/davis-server/commit/4fb91c2))
 * Create Open Dynatrace plugin [#245](https://github.com/Dynatrace/davis-server/issues/245) ([b270c61](https://github.com/Dynatrace/davis-server/commit/b270c61))
 * Image support in web UI cards [#238](https://github.com/Dynatrace/davis-server/issues/238) ([d986c65](https://github.com/Dynatrace/davis-server/commit/d986c65))
