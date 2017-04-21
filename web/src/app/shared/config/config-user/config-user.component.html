@@ -21,7 +21,8 @@
     [class.wizard-border]="iConfig.isWizard"
     [class.island--full-width-sidebar]="!iConfig.isWizard"
     [class.island--my-account-error]="!iConfig.isWizard && isMyUser"
-    [class.island--user-accounts-error]="!isMyUser">
+    [class.island--user-accounts-error]="!isMyUser"
+    [class.island--user-accounts-error-fix]="!isMyUser">
     <div class="island--error-text">
       {{ iConfig.status['user'].error }}
     </div>
