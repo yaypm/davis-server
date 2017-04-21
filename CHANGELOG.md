@@ -1,3 +1,14 @@
+<a name="0.15.0"></a>
+# [0.15.0](https://github.com/Dynatrace/davis-server/compare/v0.14.0...v0.15.0) (2017-04-21)
+
+
+### Bug Fixes
+
+* Const reassignment in user activity ([fb0bdd5](https://github.com/Dynatrace/davis-server/commit/fb0bdd5))
+* Removed sythentic applications from count ([c50b164](https://github.com/Dynatrace/davis-server/commit/c50b164))
+
+
+
 <a name="0.14.0"></a>
 # [0.14.0](https://github.com/Dynatrace/davis-server/compare/v0.13.0...v0.14.0) (2017-04-19)
 
