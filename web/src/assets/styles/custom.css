@@ -525,6 +525,10 @@ input[type=password].input-button-input:-ms-input-placeholder {
 .island--error.island--error-container {
   padding: 8px 11px;
   margin: 0px auto 10px auto; }
+  
+.island--error.island--user-accounts-error-fix {
+  margin: -23px 0px 32px 0px;
+  padding: 16px; }
 
 .island--error-text {
   float: left; 
