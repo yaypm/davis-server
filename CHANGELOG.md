@@ -1,3 +1,19 @@
+<a name="0.16.0"></a>
+# [0.16.0](https://github.com/Dynatrace/davis-server/compare/v0.15.1...v0.16.0) (2017-04-26)
+
+
+### Bug Fixes
+
+* Affected application and service counts ([f01605a](https://github.com/Dynatrace/davis-server/commit/f01605a)), closes [#273](https://github.com/Dynatrace/davis-server/issues/273)
+
+
+### Features
+
+* Added support for multiple tenant tokens ([7ba8e79](https://github.com/Dynatrace/davis-server/commit/7ba8e79))
+* Less verbose launch message ([8aa4858](https://github.com/Dynatrace/davis-server/commit/8aa4858))
+
+
+
 <a name="0.15.1"></a>
 ## [0.15.1](https://github.com/Dynatrace/davis-server/compare/v0.15.0...v0.15.1) (2017-04-21)
 
