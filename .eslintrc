@@ -4,6 +4,8 @@
   "rules": {
     "no-param-reassign": [2, { "props": false }],
     "no-underscore-dangle": "off",
+    "no-use-before-define": ["error", { "functions": false }],
+    "no-nested-ternary": "off",
     "new-cap": "off",
     "func-names": "off",
     "strict": "off",
@@ -18,7 +20,8 @@
       "ignoreUrls": true,
       "ignoreStrings": true,
       "ignoreTemplateLiterals": true
-    }]
+    }],
+    "quotes": ["error", "double", { "avoidEscape": true }]
   },
   "env": {
        "mocha": true

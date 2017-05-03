@@ -3,7 +3,6 @@
 const Dynatrace = require("../../core/dynatrace");
 const Plugin = require("../../core/plugin");
 const sb = require("../../util/builder").sb;
-const Util = require("../../util");
 
 /**
  * Plugin for asking about a recent range
@@ -28,12 +27,12 @@ class RangeProblem extends Plugin {
    * @memberOf RangeProblem
    */
   async ask(req) {
-    const range = req.slots["range"];
+    const range = req.slots.range;
     const problems = await Dynatrace.problemFeed(req.user, { relativeTime: range });
 
     return (problems.length === 0) ? noProblems(req.user, range) :
       (problems.length === 1) ? oneProblem(req.user, range, problems[0]) :
-      manyProblems(req.user, range, problems);
+        manyProblems(req.user, range, problems);
   }
 }
 
@@ -83,7 +82,7 @@ function openProblem(user, range, problem) {
   return {
     text: (appIds.length === 0) ? out.s("No applications are being affected.") :
       (appIds.length === 1) ? out.s("The only affected application is").e(appIds[0], apps[appIds[0]]) :
-      out.e(appIds[0], apps[appIds[0]]).s("and").s(appIds.length - 1).s("other applications are being affected."),
+        out.e(appIds[0], apps[appIds[0]]).s("and").s(appIds.length - 1).s("other applications are being affected."),
   };
 }
 
@@ -107,7 +106,7 @@ function closedProblem(user, range, problem) {
   return {
     text: (appIds.length === 0) ? out.s("No applications were affected.") :
       (appIds.length === 1) ? out.s("The only affected application was").e(appIds[0], apps[appIds[0]]).p :
-      out.e(appIds[0], apps[appIds[0]]).s("and").s(appIds.length - 1).s("other applications were affected."),
+        out.e(appIds[0], apps[appIds[0]]).s("and").s(appIds.length - 1).s("other applications were affected."),
   };
 }
 
@@ -121,9 +120,9 @@ function closedProblem(user, range, problem) {
  */
 function manyProblems(user, range, problems) {
   return {
-      text: sb(user)
-        .s("In the last").d(range).c.s(problems.length).s("problems occurred."),
-    };
+    text: sb(user)
+      .s("In the last").d(range).c.s(problems.length).s("problems occurred."),
+  };
 }
 
 module.exports = RangeProblem;
