@@ -122,28 +122,38 @@ class StringBuilder {
   }
 
   /**
-   *    * Push a stringable or slackable object
+   * Add a buildable object with optional pluralization
    *
-   * @param {IBuildable} item
-   * @returns
+   * @param {IBuildable} singular
+   * @param {IBuildable} plural
+   * @param {number | any[]} count
+   * @returns {StringBuilder} this
    *
    * @memberOf StringBuilder
    */
-  s(item) {
-    this.state.push(Promise.resolve(item));
+  s(singular, plural, count) {
+    if (typeof count === "number") {
+      return (count === 1) ? this.s(singular) : this.s(plural);
+    }
+    if (count && count.constructor === Array) {
+      return this.s(singular, plural, count.length);
+    }
+    this.state.push(Promise.resolve(singular));
     return this;
   }
 
   /**
-   *    * Push a stringable or slackable object
+   * Add a buildable object with optional pluralization
    *
-   * @param {IBuildable} item
-   * @returns
+   * @param {IBuildable} singular
+   * @param {IBuildable} plural
+   * @param {number | any[]} count
+   * @returns {StringBuilder} this
    *
    * @memberOf StringBuilder
    */
-  stringable(item) {
-    return this.s(item);
+  stringable(singular, plural, count) {
+    return this.s(singular, plural, count);
   }
 
   /**

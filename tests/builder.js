@@ -124,6 +124,18 @@ describe("util/builder", () => {
     expect(str).to.equal("18 days 9 hours 23 minutes");
   });
 
+  it("should build pluralized strings", async () => {
+    const zero = await sb(user).s("one", "two", 0).toString();
+    const single = await sb(user).s("one", "two", 1).toString();
+    const plural = await sb(user).s("one", "two", 2).toString();
+    const arr = await sb(user).s("one", "two", [0, 1]).toString();
+
+    expect(zero).to.equal("two");
+    expect(single).to.equal("one");
+    expect(plural).to.equal("two");
+    expect(arr).to.equal("two");
+  })
+
   it("should return the same values for short and long method versions", async () => {
     const short = sb(user)
       .s("start")
