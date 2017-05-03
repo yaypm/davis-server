@@ -1,1 +1,0 @@
-It looks like there were {{ totalProblemCount }} problems {{ timeRange | friendlyTimeRange(user) }}. {% if totalProblemCount > 3 %}After giving it some thought, here are my top three.{% endif %} {% include "lib/plugins/shared-templates/top-three-problems.nj" %}

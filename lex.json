@@ -1,0 +1,204 @@
+{
+  "bot": {
+    "name": "Test",
+    "description": "This is a test lex bot",
+    "intents": [
+      {
+        "intentName": "problem",
+        "intentVersion": "21"
+      }
+    ],
+    "clarificationPrompt": {
+      "messages": {
+        "contentType": "PlainText",
+        "content": "I'm sorry, can you repeat that?"
+      },
+      "maxAttempts": 5,
+      "responseCard": null
+    },
+    "abortStatement": {
+      "messages": [
+        {
+          "contentType": "PlainText",
+          "content": "I'm sorry, I'm having trouble understanding you right now."
+        }
+      ]
+    },
+    "voiceId": "0",
+    "checksum": "e7f967f5-b5dd-47bf-b8d5-5f786e2c1b1f",
+    "processBehavior": "Build",
+    "locale": "en-US",
+    "childDirected": false
+  },
+  "intents": [
+    { "name": "problem",
+      "description": null,
+      "slots": [
+        {
+          "name": "date",
+          "description": null,
+          "slotConstraint": "Optional",
+          "slotType": "AMAZON.DATE",
+          "slotTypeVersion": null,
+          "valueElicitationPrompt": {
+            "messages": [
+              {
+                "contentType": "PlainText",
+                "content": "What day did you mean?"
+              }
+            ],
+            "maxAttempts": 2,
+            "responseCard": null
+          },
+          "priority": 2,
+          "sampleUtterances": [],
+          "responseCard": null
+        },
+        {
+          "name": "app",
+          "description": null,
+          "slotConstraint": "Optional",
+          "slotType": "AMAZON.SoftwareApplication",
+          "slotTypeVersion": null,
+          "valueElicitationPrompt": {
+            "messages": [
+              {
+                "contentType": "PlainText",
+                "content": "Which application?"
+              }
+            ],
+            "maxAttempts": 2,
+            "responseCard": null
+          },
+          "priority": 7,
+          "sampleUtterances": [],
+          "responseCard": null
+        },
+        {
+          "name": "range",
+          "description": null,
+          "slotConstraint": "Optional",
+          "slotType": "AMAZON.DURATION",
+          "slotTypeVersion": null,
+          "valueElicitationPrompt": {
+            "messages": [
+              {
+                "contentType": "PlainText",
+                "content": "range?"
+              }
+            ],
+            "maxAttempts": 2,
+            "responseCard": null
+          },
+          "priority": 3,
+          "sampleUtterances": [],
+          "responseCard": null
+        },
+        {
+          "name": "prep",
+          "description": null,
+          "slotConstraint": "Optional",
+          "slotType": "prep",
+          "slotTypeVersion": "1",
+          "valueElicitationPrompt": {
+            "messages": [
+              {
+                "contentType": "PlainText",
+                "content": "preposition"
+              }
+            ],
+            "maxAttempts": 2,
+            "responseCard": null
+          },
+          "priority": 9,
+          "sampleUtterances": [],
+          "responseCard": null
+        },
+        {
+          "name": "time",
+          "description": null,
+          "slotConstraint": "Optional",
+          "slotType": "AMAZON.TIME",
+          "slotTypeVersion": null,
+          "valueElicitationPrompt": {
+            "messages": [
+              {
+                "contentType": "PlainText",
+                "content": "What time"
+              }
+            ],
+            "maxAttempts": 2,
+            "responseCard": null
+          },
+          "priority": 6,
+          "sampleUtterances": [],
+          "responseCard": null
+        },
+        {
+          "name": "prompt",
+          "description": null,
+          "slotConstraint": "Optional",
+          "slotType": "issuePrompt",
+          "slotTypeVersion": "2",
+          "valueElicitationPrompt": {
+            "messages": [
+              {
+                "contentType": "PlainText",
+                "content": "What prompt did you mean?"
+              }
+            ],
+            "maxAttempts": 2,
+            "responseCard": null
+          },
+          "priority": 8,
+          "sampleUtterances": [],
+          "responseCard": null
+        },
+        {
+          "name": "dow",
+          "description": null,
+          "slotConstraint": "Optional",
+          "slotType": "AMAZON.DayOfWeek",
+          "slotTypeVersion": null,
+          "valueElicitationPrompt": {
+            "messages": [
+              {
+                "contentType": "PlainText",
+                "content": "What day?"
+              }
+            ],
+            "maxAttempts": 2,
+            "responseCard": null
+          },
+          "priority": 4,
+          "sampleUtterances": [],
+          "responseCard": null
+        }
+      ],
+      "sampleUtterances": [
+        "{prompt} {date}",
+        "{prompt} {date} at {time}",
+        "{prompt} in the last {range}",
+        "{prompt} {dow}",
+        "{prompt} {dow} at {time}",
+        "{prompt} {prep} {app} {date}",
+        "{prompt} {prep} {app} {date} at {time}",
+        "{prompt} {prep} {app} in the last {range}",
+        "{prompt} {prep} {app} {dow}",
+        "{prompt} {prep} {app} {dow} at {time}",
+        "{prompt}"
+      ],
+      "fulfillmentActivity": {
+        "type": "ReturnIntent"
+      },
+      "parentIntentSignature": null,
+      "lastUpdatedDate": "2017-04-20T14:56:09.318Z",
+      "createdDate": "2017-04-20T14:56:09.318Z",
+      "version": "21",
+      "checksum": "7769fe85-598e-4c7a-a206-edac3ae4464b"
+    }
+  ],
+  "slots":[
+
+  ]
+}

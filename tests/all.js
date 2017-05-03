@@ -1,37 +1,39 @@
-'use strict';
+const dotenv = require("dotenv");
+const BbPromise = require("bluebird");
+const mongoose = require("mongoose");
 
-const mongoose = require('mongoose');
-const utils = require('./utils');
+const AliasModel = require("../src/lib/models/alias");
+const UserModel = require("../src/lib/models/user");
 
+dotenv.config();
+process.env.test = true;
+process.env.DAVIS_LOG_LEVEL = "warn";
+
+global.Promise = BbPromise;
+mongoose.Promise = BbPromise;
+
+// Set up MongoDB Connection
 before(() => {
   if (mongoose.connection.readyState === 0) {
-    mongoose.connect('127.0.0.1:27017/davis-test', err => {
-      if (err) {
-        throw new Error('Not connected to MongoDB!');
-      }
-      return utils.clearDB();
-    });
-  } else {
-    return utils.clearDB();
+    return mongoose.connect("localhost/davis-ng-test")
+      .catch((err) => {
+        throw new Error("Cannot connect to MongoDB");
+      });
   }
 });
 
-after(() => {
-  return mongoose.disconnect();
+// Drop all collections before each test
+beforeEach(() => {
+  return Promise.all([
+    UserModel.remove().exec(),
+    AliasModel.remove().exec(),
+  ]);
 });
 
-// require('./classes/Davis');
-// require('./classes/Service');
+after(() => {
+  return mongoose.connection.db.dropDatabase()
+    .then(() => mongoose.disconnect());
+});
 
-require('./classes/Users');
-require('./classes/Dynatrace');
-require('./classes/Exchange');
-require('./classes/Decide');
-require('./classes/Nlp');
-require('./classes/ResponseBuilder');
-require('./classes/PluginManager');
-require('./classes/Nunjucks');
-require('./classes/Filters');
-require('./classes/TextHelpers');
-// express tests must be last
-require('./classes/Express');
+require("./builder");
+require("./dynatrace");

@@ -1,1 +1,0 @@
-There are two currently active problems detected.  The first problem is {{ problems[0].rankedImpacts[0].eventType | friendlyEvent() }}, which is actively impacting {{ problems[0].rankedImpacts[0] | friendlyEntityName() }}.  The second one is {{ problems[1].rankedImpacts[0].eventType | friendlyEvent() }}, affecting {{ problems[1].rankedImpacts[0] | friendlyEntityName() }}.

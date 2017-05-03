@@ -1,0 +1,41 @@
+Port Dynatrace class:
+  ☐ Problems @dan
+  ☐ Timeseries
+
+Port intents:
+  built in intents:
+    ☐ yes
+    ☐ no
+    ☐ stop
+    ☐ next
+    ☐ previous
+
+  problem:
+    ☐ open @dan
+    ☐ range
+    ☐ date
+    ☐ catch up
+
+  ☐ problem details
+  ☐ version (this is VERY! important)
+  ☐ launch
+  ☐ user activity
+  ☐ top root causes
+  ☐ web checks
+
+  routing:
+    ☐ first
+    ☐ second
+    ☐ third
+
+☐ Port notifications
+☐ Implement websockets
+☐ Implement pushlink
+☐ Implement slack (This will probably be a ground-up job because of moving to the events api)
+☐ Implement alexa
+☐ Implement SSO
+
+Implement system express routes:
+  ☐ Create/delete users?
+  ☐ Enable/Disable users?
+  ☐ aliases 2.0 @mike

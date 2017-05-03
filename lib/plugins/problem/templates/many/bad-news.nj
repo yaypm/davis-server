@@ -1,1 +1,0 @@
-I hate to be the bearer of bad news, but there were {{ totalProblemCount }} problems detected {{ timeRange | friendlyTimeRange(user) }}. {% if totalProblemCount > 3 %}However, I would recommend focusing on one of the following problems.{% endif %} {% include "lib/plugins/shared-templates/top-three-problems.nj" %}
