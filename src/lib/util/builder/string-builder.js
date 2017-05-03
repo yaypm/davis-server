@@ -130,6 +130,10 @@ class StringBuilder {
    * @memberOf StringBuilder
    */
   s(singular, plural, count) {
+    if (singular && singular.constructor && singular.constructor === Array) {
+      this.state.push(_.sample(singular));
+      return this;
+    }
     if (typeof count === "number") {
       return (count === 1) ? this.s(singular) : this.s(plural);
     }
