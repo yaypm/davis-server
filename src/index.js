@@ -62,3 +62,7 @@ mongoose.connect(mongoString)
     app.listen(port);
     logger.debug(`Listening on http://0.0.0.0:${port}/`);
   })
+  .catch((err) => {
+    logger.error(err);
+    process.exit(1);
+  });
