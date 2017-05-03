@@ -21,7 +21,7 @@ const userSchema = new mongoose.Schema({
 });
 
 userSchema.methods.checkPass = async function (password) {
-  return await bcrypt.compare(password, this.password);
+  return bcrypt.compare(password, this.password);
 };
 
 userSchema.virtual("activeTenant").get(function () {
