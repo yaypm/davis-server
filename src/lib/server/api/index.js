@@ -49,6 +49,9 @@ v1.post("/ask", async (req, res) => {
 v1.use("/system", system);
 v1.use("/dynatrace", dynatrace);
 
+// Global API 404
+v1.use((req, res) => { res.status(404).send({ status: false, message: "Invalid route" }); });
+
 // Global API Error Handler
 v1.use((err, req, res) => {
   logger.error({ err });
