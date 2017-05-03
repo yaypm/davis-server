@@ -82,7 +82,7 @@ class Davis {
       context: await Contexts.getByScope("user:web:source"),
       intent: plugin.name,
       nlp: {
-        timeRange: Util.Date.dateParser(slots["date"], req.user),
+        timeRange: Util.Date.dateParser(slots.date, req.user),
       },
       raw: req.raw,
       slots: plugin.parseSlots(req.user, slots),

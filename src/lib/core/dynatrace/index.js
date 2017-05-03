@@ -4,7 +4,6 @@ const _ = require("lodash");
 
 const Aliases = require("../../controllers/aliases");
 const logger = require("../logger");
-const davis = require("../davis");
 
 /**
  * Static class for interacting with Dynatrace
@@ -66,7 +65,7 @@ class Dynatrace {
    * @memberOf Dynatrace
    */
   static async getAllEntities(user) {
-    const [ applications, services, hosts, processGroups ] = await Promise.all([
+    const [applications, services, hosts, processGroups] = await Promise.all([
       Dynatrace.getApplications(user),
       Dynatrace.getServices(user),
       Dynatrace.getHosts(user),
@@ -86,9 +85,9 @@ class Dynatrace {
    * @memberOf Dynatrace
    */
   static async getApplications(user) {
-    const [ apps, aliases ] = await Promise.all([
+    const [apps, aliases] = await Promise.all([
       Dynatrace.get(user, "entity/applications")
-        .then((res) => res.filter((app) => app.applicationType !== "SYNTHETIC")),
+        .then(res => res.filter(app => app.applicationType !== "SYNTHETIC")),
       Aliases.getByTenant(user.activeTenant),
     ]);
     return Dynatrace.mergeAliases(apps, aliases);
@@ -104,7 +103,7 @@ class Dynatrace {
    * @memberOf Dynatrace
    */
   static async getServices(user) {
-    const [ services, aliases ] = await Promise.all([
+    const [services, aliases] = await Promise.all([
       Dynatrace.get(user, "entity/services"),
       Aliases.getByTenant(user.activeTenant),
     ]);
@@ -121,7 +120,7 @@ class Dynatrace {
    * @memberOf Dynatrace
    */
   static async getHosts(user) {
-    const [ hosts, aliases ] = await Promise.all([
+    const [hosts, aliases] = await Promise.all([
       Dynatrace.get(user, "entity/infrastructure/hosts"),
       Aliases.getByTenant(user.activeTenant),
     ]);
@@ -138,7 +137,7 @@ class Dynatrace {
    * @memberOf Dynatrace
    */
   static async getProcessGroups(user) {
-    const [ processGroups, aliases ] = await Promise.all([
+    const [processGroups, aliases] = await Promise.all([
       Dynatrace.get(user, "entity/infrastructure/process-groups"),
       Aliases.getByTenant(user.activeTenant),
     ]);
@@ -165,7 +164,7 @@ class Dynatrace {
       return res
         .result
         .problems
-        .filter((p) => moment(p.startTime).isAfter(moment().subtract(duration)));
+        .filter(p => moment(p.startTime).isAfter(moment().subtract(duration)));
     }
 
     const res = await Dynatrace.get(user, "problem/feed", options);
@@ -237,7 +236,7 @@ class Dynatrace {
    * @memberOf Dynatrace
    */
   static countByHour(problems) {
-    return _.countBy(problems, (problem) => (Math.floor(problem.startTime / 3600000) * 3600000));
+    return _.countBy(problems, problem => (Math.floor(problem.startTime / 3600000) * 3600000));
   }
 
   /**
@@ -276,7 +275,7 @@ class Dynatrace {
    */
   static mergeAliases(apps, aliases) {
     return apps.map((app) => {
-      const alias = _.find(aliases, (a) => app.entityId === a.entityId);
+      const alias = _.find(aliases, a => app.entityId === a.entityId);
       app.name = app.customizedName || app.displayName || "";
       app.category = app.entityId.split("-")[0];
       // The name property makes these values unnecessary

@@ -25,7 +25,7 @@ class Logger {
       art = `${art}       Davis Version:      ${version}${EOL}`;
       art = `${art}       Production:         ${(process.env.NODE_ENV === "production")}`;
       if (!process.env.test) {
-        console.log(art); //tslint:disable-line
+        console.log(art); // eslint-disable-line
       }
 
       // Initializes Bunyan

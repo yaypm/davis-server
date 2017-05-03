@@ -6,7 +6,7 @@ const system = Router();
 system.get("/users", async (req, res) => {
   const users = await Users.getAll();
 
-  res.json(users.map((user) => ({
+  res.json(users.map(user => ({
     first: user.firstName,
     last: user.lastName,
   })));

@@ -1,6 +1,7 @@
 "use strict";
 
 const mongoose = require("mongoose");
+const bcrypt = require("bcrypt");
 
 const userSchema = new mongoose.Schema({
   email: { type: String, unique: true },
@@ -19,20 +20,20 @@ const userSchema = new mongoose.Schema({
   timestamps: true,
 });
 
-userSchema.methods.checkPass = async function(password) {
+userSchema.methods.checkPass = async function (password) {
   return await bcrypt.compare(password, this.password);
 };
 
-userSchema.virtual("activeTenant").get(function() {
+userSchema.virtual("activeTenant").get(function () {
   const tenant = this.tenants[this.activeTenantIdx];
   return tenant;
 });
 
-userSchema.methods.getApiToken = function() {
+userSchema.methods.getApiToken = function () {
   return process.env.DYNATRACE_TOKEN;
 };
 
-userSchema.methods.getEndpoint = function() {
+userSchema.methods.getEndpoint = function () {
   return process.env.DYNATRACE_URL;
 };
 

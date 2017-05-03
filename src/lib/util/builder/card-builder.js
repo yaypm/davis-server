@@ -1,6 +1,7 @@
 "use strict";
 
-const Field = require("./field");
+/* eslint-disable no-unused-vars */
+
 const StringBuilder = require("./string-builder");
 
 const COLORS = {
@@ -16,18 +17,18 @@ const COLORS = {
  * @class CardBuilder
  */
 class CardBuilder {
-constructor(user) {
-        this.user = user;
-        this.filtered = false;
-        this.fields = [];
-        this.titleLink = "";
-        this.colorCode = "";
-        this.text = new string_builder_1.StringBuilder(user);
-        this.fallback = new string_builder_1.StringBuilder(user);
-        this.title = new string_builder_1.StringBuilder(user);
-        this.footer = new string_builder_1.StringBuilder(user);
-        this.pretext = new string_builder_1.StringBuilder(user);
-    }
+  constructor(user) {
+    this.user = user;
+    this.filtered = false;
+    this.fields = [];
+    this.titleLink = "";
+    this.colorCode = "";
+    this.text = new StringBuilder(user);
+    this.fallback = new StringBuilder(user);
+    this.title = new StringBuilder(user);
+    this.footer = new StringBuilder(user);
+    this.pretext = new StringBuilder(user);
+  }
 
   /**
    * Push a stringable or slackable object to text field
@@ -290,7 +291,7 @@ constructor(user) {
     ]);
 
     const out = { fallback, footer, pretext, text, title };
-    Object.keys(out).map((key) => {
+    Object.keys(out).forEach((key) => {
       if (out[key] === "") {
         delete out[key];
       }
