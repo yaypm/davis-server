@@ -96,17 +96,26 @@ function openProblem(user, range, problem) {
  */
 function closedProblem(user, range, problem) {
   const stats = Dynatrace.problemStats([problem]);
+
+  // Always starts the same way
   const out = sb(user)
     .s("In the last").d(range).c.s("the only problem was a").h(problem.rankedImpacts[0].eventType)
     .s("that started").ts(problem.startTime).c.s("and ended").ts(problem.endTime).p;
 
-  const apps = stats.affectedApps;
+  const apps = stats.affectedEntities.APPLICATION || [];
   const appIds = Object.keys(apps);
+  const count = appIds.length;
+  const others = count - 1;
+
+  // Two possible cases
+  const oneAffected = sb(user).s("The only affected application was").e(appIds[0], apps[appIds[0]]).p;
+  const moreAffected = sb(user).e(appIds[0], apps[appIds[0]]).s("and").s(others).s("other")
+    .s("application was", "applications were", others).s("affected.");
 
   return {
-    text: (appIds.length === 0) ? out.s("No applications were affected.") :
-      (appIds.length === 1) ? out.s("The only affected application was").e(appIds[0], apps[appIds[0]]).p :
-        out.e(appIds[0], apps[appIds[0]]).s("and").s(appIds.length - 1).s("other applications were affected."),
+    text: (count === 0) ? out.s("No applications were affected.") :
+      (count === 1) ? out.s(oneAffected) :
+        out.s(moreAffected),
   };
 }
 
