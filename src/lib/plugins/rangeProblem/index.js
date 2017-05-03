@@ -110,7 +110,7 @@ function closedProblem(user, range, problem) {
   // Two possible cases
   const oneAffected = sb(user).s("The only affected application was").e(appIds[0], apps[appIds[0]]).p;
   const moreAffected = sb(user).e(appIds[0], apps[appIds[0]]).s("and").s(others).s("other")
-    .s("application was", "applications were", others).s("affected.");
+    .s(["application was affected", "application had issues"], "applications were affected", others).p;
 
   return {
     text: (count === 0) ? out.s("No applications were affected.") :
