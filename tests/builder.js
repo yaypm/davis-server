@@ -120,14 +120,14 @@ describe("util/builder", () => {
   });
 
   it("should build time ranges", async () => {
-    const str = await sb(user).d("P8Y3M2W4DT9H23M").toString();
-    expect(str).to.equal("8 years 3 months 18 days 8 hours 23 minutes");
+    const str = await sb(user).d("P2W4DT9H23M").toString();
+    expect(str).to.equal("18 days 9 hours 23 minutes");
   });
 
   it("should return the same values for short and long method versions", async () => {
     const short = sb(user)
       .s("start")
-      .d("P8Y3M2W4DT9H23M")
+      .d("P2W4DT9H23M")
       .c
       .n
       .p
@@ -137,7 +137,7 @@ describe("util/builder", () => {
 
     const long = sb(user)
       .stringable("start")
-      .duration("P8Y3M2W4DT9H23M")
+      .duration("P2W4DT9H23M")
       .comma
       .newline
       .period
