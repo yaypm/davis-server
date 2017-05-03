@@ -22,6 +22,7 @@ dotenv.config();
  * Davis dependencies
  */
 
+const alexaVerification = require("./lib/server/alexa-verify");
 const logger = require("./lib/core/logger");
 const api = require("./lib/server/api");
 
@@ -40,6 +41,7 @@ mongoose.connect(mongoString)
     * express middlewares
     */
     logger.debug("Setting up express");
+    app.use(alexaVerification);
     app.use(json());
     app.use(session({
       resave: true,
