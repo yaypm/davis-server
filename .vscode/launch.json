@@ -23,15 +23,6 @@
         {
             "type": "node",
             "request": "launch",
-            "name": "Windows Logging",
-            "program": "${workspaceRoot}/src/index.js",
-            "cwd": "${workspaceRoot}",
-            "protocol": "auto",
-            "runtimeExecutable": ".vscode\\nodeWithBunyan.bat"
-        },
-        {
-            "type": "node",
-            "request": "launch",
             "name": "Run Tests",
             "program": "${workspaceRoot}/node_modules/.bin/mocha",
             "cwd": "${workspaceRoot}",
