@@ -26,7 +26,7 @@ class Plugin {
     const start = process.hrtime();
     const res = await this.ask(req);
     const end = process.hrtime();
-    const plugTime = ((end[0] * 1000000 + end[1] / 1000) - (start[0] * 1000000 + start[1] / 1000)) / 1000;
+    const plugTime = ((end[0] * 1000000 + end[1] / 1000) - (start[0] * 1000000 + start[1] / 1000)) / 1000; // eslint-disable-line
     logger.debug(`Plugin responded in ${plugTime.toFixed()} ms`);
     return res;
   }
@@ -39,7 +39,7 @@ class Plugin {
    *
    * @memberOf Plugin
    */
-  async button(req) {
+  async button() {
     return {
       show: { text: "This plugin did not implement a button" },
       text: "This plugin did not implement a button",

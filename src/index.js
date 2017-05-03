@@ -11,7 +11,7 @@ const express = require("express");
 const session = require("express-session");
 const mongoose = require("mongoose");
 const passport = require("passport");
-const randtoken = require('rand-token');
+const randtoken = require("rand-token");
 
 const MongoStore = connectMongo(session);
 global.Promise = BbPromise;
@@ -51,7 +51,7 @@ mongoose.connect(mongoString)
     app.use(passport.session());
 
     app.use((req, res, next) => {
-      req.body.req_id = randtoken.generate(16);
+      req.req_id = randtoken.generate(16);
       logger.debug({ req, body: req.body });
       next();
     });
@@ -61,4 +61,4 @@ mongoose.connect(mongoString)
     const port = process.env.DAVIS_PORT || 8080;
     app.listen(port);
     logger.debug(`Listening on http://0.0.0.0:${port}/`);
-  })
+  });

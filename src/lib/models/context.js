@@ -4,13 +4,16 @@ const mongoose = require("mongoose");
 
 const contextSchema = new mongoose.Schema({
   attrs: [{}],
-  filters: { default: {}, type: {
-    app: String,
-    time: {
-      end: Number,
-      start: Number,
+  filters: {
+    default: {},
+    type: {
+      app: String,
+      time: {
+        end: Number,
+        start: Number,
+      },
     },
-  }},
+  },
 
   intentHistory: [String],
 
@@ -38,11 +41,14 @@ const contextSchema = new mongoose.Schema({
   // target intent names
   // for various routing
   // intents
-  targets: { default: {}, type: {
-    no: String,
-    num: String,
-    yes: String,
-  }},
+  targets: {
+    default: {},
+    type: {
+      no: String,
+      num: String,
+      yes: String,
+    },
+  },
 
   // the url to be used
   // whenever pushLink is
@@ -50,4 +56,4 @@ const contextSchema = new mongoose.Schema({
   url: String,
 });
 
-module.exports = mongoose.model('Context', contextSchema);
+module.exports = mongoose.model("Context", contextSchema);

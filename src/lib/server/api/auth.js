@@ -1,3 +1,5 @@
+"use strict";
+
 const Router = require("express").Router;
 const Joi = require("joi");
 const passport = require("passport");
@@ -20,20 +22,20 @@ auth.post("/register", async (req, res) => {
   const validate = Joi.validate(req.body, schema);
 
   if (validate.error) {
-    return res.status(400).json({
+    res.status(400).json({
       message: validate.error.details[0].message,
       success: false,
     });
+    return;
   }
 
   try {
     const model = await Users.create(user);
 
-    res.status(200).json({ success: true });
+    res.status(200).json({ success: true, id: model._id });
   } catch (err) {
-    res.status(500).json({ success: false, message: err.message});
+    res.status(500).json({ success: false, message: err.message });
   }
-
 });
 
 passport.serializeUser((user, done) => {
@@ -49,21 +51,23 @@ passport.use(new Local(async (username, password, done) => {
   const user = await Users.logIn(username, password);
 
   if (!user) {
-    return done(null, false);
+    done(null, false);
+    return;
   }
 
   done(null, user);
 }));
 
 auth.post("/login", (req, res, next) => {
-  passport.authenticate("local", (authErr, user, info) => {
-    if (authErr) { return next(authErr); }
+  passport.authenticate("local", (authErr, user) => {
+    if (authErr) { next(authErr); return; }
     if (!user) {
-      return res.status(401).json({ success: false, message: "Authentication failed." });
+      res.status(401).json({ success: false, message: "Authentication failed." });
+      return;
     }
     req.logIn(user, (loginErr) => {
-      if (loginErr) { return next(loginErr); }
-      return res.status(200).json({ success: true });
+      if (loginErr) { next(loginErr); return; }
+      res.status(200).json({ success: true });
     });
   })(req, res, next);
 });
@@ -75,7 +79,8 @@ auth.get("/logout", (req, res) => {
 
 auth.use((req, res, next) => {
   if (req.isAuthenticated()) {
-    return next();
+    next();
+    return;
   }
   res.status(401).json({ success: false, message: "User not authenticated." });
 });

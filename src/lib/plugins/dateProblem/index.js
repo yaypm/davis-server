@@ -13,8 +13,8 @@ class DateProblem extends Plugin {
     return {
       text: sb(req.user)
       .s("I'm sorry, I can't analyze problems by date at the moment,")
-      .s("however it appears that you asked about").s(req.slots["date"]).p,
-   };
+      .s("however it appears that you asked about").s(req.slots.date).p,
+    };
   }
 }
 

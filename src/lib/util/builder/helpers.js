@@ -9,7 +9,7 @@
  */
 async function audible(args, compact = false) {
   const sync = await Promise.all(args);
-  const strings = sync.map((arg) => (arg.audible) ? arg.audible(compact) : arg.toString());
+  const strings = sync.map(arg => (arg.audible) ? arg.audible(compact) : arg.toString());
   return joinSentence(strings);
 }
 
@@ -22,7 +22,7 @@ async function audible(args, compact = false) {
  */
 async function slackify(args, compact = false) {
   const sync = await Promise.all(args);
-  const slacks = sync.map((arg) => (arg.slack) ? arg.slack(compact) : arg.toString());
+  const slacks = sync.map(arg => (arg.slack) ? arg.slack(compact) : arg.toString());
   return joinSentence(slacks);
 }
 
@@ -34,7 +34,7 @@ async function slackify(args, compact = false) {
  */
 async function stringify(args) {
   const sync = await Promise.all(args);
-  const strings = sync.map((arg) => arg.toString());
+  const strings = sync.map(arg => arg.toString());
   return joinSentence(strings);
 }
 
@@ -87,4 +87,4 @@ module.exports = {
   audible,
   slackify,
   stringify,
-}
+};

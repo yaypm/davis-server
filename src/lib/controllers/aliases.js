@@ -1,7 +1,5 @@
 "use strict";
 
-const mongoose = require("mongoose");
-
 const AliasModel = require("../models/alias");
 
 /**

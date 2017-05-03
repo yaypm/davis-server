@@ -1,5 +1,5 @@
 const aws = require("aws-sdk");
-const logger = require("./logger")
+const logger = require("./logger");
 
 const LexModelBuildingService = aws.LexModelBuildingService;
 const LexRuntime = aws.LexRuntime;
@@ -151,8 +151,8 @@ class Lex {
           reject(err);
         }
         const lexEnd = process.hrtime();
-        const startms = lexStart[0] * 1000000 + lexStart[1] / 1000;
-        const endms = lexEnd[0] * 1000000 + lexEnd[1] / 1000;
+        const startms = lexStart[0] * 1000000 + lexStart[1] / 1000; // eslint-disable-line
+        const endms = lexEnd[0] * 1000000 + lexEnd[1] / 1000; // eslint-disable-line
         const lexTime = (endms - startms) / 1000;
         logger.debug(`Lex responded in ${lexTime.toFixed()} ms`);
         resolve(lexResponse);

@@ -1,6 +1,6 @@
 "use strict";
 
-const ContextModel = require("../models/context")
+const ContextModel = require("../models/context");
 
 class Contexts {
   static async getByScope(scope) {

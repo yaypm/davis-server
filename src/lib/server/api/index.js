@@ -21,15 +21,16 @@ v1.post("/ask", async (req, res) => {
   const validate = Joi.validate(req.body, schema);
 
   if (validate.error) {
-    return res.status(400).json({
+    res.status(400).json({
       message: validate.error.details[0].message,
       success: false,
     });
+    return;
   }
 
   const dreq = {
     raw: validate.value.raw,
-    source: 'web',
+    source: "web",
     user: req.user,
   };
 
@@ -49,7 +50,7 @@ v1.use("/system", system);
 v1.use("/dynatrace", dynatrace);
 
 // Global API Error Handler
-v1.use((err, req, res, next) => {
+v1.use((err, req, res) => {
   logger.error({ err });
   res.status(500).json({ success: false, message: "An unhandled error occurred" });
 });

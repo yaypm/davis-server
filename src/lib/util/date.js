@@ -29,13 +29,13 @@ class DDate {
    * @static
    * @param {(string | undefined)} date
    * @param {IUserModel} user
-   * @returns {({ startTime: number, stopTime: number, grain: string } | undefined)}
+   * @returns {({ startTime: number, stopTime: number, grain: string } | null)}
    *
    * @memberOf DDate
    */
   static dateParser(date, user) {
     if (!date) {
-      return;
+      return null;
     }
     // day
     // 2017-04-25
