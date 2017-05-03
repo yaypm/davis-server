@@ -9,7 +9,17 @@
             "request": "launch",
             "name": "Launch Program",
             "program": "${workspaceRoot}/src/index.js",
+            "protocol": "inspector",
             "cwd": "${workspaceRoot}"
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Windows Logging",
+            "program": "${workspaceRoot}/src/index.js",
+            "cwd": "${workspaceRoot}",
+            "protocol": "auto",
+            "runtimeExecutable": ".vscode\\nodeWithBunyan.bat"
         },
         {
             "type": "node",
