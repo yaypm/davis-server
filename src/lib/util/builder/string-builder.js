@@ -26,8 +26,6 @@ class StringBuilder {
   constructor(user) {
     this.user = user;
     this.state = [];
-    this.entitiesRunning = false;
-    this.aliases = Promise.resolve([]);
   }
 
   /**
@@ -75,7 +73,7 @@ class StringBuilder {
    * @memberOf StringBuilder
    */
   ts(val, compact) {
-    this.state.push(Promise.resolve(new TimeStamp(val, this.user.timezone, compact)));
+    this.state.push(new TimeStamp(val, this.user.timezone, compact));
     return this;
   }
 
@@ -103,7 +101,7 @@ class StringBuilder {
    * @memberOf StringBuilder
    */
   tr(start, end, compact) {
-    this.state.push(Promise.resolve(new TimeRange(start, end, this.user.timezone, compact)));
+    this.state.push(new TimeRange(start, end, this.user.timezone, compact));
     return this;
   }
 
@@ -138,7 +136,7 @@ class StringBuilder {
     if (count && count.constructor === Array) {
       return this.s(singular, plural, count.length);
     }
-    this.state.push(Promise.resolve(singular));
+    this.state.push(singular);
     return this;
   }
 
@@ -191,7 +189,7 @@ class StringBuilder {
   d(range) {
     const now = moment();
     const start = now.clone().subtract(moment.duration(range));
-    this.state.push(Promise.resolve(Util.Date.preciseDiff(now, start)));
+    this.state.push(Util.Date.preciseDiff(now, start));
     return this;
   }
 
@@ -215,7 +213,7 @@ class StringBuilder {
    * @memberOf StringBuilder
    */
   get p() {
-    this.state.push(Promise.resolve("."));
+    this.state.push(".");
     return this;
   }
 
@@ -238,7 +236,7 @@ class StringBuilder {
    * @memberOf StringBuilder
    */
   get c() {
-    this.state.push(Promise.resolve(","));
+    this.state.push(",");
     return this;
   }
 
@@ -261,7 +259,7 @@ class StringBuilder {
    * @memberOf StringBuilder
    */
   get q() {
-    this.state.push(Promise.resolve("?"));
+    this.state.push("?");
     return this;
   }
 
@@ -284,7 +282,7 @@ class StringBuilder {
    * @memberOf StringBuilder
    */
   get n() {
-    this.state.push(Promise.resolve("\n"));
+    this.state.push("\n");
     return this;
   }
 

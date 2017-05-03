@@ -8,8 +8,10 @@
  * @returns {Promise<string>}
  */
 async function audible(args, compact = false) {
-  const sync = await Promise.all(args);
-  const strings = sync.map(arg => (arg.audible) ? arg.audible(compact) : arg.toString());
+  const strings = await Promise.all(args.map(async arg =>
+    Promise.resolve(((await arg).audible) ?
+      (await arg).audible(compact) :
+      (await arg).toString())));
   return joinSentence(strings);
 }
 
@@ -21,8 +23,10 @@ async function audible(args, compact = false) {
  * @returns {Promise<string>}
  */
 async function slackify(args, compact = false) {
-  const sync = await Promise.all(args);
-  const slacks = sync.map(arg => (arg.slack) ? arg.slack(compact) : arg.toString());
+  const slacks = await Promise.all(args.map(async arg =>
+    Promise.resolve(((await arg).slack) ?
+      (await arg).slack(compact) :
+      (await arg).toString())));
   return joinSentence(slacks);
 }
 
@@ -33,8 +37,7 @@ async function slackify(args, compact = false) {
  * @returns {Promise<string>}
  */
 async function stringify(args) {
-  const sync = await Promise.all(args);
-  const strings = sync.map(arg => arg.toString());
+  const strings = await Promise.all(args.map(async arg => Promise.resolve((await arg).toString())));
   return joinSentence(strings);
 }
 
