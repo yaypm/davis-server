@@ -1,5 +1,6 @@
 const aws = require("aws-sdk");
 const logger = require("./logger");
+const timer = require("../util").timer;
 
 const LexModelBuildingService = aws.LexModelBuildingService;
 const LexRuntime = aws.LexRuntime;
@@ -138,7 +139,7 @@ class Lex {
    */
   async ask(inp, scope) {
     logger.debug(`Asking Lex: ${inp}`);
-    const lexStart = process.hrtime();
+    const lexRequestTimer = timer();
     const data = await new Promise((resolve, reject) => {
       this.lexRuntime.postText({
         botAlias: this.alias,
@@ -150,11 +151,7 @@ class Lex {
           logger.error({ err });
           reject(err);
         }
-        const lexEnd = process.hrtime();
-        const startms = lexStart[0] * 1000000 + lexStart[1] / 1000; // eslint-disable-line
-        const endms = lexEnd[0] * 1000000 + lexEnd[1] / 1000; // eslint-disable-line
-        const lexTime = (endms - startms) / 1000;
-        logger.debug(`Lex responded in ${lexTime.toFixed()} ms`);
+        logger.debug(`Lex responded in ${lexRequestTimer()} ms`);
         resolve(lexResponse);
       });
     });

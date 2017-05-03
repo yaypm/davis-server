@@ -66,7 +66,10 @@ class Davis {
 
     const request = await this.createRequest(req, plugin, slots);
 
-    const res = await plugin.run(request);
+    logger.debug(`Executing plugin ${plugin.name}`);
+    const plugTimer = Util.timer();
+    const res = await plugin.ask(request);
+    logger.debug(`Plugin responded in ${plugTimer()} ms`);
 
     return this.formatResponse(res);
   }

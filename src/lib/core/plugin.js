@@ -1,7 +1,5 @@
 "use strict";
 
-const logger = require("./logger");
-
 /**
  *
  *
@@ -11,24 +9,6 @@ const logger = require("./logger");
 class Plugin {
   parseSlots(user, slots) {
     return slots;
-  }
-
-  /**
-   *
-   *
-   * @param {IDavisRequest} req
-   * @returns {Promise<IDavisResponse>}
-   *
-   * @memberOf Plugin
-   */
-  async run(req) {
-    logger.info(`Executing plugin ${this.name}`);
-    const start = process.hrtime();
-    const res = await this.ask(req);
-    const end = process.hrtime();
-    const plugTime = ((end[0] * 1000000 + end[1] / 1000) - (start[0] * 1000000 + start[1] / 1000)) / 1000; // eslint-disable-line
-    logger.debug(`Plugin responded in ${plugTime.toFixed()} ms`);
-    return res;
   }
 
   /**
