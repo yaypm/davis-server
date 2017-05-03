@@ -10,5 +10,6 @@
     },
     "editor.tabSize": 2,
     "editor.insertSpaces": true,
-    "workbench.quickOpen.closeOnFocusLost": false
+    "workbench.quickOpen.closeOnFocusLost": false,
+    "eslint.enable": true
 }
