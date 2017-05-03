@@ -8,7 +8,7 @@
             "type": "node",
             "request": "launch",
             "name": "Launch Program",
-            "program": "${workspaceRoot}/src/index.tj",
+            "program": "${workspaceRoot}/src/index.js",
             "cwd": "${workspaceRoot}"
         },
         {
