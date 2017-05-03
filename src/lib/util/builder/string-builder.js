@@ -179,8 +179,8 @@ class StringBuilder {
    * @memberOf StringBuilder
    */
   d(range) {
-    const start = moment().subtract(moment.duration(range));
     const now = moment();
+    const start = now.clone().subtract(moment.duration(range));
     this.state.push(Promise.resolve(Util.Date.preciseDiff(now, start)));
     return this;
   }
