@@ -41,10 +41,13 @@ const contextSchema = new mongoose.Schema({
   // for various routing
   // intents
   targets: {
-    default: {},
+    default: { yes: null, no: null, num: { intent: null, choices: [] } },
     type: {
       no: String,
-      num: String,
+      num: {
+        intent: String,
+        choices: [],
+      },
       yes: String,
     },
   },
@@ -53,6 +56,11 @@ const contextSchema = new mongoose.Schema({
   // whenever pushLink is
   // invoked
   url: String,
+
+  // Expire after 5 minutes
+  updatedAt: { type: Date, expires: 300 },
+}, {
+  timestamps: true,
 });
 
 module.exports = mongoose.model("Context", contextSchema);

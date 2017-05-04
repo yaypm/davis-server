@@ -34,7 +34,7 @@ class Davis {
     this.plugins = {};
     logger.debug("Loading plugins");
     plugins.forEach((Plug) => {
-      const plug = new Plug();
+      const plug = new Plug(this);
       this.plugins[plug.name] = plug;
     });
     logger.info(`Loaded ${Object.keys(this.plugins).length} plugins.`);
@@ -95,6 +95,7 @@ class Davis {
    * @memberOf Davis
    */
   async fulfill(lexResponse, req) {
+    logger.debug(`Lex found ${lexResponse.intentName}`);
     const plugin = this.plugins[lexResponse.intentName] || this.plugins.lexVersionMismatch;
     const slots = lexResponse.slots || {};
 
@@ -106,7 +107,10 @@ class Davis {
 
     const res = await plugin.run(request);
 
-    request.context.intentHistory.push(res.intentName);
+    request.context.intentHistory.push(res.intent);
+    if (res.targets) {
+      request.context.targets = res.targets;
+    }
     await request.context.save();
 
     return this.formatResponse(res);

@@ -1,8 +1,8 @@
 "use strict";
 
-const Dynatrace = require("../../core/dynatrace");
-const Plugin = require("../../core/plugin");
-const sb = require("../../util/builder").sb;
+const Dynatrace = require("../../../core/dynatrace");
+const Plugin = require("../../../core/plugin");
+const sb = require("../../../util/builder").sb;
 
 /**
  * Plugin for asking about a recent range
@@ -131,6 +131,12 @@ function manyProblems(user, range, problems) {
   return {
     text: sb(user)
       .s("In the last").d(range).c.s(problems.length).s("problems occurred."),
+    targets: {
+      num: {
+        intent: "detailProblem",
+        choices: problems.map(p => p.id),
+      },
+    },
   };
 }
 

@@ -1,7 +1,7 @@
 "use strict";
 
-const Plugin = require("../../core/plugin");
-const sb = require("../../util/builder").sb;
+const Plugin = require("../../../core/plugin");
+const sb = require("../../../util/builder").sb;
 
 class DateProblem extends Plugin {
   constructor() {

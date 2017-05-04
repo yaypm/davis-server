@@ -1,8 +1,8 @@
 "use strict";
 
-const Dynatrace = require("../../core/dynatrace");
-const Plugin = require("../../core/plugin");
-const sb = require("../../util/builder").sb;
+const Dynatrace = require("../../../core/dynatrace");
+const Plugin = require("../../../core/plugin");
+const sb = require("../../../util/builder").sb;
 
 /**
  * Plugin for asking about open issues

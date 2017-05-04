@@ -10,6 +10,10 @@ const logger = require("./logger");
  * @class Plugin
  */
 class Plugin {
+  constructor(davis) {
+    this.davis = davis;
+  }
+
   parseSlots(user, slots) {
     return slots;
   }
@@ -18,7 +22,7 @@ class Plugin {
    * Plugin main method wrapper
    *
    * @param {IDavisRequest} req
-   * @returns
+   * @returns {IDavisResponse}
    *
    * @memberOf RangeProblem
    */
@@ -26,6 +30,25 @@ class Plugin {
     logger.debug(`Executing ${this.name}`);
     const timer = Util.timer();
     const res = await this.ask(req);
+    const elapsed = timer();
+    res.intent = res.intent || this.name;
+    logger.debug(`Executed ${this.name} in ${elapsed} ms`);
+    return res;
+  }
+
+  /**
+   * Wrapper for numeric choice handler
+   *
+   * @param {IDavisRequest} req
+   * @param {Number} choice
+   * @returns {IDavisResponse}
+   *
+   * @memberOf Plugin
+   */
+  async _choose(req, choice) {
+    logger.debug(`Executing ${this.name}`);
+    const timer = Util.timer();
+    const res = await this.choose(req, choice);
     const elapsed = timer();
     res.intent = res.intent || this.name;
     logger.debug(`Executed ${this.name} in ${elapsed} ms`);
