@@ -67,7 +67,7 @@ class Plugin {
   async _yes(req, value) {
     logger.debug(`Executing ${this.name}`);
     const timer = Util.timer();
-    const res = await this.yes(req, value);
+    const res = await (this.yes) ? this.yes(req, value) : this.ask(req);
     const elapsed = timer();
     res.intent = res.intent || this.name;
     logger.debug(`Executed ${this.name} in ${elapsed} ms`);
@@ -86,7 +86,7 @@ class Plugin {
   async _no(req, value) {
     logger.debug(`Executing ${this.name}`);
     const timer = Util.timer();
-    const res = await this.no(req, value);
+    const res = await (this.no) ? this.no(req, value) : this.ask(req);
     const elapsed = timer();
     res.intent = res.intent || this.name;
     logger.debug(`Executed ${this.name} in ${elapsed} ms`);
