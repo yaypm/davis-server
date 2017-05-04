@@ -41,14 +41,33 @@ const contextSchema = new mongoose.Schema({
   // for various routing
   // intents
   targets: {
-    default: { yes: null, no: null, num: { intent: null, choices: [] } },
+    default: {
+      yes: {
+        intent: null,
+        value: {},
+      },
+      no: {
+        intent: null,
+        value: {},
+      },
+      num: {
+        intent: null,
+        choices: [],
+      },
+    },
     type: {
-      no: String,
+      yes: {
+        intent: String,
+        value: {},
+      },
+      no: {
+        intent: String,
+        value: {},
+      },
       num: {
         intent: String,
         choices: [],
       },
-      yes: String,
     },
   },
 

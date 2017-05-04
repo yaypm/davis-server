@@ -9,6 +9,8 @@ module.exports = [
   require("./problems/detailProblem"),
 
   require("./choice/numericChoice"),
+  require("./choice/yes"),
+  require("./choice/no"),
 
   require("./lexVersionMismatch"),
 ];

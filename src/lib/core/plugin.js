@@ -56,6 +56,44 @@ class Plugin {
   }
 
   /**
+   * Wrapper for yes choice handler
+   *
+   * @param {IDavisRequest} req
+   * @param {any} value
+   * @returns {IDavisResponse}
+   *
+   * @memberOf Plugin
+   */
+  async _yes(req, value) {
+    logger.debug(`Executing ${this.name}`);
+    const timer = Util.timer();
+    const res = await this.yes(req, value);
+    const elapsed = timer();
+    res.intent = res.intent || this.name;
+    logger.debug(`Executed ${this.name} in ${elapsed} ms`);
+    return res;
+  }
+
+  /**
+   * Wrapper for no choice handler
+   *
+   * @param {IDavisRequest} req
+   * @param {any} value
+   * @returns {IDavisResponse}
+   *
+   * @memberOf Plugin
+   */
+  async _no(req, value) {
+    logger.debug(`Executing ${this.name}`);
+    const timer = Util.timer();
+    const res = await this.no(req, value);
+    const elapsed = timer();
+    res.intent = res.intent || this.name;
+    logger.debug(`Executed ${this.name} in ${elapsed} ms`);
+    return res;
+  }
+
+  /**
    *
    *
    * @param {IDavisButton} req
