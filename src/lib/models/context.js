@@ -3,7 +3,6 @@
 const mongoose = require("mongoose");
 
 const contextSchema = new mongoose.Schema({
-  attrs: [{}],
   filters: {
     default: {},
     type: {
