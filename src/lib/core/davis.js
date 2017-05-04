@@ -4,6 +4,7 @@ const Contexts = require("../controllers/contexts");
 const Util = require("../util");
 const lex = require("./lex");
 const logger = require("./logger");
+const _ = require("lodash");
 
 const plugins = require("../plugins");
 
@@ -109,7 +110,7 @@ class Davis {
 
     request.context.intentHistory.push(res.intent);
     if (res.targets) {
-      request.context.targets = res.targets;
+      _.assign(request.context.targets, res.targets);
     }
     await request.context.save();
 
