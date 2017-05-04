@@ -1,15 +1,21 @@
 "use strict";
 
-const _ = require("lodash");
-
 const Contexts = require("../controllers/contexts");
 const Util = require("../util");
 const lex = require("./lex");
 const logger = require("./logger");
 
-const { DateProblem, RangeProblem, OpenProblem, LexVersionMismatch } = require("../plugins");
+const plugins = require("../plugins");
 
 class Davis {
+  /**
+   * Get singleton instance
+   *
+   * @static
+   * @returns
+   *
+   * @memberOf Davis
+   */
   static getInstance() {
     if (Davis.instance) {
       return Davis.instance;
@@ -18,16 +24,30 @@ class Davis {
     return Davis.instance;
   }
 
+  /**
+   * Creates an instance of Davis. Loads plugins
+   *
+   *
+   * @memberOf Davis
+   */
   constructor() {
-    this.plugins = [];
+    this.plugins = {};
     logger.debug("Loading plugins");
-    this.plugins.push(new DateProblem());
-    this.plugins.push(new RangeProblem());
-    this.plugins.push(new OpenProblem());
-    this.plugins.push(new LexVersionMismatch());
-    logger.info(`Finished loading ${this.plugins.length} plugins.`);
+    plugins.forEach((Plug) => {
+      const plug = new Plug();
+      this.plugins[plug.name] = plug;
+    });
+    logger.info(`Finished loading ${Object.keys(this.plugins).length} plugins.`);
   }
 
+  /**
+   * Ask davis a question
+   *
+   * @param {IRawRequest} req
+   * @returns {Promise<IDavisResponse>}
+   *
+   * @memberOf Davis
+   */
   async ask(req) {
     const lexResponse = await lex.ask(req.raw, "tempscope");
 
@@ -46,6 +66,14 @@ class Davis {
     };
   }
 
+  /**
+   * Fill in the missing pieces of {say, show, text}
+   *
+   * @param {IDavisResponse} res
+   * @returns {Promise<IDavisResponse>}
+   *
+   * @memberOf Davis
+   */
   async formatResponse(res) {
     res.say = res.say || res.text;
     res.show = res.show || { text: res.text };
@@ -56,8 +84,17 @@ class Davis {
     return res;
   }
 
+  /**
+   * Fulfill an intent
+   *
+   * @param {LexRuntime.PostTextResponse} lexResponse
+   * @param {IRawRequest} req
+   * @returns {Promise<IDavisResponse>}
+   *
+   * @memberOf Davis
+   */
   async fulfill(lexResponse, req) {
-    const plugin = this.getPlugin(lexResponse.intentName);
+    const plugin = this.plugins[lexResponse.intentName] || this.plugins.lexVersionMismatch;
     const slots = lexResponse.slots || {};
 
     if (!plugin) {
@@ -74,12 +111,16 @@ class Davis {
     return this.formatResponse(res);
   }
 
-  getPlugin(name) {
-    return (name) ?
-      _.find(this.plugins, { name }) :
-      _.find(this.plugins, { name: "lexVersionMismatch" });
-  }
-
+  /**
+   * Build a Davis Request from a Raw Request
+   *
+   * @param {IRawRequest} req
+   * @param {Plugin} plugin
+   * @param {ISlots} slots
+   * @returns {IDavisRequest}
+   *
+   * @memberOf Davis
+   */
   async createRequest(req, plugin, slots) {
     return {
       context: await Contexts.getByScope("user:web:source"),
