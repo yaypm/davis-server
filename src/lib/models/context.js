@@ -75,11 +75,10 @@ const contextSchema = new mongoose.Schema({
   // whenever pushLink is
   // invoked
   url: String,
-
-  // Expire after 5 minutes
-  updatedAt: { type: Date, expires: 300 },
 }, {
   timestamps: true,
 });
+
+contextSchema.index({ updatedAt: 1 }, { expires: 300 });
 
 module.exports = mongoose.model("Context", contextSchema);
