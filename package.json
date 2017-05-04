@@ -7,7 +7,9 @@
     "start": "node src/index.js",
     "test": "mocha tests/all.js -s 0"
   },
-  "pre-push": ["test"],
+  "pre-push": [
+    "test"
+  ],
   "author": "Dynatrace Davis Team",
   "license": "MIT",
   "devDependencies": {
