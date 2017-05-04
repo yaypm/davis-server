@@ -75,13 +75,14 @@ class Davis {
    * @memberOf Davis
    */
   async formatResponse(res) {
-    res.say = res.say || res.text;
-    res.show = res.show || { text: res.text };
+    const out = { text: res.text };
+    out.say = res.say || res.text;
+    out.show = res.show || { text: res.text };
 
-    res.text = (typeof res.text === "string") ? res.text : await res.text.toString();
-    res.say = (typeof res.say === "string") ? res.say : await res.say.audible();
-    res.show.text = (typeof res.show.text === "string") ? res.show.text : await res.show.text.toString();
-    return res;
+    out.text = (typeof out.text === "string") ? out.text : await out.text.toString();
+    out.say = (typeof out.say === "string") ? out.say : await out.say.audible();
+    out.show.text = (typeof out.show.text === "string") ? out.show.text : await out.show.text.toString();
+    return out;
   }
 
   /**
