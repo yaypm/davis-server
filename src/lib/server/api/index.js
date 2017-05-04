@@ -30,7 +30,7 @@ v1.post("/ask", async (req, res) => {
 
   const dreq = {
     raw: validate.value.raw,
-    source: "web",
+    scope: `web:${req.user.email}`,
     user: req.user,
   };
 

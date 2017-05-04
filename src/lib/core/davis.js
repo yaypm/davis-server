@@ -49,7 +49,7 @@ class Davis {
    * @memberOf Davis
    */
   async ask(req) {
-    const lexResponse = await lex.ask(req.raw, "tempscope");
+    const lexResponse = await lex.ask(req.raw, req.scope);
 
     if (lexResponse.dialogState === "ReadyForFulfillment") {
       return this.fulfill(lexResponse, req);
@@ -123,14 +123,14 @@ class Davis {
    */
   async createRequest(req, plugin, slots) {
     return {
-      context: await Contexts.getByScope("user:web:source"),
+      context: await Contexts.getByScope(req.scope),
       intent: plugin.name,
       nlp: {
         timeRange: Util.Date.dateParser(slots.date, req.user),
       },
       raw: req.raw,
       slots: plugin.parseSlots(req.user, slots),
-      source: req.source,
+      scope: req.scope,
       user: req.user,
     };
   }

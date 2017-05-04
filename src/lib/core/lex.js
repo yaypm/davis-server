@@ -1,4 +1,5 @@
 const aws = require("aws-sdk");
+const crypto = require("crypto");
 const logger = require("./logger");
 const timer = require("../util").timer;
 
@@ -140,12 +141,13 @@ class Lex {
   async ask(inp, scope) {
     logger.debug(`Asking Lex: ${inp}`);
     const lexRequestTimer = timer();
+    const userId = await crypto.createHash("sha256").update(scope, "utf8").digest();
     const data = await new Promise((resolve, reject) => {
       this.lexRuntime.postText({
         botAlias: this.alias,
         botName: this.name,
         inputText: inp,
-        userId: scope,
+        userId,
       }, (err, lexResponse) => {
         if (err) {
           logger.error({ err });
