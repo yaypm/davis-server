@@ -139,9 +139,9 @@ class Lex {
    * @memberOf Lex
    */
   async ask(inp, scope) {
-    logger.debug(`Asking Lex: ${inp}`);
+    logger.info(`Asking Lex: ${inp}`);
     const lexRequestTimer = timer();
-    const userId = await crypto.createHash("sha256").update(scope, "utf8").digest();
+    const userId = await crypto.createHash("sha256").update(scope, "utf8").digest("hex");
     const data = await new Promise((resolve, reject) => {
       this.lexRuntime.postText({
         botAlias: this.alias,

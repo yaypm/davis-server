@@ -37,7 +37,7 @@ class Davis {
       const plug = new Plug();
       this.plugins[plug.name] = plug;
     });
-    logger.info(`Finished loading ${Object.keys(this.plugins).length} plugins.`);
+    logger.info(`Loaded ${Object.keys(this.plugins).length} plugins.`);
   }
 
   /**
@@ -103,10 +103,10 @@ class Davis {
 
     const request = await this.createRequest(req, plugin, slots);
 
-    logger.debug(`Executing plugin ${plugin.name}`);
-    const plugTimer = Util.timer();
-    const res = await plugin.ask(request);
-    logger.debug(`Plugin responded in ${plugTimer()} ms`);
+    const res = await plugin.run(request);
+
+    request.context.intentHistory.push(res.intentName);
+    await request.context.save();
 
     return this.formatResponse(res);
   }

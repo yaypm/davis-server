@@ -22,7 +22,7 @@ class RangeProblem extends Plugin {
    * Main plugin method
    *
    * @param {IDavisRequest} req
-   * @returns
+   * @returns {IDavisResponse}
    *
    * @memberOf RangeProblem
    */

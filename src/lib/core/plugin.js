@@ -1,5 +1,8 @@
 "use strict";
 
+const Util = require("../util");
+const logger = require("./logger");
+
 /**
  *
  *
@@ -9,6 +12,24 @@
 class Plugin {
   parseSlots(user, slots) {
     return slots;
+  }
+
+  /**
+   * Plugin main method wrapper
+   *
+   * @param {IDavisRequest} req
+   * @returns
+   *
+   * @memberOf RangeProblem
+   */
+  async run(req) {
+    logger.debug(`Executing ${this.name}`);
+    const timer = Util.timer();
+    const res = await this.ask(req);
+    const elapsed = timer();
+    res.intent = res.intent || this.name;
+    logger.debug(`Executed ${this.name} in ${elapsed} ms`);
+    return res;
   }
 
   /**
