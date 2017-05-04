@@ -7,6 +7,12 @@ const logger = require("./logger");
 
 const plugins = require("../plugins");
 
+// eslint-disable-next-line
+const yes = /^(please |thanks|thank you)?(yes|yep|yea|yessir|sure|correct|absolutely|definitely|totally|affirmative|by all means|go for it|ok(ay)?|please) ?(please|thanks|thank you)?$/i;
+
+// eslint-disable-next-line
+const no = /^(please|thanks|thank you)? ?(no|nope|naw|no way|negative|absolutely not|nothing) ?(please|thanks|thank you)?$|^(please|thanks|thank you)? ?(none|neither)( of (them|those))? ?(please|thanks|thank you)?$|^(please|thanks|thank you)? ?(Im|I am) not interested in (either|any)( of (them|those))? ?(please|thanks|thank you)?$/i;
+
 class Davis {
   /**
    * Get singleton instance
@@ -49,7 +55,21 @@ class Davis {
    * @memberOf Davis
    */
   async ask(req) {
-    const lexResponse = await lex.ask(req.raw, req.scope);
+    const lexResponse = (yes.test(req.raw)) ? ({
+      intentName: "yes",
+      slots: {},
+      message: null,
+      dialogState: "ReadyForFulfillment",
+      slotToElicit: null,
+    }) :
+      (no.test(req.raw)) ? ({
+        intentName: "no",
+        slots: {},
+        message: null,
+        dialogState: "ReadyForFulfillment",
+        slotToElicit: null,
+      }) :
+        await lex.ask(req.raw, req.scope);
 
     if (lexResponse.dialogState === "ReadyForFulfillment") {
       return this.fulfill(lexResponse, req);
