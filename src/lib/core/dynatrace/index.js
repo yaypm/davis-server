@@ -3,6 +3,7 @@ const rp = require("request-promise");
 const _ = require("lodash");
 
 const Aliases = require("../../controllers/aliases");
+const ProblemDetails = require("../../controllers/problemDetails");
 const logger = require("../logger");
 
 /**
@@ -182,8 +183,15 @@ class Dynatrace {
    * @memberOf Dynatrace
    */
   static async problemDetails(user, pid) {
+    const details = await ProblemDetails.get(user, pid);
+    if (details) {
+      return details;
+    }
     const res = await Dynatrace.get(user, `problem/details/${pid}`);
-    return res.result;
+    if (res.result.status === "OPEN") {
+      return res.result;
+    }
+    return ProblemDetails.create(user, res.result);
   }
 
   /**
