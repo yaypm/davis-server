@@ -28,7 +28,7 @@ class NumericChoice extends Plugin {
     const idx = choices[choice];
     logger.debug({ choice: { type: "numeric", choice, idx } });
     const target = req.context.targets.num.intent;
-    if (!target || !idx) {
+    if (!target || idx === undefined) {
       return {
         text: "I'm sorry, but I'm not sure what you mean.",
       };
