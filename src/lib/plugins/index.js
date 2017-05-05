@@ -2,9 +2,15 @@
 
 /* eslint-disable */
 
-module.exports = {
-  DateProblem: require("./dateProblem"),
-  LexVersionMismatch: require("./lexVersionMismatch"),
-  OpenProblem: require("./openProblem"),
-  RangeProblem: require("./rangeProblem"),
-};
+module.exports = [
+  require("./problems/dateProblem"),
+  require("./problems/openProblem"),
+  require("./problems/rangeProblem"),
+  require("./problems/detailProblem"),
+
+  require("./choice/numericChoice"),
+  require("./choice/yes"),
+  require("./choice/no"),
+
+  require("./lexVersionMismatch"),
+];

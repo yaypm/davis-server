@@ -3,6 +3,7 @@ const rp = require("request-promise");
 const _ = require("lodash");
 
 const Aliases = require("../../controllers/aliases");
+const ProblemDetails = require("../../controllers/problemDetails");
 const logger = require("../logger");
 
 /**
@@ -182,8 +183,15 @@ class Dynatrace {
    * @memberOf Dynatrace
    */
   static async problemDetails(user, pid) {
+    const details = await ProblemDetails.get(user, pid);
+    if (details) {
+      return details;
+    }
     const res = await Dynatrace.get(user, `problem/details/${pid}`);
-    return res.result;
+    if (res.result.status === "OPEN") {
+      return res.result;
+    }
+    return ProblemDetails.create(user, res.result);
   }
 
   /**
@@ -216,10 +224,8 @@ class Dynatrace {
    */
   static problemStats(problems) {
     return {
-      affectedApps: Dynatrace.affectedEntityByType(problems, "APPLICATION"),
-      counts: {
-        hourly: Dynatrace.countByHour(problems),
-      },
+      affectedEntities: Dynatrace.affectedEntityByType(problems),
+      hourly: Dynatrace.groupByHour(problems),
       firstProblem: _.minBy(problems, "startTime"),
       lastProblem: _.maxBy(problems, "startTime"),
       openProblems: _.filter(problems, { status: "OPEN" }),
@@ -227,16 +233,16 @@ class Dynatrace {
   }
 
   /**
-   * Count the number of problems in each hour
+   * Group problems by the hour in which they start
    *
    * @static
    * @param {IProblem[]} problems
-   * @returns
+   * @returns {[hour: string]: IProblem[]}
    *
    * @memberOf Dynatrace
    */
-  static countByHour(problems) {
-    return _.countBy(problems, problem => (Math.floor(problem.startTime / 3600000) * 3600000));
+  static groupByHour(problems) {
+    return _.groupBy(problems, problem => (Math.floor(problem.startTime / 3600000) * 3600000));
   }
 
   /**
@@ -244,21 +250,20 @@ class Dynatrace {
    *
    * @static
    * @param {IProblem[]} problems
-   * @param {string} type
    * @returns
    *
    * @memberOf Dynatrace
    */
-  static affectedEntityByType(problems, type) {
-    const apps = {};
+  static affectedEntityByType(problems) {
+    const entities = {};
     problems.forEach((problem) => {
       problem.rankedImpacts.forEach((impact) => {
-        if (impact.impactLevel === type) {
-          apps[impact.entityId] = impact.entityName;
-        }
+        const entityType = impact.impactLevel; // impact.entityId.split("-")[0];
+        entities[entityType] = entities[entityType] || {};
+        entities[entityType][impact.entityId] = impact.entityName;
       });
     });
-    return apps;
+    return entities;
   }
 
   /**

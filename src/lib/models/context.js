@@ -3,7 +3,6 @@
 const mongoose = require("mongoose");
 
 const contextSchema = new mongoose.Schema({
-  attrs: [{}],
   filters: {
     default: {},
     type: {
@@ -42,11 +41,33 @@ const contextSchema = new mongoose.Schema({
   // for various routing
   // intents
   targets: {
-    default: {},
+    default: {
+      yes: {
+        intent: null,
+        value: {},
+      },
+      no: {
+        intent: null,
+        value: {},
+      },
+      num: {
+        intent: null,
+        choices: [],
+      },
+    },
     type: {
-      no: String,
-      num: String,
-      yes: String,
+      yes: {
+        intent: String,
+        value: {},
+      },
+      no: {
+        intent: String,
+        value: {},
+      },
+      num: {
+        intent: String,
+        choices: [],
+      },
     },
   },
 
@@ -54,6 +75,10 @@ const contextSchema = new mongoose.Schema({
   // whenever pushLink is
   // invoked
   url: String,
+}, {
+  timestamps: true,
 });
+
+contextSchema.index({ updatedAt: 1 }, { expires: 300 });
 
 module.exports = mongoose.model("Context", contextSchema);

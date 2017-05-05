@@ -1,5 +1,7 @@
 const aws = require("aws-sdk");
+const crypto = require("crypto");
 const logger = require("./logger");
+const timer = require("../util").timer;
 
 const LexModelBuildingService = aws.LexModelBuildingService;
 const LexRuntime = aws.LexRuntime;
@@ -137,24 +139,21 @@ class Lex {
    * @memberOf Lex
    */
   async ask(inp, scope) {
-    logger.debug(`Asking Lex: ${inp}`);
-    const lexStart = process.hrtime();
+    logger.info(`Asking Lex: ${inp}`);
+    const lexRequestTimer = timer();
+    const userId = await crypto.createHash("sha256").update(scope, "utf8").digest("hex");
     const data = await new Promise((resolve, reject) => {
       this.lexRuntime.postText({
         botAlias: this.alias,
         botName: this.name,
         inputText: inp,
-        userId: scope,
+        userId,
       }, (err, lexResponse) => {
         if (err) {
           logger.error({ err });
           reject(err);
         }
-        const lexEnd = process.hrtime();
-        const startms = lexStart[0] * 1000000 + lexStart[1] / 1000; // eslint-disable-line
-        const endms = lexEnd[0] * 1000000 + lexEnd[1] / 1000; // eslint-disable-line
-        const lexTime = (endms - startms) / 1000;
-        logger.debug(`Lex responded in ${lexTime.toFixed()} ms`);
+        logger.debug(`Lex responded in ${lexRequestTimer()} ms`);
         resolve(lexResponse);
       });
     });

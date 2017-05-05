@@ -1,5 +1,6 @@
 "use strict";
 
+const Util = require("../util");
 const logger = require("./logger");
 
 /**
@@ -9,25 +10,86 @@ const logger = require("./logger");
  * @class Plugin
  */
 class Plugin {
+  constructor(davis) {
+    this.davis = davis;
+  }
+
   parseSlots(user, slots) {
     return slots;
   }
 
   /**
-   *
+   * Plugin main method wrapper
    *
    * @param {IDavisRequest} req
-   * @returns {Promise<IDavisResponse>}
+   * @returns {IDavisResponse}
+   *
+   * @memberOf RangeProblem
+   */
+  async run(req) {
+    logger.debug(`Executing ${this.name}`);
+    const timer = Util.timer();
+    const res = await this.ask(req);
+    const elapsed = timer();
+    res.intent = res.intent || this.name;
+    logger.debug(`Executed ${this.name} in ${elapsed} ms`);
+    return res;
+  }
+
+  /**
+   * Wrapper for numeric choice handler
+   *
+   * @param {IDavisRequest} req
+   * @param {Number} choice
+   * @returns {IDavisResponse}
    *
    * @memberOf Plugin
    */
-  async run(req) {
-    logger.info(`Executing plugin ${this.name}`);
-    const start = process.hrtime();
-    const res = await this.ask(req);
-    const end = process.hrtime();
-    const plugTime = ((end[0] * 1000000 + end[1] / 1000) - (start[0] * 1000000 + start[1] / 1000)) / 1000; // eslint-disable-line
-    logger.debug(`Plugin responded in ${plugTime.toFixed()} ms`);
+  async _choose(req, choice) {
+    logger.debug(`Executing ${this.name}`);
+    const timer = Util.timer();
+    const res = await this.choose(req, choice);
+    const elapsed = timer();
+    res.intent = res.intent || this.name;
+    logger.debug(`Executed ${this.name} in ${elapsed} ms`);
+    return res;
+  }
+
+  /**
+   * Wrapper for yes choice handler
+   *
+   * @param {IDavisRequest} req
+   * @param {any} value
+   * @returns {IDavisResponse}
+   *
+   * @memberOf Plugin
+   */
+  async _yes(req, value) {
+    logger.debug(`Executing ${this.name}`);
+    const timer = Util.timer();
+    const res = await (this.yes) ? this.yes(req, value) : this.ask(req);
+    const elapsed = timer();
+    res.intent = res.intent || this.name;
+    logger.debug(`Executed ${this.name} in ${elapsed} ms`);
+    return res;
+  }
+
+  /**
+   * Wrapper for no choice handler
+   *
+   * @param {IDavisRequest} req
+   * @param {any} value
+   * @returns {IDavisResponse}
+   *
+   * @memberOf Plugin
+   */
+  async _no(req, value) {
+    logger.debug(`Executing ${this.name}`);
+    const timer = Util.timer();
+    const res = await (this.no) ? this.no(req, value) : this.ask(req);
+    const elapsed = timer();
+    res.intent = res.intent || this.name;
+    logger.debug(`Executed ${this.name} in ${elapsed} ms`);
     return res;
   }
 

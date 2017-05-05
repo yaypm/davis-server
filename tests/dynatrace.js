@@ -20,7 +20,7 @@ describe("Dynatrace", () => {
   });
 
   it("should compute stats about problems from the feed", () => {
-    const stats = Dynatrace.problemStats(problems);
-    expect(stats).to.deep.equal(stats);
+    const computed = Dynatrace.problemStats(problems);
+    expect(computed).to.deep.equal(stats);
   });
 });

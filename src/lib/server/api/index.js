@@ -30,13 +30,13 @@ v1.post("/ask", async (req, res) => {
 
   const dreq = {
     raw: validate.value.raw,
-    source: "web",
+    scope: `${req.user.activeTenant.url}:web:${req.user.email}`,
     user: req.user,
   };
 
   try {
     const dres = await davis.ask(dreq);
-    res.status(200).json(dres);
+    res.status(200).json({ success: true, response: dres });
   } catch (err) {
     logger.error(err);
     res.status(500).json({

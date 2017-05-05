@@ -26,8 +26,6 @@ class StringBuilder {
   constructor(user) {
     this.user = user;
     this.state = [];
-    this.entitiesRunning = false;
-    this.aliases = Promise.resolve([]);
   }
 
   /**
@@ -75,7 +73,7 @@ class StringBuilder {
    * @memberOf StringBuilder
    */
   ts(val, compact) {
-    this.state.push(Promise.resolve(new TimeStamp(val, this.user.timezone, compact)));
+    this.state.push(new TimeStamp(val, this.user.timezone, compact));
     return this;
   }
 
@@ -103,7 +101,7 @@ class StringBuilder {
    * @memberOf StringBuilder
    */
   tr(start, end, compact) {
-    this.state.push(Promise.resolve(new TimeRange(start, end, this.user.timezone, compact)));
+    this.state.push(new TimeRange(start, end, this.user.timezone, compact));
     return this;
   }
 
@@ -122,28 +120,42 @@ class StringBuilder {
   }
 
   /**
-   *    * Push a stringable or slackable object
+   * Add a buildable object with optional pluralization
    *
-   * @param {IBuildable} item
-   * @returns
+   * @param {IBuildable} singular
+   * @param {IBuildable} plural
+   * @param {number | any[]} count
+   * @returns {StringBuilder} this
    *
    * @memberOf StringBuilder
    */
-  s(item) {
-    this.state.push(Promise.resolve(item));
+  s(singular, plural, count) {
+    if (singular && singular.constructor && singular.constructor === Array) {
+      this.state.push(_.sample(singular));
+      return this;
+    }
+    if (typeof count === "number") {
+      return (count === 1) ? this.s(singular) : this.s(plural);
+    }
+    if (count && count.constructor === Array) {
+      return this.s(singular, plural, count.length);
+    }
+    this.state.push(singular);
     return this;
   }
 
   /**
-   *    * Push a stringable or slackable object
+   * Add a buildable object with optional pluralization
    *
-   * @param {IBuildable} item
-   * @returns
+   * @param {IBuildable} singular
+   * @param {IBuildable} plural
+   * @param {number | any[]} count
+   * @returns {StringBuilder} this
    *
    * @memberOf StringBuilder
    */
-  stringable(item) {
-    return this.s(item);
+  stringable(singular, plural, count) {
+    return this.s(singular, plural, count);
   }
 
   /**
@@ -179,9 +191,9 @@ class StringBuilder {
    * @memberOf StringBuilder
    */
   d(range) {
-    const start = moment().subtract(moment.duration(range));
     const now = moment();
-    this.state.push(Promise.resolve(Util.Date.preciseDiff(now, start)));
+    const start = now.clone().subtract(moment.duration(range));
+    this.state.push(Util.Date.preciseDiff(now, start));
     return this;
   }
 
@@ -205,7 +217,7 @@ class StringBuilder {
    * @memberOf StringBuilder
    */
   get p() {
-    this.state.push(Promise.resolve("."));
+    this.state.push(".");
     return this;
   }
 
@@ -228,7 +240,7 @@ class StringBuilder {
    * @memberOf StringBuilder
    */
   get c() {
-    this.state.push(Promise.resolve(","));
+    this.state.push(",");
     return this;
   }
 
@@ -251,7 +263,7 @@ class StringBuilder {
    * @memberOf StringBuilder
    */
   get q() {
-    this.state.push(Promise.resolve("?"));
+    this.state.push("?");
     return this;
   }
 
@@ -274,7 +286,7 @@ class StringBuilder {
    * @memberOf StringBuilder
    */
   get n() {
-    this.state.push(Promise.resolve("\n"));
+    this.state.push("\n");
     return this;
   }
 

@@ -1,8 +1,8 @@
 "use strict";
 
-const Dynatrace = require("../../core/dynatrace");
-const Plugin = require("../../core/plugin");
-const sb = require("../../util/builder").sb;
+const Dynatrace = require("../../../core/dynatrace");
+const Plugin = require("../../../core/plugin");
+const sb = require("../../../util/builder").sb;
 
 /**
  * Plugin for asking about a recent range
@@ -22,7 +22,7 @@ class RangeProblem extends Plugin {
    * Main plugin method
    *
    * @param {IDavisRequest} req
-   * @returns
+   * @returns {IDavisResponse}
    *
    * @memberOf RangeProblem
    */
@@ -96,17 +96,26 @@ function openProblem(user, range, problem) {
  */
 function closedProblem(user, range, problem) {
   const stats = Dynatrace.problemStats([problem]);
+
+  // Always starts the same way
   const out = sb(user)
     .s("In the last").d(range).c.s("the only problem was a").h(problem.rankedImpacts[0].eventType)
     .s("that started").ts(problem.startTime).c.s("and ended").ts(problem.endTime).p;
 
-  const apps = stats.affectedApps;
+  const apps = stats.affectedEntities.APPLICATION || [];
   const appIds = Object.keys(apps);
+  const count = appIds.length;
+  const others = count - 1;
+
+  // Two possible cases
+  const oneAffected = sb(user).s("The only affected application was").e(appIds[0], apps[appIds[0]]).p;
+  const moreAffected = sb(user).e(appIds[0], apps[appIds[0]]).s("and").s(others).s("other")
+    .s(["application was affected", "application had issues"], "applications were affected", others).p;
 
   return {
-    text: (appIds.length === 0) ? out.s("No applications were affected.") :
-      (appIds.length === 1) ? out.s("The only affected application was").e(appIds[0], apps[appIds[0]]).p :
-        out.e(appIds[0], apps[appIds[0]]).s("and").s(appIds.length - 1).s("other applications were affected."),
+    text: (count === 0) ? out.s("No applications were affected.") :
+      (count === 1) ? out.s(oneAffected) :
+        out.s(moreAffected),
   };
 }
 
@@ -122,6 +131,12 @@ function manyProblems(user, range, problems) {
   return {
     text: sb(user)
       .s("In the last").d(range).c.s(problems.length).s("problems occurred."),
+    targets: {
+      num: {
+        intent: "detailProblem",
+        choices: problems.map(p => p.id),
+      },
+    },
   };
 }
 
