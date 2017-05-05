@@ -124,7 +124,7 @@ class StringBuilder {
    *
    * @param {IBuildable} singular
    * @param {IBuildable} plural
-   * @param {number | any[]} count
+   * @param {number | boolean | any[]} count
    * @returns {StringBuilder} this
    *
    * @memberOf StringBuilder
@@ -139,6 +139,11 @@ class StringBuilder {
     }
     if (count && count.constructor === Array) {
       return this.s(singular, plural, count.length);
+    }
+    if (typeof count === "boolean") {
+      if (!count) {
+        return this.s(plural);
+      }
     }
     this.state.push(singular);
     return this;
