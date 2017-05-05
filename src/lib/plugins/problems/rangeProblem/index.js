@@ -130,12 +130,17 @@ function closedProblem(user, range, problem) {
 function manyProblems(user, range, problems) {
   return {
     text: sb(user)
-      .s("In the last").d(range).c.s(problems.length).s("problems occurred."),
+      .s("In the last").d(range).s(problems.length)
+      .s("problems occurred. Would you like to see a listing of these issues?"),
     targets: {
-      num: {
-        intent: "detailProblem",
-        choices: problems.map(p => p.id),
+      yes: {
+        intent: "showPage",
       },
+    },
+    paging: {
+      active: 0,
+      page: 0,
+      items: problems.map(p => ({ id: p.id, source: "detailProblem", target: "detailProblem" })),
     },
   };
 }

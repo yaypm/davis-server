@@ -12,5 +12,7 @@ module.exports = [
   require("./choice/yes"),
   require("./choice/no"),
 
+  require("./pager/showPage"),
+
   require("./lexVersionMismatch"),
 ];
