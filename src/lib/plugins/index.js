@@ -13,6 +13,7 @@ module.exports = [
   require("./choice/no"),
 
   require("./pager/showPage"),
+  require("./pager/pageRoute"),
 
   require("./lexVersionMismatch"),
 ];
