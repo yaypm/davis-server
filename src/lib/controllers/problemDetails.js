@@ -22,10 +22,7 @@ class ProblemDetails {
       delete spec.id;
     }
     spec.tenant = user.activeTenant.url;
-    const model = await ProblemDetailModel.create(spec);
-    const obj = model.toObject();
-    obj.id = obj.pid;
-    return obj;
+    return ProblemDetailModel.create(spec);
   }
 
   /**
