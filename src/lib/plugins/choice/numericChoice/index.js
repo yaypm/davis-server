@@ -27,13 +27,12 @@ class NumericChoice extends Plugin {
     const choice = (req.slots.ord || req.slots.num).toLowerCase();
     const idx = choices[choice];
     logger.debug({ choice: { type: "numeric", choice, idx } });
-    const target = req.context.targets.num.intent;
-    if (!target || idx === undefined) {
+    if (idx === undefined) {
       return {
         text: "I'm sorry, but I'm not sure what you mean.",
       };
     }
-    return this.davis.plugins[target]._choose(req, idx);
+    return this.davis.plugins.pageRoute._choose(req, idx);
   }
 }
 

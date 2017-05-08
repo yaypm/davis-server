@@ -46,7 +46,12 @@ class Plugin {
    * @memberOf Plugin
    */
   async _choose(req, choice) {
-    const value = req.context.targets.num.choices[choice];
+    const paging = req.context.paging;
+    const first = paging.page * 3;
+    const currentPage = paging.items.slice(first, first + 3);
+
+    const value = currentPage[choice];
+
     logger.debug(`Executing ${this.name}`);
     const timer = Util.timer();
     const res = await this.yes(req, value);

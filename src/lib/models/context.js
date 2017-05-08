@@ -18,7 +18,7 @@ const contextSchema = new mongoose.Schema({
 
   paging: {
     default: {
-      active: 0,
+      active: -1,
       items: [],
       page: 0,
     },
@@ -50,10 +50,6 @@ const contextSchema = new mongoose.Schema({
         intent: null,
         value: {},
       },
-      num: {
-        intent: null,
-        choices: [],
-      },
     },
     type: {
       yes: {
@@ -63,10 +59,6 @@ const contextSchema = new mongoose.Schema({
       no: {
         intent: String,
         value: {},
-      },
-      num: {
-        intent: String,
-        choices: [],
       },
     },
   },
