@@ -101,7 +101,7 @@ class Davis {
 
     out.text = (typeof out.text === "string") ? out.text : await out.text.toString();
     out.say = (typeof out.say === "string") ? out.say : await out.say.audible();
-    out.show.text = (typeof out.show.text === "string") ? out.show.text : await out.show.text.toString();
+    out.show.text = (typeof out.show.text === "string") ? out.show.text : await out.show.text.slack();
     return out;
   }
 
