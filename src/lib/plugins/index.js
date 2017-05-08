@@ -14,6 +14,8 @@ module.exports = [
 
   require("./pager/showPage"),
   require("./pager/pageRoute"),
+  require("./pager/next"),
+  require("./pager/previous"),
 
   require("./lexVersionMismatch"),
 ];
