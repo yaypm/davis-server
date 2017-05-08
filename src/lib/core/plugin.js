@@ -48,6 +48,7 @@ class Plugin {
   async _choose(req, choice) {
     const paging = req.context.paging;
     const first = paging.page * 3;
+    req.context.set("paging.active", first + choice);
     const currentPage = paging.items.slice(first, first + 3);
 
     const value = currentPage[choice];

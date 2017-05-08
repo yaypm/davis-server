@@ -10,6 +10,7 @@ class ShowPage extends Plugin {
   }
 
   async ask(req) {
+    req.context.set("paging.active", -1);
     const paging = req.context.paging;
     const first = paging.page * 3;
     // const numPages = Math.ceil(paging.items.length / 3);
