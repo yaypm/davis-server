@@ -11,7 +11,7 @@ class DetailProblem extends Plugin {
   }
 
   /**
-   * Numeric choice handler
+   * Choice handler
    *
    * @param {IDavisRequest} req
    * @param {Number} choice
@@ -19,10 +19,10 @@ class DetailProblem extends Plugin {
    *
    * @memberOf DetailProblem
    */
-  async choose(req, choice) {
-    const choices = req.context.targets.num.choices;
+  async yes(req, pid) {
+    const detail = await Dynatrace.problemDetails(req.user, pid);
     return {
-      text: `You chose problem ${choices[choice]}`,
+      text: `detailProblem reporting in ${pid}`,
     };
   }
 

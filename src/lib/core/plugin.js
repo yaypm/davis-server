@@ -46,9 +46,10 @@ class Plugin {
    * @memberOf Plugin
    */
   async _choose(req, choice) {
+    const value = req.context.targets.num.choices[choice];
     logger.debug(`Executing ${this.name}`);
     const timer = Util.timer();
-    const res = await this.choose(req, choice);
+    const res = await this.yes(req, value);
     const elapsed = timer();
     res.intent = res.intent || this.name;
     logger.debug(`Executed ${this.name} in ${elapsed} ms`);
