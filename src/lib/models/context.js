@@ -60,9 +60,7 @@ const contextSchema = new mongoose.Schema({
   // whenever pushLink is
   // invoked
   url: String,
-}, {
-    timestamps: true,
-  });
+}, { timestamps: true });
 
 contextSchema.index({ updatedAt: 1 }, { expires: 300 });
 
