@@ -13,7 +13,7 @@ class ShowPage extends Plugin {
     req.context.set("paging.active", -1);
     const paging = req.context.paging;
     const first = paging.page * 3;
-    // const numPages = Math.ceil(paging.items.length / 3);
+    const numPages = Math.ceil(paging.items.length / 3);
 
     const currentPage = paging.items.slice(first, first + 3);
     const ret = await ((currentPage.length === 0) ? { text: sb(req.user).s("Oh no! It appears that the pager had an error") } :
@@ -21,9 +21,9 @@ class ShowPage extends Plugin {
       (currentPage.length === 2) ? this.twoItems(req, currentPage) :
       this.threeItems(req, currentPage));
 
-    // if (paging.page + 1 < numPages) {
-    //   ret.text.s("You can also say next page.");
-    // }
+    if (paging.page + 1 < numPages) {
+      ret.text.s("You can also say next page.");
+    }
     return ret;
   }
 
