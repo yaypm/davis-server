@@ -185,13 +185,36 @@ class Dynatrace {
   static async problemDetails(user, pid) {
     const details = await ProblemDetails.get(user, pid);
     if (details) {
-      return details;
+      return this.unmodelProblem(details);
     }
     const res = await Dynatrace.get(user, `problem/details/${pid}`);
     if (res.result.status === "OPEN") {
       return res.result;
     }
-    return ProblemDetails.create(user, res.result);
+    return this.unmodelProblem(await ProblemDetails.create(user, res.result));
+  }
+
+  /**
+   * Turn a problem detail model into normal Dynatrace object format
+   *
+   * @param {IProblemDetailModel} problem
+   * @returns {IProblemDetail}
+   *
+   * @memberOf Dynatrace
+   */
+  static unmodelProblem(problem) {
+    const out = problem.toObject();
+    return {
+      id: out.pid,
+      startTime: out.startTime,
+      endTime: out.endTime,
+      displayName: out.displayName,
+      impactLevel: out.impactLevel,
+      status: out.status,
+      severityLevel: out.severityLevel,
+      rankedEvents: out.rankedEvents,
+      tagsOfAffectedEntities: out.tagsOfAffectedEntities,
+    };
   }
 
   /**
