@@ -138,8 +138,6 @@ function manyProblems(user, range, problems) {
       },
     },
     paging: {
-      active: 0,
-      page: 0,
       items: problems.map(p => ({ id: p.id, source: "detailProblem", target: "detailProblem" })),
     },
   };

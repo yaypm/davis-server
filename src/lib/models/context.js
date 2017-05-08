@@ -17,20 +17,13 @@ const contextSchema = new mongoose.Schema({
   intentHistory: [String],
 
   paging: {
-    default: {
-      active: -1,
-      items: [],
-      page: 0,
-    },
-    type: {
-      active: Number,
-      items: [{
-        id: String,
-        source: String,
-        target: String,
-      }],
-      page: Number,
-    },
+    active: { type: Number, default: -1 },
+    items: [{
+      id: String,
+      source: String,
+      target: String,
+    }],
+    page: { type: Number, default: 0 },
   },
 
   // scope uniquely identifies the user
@@ -68,8 +61,8 @@ const contextSchema = new mongoose.Schema({
   // invoked
   url: String,
 }, {
-  timestamps: true,
-});
+    timestamps: true,
+  });
 
 contextSchema.index({ updatedAt: 1 }, { expires: 300 });
 
