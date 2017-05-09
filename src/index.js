@@ -22,7 +22,7 @@ dotenv.config();
  * Davis dependencies
  */
 
-const alexaVerification = require("./lib/server/alexa-verify");
+const alexaVerification = require("./lib/server/alexa/alexa-verify");
 const logger = require("./lib/core/logger");
 const api = require("./lib/server/api");
 
