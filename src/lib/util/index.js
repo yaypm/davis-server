@@ -1,6 +1,7 @@
 "use strict";
 
 const DDate = require("./date");
+const Linker = require("./linker");
 
 module.exports.Date = DDate;
 
@@ -13,3 +14,5 @@ module.exports.timer = () => {
     return ((endms - startms) / 1000).toFixed();
   };
 };
+
+module.exports.Linker = Linker;
