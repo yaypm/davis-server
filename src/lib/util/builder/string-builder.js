@@ -41,7 +41,7 @@ class StringBuilder {
    */
   e(entityId, fallback) {
     if (!this.entitiesRunning) {
-      this.aliases = Aliases.getByTenant(this.user.activeTenant.url);
+      this.aliases = Aliases.getByTenant(this.user.tenant);
     }
     this.entitiesRunning = true;
     this.state.push(this.aliases.then((aliases) => {
