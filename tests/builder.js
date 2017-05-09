@@ -1,7 +1,7 @@
 const expect = require("chai").expect;
 const Aliases = require("../src/lib/controllers/aliases");
 const UserModel = require("../src/lib/models/user");
-const { sb, TimeRange, TimeStamp } = require("../src/lib/util/builder");
+const { cb, sb, Field, TimeRange, TimeStamp } = require("../src/lib/util/builder");
 const nock = require("nock");
 const { applications } = require("./data/applications");
 const { services } = require("./data/services");
@@ -179,5 +179,36 @@ describe("util/builder", () => {
   it("should fallback for entities not in the list", async () => {
     const str = await sb(user).e("this id doesn't exist", "fallback").toString();
     expect(str).to.equal("fallback");
+  });
+
+  it("Should build fields", async () => {
+    const field = await new Field("title", sb(user).s("value"), false).slack();
+    expect(field).to.deep.equal({
+      title: "title",
+      value: "value",
+      short: false,
+    });
+  })
+
+  it("should build slack cards", async () => {
+    const card = await cb(user)
+      .color("OPEN")
+      .title("This is a title")
+      .url("https://google.com")
+      .field("Time Frame", sb(user).tr(1492677420000, 1492698780000), false)
+      .slack();
+
+    expect(card).to.deep.equal({
+      title: "This is a title",
+      color: "#dc172a",
+      title_link: "https://google.com",
+      fields: [
+        {
+          title: "Time Frame",
+          value: "between <!date^1492677420^{date_long_pretty} at {time}|04/20/2017 at 8:37 AM> and <!date^1492698780^{date_long_pretty} at {time}|04/20/2017 at 2:33 PM>",
+          short: false,
+        },
+      ],
+    });
   });
 });

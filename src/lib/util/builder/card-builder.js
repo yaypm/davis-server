@@ -3,6 +3,7 @@
 /* eslint-disable no-unused-vars */
 
 const StringBuilder = require("./string-builder");
+const Field = require("./field");
 
 const COLORS = {
   CLOSED: "#7dc540",
@@ -25,7 +26,7 @@ class CardBuilder {
     this.colorCode = "";
     this.text = new StringBuilder(user);
     this.fallback = new StringBuilder(user);
-    this.title = new StringBuilder(user);
+    this.titleText = new StringBuilder(user);
     this.footer = new StringBuilder(user);
     this.pretext = new StringBuilder(user);
   }
@@ -147,6 +148,7 @@ class CardBuilder {
    */
   f(filtered = true) {
     this.filtered = filtered;
+    return this;
   }
 
   /**
@@ -157,7 +159,17 @@ class CardBuilder {
    * @memberOf CardBuilder
    */
   filter(filtered = true) {
-    this.f(filtered);
+    return this.f(filtered);
+  }
+
+  field(title, value, short = true) {
+    this.fields.push(new Field(title, value, short));
+    return this;
+  }
+
+  title(s) {
+    this.titleText.s(s);
+    return this;
   }
 
   /**
@@ -169,6 +181,7 @@ class CardBuilder {
    */
   url(url) {
     this.titleLink = url;
+    return this;
   }
 
   /**
@@ -180,6 +193,7 @@ class CardBuilder {
    */
   color(color) {
     this.colorCode = COLORS[color] || "";
+    return this;
   }
 
   /**
@@ -275,29 +289,33 @@ class CardBuilder {
   }
 
   /**
-   * Output to JSON
+   * Output a slack ready object
    *
    * @returns {Promise<string>}
    *
    * @memberOf CardBuilder
    */
-  async json() {
-    const [fallback, footer, pretext, text, title] = await Promise.all([
+  async slack() {
+    const [fallback, footer, pretext, text, title, fields] = await Promise.all([
       this.fallback.toString(),
       this.footer.slack(),
       this.pretext.slack(),
       this.text.slack(),
-      this.title.slack(),
+      this.titleText.slack(),
+      await Promise.all(this.fields.map(f => f.slack())),
     ]);
 
-    const out = { fallback, footer, pretext, text, title };
+    const out = { fallback, footer, pretext, text, title, fields };
+    out.color = this.colorCode;
+    out.title_link = this.titleLink;
+
     Object.keys(out).forEach((key) => {
       if (out[key] === "") {
         delete out[key];
       }
     });
 
-    return JSON.stringify(out);
+    return out;
   }
 }
 

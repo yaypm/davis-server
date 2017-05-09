@@ -4,6 +4,7 @@ const CardBuilder = require("./card-builder");
 const StringBuilder = require("./string-builder");
 const TimeRange = require("./time-range");
 const TimeStamp = require("./time-stamp");
+const Field = require("./field");
 
 /**
  *
@@ -32,4 +33,5 @@ module.exports = {
   sb,
   TimeRange,
   TimeStamp,
+  Field,
 };
