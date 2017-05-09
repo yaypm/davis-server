@@ -3113,35 +3113,29 @@ module.exports.problems = [
 
 module.exports.stats = {
   "affectedEntities": {
-    "APPLICATION": {
-      "APPLICATION-160363DF4AFFF4A0": "www.weather.easytravel.com",
-      "SYNTHETIC_TEST-0000000000004C40": "easyTravel demo booking",
-      "SYNTHETIC_TEST-00000000000027D6": "www.easytravel.com",
-      "APPLICATION-91A869F0065D216E": "www.easytravelb2b.com",
-      "DCRUM_APPLICATION-46EDF895CFC798E4": "Dynatrace SAP App",
-      "APPLICATION-8801990608AB75DF": "www.easytravel.com",
-      "APPLICATION-7F6ACE5C74505040": "www.vmware.easytravel.com",
-      "MOBILE_APPLICATION-752C288D59734C79": "easyTravel Demo",
-      "SYNTHETIC_TEST-0000000000002786": "www.weather.easytravel.com"
-    },
-    "INFRASTRUCTURE": {
-      "HOST-E4AB5FD52A142CFE": "peco1-memcached-1",
-      "AWS_LAMBDA_FUNCTION-4DB04EBBA494745E": "bless",
-      "AWS_LAMBDA_FUNCTION-0E89C70CF820E87E": "dynamicDataStoreFunction",
-      "PROCESS_GROUP_INSTANCE-BFF8694A78269D02": "eT-demo-2-BusinessBackend-LoadBalancer",
-      "PROCESS_GROUP_INSTANCE-8C77EBDE2073DACA": "eT-vmware-demo-2-CustomerFrontend",
-      "PROCESS_GROUP_INSTANCE-B438C8C1560324B4": "eT-vmware-demo-2-BusinessBackend",
-      "RELATIONAL_DATABASE_SERVICE-F6549EE518A05741": "apl-et-demo-2-db-1"
-    },
-    "SERVICE": {
-      "SERVICE-FE87731BAA390EFB": "easyTravel Customer Frontend",
-      "SERVICE-60AB8F3CDB5C9360": "EasyTravelWebserver:18079",
-      "SERVICE-57DBC4AAD7C0463A": "nginxForCustomerFrontend",
-      "SERVICE-4E5D0A8583FDA67B": "dotNetFrontend_easyTravel_x64:9000",
-      "SERVICE-3FFC2299BB52DB02": "EasyTravelWebserver:8999",
-      "SERVICE-CCF636B5D98DB355": "PHP on FPM pool www",
-      "SERVICE-D279F46CD751424F": "madison_island:8079"
-    }
+    "APPLICATION-160363DF4AFFF4A0": "www.weather.easytravel.com",
+    "SYNTHETIC_TEST-0000000000004C40": "easyTravel demo booking",
+    "SYNTHETIC_TEST-00000000000027D6": "www.easytravel.com",
+    "APPLICATION-91A869F0065D216E": "www.easytravelb2b.com",
+    "DCRUM_APPLICATION-46EDF895CFC798E4": "Dynatrace SAP App",
+    "APPLICATION-8801990608AB75DF": "www.easytravel.com",
+    "APPLICATION-7F6ACE5C74505040": "www.vmware.easytravel.com",
+    "MOBILE_APPLICATION-752C288D59734C79": "easyTravel Demo",
+    "SYNTHETIC_TEST-0000000000002786": "www.weather.easytravel.com",
+    "HOST-E4AB5FD52A142CFE": "peco1-memcached-1",
+    "AWS_LAMBDA_FUNCTION-4DB04EBBA494745E": "bless",
+    "AWS_LAMBDA_FUNCTION-0E89C70CF820E87E": "dynamicDataStoreFunction",
+    "PROCESS_GROUP_INSTANCE-BFF8694A78269D02": "eT-demo-2-BusinessBackend-LoadBalancer",
+    "PROCESS_GROUP_INSTANCE-8C77EBDE2073DACA": "eT-vmware-demo-2-CustomerFrontend",
+    "PROCESS_GROUP_INSTANCE-B438C8C1560324B4": "eT-vmware-demo-2-BusinessBackend",
+    "RELATIONAL_DATABASE_SERVICE-F6549EE518A05741": "apl-et-demo-2-db-1",
+    "SERVICE-FE87731BAA390EFB": "easyTravel Customer Frontend",
+    "SERVICE-60AB8F3CDB5C9360": "EasyTravelWebserver:18079",
+    "SERVICE-57DBC4AAD7C0463A": "nginxForCustomerFrontend",
+    "SERVICE-4E5D0A8583FDA67B": "dotNetFrontend_easyTravel_x64:9000",
+    "SERVICE-3FFC2299BB52DB02": "EasyTravelWebserver:8999",
+    "SERVICE-CCF636B5D98DB355": "PHP on FPM pool www",
+    "SERVICE-D279F46CD751424F": "madison_island:8079",
   },
   "hourly": {
     "1493276400000": [
