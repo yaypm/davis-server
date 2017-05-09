@@ -2,6 +2,7 @@ const aws = require("aws-sdk");
 const crypto = require("crypto");
 const logger = require("./logger");
 const timer = require("../util").timer;
+const DError = require("./error");
 
 const LexModelBuildingService = aws.LexModelBuildingService;
 const LexRuntime = aws.LexRuntime;
@@ -151,6 +152,9 @@ class Lex {
       }, (err, lexResponse) => {
         if (err) {
           logger.error({ err });
+          if (err.code === "AccessDeniedException") {
+            reject(new DError("Davis hasn't been authorized to use Lex!"));
+          }
           reject(err);
         }
         logger.debug(`Lex responded in ${lexRequestTimer()} ms`);

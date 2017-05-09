@@ -21,7 +21,7 @@ class ProblemDetails {
       spec.pid = spec.id;
       delete spec.id;
     }
-    spec.tenant = user.activeTenant.url;
+    spec.tenant = user.tenant;
     return ProblemDetailModel.create(spec);
   }
 
@@ -35,7 +35,7 @@ class ProblemDetails {
    * @memberOf ProblemDetails
    */
   static async get(user, id) {
-    return ProblemDetailModel.findOne({ tenant: user.activeTenant.url, pid: id });
+    return ProblemDetailModel.findOne({ tenant: user.tenant, pid: id });
   }
 
   /**

@@ -2,6 +2,7 @@
 
 const bunyan = require("bunyan");
 const EOL = require("os").EOL;
+const _ = require("lodash");
 const version = require("../../../package.json").version;
 
 class Logger {
@@ -32,12 +33,35 @@ class Logger {
       Logger.instance = bunyan.createLogger({
         level: process.env.DAVIS_LOG_LEVEL || 0,
         name: this.loggerName,
-        serializers: bunyan.stdSerializers,
+        serializers: {
+          body: bodySerializer,
+          err: bunyan.stdSerializers.err,
+          req: bunyan.stdSerializers.req,
+          res: bunyan.stdSerializers.res,
+          user: userSerializer,
+        },
       });
     }
     return Logger.instance;
   }
 
 }
+
+/**
+ * Deserialize a user object for logging
+ */
+function userSerializer(user) {
+  return {
+    email: user.email,
+  };
+}
+
+/**
+ * Removes sensitive data from the body before logging
+ */
+function bodySerializer(body) {
+  return _.omit(body, ["password"]);
+}
+
 Logger.loggerName = "davis";
 module.exports = Logger.getInstance();

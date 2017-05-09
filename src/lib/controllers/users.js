@@ -1,6 +1,11 @@
 const bcrypt = require("bcrypt");
 const UserModel = require("../models/user");
 
+const DError = require("../core/error");
+const logger = require("../core/logger");
+
+const MINIMUM_PASSWORD_LENGTH = 6;
+
 /**
  * User controller
  *
@@ -32,6 +37,13 @@ class Users {
     return UserModel.findById(id);
   }
 
+  static async setCurrentTenant(userId, tenantId) {
+    const user = await UserModel.findById(userId);
+    logger.debug({ user }, `Attempting to change the tenant from '${user.tenant}' to '${tenantId}'.`);
+    user.tenant = tenantId;
+    return user.save();
+  }
+
   /**
    * Create a new user
    *
@@ -42,10 +54,14 @@ class Users {
    * @memberOf Users
    */
   static async create(user) {
+    if (user.password.length < MINIMUM_PASSWORD_LENGTH) {
+      throw new DError(`Passwords must be at least ${MINIMUM_PASSWORD_LENGTH} characters!`, 400);
+    }
+
     const checkUser = await UserModel.findOne({ email: user.email }).select("_id");
 
     if (checkUser) {
-      throw new Error("User already exists!");
+      throw new DError("User already exists!", 400);
     }
 
     user.password = await bcrypt.hash(user.password, 10);
