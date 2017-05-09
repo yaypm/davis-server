@@ -1,40 +1,21 @@
 "use strict";
 
 const Router = require("express").Router;
-const Joi = require("joi");
 const passport = require("passport");
 const Local = require("passport-local").Strategy;
 
 const Users = require("../../controllers/users");
+const DError = require("../../core/error");
 
 const auth = Router();
 
-auth.post("/register", async (req, res) => {
-  const user = req.body;
-
-  const schema = Joi.object().keys({
-    email: Joi.string().email().lowercase().required(),
-    firstName: Joi.string().min(1).max(20).required(),
-    lastName: Joi.string().min(1).max(30).required(),
-    password: Joi.string().min(6).required(),
-  });
-
-  const validate = Joi.validate(req.body, schema);
-
-  if (validate.error) {
-    res.status(400).json({
-      message: validate.error.details[0].message,
-      success: false,
-    });
-    return;
-  }
-
+auth.post("/register", async (req, res, next) => {
   try {
-    const model = await Users.create(user);
+    const model = await Users.create(req.body);
 
     res.status(200).json({ success: true, id: model._id });
   } catch (err) {
-    res.status(500).json({ success: false, message: err.message });
+    next(err);
   }
 });
 
@@ -62,8 +43,7 @@ auth.post("/login", (req, res, next) => {
   passport.authenticate("local", (authErr, user) => {
     if (authErr) { next(authErr); return; }
     if (!user) {
-      res.status(401).json({ success: false, message: "Authentication failed." });
-      return;
+      throw new DError("Authentication failed.", 401);
     }
     req.logIn(user, (loginErr) => {
       if (loginErr) { next(loginErr); return; }
@@ -74,7 +54,7 @@ auth.post("/login", (req, res, next) => {
 
 auth.get("/logout", (req, res) => {
   req.logOut();
-  res.status(200).json({ success: true });
+  res.redirect("/");
 });
 
 auth.use((req, res, next) => {
@@ -82,7 +62,7 @@ auth.use((req, res, next) => {
     next();
     return;
   }
-  res.status(401).json({ success: false, message: "User not authenticated." });
+  throw new DError("User not authenticated.", 401);
 });
 
 module.exports = auth;
