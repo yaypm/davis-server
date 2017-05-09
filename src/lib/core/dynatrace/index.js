@@ -237,6 +237,78 @@ class Dynatrace {
   }
 
   /**
+   * Compute stats on a problem detail reponse
+   *
+   * @static
+   * @param {IProblemDetail} detail
+   * @returns
+   *
+   * @memberof Dynatrace
+   */
+  static detailStats(detail) {
+    const affectedEntities = {};
+    const affectedApplications = {};
+
+    _.forEach(detail.rankedEvents, (event) => {
+      affectedEntities[event.entityId] = event.entityName;
+      if (event.impactLevel === "APPLICATION") {
+        affectedApplications[event.entityId] = event.entityName;
+      }
+    });
+
+    return {
+      affectedEntities,
+      affectedApplications,
+      roots: _.filter(detail.rankedEvents, "isRootCause"),
+      eventTypes: _.uniq(_.map(detail.rankedEvents, "eventType")),
+      eventStats: Dynatrace.eventStats(detail.rankedEvents),
+      open: detail.status === "OPEN",
+    };
+  }
+
+  /**
+   * Compute stats about a list of events
+   *
+   * @static
+   * @param {IRankedEvents} eventList
+   * @returns {IEventStats}
+   *
+   * @memberof Dynatrace
+   */
+  static eventStats(eventList) {
+    const stats = {};
+    const groupedEvents = _.groupBy(eventList, "eventType");
+    const types = _.uniq(_.map(eventList, "eventType"));
+
+    types.forEach((type) => {
+      const events = groupedEvents[type];
+      const count = events.length;
+      const open = events.filter(e => e.status === "OPEN");
+      const openCount = open.length;
+      const closedCount = count - openCount;
+      const roots = _.filter(events, "isRootCause");
+      const root = roots.length > 0;
+      const locations = _.flatMap(events, e => e.affectedSyntheticLocations || []);
+
+      const affectedApplications = _.uniq(_.map(_.filter(events, { impactLevel: "APPLICATION" }), "entityId"));
+
+      stats[type] = {
+        affectedApplications,
+        events,
+        count,
+        open,
+        openCount,
+        closedCount,
+        root,
+        roots,
+        locations,
+      };
+    });
+
+    return stats;
+  }
+
+  /**
    * Compute stats about a list of problems
    *
    * @static
@@ -247,7 +319,7 @@ class Dynatrace {
    */
   static problemStats(problems) {
     return {
-      affectedEntities: Dynatrace.affectedEntityByType(problems),
+      affectedEntities: Dynatrace.affectedEntities(problems),
       hourly: Dynatrace.groupByHour(problems),
       firstProblem: _.minBy(problems, "startTime"),
       lastProblem: _.maxBy(problems, "startTime"),
@@ -277,13 +349,11 @@ class Dynatrace {
    *
    * @memberOf Dynatrace
    */
-  static affectedEntityByType(problems) {
+  static affectedEntities(problems) {
     const entities = {};
     problems.forEach((problem) => {
       problem.rankedImpacts.forEach((impact) => {
-        const entityType = impact.impactLevel; // impact.entityId.split("-")[0];
-        entities[entityType] = entities[entityType] || {};
-        entities[entityType][impact.entityId] = impact.entityName;
+        entities[impact.entityId] = impact.entityName;
       });
     });
     return entities;
