@@ -1,5 +1,27 @@
 "use strict";
 
+const ACRONYMS = [
+  "CPU",
+  "ELB",
+  "DB",
+  "RDS",
+  "PGI",
+  "HTTP",
+  "JS",
+  "GC",
+  "RMQ",
+  "OSI",
+  "EBS",
+  "VM",
+  "ESXI",
+];
+
+const SMALLWORDS = [
+  "of",
+  "and",
+  "on",
+];
+
 /**
  * Generate audible version of an array of promises
  *
@@ -86,8 +108,29 @@ function joinWord(sentence, word) {
            `${sentence} ${word}`;
 }
 
+function fixCaps(str) {
+  return lowerSmallWords(capitalizeAcronyms(str));
+}
+
+function lowerSmallWords(str) {
+  let out = str;
+  SMALLWORDS.forEach((acronym) => {
+    out = out.replace(new RegExp(`\\b${acronym}\\b`, "i"), acronym.toLowerCase());
+  });
+  return out;
+}
+
+function capitalizeAcronyms(str) {
+  let out = str;
+  ACRONYMS.forEach((acronym) => {
+    out = out.replace(new RegExp(`\\b${acronym}\\b`, "i"), acronym.toUpperCase());
+  });
+  return out;
+}
+
 module.exports = {
   audible,
+  fixCaps,
   slackify,
   stringify,
 };

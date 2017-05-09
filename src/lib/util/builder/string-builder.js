@@ -166,7 +166,7 @@ class StringBuilder {
   /**
    *    * Add a humanized string object
    *
-   * @param {IBuildable} item
+   * @param {string} item
    * @returns
    *
    * @memberOf StringBuilder
@@ -178,13 +178,25 @@ class StringBuilder {
   /**
    *    * Add a humanized string object
    *
-   * @param {IBuildable} item
+   * @param {string} item
    * @returns
    *
    * @memberOf StringBuilder
    */
   humanize(item) {
     return this.h(item);
+  }
+
+  /**
+   * Humanize and capitalize
+   *
+   * @param {string} item
+   * @returns
+   *
+   * @memberof StringBuilder
+   */
+  hc(item) {
+    return this.s(helpers.fixCaps(string(item).humanize().titleCase().s));
   }
 
   /**
