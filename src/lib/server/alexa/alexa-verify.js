@@ -2,7 +2,7 @@
 
 const verifier = require("alexa-verifier");
 
-const logger = require("../core/logger");
+const logger = require("../../core/logger");
 
 const alexaMiddleware = (req, res, next) => {
   // if production and windows => fail 401

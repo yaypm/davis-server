@@ -5,6 +5,7 @@ const _ = require("lodash");
 const Aliases = require("../../controllers/aliases");
 const ProblemDetails = require("../../controllers/problemDetails");
 const logger = require("../logger");
+const DError = require("../../core/error");
 
 /**
  * Static class for interacting with Dynatrace
@@ -23,37 +24,46 @@ class Dynatrace {
    *
    * @memberOf Dynatrace
    */
-  static async get(user, endpoint, options) {
-    const tenant = user.activeTenant;
-    const baseUrl = tenant.apiUrl || tenant.url;
-    const apiToken = tenant.token;
+  static async get(user, endpoint, options, tokens) {
+    const baseUrl = user.dynatraceApiUrl;
+    const apiTokens = tokens || user.dynatraceApiTokens();
+    const apiToken = apiTokens.shift();
 
     const uri = `${baseUrl}/api/v1/${endpoint}`;
 
-    return rp.get(uri, {
-      headers: {
-        Authorization: `Api-Token ${apiToken}`,
-      },
-      json: true,
-      qs: options,
-      timeout: 20000,
-    })
-    .catch((err) => {
-      logger.error(err);
+    try {
+      const response = await rp.get(uri, {
+        headers: {
+          Authorization: `Api-Token ${apiToken}`,
+        },
+        json: true,
+        qs: options,
+        timeout: 20000,
+        time: true,
+        transform: logDynatraceTimes,
+      });
+
+      const tenant = user.tenant;
+      await tenant.setActiveToken(apiToken);
+      return response;
+    } catch (err) {
       if (err.statusCode === 400) {
         if (_.has(err, "response.error.message")) {
-          throw new Error(`Unable to contact Dynatrace!  ${err.response.error.message}`);
+          throw new DError(`Unable to contact Dynatrace!  ${err.response.error.message}`);
         }
-        throw new Error("Unable to contact Dynatrace!  Are you sure you set the correct URL?");
+        throw new DError("Unable to contact Dynatrace!  Are you sure you set the correct URL?");
       } else if (err.statusCode === 401) {
-        throw new Error("The configured Dynatrace API token is invalid!");
+        if (apiTokens.length > 0) {
+          return Dynatrace.get(user, endpoint, options, apiTokens);
+        }
+        throw new DError("The configured Dynatrace API token is invalid!");
       } else if (err.error && err.error.code === "ENOENT") {
-        throw new Error("Unable to contact Dynatrace!  Are you sure you have an active network connection?");
+        throw new DError("Unable to contact Dynatrace!  Are you sure you have an active network connection?");
       } else {
         logger.error(`Dynatrace responded with an unhandled status code of ${err.statusCode}.`);
-        throw new Error("Unfortunately, there was an issue communicating with Dynatrace.");
+        throw new DError("Unfortunately, there was an issue communicating with Dynatrace.");
       }
-    });
+    }
   }
 
   /**
@@ -89,7 +99,7 @@ class Dynatrace {
     const [apps, aliases] = await Promise.all([
       Dynatrace.get(user, "entity/applications")
         .then(res => res.filter(app => app.applicationType !== "SYNTHETIC")),
-      Aliases.getByTenant(user.activeTenant),
+      Aliases.getByTenant(user.tenant, "APPLICATION"),
     ]);
     return Dynatrace.mergeAliases(apps, aliases);
   }
@@ -106,7 +116,7 @@ class Dynatrace {
   static async getServices(user) {
     const [services, aliases] = await Promise.all([
       Dynatrace.get(user, "entity/services"),
-      Aliases.getByTenant(user.activeTenant),
+      Aliases.getByTenant(user.tenant, "SERVICE"),
     ]);
     return Dynatrace.mergeAliases(services, aliases);
   }
@@ -123,7 +133,7 @@ class Dynatrace {
   static async getHosts(user) {
     const [hosts, aliases] = await Promise.all([
       Dynatrace.get(user, "entity/infrastructure/hosts"),
-      Aliases.getByTenant(user.activeTenant),
+      Aliases.getByTenant(user.tenant, "HOST"),
     ]);
     return Dynatrace.mergeAliases(hosts, aliases);
   }
@@ -140,7 +150,7 @@ class Dynatrace {
   static async getProcessGroups(user) {
     const [processGroups, aliases] = await Promise.all([
       Dynatrace.get(user, "entity/infrastructure/process-groups"),
-      Aliases.getByTenant(user.activeTenant),
+      Aliases.getByTenant(user.tenant, "PROCESS_GROUP"),
     ]);
     return Dynatrace.mergeAliases(processGroups, aliases);
   }
@@ -325,6 +335,19 @@ class Dynatrace {
       return app;
     });
   }
+}
+
+function logDynatraceTimes(body, response) {
+  const path = response.req.path.split("?")[0];
+  const metadata = {
+    type: "Dynatrace",
+    path,
+    code: response.statusCode,
+    time: response.elapsedTime,
+  };
+
+  logger.info(metadata, `DYNATRACE API: ${path} ${response.statusCode} - ${response.elapsedTime} ms`);
+  return body;
 }
 
 module.exports = Dynatrace;

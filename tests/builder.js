@@ -1,28 +1,21 @@
 const expect = require("chai").expect;
 const Aliases = require("../src/lib/controllers/aliases");
-const UserModel = require("../src/lib/models/user");
 const { sb, TimeRange, TimeStamp } = require("../src/lib/util/builder");
 const nock = require("nock");
 const { applications } = require("./data/applications");
 const { services } = require("./data/services");
 const mongoose = require("mongoose");
-
-const userSpec = {
-  email: "test@test.test",
-  firstName: "Test",
-  lastName: "McTesterson",
-  password: "testpass",
-  activeTenantIdx: 0,
-  tenants: [{
-    active: 0,
-    url: process.env.DYNATRACE_URL,
-    token: process.env.DYNATRACE_TOKEN,
-  }],
-  timezone: "Etc/UTC",
-};
+const { createUserWithTenant } = require("./bootstrap");
 
 describe("util/builder", () => {
-  const user = new UserModel(userSpec);
+  let user;
+  let tenant;
+  beforeEach(async () => {
+    const [testUser, testTenant] = await createUserWithTenant();
+    user = testUser;
+    tenant = testTenant;
+  });
+  
 
   const appnock = nock(/dynatrace/i)
     .get("/api/v1/entity/applications")
@@ -162,14 +155,13 @@ describe("util/builder", () => {
   });
 
   it("should build entities", async () => {
-    const alias = await Aliases.create({
+    const alias = await Aliases.create(user, {
       aliases: [],
       display: {
         audible: "audible blah",
         visual: "visual blah",
       },
       entityId: "APPLICATION-59CA712F666CD24D",
-      tenant: process.env.DYNATRACE_URL,
     });
 
     const str = await sb(user).e("APPLICATION-59CA712F666CD24D", "fallback").toString();
