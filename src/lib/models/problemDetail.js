@@ -2,8 +2,10 @@
 
 const mongoose = require("mongoose");
 
+require("./tenant");
+
 const problemDetailSchema = new mongoose.Schema({
-  tenant: { type: String, trim: true, required: true },
+  tenant: { type: "ObjectId", ref: "Tenant", required: true },
   pid: { type: String, trim: true, required: true },
   startTime: Number,
   endTime: Number,
