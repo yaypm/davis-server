@@ -29,7 +29,7 @@ class DDate {
    * @static
    * @param {(string | undefined)} date
    * @param {IUserModel} user
-   * @returns {({ startTime: number, stopTime: number, grain: string } | null)}
+   * @returns {({ startTime: number, endTime: number, grain: string } | null)}
    *
    * @memberOf DDate
    */
@@ -45,14 +45,14 @@ class DDate {
         // this is in the future
         return {
           startTime: moment.tz(date, user.timezone).subtract(1, "year").valueOf(),
-          stopTime: moment.tz(date, user.timezone).subtract(1, "year").endOf("day").valueOf(),
+          endTime: moment.tz(date, user.timezone).subtract(1, "year").endOf("day").valueOf(),
           grain,
         };
       }
 
       return {
         startTime: moment.tz(date, user.timezone).valueOf(),
-        stopTime: moment.tz(date, user.timezone).endOf("day").valueOf(),
+        endTime: moment.tz(date, user.timezone).endOf("day").valueOf(),
         grain,
       };
     }
@@ -62,7 +62,7 @@ class DDate {
       const grain = "day";
       return {
         startTime: moment.tz(user.timezone).day(date).subtract(1, "week").valueOf(),
-        stopTime: moment.tz(user.timezone).day(date).subtract(1, "week").endOf("day").valueOf(),
+        endTime: moment.tz(user.timezone).day(date).subtract(1, "week").endOf("day").valueOf(),
         grain,
       };
     }
@@ -73,7 +73,7 @@ class DDate {
       const grain = "week";
       return {
         startTime: moment.tz(date, user.timezone).valueOf(),
-        stopTime: moment.tz(date, user.timezone).endOf("week").valueOf(),
+        endTime: moment.tz(date, user.timezone).endOf("week").valueOf(),
         grain,
       };
     }
@@ -86,14 +86,14 @@ class DDate {
         // this is in the future
         return {
           startTime: moment.tz(date, user.timezone).subtract(1, "year").valueOf(),
-          stopTime: moment.tz(date, user.timezone).subtract(1, "year").endOf("month").valueOf(),
+          endTime: moment.tz(date, user.timezone).subtract(1, "year").endOf("month").valueOf(),
           grain,
         };
       }
 
       return {
         startTime: moment.tz(date, user.timezone).valueOf(),
-        stopTime: moment.tz(date, user.timezone).endOf("month").valueOf(),
+        endTime: moment.tz(date, user.timezone).endOf("month").valueOf(),
         grain,
       };
     }
@@ -104,12 +104,12 @@ class DDate {
       const grain = "year";
       return {
         startTime: moment.tz(date, user.timezone).valueOf(),
-        stopTime: moment.tz(date, user.timezone).endOf("year").valueOf(),
+        endTime: moment.tz(date, user.timezone).endOf("year").valueOf(),
         grain,
       };
     }
 
-    return { startTime: 0, stopTime: 0, grain: "error" };
+    return { startTime: 0, endTime: 0, grain: "error" };
   }
 }
 
