@@ -97,12 +97,99 @@ function openProblem(req, problem, stats) {
 }
 
 function openRoot(req, problem, stats) {
-  // This problem is a user action duration degradation on www.easytravelb2b.com.
-  return "not implemented";
+  const topEvent = stats.topEvent;
+  const topEventType = topEvent.eventType;
+  const topEventEntityId = topEvent.entityId;
+  const topEventEntityName = topEvent.entityName;
+  const startTime = problem.startTime;
+
+  const rootEvent = problem.rankedEvents[0];
+  const rootEventType = rootEvent.eventType;
+  const rootEventEntityId = rootEvent.entityId;
+  const rootEventEntityName = rootEvent.entityName;
+  const rootEventEndTime = rootEvent.endTime;
+
+  const text = sb(req.user).s("There is currently a").hc(topEventType).s("on")
+    .e(topEventEntityId, topEventEntityName).s("that started").ts(startTime).p
+    .s("The root cause of this issue is a").hc(rootEventType).s("on")
+    .e(rootEventEntityId, rootEventEntityName);
+  // There is currently a {top event type} on {top event entity} that started {startTime}.
+  // The root cause of this issue is a {root event} on {root entity}
+
+  // IF ROOT OPEN
+    // which is still ongoing.
+  // ELSE
+    // which was resolved at {time}.
+  if (rootEvent.status === "OPEN") {
+    text.s("which is still ongoing.");
+  } else {
+    text.s("which was resolved at").ts(rootEventEndTime).s(".");
+  }
+
+  // IF 0 APPLICATIONS AFFECTED
+    // This issue does not appear to be affecting any applications.
+  // IF 1 APPLICATION AFFECTED
+    // This issue is affecting {appname}.
+  // IF 2 APPLICATIONS AFFECTED
+    // This issue is affecting {appname} and {appname}.
+  // ELSE
+    // This issue is affecting {num} applications.
+  if (stats.affectedApplications.length === 0) {
+    text.s("This issue does not appear to be affecting any applications");
+  } else if (stats.affectedApplications.length === 1) {
+    const eid = stats.affectedApplications[0];
+    const name = stats.affectedEntities[eid];
+    text.s("This issue appears only to be affecting").e(eid, name).s(".");
+  } else if (stats.affectedApplications.length === 2) {
+    const eid1 = stats.affectedApplications[0];
+    const name1 = stats.affectedEntities[eid1];
+    const eid2 = stats.affectedApplications[1];
+    const name2 = stats.affectedEntities[eid2];
+    text.s("This issue is affecting").e(eid1, name1).s("and").e(eid2, name2).s(".");
+  } else {
+    text.s("This issue is affecting").s(stats.affectedApplications.length).s("applications.");
+  }
+
+  return text;
 }
 
 function openNoRoot(req, problem, stats) {
-  return "not implemented";
+  const topEvent = stats.topEvent;
+  const topEventType = topEvent.eventType;
+  const topEventEntityId = topEvent.entityId;
+  const topEventEntityName = topEvent.entityName;
+  const startTime = problem.startTime;
+
+  const text = sb(req.user).s("There is currently a").hc(topEventType).s("on")
+    .e(topEventEntityId, topEventEntityName).s("that started").ts(startTime).p
+    .s("Dynatrace was unable to determine a root cause for this issue.");
+  // There is currently a {top event type} on {top event entity} that started {startTime}.
+
+  // IF 0 APPLICATIONS AFFECTED
+    // This issue does not appear to be affecting any applications.
+  // IF 1 APPLICATION AFFECTED
+    // This issue is affecting {appname}.
+  // IF 2 APPLICATIONS AFFECTED
+    // This issue is affecting {appname} and {appname}.
+  // ELSE
+    // This issue is affecting {num} applications.
+  if (stats.affectedApplications.length === 0) {
+    text.s("This issue does not appear to be affecting any applications");
+  } else if (stats.affectedApplications.length === 1) {
+    const eid = stats.affectedApplications[0];
+    const name = stats.affectedEntities[eid];
+    text.s("The only application being affected by this issue is").e(eid, name).s(".");
+  } else if (stats.affectedApplications.length === 2) {
+    const eid1 = stats.affectedApplications[0];
+    const name1 = stats.affectedEntities[eid1];
+    const eid2 = stats.affectedApplications[1];
+    const name2 = stats.affectedEntities[eid2];
+    text.s("This issue is affecting").e(eid1, name1).s("and").e(eid2, name2).s(".");
+  } else {
+    text.s("This issue is affecting").s(stats.affectedApplications.length).s("applications.");
+  }
+
+  return text;
 }
 
 /**
@@ -117,12 +204,101 @@ function closedProblem(req, problem, stats) {
   return (stats.open) ? closedRoot(req, problem, stats) : closedNoRoot(req, problem, stats);
 }
 
-function closedRoot(user, problem, stats) {
-  return "not implemented";
+function closedRoot(req, problem, stats) {
+  const topEvent = stats.topEvent;
+  const topEventType = topEvent.eventType;
+  const topEventEntityId = topEvent.entityId;
+  const topEventEntityName = topEvent.entityName;
+  const startTime = problem.startTime;
+  const endTime = problem.endTime;
+
+  const rootEvent = problem.rankedEvents[0];
+  const rootEventType = rootEvent.eventType;
+  const rootEventEntityId = rootEvent.entityId;
+  const rootEventEntityName = rootEvent.entityName;
+  const rootEventEndTime = rootEvent.endTime;
+
+  const text = sb(req.user).s("There was a").hc(topEventType).s("on")
+    .e(topEventEntityId, topEventEntityName).s("that started").ts(startTime)
+    .s("and ended").ts(endTime).p.s("The root cause of this issue was a")
+    .hc(rootEventType).s("on").e(rootEventEntityId, rootEventEntityName);
+
+
+  // IF ROOT OPEN
+    // which is still ongoing.
+  // ELSE
+    // which was resolved at {time}.
+  if (rootEvent.status === "OPEN") {
+    text.s("which is still ongoing.");
+  } else {
+    text.s("which was resolved at").ts(rootEventEndTime).s(".");
+  }
+
+  // IF 0 APPLICATIONS AFFECTED
+    // This issue does not appear to be affecting any applications.
+  // IF 1 APPLICATION AFFECTED
+    // This issue is affecting {appname}.
+  // IF 2 APPLICATIONS AFFECTED
+    // This issue is affecting {appname} and {appname}.
+  // ELSE
+    // This issue is affecting {num} applications.
+  if (stats.affectedApplications.length === 0) {
+    text.s("This issue does not appear to have affected any applications");
+  } else if (stats.affectedApplications.length === 1) {
+    const eid = stats.affectedApplications[0];
+    const name = stats.affectedEntities[eid];
+    text.s("The only application affected was").e(eid, name).s(".");
+  } else if (stats.affectedApplications.length === 2) {
+    const eid1 = stats.affectedApplications[0];
+    const name1 = stats.affectedEntities[eid1];
+    const eid2 = stats.affectedApplications[1];
+    const name2 = stats.affectedEntities[eid2];
+    text.s("This issue affected").e(eid1, name1).s("and").e(eid2, name2).s(".");
+  } else {
+    text.s("This issue affected").s(stats.affectedApplications.length).s("applications.");
+  }
+
+  return text;
 }
 
-function closedNoRoot(user, problem, stats) {
-  return "not implemented";
+function closedNoRoot(req, problem, stats) {
+  const topEvent = stats.topEvent;
+  const topEventType = topEvent.eventType;
+  const topEventEntityId = topEvent.entityId;
+  const topEventEntityName = topEvent.entityName;
+  const startTime = problem.startTime;
+  const endTime = problem.endTime;
+
+  const text = sb(req.user).s("There was a").hc(topEventType).s("on")
+    .e(topEventEntityId, topEventEntityName).s("that started").ts(startTime)
+    .s("and ended").ts(endTime).p
+    .s("Dynatrace was unable to determine a root cause for this issue.");
+
+  // IF 0 APPLICATIONS AFFECTED
+    // This issue does not appear to be affecting any applications.
+  // IF 1 APPLICATION AFFECTED
+    // This issue is affecting {appname}.
+  // IF 2 APPLICATIONS AFFECTED
+    // This issue is affecting {appname} and {appname}.
+  // ELSE
+    // This issue is affecting {num} applications.
+  if (stats.affectedApplications.length === 0) {
+    text.s("This issue does not appear to have affected any applications");
+  } else if (stats.affectedApplications.length === 1) {
+    const eid = stats.affectedApplications[0];
+    const name = stats.affectedEntities[eid];
+    text.s("Only").e(eid, name).s("was affected by this issue.");
+  } else if (stats.affectedApplications.length === 2) {
+    const eid1 = stats.affectedApplications[0];
+    const name1 = stats.affectedEntities[eid1];
+    const eid2 = stats.affectedApplications[1];
+    const name2 = stats.affectedEntities[eid2];
+    text.s("This issue affected").e(eid1, name1).s("and").e(eid2, name2).s(".");
+  } else {
+    text.s("This issue affected").s(stats.affectedApplications.length).s("applications.");
+  }
+
+  return text;
 }
 
 function problemTitle(user, problem) {
