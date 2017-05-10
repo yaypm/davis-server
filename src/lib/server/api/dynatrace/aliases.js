@@ -23,7 +23,7 @@ aliasRoute.route("/aliases")
   })
   .post(async (req, res, next) => {
     try {
-      const alias = await Aliases.create({
+      const alias = await Aliases.create(req.user, {
         entityId: req.body.entityId,
         aliases: req.body.aliases,
         display: {
