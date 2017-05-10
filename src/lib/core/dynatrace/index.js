@@ -83,8 +83,7 @@ class Dynatrace {
     let entity;
     apps.forEach((app) => {
       if (entity) { return; }
-      if (natural.Metaphone.compare(app.display.visual, str) ||
-          natural.Metaphone.compare(app.display.audible, str)) {
+      if (natural.Metaphone.compare(app.name, str)) {
         entity = app;
         logger.debug(`Found ${entity.display.visual}`);
       } else if (_.filter(app.aliases, alias => natural.Metaphone.compare(alias, str)).length > 0) {
