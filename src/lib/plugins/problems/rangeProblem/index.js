@@ -3,7 +3,6 @@
 const Dynatrace = require("../../../core/dynatrace");
 const Plugin = require("../../../core/plugin");
 const sb = require("../../../util/builder").sb;
-const logger = require("../../../core/logger");
 
 /**
  * Plugin for asking about a recent range
@@ -30,11 +29,9 @@ class RangeProblem extends Plugin {
   async ask(req) {
     const range = req.slots.range;
     const app = req.slots.app;
+
     if (app) {
-      logger.debug(`Tried to filter range by app: ${app}`);
-      const entity = await Dynatrace.findApplicationBySoundalike(req.user, app);
-      logger.debug(`Found ${entity}`);
-      return { text: "I'm sorry, I can't filter requests by application at this time." };
+      return appResponse(req);
     }
     const problems = await Dynatrace.problemFeed(req.user, { relativeTime: range });
 
@@ -42,6 +39,23 @@ class RangeProblem extends Plugin {
       (problems.length === 1) ? oneProblem(req.user, range, problems[0]) :
         manyProblems(req.user, range, problems);
   }
+}
+async function appResponse(req) {
+  const range = req.slots.range;
+  const app = req.slots.app;
+
+  const entity = await Dynatrace.findApplicationBySoundalike(req.user, app);
+
+  if (entity) {
+    let problems = await Dynatrace.problemFeed(req.user, { relativeTime: range });
+
+    problems = Dynatrace.filterProblemFeed(problems, entity);
+
+    return (problems.length === 0) ? appNoProblems(req.user, range, entity) :
+      (problems.length === 1) ? appOneProblem(req.user, range, problems[0], entity) :
+        appManyProblems(req.user, range, problems, entity);
+  }
+  return { text: `I'm sorry, I can't find the app "${app}".` };
 }
 
 /**
@@ -53,6 +67,10 @@ class RangeProblem extends Plugin {
  */
 function noProblems(user, range) {
   return { text: sb(user).s("Nice! There were no problems in the last").d(range).p };
+}
+
+function appNoProblems(user, range, entity) {
+  return { text: sb(user).s("Nice! There were no problems that affected").e(entity.enityId, entity.name).s("in the last").d(range).p };
 }
 
 /**
@@ -70,6 +88,13 @@ function oneProblem(user, range, problem) {
   return closedProblem(user, range, problem);
 }
 
+function appOneProblem(user, range, problem, entity) {
+  if (problem.status === "OPEN") {
+    return appOpenProblem(user, range, problem, entity);
+  }
+  return appClosedProblem(user, range, problem, entity);
+}
+
 /**
  * One open problem in the range
  *
@@ -84,13 +109,28 @@ function openProblem(user, range, problem) {
     .s("In the last").d(range).c.s("the only problem was a").h(problem.rankedImpacts[0].eventType)
     .s("that started at").ts(problem.startTime).c.s("and is still ongoing.");
 
-  const apps = stats.affectedApps;
+  const apps = stats.affectedEntities.APPLICATION || [];
   const appIds = Object.keys(apps);
 
   return {
     text: (appIds.length === 0) ? out.s("No applications are being affected.") :
       (appIds.length === 1) ? out.s("The only affected application is").e(appIds[0], apps[appIds[0]]) :
         out.e(appIds[0], apps[appIds[0]]).s("and").s(appIds.length - 1).s("other applications are being affected."),
+  };
+}
+
+function appOpenProblem(user, range, problem, entity) {
+  const stats = Dynatrace.problemStats([problem]);
+  const out = sb(user)
+    .s("In the last").d(range).c.s("the only problem that affected").e(entity.enityId, entity.name).s("was a").h(problem.rankedImpacts[0].eventType)
+    .s("that started at").ts(problem.startTime).c.s("and is still ongoing.");
+
+  const apps = stats.affectedEntities.APPLICATION || [];
+  const appIds = Object.keys(apps);
+
+  return {
+    text: (appIds.length < 2) ? out.s("No other applications are being affected.") :
+        out.s(appIds.length - 1).s("other applications are being affected."),
   };
 }
 
@@ -127,6 +167,23 @@ function closedProblem(user, range, problem) {
   };
 }
 
+function appClosedProblem(user, range, problem, entity) {
+  const stats = Dynatrace.problemStats([problem]);
+
+  // Always starts the same way
+  const out = sb(user)
+    .s("In the last").d(range).c.s("the only problem that affected").e(entity.enityId, entity.name).s("was a").h(problem.rankedImpacts[0].eventType)
+    .s("that started").ts(problem.startTime).c.s("and ended").ts(problem.endTime).p;
+
+  const apps = stats.affectedEntities.APPLICATION || [];
+  const appIds = Object.keys(apps);
+
+  return {
+    text: (appIds.length < 2) ? out.s("No other applications were affected.") :
+        out.s(appIds.length - 1).s("other applications were affected."),
+  };
+}
+
 /**
  * More than one problem in the range
  *
@@ -140,6 +197,22 @@ function manyProblems(user, range, problems) {
     text: sb(user)
       .s("In the last").d(range).s(problems.length)
       .s("problems occurred. Would you like to see a listing of these issues?"),
+    targets: {
+      yes: {
+        intent: "showPage",
+      },
+    },
+    paging: {
+      items: problems.map(p => ({ id: p.id, source: "detailProblem", target: "detailProblem" })),
+    },
+  };
+}
+
+function appManyProblems(user, range, problems, entity) {
+  return {
+    text: sb(user)
+      .s("In the last").d(range).s(problems.length)
+      .s("problems affected").e(entity.enityId, entity.name).p.s("Would you like to see a listing of these issues?"),
     targets: {
       yes: {
         intent: "showPage",
