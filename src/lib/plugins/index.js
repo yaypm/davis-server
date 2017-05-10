@@ -17,5 +17,7 @@ module.exports = [
   require("./pager/next"),
   require("./pager/previous"),
 
+  require("./general/thanks"),
+
   require("./lexVersionMismatch"),
 ];
