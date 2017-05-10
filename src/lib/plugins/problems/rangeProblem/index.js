@@ -3,6 +3,7 @@
 const Dynatrace = require("../../../core/dynatrace");
 const Plugin = require("../../../core/plugin");
 const sb = require("../../../util/builder").sb;
+const logger = require("../../../core/logger");
 
 /**
  * Plugin for asking about a recent range
@@ -28,6 +29,11 @@ class RangeProblem extends Plugin {
    */
   async ask(req) {
     const range = req.slots.range;
+    const app = req.slots.app;
+    if (app) {
+      logger.debug(`Tried to filter range by app: ${app}`);
+      return { text: "I'm sorry, I can't filter requests by application at this time." };
+    }
     const problems = await Dynatrace.problemFeed(req.user, { relativeTime: range });
 
     return (problems.length === 0) ? noProblems(req.user, range) :
