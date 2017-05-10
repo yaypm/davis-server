@@ -8,7 +8,7 @@ require("./tenant");
 
 const aliasSchema = new mongoose.Schema({
   entityId: { type: String, unique: true, require: [true, "An entity ID is required!"] },
-  tenant: { type: "ObjectId", ref: "Tenant", required: true },
+  tenant: { type: "ObjectId", ref: "Tenant", required: [true, "A tenant ID is required!"] },
   aliases: [String],
   display: {
     audible: String,
