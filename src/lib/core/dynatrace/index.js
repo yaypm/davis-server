@@ -182,6 +182,16 @@ class Dynatrace {
     return res.result.problems;
   }
 
+  /**
+   * Filter this list of problems by time range, impactLevel, status, or severityLevel using the options object
+   *
+   * @static
+   * @param {IProblem[]} problems
+   * @param {IFilterOptions} options
+   * @returns
+   *
+   * @memberof Dynatrace
+   */
   static filterProblemFeed(problems, options) {
     let filtered = _.cloneDeep(problems);
 
