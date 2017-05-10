@@ -182,6 +182,25 @@ class Dynatrace {
     return res.result.problems;
   }
 
+  static filterProblemFeed(problems, options) {
+    let filtered = _.cloneDeep(problems);
+
+    // filter by impactLevel, status, severityLevel
+    if (options.impactLevel || options.status || options.severityLevel) {
+      const lodashFilterOptions = _.pick(options, ["impactLevel", "status", "severityLevel"]);
+      filtered = _.filter(filtered, lodashFilterOptions);
+    }
+
+    // { startTime, endTime }
+    if (options.timeRange && options.timeRange.startTime && options.timeRange.endTime) {
+      filtered = _.filter(filtered, problem =>
+        problem.startTime > options.timeRange.startTime &&
+        problem.startTime < options.timeRange.endTime);
+    }
+
+    return filtered;
+  }
+
   /**
    * Get details about a problem
    *
