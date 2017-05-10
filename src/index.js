@@ -18,7 +18,9 @@ const MongoStore = connectMongo(session);
 global.Promise = BbPromise;
 mongoose.Promise = BbPromise;
 dotenv.config();
-
+if (process.env.DEBUG) {
+  mongoose.set("debug", true);
+}
 /*
  * Davis dependencies
  */
