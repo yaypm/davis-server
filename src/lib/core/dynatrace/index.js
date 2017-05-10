@@ -183,7 +183,8 @@ class Dynatrace {
   }
 
   /**
-   * Filter this list of problems by time range, impactLevel, status, or severityLevel using the options object
+   * Filter this list of problems by time range, impactLevel, status,
+   * entityId, or severityLevel using the options object
    *
    * @static
    * @param {IProblem[]} problems
@@ -206,6 +207,12 @@ class Dynatrace {
       filtered = _.filter(filtered, problem =>
         problem.startTime > options.timeRange.startTime &&
         problem.startTime < options.timeRange.endTime);
+    }
+
+    // filter by entityId
+    if (options.entityId) {
+      filtered = _.filter(filtered, problem =>
+        _.filter(problem.rankedImpacts, { entityId: options.entityId }).length > 0);
     }
 
     return filtered;
