@@ -257,18 +257,17 @@ class Dynatrace {
    */
   static detailStats(detail) {
     const affectedEntities = {};
-    const affectedApplications = {};
 
     _.forEach(detail.rankedEvents, (event) => {
       affectedEntities[event.entityId] = event.entityName;
-      if (event.impactLevel === "APPLICATION") {
-        affectedApplications[event.entityId] = event.entityName;
-      }
     });
+
+    const affectedApplications = _.uniq(_.map(_.filter(detail.rankedEvents, e => e.impactLevel === "APPLICATION"), "entityId"));
 
     return {
       affectedEntities,
       affectedApplications,
+      topEvent: detail.rankedEvents[detail.rankedEvents.length - 1],
       roots: _.filter(detail.rankedEvents, "isRootCause"),
       eventTypes: _.uniq(_.map(detail.rankedEvents, "eventType")),
       eventStats: Dynatrace.eventStats(detail.rankedEvents),
