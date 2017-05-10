@@ -70,7 +70,7 @@ function noProblems(user, range) {
 }
 
 function appNoProblems(user, range, entity) {
-  return { text: sb(user).s("Nice! There were no problems that affected").e(entity.enityId, entity.name).s("in the last").d(range).p };
+  return { text: sb(user).s("Nice! There were no problems that affected").e(entity.entityId, entity.name).s("in the last").d(range).p };
 }
 
 /**
@@ -122,7 +122,7 @@ function openProblem(user, range, problem) {
 function appOpenProblem(user, range, problem, entity) {
   const stats = Dynatrace.problemStats([problem]);
   const out = sb(user)
-    .s("In the last").d(range).c.s("the only problem that affected").e(entity.enityId, entity.name).s("was a").h(problem.rankedImpacts[0].eventType)
+    .s("In the last").d(range).c.s("the only problem that affected").e(entity.entityId, entity.name).s("was a").h(problem.rankedImpacts[0].eventType)
     .s("that started at").ts(problem.startTime).c.s("and is still ongoing.");
 
   const apps = stats.affectedEntities.APPLICATION || [];
@@ -172,7 +172,7 @@ function appClosedProblem(user, range, problem, entity) {
 
   // Always starts the same way
   const out = sb(user)
-    .s("In the last").d(range).c.s("the only problem that affected").e(entity.enityId, entity.name).s("was a").h(problem.rankedImpacts[0].eventType)
+    .s("In the last").d(range).c.s("the only problem that affected").e(entity.entityId, entity.name).s("was a").h(problem.rankedImpacts[0].eventType)
     .s("that started").ts(problem.startTime).c.s("and ended").ts(problem.endTime).p;
 
   const apps = stats.affectedEntities.APPLICATION || [];
@@ -212,7 +212,7 @@ function appManyProblems(user, range, problems, entity) {
   return {
     text: sb(user)
       .s("In the last").d(range).s(problems.length)
-      .s("problems affected").e(entity.enityId, entity.name).p.s("Would you like to see a listing of these issues?"),
+      .s("problems affected").e(entity.entityId, entity.name).p.s("Would you like to see a listing of these issues?"),
     targets: {
       yes: {
         intent: "showPage",
