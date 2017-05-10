@@ -11,6 +11,7 @@ const express = require("express");
 const session = require("express-session");
 const mongoose = require("mongoose");
 const passport = require("passport");
+const cors = require("cors");
 const randtoken = require("rand-token");
 
 const MongoStore = connectMongo(session);
@@ -43,6 +44,7 @@ mongoose.connect(mongoString)
     logger.debug("Setting up express");
     app.use(alexaVerification);
     app.use(json());
+    app.use(cors());
     app.use(session({
       resave: true,
       saveUninitialized: true,
