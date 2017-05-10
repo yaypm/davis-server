@@ -1,6 +1,7 @@
 const moment = require("moment");
 const rp = require("request-promise");
 const _ = require("lodash");
+const natural = require("natural");
 
 const Aliases = require("../../controllers/aliases");
 const ProblemDetails = require("../../controllers/problemDetails");
@@ -64,6 +65,33 @@ class Dynatrace {
         throw new DError("Unfortunately, there was an issue communicating with Dynatrace.");
       }
     }
+  }
+
+  /**
+   * Find an application that sounds like the given string
+   *
+   * @static
+   * @param {any} user
+   * @param {any} str
+   * @returns
+   *
+   * @memberof Dynatrace
+   */
+  static async findApplicationBySoundalike(user, str) {
+    logger.debug(`Searching for: ${str}`);
+    const apps = await Dynatrace.getApplications(user);
+    let entityId;
+    apps.forEach((app) => {
+      if (natural.Metaphone.compare(app.display.visual, str) ||
+          natural.Metaphone.compare(app.display.audible, str)) {
+        entityId = app.entityId;
+        logger.debug(`Found ${entityId}`);
+      } else if (_.filter(app.aliases, alias => natural.Metaphone.compare(alias, str)).length > 0) {
+        entityId = app.entityId;
+        logger.debug(`Found ${entityId}`);
+      }
+    });
+    return entityId;
   }
 
   /**

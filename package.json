@@ -41,6 +41,7 @@
     "moment-precise-range-plugin": "^1.2.1",
     "moment-timezone": "^0.5.13",
     "mongoose": "^4.9.5",
+    "natural": "^0.5.1",
     "passport": "^0.3.2",
     "passport-local": "^1.0.0",
     "rand-token": "^0.3.0",

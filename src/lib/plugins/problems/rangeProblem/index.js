@@ -32,6 +32,8 @@ class RangeProblem extends Plugin {
     const app = req.slots.app;
     if (app) {
       logger.debug(`Tried to filter range by app: ${app}`);
+      const entity = await Dynatrace.findApplicationBySoundalike(req.user, app);
+      logger.debug(`Found ${entity}`);
       return { text: "I'm sorry, I can't filter requests by application at this time." };
     }
     const problems = await Dynatrace.problemFeed(req.user, { relativeTime: range });
