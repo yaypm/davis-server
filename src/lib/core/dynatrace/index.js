@@ -166,19 +166,35 @@ class Dynatrace {
    * @memberOf Dynatrace
    */
   static async problemFeed(user, options) {
+    const dynatraceOptions = _.cloneDeep(_.pick(options, ["relativeTime"]));
+
     if (options.relativeTime &&
       !(/^hour$|^2hours$|^6hours$|^day$|^week$|^month$/.test(options.relativeTime))) {
       const range = options.relativeTime;
       const duration = moment.duration(range);
-      options.relativeTime = Dynatrace.rangeToRelativeTime(range);
-      const res = await Dynatrace.get(user, "problem/feed", options);
+      dynatraceOptions.relativeTime = Dynatrace.rangeToRelativeTime(range);
+      const res = await Dynatrace.get(user, "problem/feed", dynatraceOptions);
       return res
         .result
         .problems
         .filter(p => moment(p.startTime).isAfter(moment().subtract(duration)));
     }
 
-    const res = await Dynatrace.get(user, "problem/feed", options);
+    if (options.timeRange) {
+      const startTime = options.timeRange.startTime;
+      const endTime = options.timeRange.endTime;
+      const range = moment.duration(moment().valueOf - startTime);
+      dynatraceOptions.relativeTime = Dynatrace.rangeToRelativeTime(range);
+      const res = await Dynatrace.get(user, "problem/feed", dynatraceOptions);
+      return res
+        .result
+        .problems
+        .filter(p =>
+          moment(p.startTime).isAfter(moment(startTime)) &&
+          moment(endTime).isAfter(p.startTime));
+    }
+
+    const res = await Dynatrace.get(user, "problem/feed", dynatraceOptions);
     return res.result.problems;
   }
 
