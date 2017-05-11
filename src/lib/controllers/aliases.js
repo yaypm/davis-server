@@ -4,6 +4,7 @@ const _ = require("lodash");
 
 const AliasModel = require("../models/alias");
 const logger = require("../core/logger");
+const DError = require("../core/error");
 
 /**
  *
@@ -29,7 +30,7 @@ class Aliases {
     return model.save();
   }
 
-  /* static async update(user, id, alias) {
+  static async update(user, id, alias) {
     const entityId = alias.entityId;
     if (!entityId) throw new DError("An entity ID is required!");
     const category = entityId.split("-")[0];
@@ -40,14 +41,23 @@ class Aliases {
       AliasModel.findOne({ _id: id, tenant: user.tenant }),
       AliasModel.find({
         _id: { $ne: id },
-        tenant: { $ne: user.tenant },
+        tenant: user.tenant,
         $or: [
           { aliases: { $in: regexes }, entityId: new RegExp(`^${_.escapeRegExp(category)}`, "i") },
           { name: regexes, entityId: new RegExp(`^${_.escapeRegExp(category)}`, "i") },
         ],
       }),
     ]);
-  }*/
+    if (b.length > 0) {
+      const lowers = b[0].aliases.map(c => c.toLowerCase());
+      const intersect = _.find(aliases,
+        c => lowers.indexOf(c.toLowerCase()) !== -1 || c.toLowerCase() === b[0].name.toLowerCase());
+
+      throw new DError(`The alias '${intersect}' already refers to another ${b[0].entityId.split("-")[0].replace("_", " ").toLowerCase()} (${b[0].entityId}).`);
+    }
+    _.assign(a, { display: { audible: alias.audible, visual: alias.visual }, aliases });
+    return a.save();
+  }
 
   static async delete(user, id) {
     logger.info({ user }, `Removed alias ${id}.`);
