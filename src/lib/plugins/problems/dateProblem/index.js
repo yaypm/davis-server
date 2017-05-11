@@ -4,11 +4,37 @@ const Plugin = require("../../../core/plugin");
 const Dynatrace = require("../../../core/dynatrace");
 const sb = require("../../../util/builder").sb;
 const Util = require("../../../util");
+const moment = require("moment-timezone");
 
 class DateProblem extends Plugin {
   constructor() {
     super(...arguments);
     this.name = "dateProblem";
+  }
+
+  parseSlots(user, slots) {
+    if (slots.dow) {
+      const date = moment().day(slots.dow);
+      if (date.isAfter(moment())) {
+        slots.date = date.subtract(1, "week").format("YYYY-MM-DD");
+      } else {
+        slots.date = date.format("YYYY-MM-DD");
+      }
+    } else if (!slots.date && slots.app) {
+      if (/yesterday$/i.test(slots.app)) {
+        slots.date = moment.tz(user.timezone).subtract(1, "day").format("YYYY-MM-DD");
+        slots.app = slots.app.replace(/yesterday$/i, "");
+      }
+      if (/today$/i.test(slots.app)) {
+        slots.date = moment.tz(user.timezone).format("YYYY-MM-DD");
+        slots.app = slots.app.replace(/today$/i, "");
+      }
+      if (/tomorrow$/i.test(slots.app)) {
+        slots.date = moment.tz(user.timezone).add(1, "day").format("YYYY-MM-DD");
+        slots.app = slots.app.replace(/tomorrow$/i, "");
+      }
+    }
+    return slots;
   }
 
   // TODO workaround for yesterday/today/tomorrow
@@ -80,7 +106,7 @@ async function appOneProblem(req, problem, entity) {
 async function manyProblems(req, problems) {
   return {
     text: sb(req.user)
-      .s("On").date(req.slots.date).s(problems.length)
+      .date(req.slots.date).s(problems.length)
       .s("problems occurred. Would you like to see a listing of these issues?"),
     targets: {
       yes: {
@@ -96,7 +122,7 @@ async function manyProblems(req, problems) {
 async function appManyProblems(req, problems, entity) {
   return {
     text: sb(req.user)
-      .s("On").date(req.slots.date).s(problems.length)
+      .date(req.slots.date).s(problems.length)
       .s("problems affected").e(entity.entityId, entity.name).p.s("Would you like to see a listing of these issues?"),
     targets: {
       yes: {
