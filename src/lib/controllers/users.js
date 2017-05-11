@@ -80,7 +80,7 @@ class Users {
    * @memberOf Users
    */
   static async logIn(email, password) {
-    const user = await UserModel.findOne({ email }).select("_id email password");
+    const user = await UserModel.findOne({ email: email.toLowerCase() }).select("_id email password");
 
     if (!user) {
       return null;
