@@ -36,7 +36,7 @@ class DateProblem extends Plugin {
         slots.date = moment.tz(user.timezone).add(1, "day").format("YYYY-MM-DD");
         slots.app = slots.app.replace(/tomorrow$/i, "");
       }
-    } else if (slots.date && /yesterday|today|tomorrow|ago$/i.test(raw)) {
+    } else if (slots.date && /yesterday|today|tomorrow|(week|day|month|year)s? ago$/i.test(raw)) {
       // This is a workaround because lex processes all relative times as if they
       // were in the US Eastern timezone where lex resides
       slots.date = moment.tz(slots.date, "US/Eastern").tz(user.timezone).format("YYYY-MM-DD");
