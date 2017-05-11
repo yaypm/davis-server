@@ -226,6 +226,34 @@ class StringBuilder {
     return this.d(range);
   }
 
+  date(date) {
+    const { startTime, endTime, grain } = Util.Date.dateParser(date, this.user);
+    const thisWeek = moment().isoWeek();
+    if (grain === "week") {
+      if (thisWeek === moment(startTime).isoWeek()) {
+        this.s("this week");
+      } else if (thisWeek === moment(startTime).add(1, "week").isoWeek()) {
+        this.s("last week");
+      } else if (thisWeek === moment(startTime).subtract(1, "week").isoWeek()) {
+        this.s("next week");
+      } else {
+        this.ts(startTime, endTime);
+      }
+    } else if (grain === "day") {
+      this.s(moment(startTime).calendar(null, {
+        sameDay: "[today]",
+        nextDay: "[tomorrow]",
+        nextWeek: "dddd",
+        lastDay: "[yesterday]",
+        lastWeek: "[last] dddd",
+        sameElse: "DD/MM/YYYY",
+      }));
+    } else {
+      this.ts(startTime, endTime);
+    }
+    return this;
+  }
+
   /**
    *    * Add a period
    *
