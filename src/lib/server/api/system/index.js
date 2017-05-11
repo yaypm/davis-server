@@ -15,12 +15,14 @@ system.get("/version", (req, res) => {
 system.get("/user", (req, res) => {
   res.json({
     success: true,
-    email: req.user.email,
-    name: {
-      first: req.user.firstName,
-      last: req.user.lastName,
+    user: {
+      email: req.user.email,
+      name: {
+        first: req.user.firstName,
+        last: req.user.lastName,
+      },
+      timezone: req.user.timezone,
     },
-    timezone: req.user.timezone,
   });
 });
 
@@ -28,14 +30,17 @@ system.get("/user", (req, res) => {
 system.get("/users", async (req, res) => {
   const users = await Users.getAll();
 
-  res.json(users.map(user => ({
-    email: user.email,
-    name: {
-      first: user.firstName,
-      last: user.lastName,
-    },
-    timezone: user.timezone,
-  })));
+  res.json({
+    success: true,
+    users: users.map(user => ({
+      email: user.email,
+      name: {
+        first: user.firstName,
+        last: user.lastName,
+      },
+      timezone: user.timezone,
+    })),
+  });
 });
 
 module.exports = system;
