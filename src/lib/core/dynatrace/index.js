@@ -211,7 +211,7 @@ class Dynatrace {
     if (options.timeRange) {
       const startTime = options.timeRange.startTime;
       const endTime = options.timeRange.endTime;
-      const range = moment.duration(moment().valueOf - startTime);
+      const range = moment.duration(moment().valueOf() - startTime);
       dynatraceOptions.relativeTime = Dynatrace.rangeToRelativeTime(range);
       const res = await Dynatrace.get(user, "problem/feed", dynatraceOptions);
       return res
