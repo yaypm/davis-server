@@ -1,13 +1,13 @@
 
-const UserModel = require("../src/lib/models/user");
-const TenantModel = require("../src/lib/models/tenant");
+const UserController = require("../src/lib/controllers/users");
+const TenantController = require("../src/lib/controllers/tenants");
 
 const tenantSpec = {
   url: process.env.DYNATRACE_URL,
   name: "Mocha Tenant",
   access: {
     active: 0,
-    tokens: [process.env.DYNATRACE_TOKEN],
+    tokens: ["fakeToken"],
   }
 }
 
@@ -19,26 +19,40 @@ const userSpec = {
   timezone: "Etc/UTC",
 };
 
+const appAliasSpec = {
+  entityId: "APPLICATION-59CA712F666CD24D",
+  aliases: ["An app"],
+  display: {
+    audible: "Say something about this app",
+    visual: "Show something about this app",
+  },
+}
+
+const serviceAliasSpec = {
+  entityId: "SERVICE-227B75F33518E258",
+  aliases: ["A service"],
+  display: {
+    audible: "Say something about this service",
+    visual: "Show something about this service",
+  },
+}
+
 const createUser = async () => {
-  const user = new UserModel(userSpec);
-  return await user.save()
+  return UserController.create(userSpec);
 }
 
 const createTenant = async (user) => {
-  tenantSpec.owner = user._id;
-  const tenant = new TenantModel(tenantSpec);
-  return await tenant.save();
+  return TenantController.create(user, tenantSpec);
 }
 
 const createUserWithTenant= async () => {
-  const user = new UserModel(userSpec);
-  const outUser = await user.save()
-
-  tenantSpec.owner = user._id;
-  const tenant = new TenantModel(tenantSpec);
-  const outTenant = await tenant.save();
-  user.tenant = outTenant._id;
-  return [outUser, outTenant];
+  const newUser = await createUser();
+  const tenant = await createTenant(newUser);
+  const user = await UserController.getById(newUser._id);
+  return {
+    user,
+    tenant,
+  }
 }
 
 module.exports = {
@@ -47,4 +61,6 @@ module.exports = {
   createUserWithTenant,
   tenantSpec,
   userSpec,
+  appAliasSpec,
+  serviceAliasSpec,
 };

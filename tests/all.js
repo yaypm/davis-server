@@ -4,7 +4,7 @@ const mongoose = require("mongoose");
 
 dotenv.config();
 process.env.test = true;
-process.env.DAVIS_LOG_LEVEL = "warn";
+process.env.DAVIS_LOG_LEVEL = "error";
 
 const AliasModel = require("../src/lib/models/alias");
 const UserModel = require("../src/lib/models/user");
@@ -41,5 +41,6 @@ async function dropAll() {
 
 require("./users");
 require("./tenants");
+require("./aliases");
 require("./builder");
 require("./dynatrace");

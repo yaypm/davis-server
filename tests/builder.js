@@ -11,11 +11,8 @@ describe("util/builder", () => {
   let user;
   let tenant;
   beforeEach(async () => {
-    const [testUser, testTenant] = await createUserWithTenant();
-    user = testUser;
-    tenant = testTenant;
+    ({ user, tenant } = await createUserWithTenant());
   });
-
 
   const appnock = nock(/dynatrace/i)
     .get("/api/v1/entity/applications")
@@ -36,6 +33,8 @@ describe("util/builder", () => {
     .get("/api/v1/entity/infrastructure/process-groups")
     .times(2)
     .reply(200, []);
+
+  after(() => nock.cleanAll());
 
   it("should build slack style timestamps", () => {
     const ms = 1492677420000;
