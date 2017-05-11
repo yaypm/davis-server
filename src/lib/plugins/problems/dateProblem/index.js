@@ -12,7 +12,7 @@ class DateProblem extends Plugin {
     this.name = "dateProblem";
   }
 
-  parseSlots(user, slots) {
+  parseSlots(user, slots, raw) {
     if (slots.dow) {
       const date = moment().day(slots.dow);
       if (date.isAfter(moment())) {
@@ -33,6 +33,8 @@ class DateProblem extends Plugin {
         slots.date = moment.tz(user.timezone).add(1, "day").format("YYYY-MM-DD");
         slots.app = slots.app.replace(/tomorrow$/i, "");
       }
+    } else if (slots.date && /yesterday|today|tomorrow|days ago$/i.test(raw)) {
+      slots.date = moment.tz(slots.date, "US/Eastern").tz(user.timezone).format("YYYY-MM-DD");
     }
     return slots;
   }

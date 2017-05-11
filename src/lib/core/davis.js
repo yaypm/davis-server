@@ -157,7 +157,7 @@ class Davis {
         timeRange: Util.Date.dateParser(slots.date, req.user),
       },
       raw: req.raw,
-      slots: plugin.parseSlots(req.user, slots),
+      slots: plugin.parseSlots(req.user, slots, req.raw),
       scope: req.scope,
       user: req.user,
       davis: this,
