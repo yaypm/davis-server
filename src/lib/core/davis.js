@@ -160,6 +160,7 @@ class Davis {
       slots: plugin.parseSlots(req.user, slots),
       scope: req.scope,
       user: req.user,
+      davis: this,
     };
   }
 }
