@@ -2,7 +2,7 @@
 
 const tenantRoute = require("express").Router();
 
-const TenantController = require("../../../controllers/tenant");
+const TenantController = require("../../../controllers/tenants");
 
 tenantRoute.route("/tenant")
   .get(async (req, res, next) => {
