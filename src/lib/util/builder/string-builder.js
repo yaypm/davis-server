@@ -241,11 +241,11 @@ class StringBuilder {
       }
     } else if (grain === "day") {
       this.s(moment(startTime).calendar(null, {
-        sameDay: "[today]",
-        nextDay: "[tomorrow]",
-        nextWeek: "dddd",
-        lastDay: "[yesterday]",
-        lastWeek: "[last] dddd",
+        sameDay: "[Today]",
+        nextDay: "[Tomorrow]",
+        nextWeek: "[Next] dddd",
+        lastDay: "[Yesterday]",
+        lastWeek: "On dddd",
         sameElse: "DD/MM/YYYY",
       }));
     } else {
