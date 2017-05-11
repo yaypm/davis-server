@@ -14,6 +14,7 @@ class DateProblem extends Plugin {
 
   parseSlots(user, slots, raw) {
     if (slots.dow) {
+      // Convert day of week into date slot for use by plugin
       const date = moment().day(slots.dow);
       if (date.isAfter(moment())) {
         slots.date = date.subtract(1, "week").format("YYYY-MM-DD");
@@ -21,6 +22,8 @@ class DateProblem extends Plugin {
         slots.date = date.format("YYYY-MM-DD");
       }
     } else if (!slots.date && slots.app) {
+      // This is a lex workaround because if you say "what happened to madison island yesterday"
+      // Lex thinks the app is "madison island yesterday" and the date is null
       if (/yesterday$/i.test(slots.app)) {
         slots.date = moment.tz(user.timezone).subtract(1, "day").format("YYYY-MM-DD");
         slots.app = slots.app.replace(/yesterday$/i, "");
@@ -33,7 +36,9 @@ class DateProblem extends Plugin {
         slots.date = moment.tz(user.timezone).add(1, "day").format("YYYY-MM-DD");
         slots.app = slots.app.replace(/tomorrow$/i, "");
       }
-    } else if (slots.date && /yesterday|today|tomorrow|days ago$/i.test(raw)) {
+    } else if (slots.date && /yesterday|today|tomorrow|ago$/i.test(raw)) {
+      // This is a workaround because lex processes all relative times as if they
+      // were in the US Eastern timezone where lex resides
       slots.date = moment.tz(slots.date, "US/Eastern").tz(user.timezone).format("YYYY-MM-DD");
     }
     return slots;
