@@ -8,8 +8,8 @@ require("./user");
 
 const tenantSchema = new mongoose.Schema({
   owner: { type: "ObjectId", ref: "User", required: true },
-  admins: { type: "ObjectId", ref: "User" },
-  users: { type: "ObjectId", ref: "User" },
+  admins: [{ type: "ObjectId", ref: "User" }],
+  users: [{ type: "ObjectId", ref: "User" }],
   url: {
     type: String,
     validate: {
