@@ -30,16 +30,24 @@ class Tenants {
     return result;
   }
 
+  static async changeActiveTenant(user, id) {
+    const accessLevel = await Tenants.getAccessLevel(user, id);
+
+    if (!accessLevel) {
+      throw new DError("You're not authorized to use this tenant.", 403);
+    }
+    return UserController.setCurrentTenant(user._id, id);
+  }
+
   static async update(user, id, tenant) {
     const t = await TenantModel.findById(id);
 
-    const testOwner = t.owner.toString() !== user._id.toString();
-    const testAdmins = _.filter(t.admins.map(admin => admin.toString() === user._id.toString())).length === 0;
+    const accessLevel = await Tenants.getAccessLevel(user, id);
 
     if (!t) {
       logger.info({ user }, `Unable to find a tenant with the ID ${id}.`);
       throw new DError("Unable to find a tenant with that ID!", 400);
-    } else if (testOwner && testAdmins) {
+    } else if (!accessLevel || accessLevel === "user") {
       logger.warn({ user }, "Rejecting unauthorized tenant update.");
       throw new DError("You don't have the required permissions to update this tenant.", 403);
     }
@@ -74,6 +82,16 @@ class Tenants {
    */
   static async getById(id) {
     return TenantModel.findById(id);
+  }
+
+  static async getAccessLevel(user, id) {
+    const tenant = await TenantModel.findById(id);
+
+    return (!tenant) ? null
+      : (tenant.owner.toString() !== user._id.toString()) ? "owner"
+      : (_.filter(tenant.admins.map(a => a.toString() === user._id.toString())).length === 0) ? "admin"
+      : (_.filter(tenant.users.map(u => u.toString() === user._id.toString())).length === 0) ? "user"
+      : null;
   }
 
   /**
