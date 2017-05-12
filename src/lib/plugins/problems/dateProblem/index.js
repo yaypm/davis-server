@@ -4,7 +4,6 @@ const Plugin = require("../../../core/plugin");
 const Dynatrace = require("../../../core/dynatrace");
 const sb = require("../../../util/builder").sb;
 const Util = require("../../../util");
-const moment = require("moment-timezone");
 
 class DateProblem extends Plugin {
   constructor() {
@@ -15,31 +14,21 @@ class DateProblem extends Plugin {
   parseSlots(user, slots, raw) {
     if (slots.dow) {
       // Convert day of week into date slot for use by plugin
-      const date = moment().day(slots.dow);
-      if (date.isAfter(moment())) {
-        slots.date = date.subtract(1, "week").format("YYYY-MM-DD");
-      } else {
-        slots.date = date.format("YYYY-MM-DD");
-      }
+
+      slots.date = Util.SlotParsers.dow(slots.dow, user);
     } else if (!slots.date && slots.app) {
       // This is a lex workaround because if you say "what happened to madison island yesterday"
       // Lex thinks the app is "madison island yesterday" and the date is null
-      if (/yesterday$/i.test(slots.app)) {
-        slots.date = moment.tz(user.timezone).subtract(1, "day").format("YYYY-MM-DD");
-        slots.app = slots.app.replace(/yesterday$/i, "");
-      }
-      if (/today$/i.test(slots.app)) {
-        slots.date = moment.tz(user.timezone).format("YYYY-MM-DD");
-        slots.app = slots.app.replace(/today$/i, "");
-      }
-      if (/tomorrow$/i.test(slots.app)) {
-        slots.date = moment.tz(user.timezone).add(1, "day").format("YYYY-MM-DD");
-        slots.app = slots.app.replace(/tomorrow$/i, "");
-      }
-    } else if (slots.date && /yesterday|today|tomorrow|(week|day|month|year)s? ago$/i.test(raw)) {
+
+      const { app, date } = Util.SlotParsers.appDate(slots.app, slots.date, slots.user);
+
+      slots.app = app;
+      slots.date = date;
+    } else if (slots.date && /yesterday|today|tomorrow/i.test(raw)) {
       // This is a workaround because lex processes all relative times as if they
       // were in the US Eastern timezone where lex resides
-      slots.date = moment.tz(slots.date, "US/Eastern").tz(user.timezone).format("YYYY-MM-DD");
+
+      slots.date = Util.SlotParsers.relativeDate(slots.date, user, raw);
     }
     return slots;
   }
