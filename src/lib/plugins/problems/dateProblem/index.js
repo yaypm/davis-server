@@ -33,7 +33,6 @@ class DateProblem extends Plugin {
     return slots;
   }
 
-  // TODO workaround for yesterday/today/tomorrow
   async ask(req) {
     if (req.slots.app) {
       const entity = await Dynatrace.findApplicationBySoundalike(req.user, req.slots.app);
