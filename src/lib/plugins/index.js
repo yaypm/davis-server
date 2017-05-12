@@ -19,5 +19,7 @@ module.exports = [
 
   require("./general/thanks"),
 
+  require("./tenant/active"),
+
   require("./lexVersionMismatch"),
 ];
