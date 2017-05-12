@@ -41,7 +41,7 @@ aliasRoute.route("/aliases")
     }
   });
 
-aliasRoute.route("/aliases/:id")
+aliasRoute.route("/aliases/:id(([0-9a-f]{24}))")
   .put(async (req, res, next) => {
     try {
       await Aliases.update(req.user, req.params.id, req.body);
