@@ -37,6 +37,16 @@ class Users {
     return UserModel.findById(id);
   }
 
+  /**
+   * Sets the specified tenant to the user.  This assumes the user's permission has already been checked.
+   *
+   * @static
+   * @param {any} userId - Mongoose user ID
+   * @param {any} tenantId - Mongoose tenant ID
+   * @returns
+   *
+   * @memberof Users
+   */
   static async setCurrentTenant(userId, tenantId) {
     const user = await UserModel.findById(userId);
     logger.debug({ user }, `Attempting to change the tenant from '${user.tenant}' to '${tenantId}'.`);
