@@ -66,5 +66,7 @@ class TenantClass {
 }
 
 tenantSchema.post("save", DError.handleMongoError);
+tenantSchema.post("update", DError.handleMongoError);
+
 tenantSchema.loadClass(TenantClass);
 module.exports = mongoose.model("Tenant", tenantSchema);
